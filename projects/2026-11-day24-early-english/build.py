@@ -71,32 +71,32 @@ HI = {0: "무조건 어릴 때", 1: "사실일까요?", 2: "구별", 3: "민감�
 
 # Big words behind her head, revealed by a camera pull-back (source seconds)
 BEHIND = [
-    {"kicker": "아이 영어는", "ko": "무조건 어릴 때?", "s": 0.05, "e": 2.15, "size": 150},
-    {"kicker": "늦으면 끝?", "ko": "아니에요!", "s": 23.0, "e": 24.75, "size": 190},
-    {"kicker": "더 중요한 건", "ko": "경험!", "s": 49.6, "e": 51.55, "size": 230},
+    {"kicker": "아이 영어는", "ko": "무조건 어릴 때?", "s": 0.09, "e": 3.99, "size": 150},
+    {"kicker": "늦으면 끝?", "ko": "아니에요!", "s": 24.10, "e": 26.02, "size": 190},
+    {"kicker": "더 중요한 건", "ko": "경험!", "s": 50.03, "e": 51.83, "size": 230},
 ]
 # Key-point pops (source s, e, kicker, text, slot, sound)
 POPS = [
-    (3.16, 5.1, "", "🤔 진짜일까?", "mid", "boing"),
-    (6.4, 10.6, "생후 초기", "모든 소리 구별 👂", "mid", "pop"),
-    (11.2, 16.8, "생후 6~12개월", "익숙한 소리에 집중 🎯", "mid", "pop"),
-    (18.3, 20.95, "이걸 부르는 말", "지각적 협소화 🧠", "mid", "sparkle"),
-    (25.22, 28.05, "", "🏠 집에서는?", "mid", "pop"),
-    (29.3, 33.9, "핵심", "📺 틀어두기 ≠ 💬 소통", "mid", "boing"),
-    (34.4, 37.65, "TIP 1", "🎵 노래 + 손동작 👐", "mid", "pop"),
-    (37.9, 41.1, "TIP 2", "📖 그림 가리키며 이야기 👉", "mid", "pop"),
-    (52.0, 54.25, "", "😵 막막하시죠?", "mid", "boing"),
-    (54.7, 57.15, "그래서 베어앤조이가", "준비했어요 🎁", "mid", "sparkle"),
-    (59.7, 62.2, "", "📚 7일 홈 잉글리시", "mid", "pop"),
-    (62.3, 63.9, "하루", "5~10분 ⏱️", "mid", "pop"),
-    (63.95, 67.85, "", "📖 그림책 + 놀이 🧸", "mid", "pop"),
-    (67.95, 70.45, "", "😊 즐겁게 시작!", "mid", "pop"),
-    (72.6, 76.8, "👆 프로필 링크", "Little Steps 🐾", "mid", "sparkle"),
+    (4.36, 6.40, "", "🤔 진짜일까?", "mid", "boing"),
+    (7.20, 11.38, "생후 초기", "모든 소리 구별 👂", "mid", "pop"),
+    (11.63, 18.33, "생후 6~12개월", "익숙한 소리에 집중 🎯", "mid", "pop"),
+    (19.31, 22.39, "이걸 부르는 말", "지각적 협소화 🧠", "mid", "sparkle"),
+    (25.94, 29.21, "", "🏠 집에서는?", "mid", "pop"),
+    (30.84, 34.91, "핵심", "📺 틀어두기 ≠ 💬 소통", "mid", "boing"),
+    (35.82, 37.67, "TIP 1", "🎵 노래 + 손동작 👐", "mid", "pop"),
+    (37.81, 40.98, "TIP 2", "📖 그림 가리키며 이야기 👉", "mid", "pop"),
+    (52.67, 54.52, "", "😵 막막하시죠?", "mid", "boing"),
+    (55.41, 57.32, "그래서 베어앤조이가", "준비했어요 🎁", "mid", "sparkle"),
+    (60.27, 62.39, "", "📚 7일 홈 잉글리시", "mid", "pop"),
+    (63.00, 64.45, "하루", "5~10분 ⏱️", "mid", "pop"),
+    (64.49, 68.03, "", "📖 그림책 + 놀이 🧸", "mid", "pop"),
+    (68.80, 70.66, "", "😊 즐겁게 시작!", "mid", "pop"),
+    (73.20, 76.96, "👆 프로필 링크", "Little Steps 🐾", "mid", "sparkle"),
 ]
-AVATAR = {"s": 57.3, "e": 59.65, "img": "brand/mark-avatar.png", "kicker": "영국인 교사", "text": "🇬🇧 마크 선생님"}
-FOLLOW = (70.76, 72.46)  # she says "팔로우하고 지켜봐주세요" — show the follow button right then
-TWIST = (3.16, 6.14)     # "그런데 이 말 어디까지 사실일까요?" — beat stops, record scratch
-TAG = {"s": 6.2, "e": 10.5, "name": "Joy Kim", "flags": "🇰🇷", "role": "Bear & Joy 공동 저자"}
+AVATAR = {"s": 58.30, "e": 60.20, "img": "brand/mark-avatar.png", "kicker": "영국인 교사", "text": "🇬🇧 마크 선생님"}
+FOLLOW = (70.90, 72.64)  # she says "팔로우하고 지켜봐주세요" — show the follow button right then
+TWIST = (4.36, 6.94)     # "그런데 이 말 어디까지 사실일까요?" — beat stops, record scratch
+TAG = {"s": 7.00, "e": 11.28, "name": "Joy Kim", "flags": "🇰🇷", "role": "Bear & Joy 공동 저자"}
 SLOTS = {"mid": {"left": 0, "right": 0, "top": 950, "rot": -2}}  # below chin and mic, above captions
 TAG_POS = {"left": 50, "top": 1450}  # under the captions
 CAPTION_TOP = 1250
@@ -139,6 +139,15 @@ def build(db):
             hi_in = hi if hi and hi in text else next((p for p in hi.split() if p in text and len(clean(p)) > 1), "") if hi else ""
             C.append({"i": idx, "s": to_out(chunk[0]["t"]), "e": to_out(nxt_t), "ko": text, "en": "", "hi": hi_in, "demo": False,
                       "kwords": [{"w": w["w"], "t": to_out(w["t"])} for w in chunk], "words": []})
+        # " / " in the script forces a page break at a natural pause
+        if " / " in l["ko"]:
+            for w in wt:
+                if w["w"] == "/":
+                    flush(w["t"]); chunk = []
+                else:
+                    chunk.append(w)
+            flush(l["e"]); chunk = []
+            continue
         # balanced pages: as few pages as fit MAX_CHUNK, each about the same length (no orphan tails)
         total = sum(len(clean(w["w"])) for w in wt)
         pages = 1 if idx == 0 else max(1, math.ceil(total / MAX_CHUNK))  # the hook stays one page
