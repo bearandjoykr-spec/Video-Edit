@@ -91,16 +91,45 @@ section { display: grid; gap: 20px; }
 .axis span { position: absolute; transform: translateX(-50%); }
 .review { background: var(--surface); border: 1.5px solid var(--accent); border-radius: 16px; padding: 22px 24px; display: grid; gap: 12px; }
 .review ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 620px) { .logos { grid-template-columns: minmax(0, 1fr); } }
+.logos > div { border-radius: 16px; padding: 24px; display: grid; place-items: center; gap: 14px; border: 1px solid var(--line); }
+.logo-light { background: #FAEEDF; }
+.logo-dark { background: #1E2D4D; }
+.logos img { max-width: 100%; height: auto; }
+.end .art { width: 62%; justify-self: center; }
+.end .wm { width: 88%; justify-self: center; }
+.hooks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 680px) { .hooks { grid-template-columns: minmax(0, 1fr); } }
+.hooks > div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: grid; gap: 8px; align-content: start; }
+.hooks .say { font: 700 17px/1.4 var(--f-kr); color: var(--fg); }
+.hooks .from { font-size: 12.5px; color: var(--muted); }
+.src { font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
+.src a { color: var(--accent); }
 </style>
 
 <div class="wrap">
 
 <header>
-  <span class="status">Draft 2 · waiting for your approval</span>
+  <span class="status">Approved · 4 November 2026</span>
   <div class="eyebrow">The bear &amp; Joy co. · Reels</div>
   <h1>Little reels, made like a storybook<span class="kr">그림책처럼 만드는 짧은 영상</span></h1>
-  <p class="muted">This sheet combines two sources. The colours, type and mood come from bearandjoy.com. The structure (hook, step cards, captions, pacing) comes from the reference reel. Once you approve it, every edit I make for Bear &amp; Joy will follow this sheet.</p>
+  <p class="muted">This sheet combines two sources. The colours, type and mood come from bearandjoy.com. The structure (hook, step cards, captions, pacing) comes from the reference reel. Every edit I make for Bear &amp; Joy follows this sheet.</p>
 </header>
+
+<section>
+  <div class="eyebrow">0 · Logo</div>
+  <h2>The Bear &amp; Joy Co.</h2>
+  <div class="logos">
+    <div class="logo-light"><img src="web/logo-full.png" alt="The Bear &amp; Joy Co. logo: a small navy bear in a straw hat watching a golden butterfly, above the wordmark"></div>
+    <div class="logo-dark"><img src="web/bear-butterfly.png" alt="The bear and butterfly artwork" style="width:46%"><img src="web/wordmark-cream.png" alt="The Bear &amp; Joy Co. wordmark in cream" style="width:82%"></div>
+  </div>
+  <ul class="rules">
+    <li><b>Wordmark</b><span>"The Bear &amp; Joy Co." exactly as drawn. Navy wordmark on cream, cream wordmark on navy. Never gold, never stretched.</span></li>
+    <li><b>Artwork</b><span>The bear and butterfly are used as drawn, never recoloured or redrawn. On video they can appear separately: the butterfly flies across transitions and the bear sits in the end card.</span></li>
+    <li><b>Space</b><span>Leave clear space around the logo at least as tall as the "T". On video, the logo appears only on the end card, plus an optional small watermark of the bear at the top-left at 60% opacity.</span></li>
+  </ul>
+</section>
 
 <section>
   <div class="eyebrow">What I studied</div>
@@ -211,7 +240,7 @@ section { display: grid; gap: 20px; }
 <section>
   <div class="eyebrow">5 · Pacing and sound</div>
   <h2>Calm, but never still</h2>
-  <p class="muted">The reference changes the screen about every 10 s. Bear &amp; Joy keeps that slower rhythm because parents are listening, not skimming. Long pauses and repeated takes are still cut so it never drags. This example shows a 60 s reel.</p>
+  <p class="muted">The scene changes about every 10 s, because parents are listening, not skimming. Between those changes, something small moves every 2–4 s: a new caption, a framing change, a card row, or the butterfly. Long pauses and repeated takes are cut so it never drags. This example shows a 60 s reel.</p>
   <div class="tl-wrap">
     <div class="tl" role="img" aria-label="Timeline of a 60 second reel: hook 0 to 2 s, cards about every 10 s, call to action from 54 s">
       <div class="axis"><span></span><div><span style="left:0%">0s</span><span style="left:25%">15</span><span style="left:50%">30</span><span style="left:75%">45</span><span style="left:100%">60</span></div></div>
@@ -236,7 +265,7 @@ section { display: grid; gap: 20px; }
     <div style="display:grid;gap:20px">
       <h2>End with the logo and the Kakao button</h2>
       <ul class="rules">
-        <li><b>End card</b><span>The last 5 s fade to night navy. The logo appears ("The bear &amp; Joy", ampersand in gold), with one warm Korean line below it.</span></li>
+        <li><b>End card</b><span>The last 5 s fade to night navy. The bear and butterfly drift in, then the cream wordmark, with one warm Korean line below it.</span></li>
         <li><b>CTA</b><span>A Kakao-yellow pill reading "카카오톡 채널 추가하기", matching the website. If a reel asks for comments instead, the keyword appears in gold Playfair.</span></li>
         <li><b>Export</b><span>1080×1920, 30 fps, H.264, about 12 Mbps, AAC 48 kHz. Captions burned in, plus Korean and English .srt files.</span></li>
         <li><b>Storyboard</b><span>Before every export I'll send you a storyboard to approve, the same way you're approving this sheet.</span></li>
@@ -244,18 +273,48 @@ section { display: grid; gap: 20px; }
     </div>
     <div class="frame" role="img" aria-label="9:16 end card with the Bear and Joy logo and a Kakao channel button">
       <div class="head"></div><div class="person"></div>
-      <div class="end"><span class="logo">The bear <i>&amp;</i> Joy</span><span class="sub">아이와 영어를 읽으며,<br>자신감을 키워요.</span><span class="btn">카카오톡 채널 추가하기</span></div>
+      <div class="end"><img class="art" src="web/bear-butterfly.png" alt=""><img class="wm" src="web/wordmark-cream.png" alt="The Bear &amp; Joy Co."><span class="sub">아이와 영어를 읽으며,<br>자신감을 키워요.</span><span class="btn">카카오톡 채널 추가하기</span></div>
     </div>
   </div>
 </section>
 
+<section>
+  <div class="eyebrow">7 · Hooks and retention</div>
+  <h2>What the most-watched reels do, the Bear &amp; Joy way</h2>
+  <p class="muted">The most-viewed reels on Instagram, with 600 million to 1.9 billion views, are mostly celebrity and brand ads. Their budgets can't be copied, but the non-celebrity hits use repeatable patterns: a tie-tying tutorial, a skit contrasting two generations, a freestyle trick in a beautiful place, and clips that "corrupt" unexpectedly. Instagram's head, Adam Mosseri, names watch time, sends per reach and likes per reach as the main ranking signals. So each reel needs to stop the scroll, hold to the end, and be worth sending to another parent.</p>
+
+  <h3>Pick one hook per reel, delivered in the first 1.5 s</h3>
+  <p class="muted">Say it out loud, show it as on-screen text from the first frame (many people watch muted), and move something at the same time.</p>
+  <div class="hooks">
+    <div><h3>Result first</h3><p class="say">"우리 아이가 처음으로 영어 문장을 읽었어요."</p><p>Show the payoff, such as a child reading a line aloud, then explain how you got there. <span class="from">From: tutorials like the tie reel</span></p></div>
+    <div><h3>Parent's worry</h3><p class="say">"영어 발음 때문에 그림책 못 읽어주시나요?"</p><p>Name the fear your website already answers (영어가 부담스러우신가요?), then reassure. <span class="from">From: problem-first hooks</span></p></div>
+    <div><h3>Two kinds of parent</h3><p class="say">"영어 학원 보내는 엄마 vs 그림책 읽어주는 엄마"</p><p>A gentle split-screen comparison. Warm, never mocking. <span class="from">From: the GenZ vs Millennial skit</span></p></div>
+    <div><h3>The unexpected</h3><p class="say">The book opens by itself. The bear peeks into the frame.</p><p>A small visual surprise in the first second, or a playful reading like the dad who rapped <i>Llama Llama Red Pajama</i>. <span class="from">From: pattern interrupts</span></p></div>
+    <div><h3>The open question</h3><p class="say">"아직 이름이 없는 곰이 있어요. 끝까지 보면…"</p><p>The bear who needs a name is a built-in mystery. Answer it in the last 3 seconds so people stay to the end. <span class="from">From: open-loop hooks</span></p></div>
+    <div><h3>Today's phrase</h3><p class="say">"오늘의 영어 한 마디: <i>Stop, look, listen.</i>"</p><p>One usable phrase per reel gives parents a reason to save it and send it. <span class="from">From: save-worthy tutorials</span></p></div>
+  </div>
+
+  <ul class="rules">
+    <li><b>First value</b><span>Give the first useful thing by second 5. Cut every intro, greeting and "안녕하세요" before it.</span></li>
+    <li><b>Length</b><span>15–35 s for reach reels. Up to 60–90 s only for step-by-step guides such as Little Steps' days.</span></li>
+    <li><b>Keep the promise</b><span>The hook must match the payoff. An over-promising hook raises early views but makes people leave sooner, and a children's brand runs on trust.</span></li>
+    <li><b>Loop</b><span>The last line leads back into the first frame, e.g. "…그래서 우리는 다시 첫 페이지를 펴요", so a replay feels natural.</span></li>
+    <li><b>Sends</b><span>End the caption with a reason to share: "영어 그림책 고민하는 친구에게 보내주세요". The Kakao call to action stays on the end card.</span></li>
+    <li><b>Audio</b><span>Your own voice first. A trending sound only as a quiet background bed, never replacing the voice.</span></li>
+    <li><b>Children</b><span>Show children's faces only with their parents' consent. Hands, books and the back of a head tell the story just as well.</span></li>
+  </ul>
+  <div class="src">
+    <span>Sources:</span>
+    <a href="https://en.wikipedia.org/wiki/List_of_most-viewed_Instagram_reels">List of most-viewed Instagram reels (Wikipedia, Aug 2026)</a>
+    <a href="https://blog.hootsuite.com/instagram-algorithm/">Hootsuite: how the Instagram algorithm works</a>
+    <a href="https://metricool.com/instagram-reel-analytics/">Metricool: Reels retention and skip rate</a>
+    <a href="https://www.goodmorningamerica.com/family/story/dad-viral-rap-rendition-llama-llama-red-pajama-126713713">Good Morning America: dad's viral <i>Llama Llama</i> rap</a>
+  </div>
+</section>
+
 <section class="review">
-  <h2>To approve, reply in chat</h2>
-  <ol>
-    <li>Say <b>"approved"</b> to lock it in, or tell me what to change, for example "English captions first" or "faster pacing".</li>
-    <li>Send your logo and the bear and butterfly artwork as files (PNG with a transparent background works best), so I can use the real art in videos.</li>
-    <li>Upload the second reference reel if you want it included.</li>
-  </ol>
+  <h2>Approved</h2>
+  <p>Every Bear &amp; Joy edit follows this sheet. Before any export, I'll send a storyboard for you to approve. To change a rule, just tell me and I'll update the sheet.</p>
 </section>
 
 </div>
