@@ -10,3 +10,4 @@ projects/*/storyboard/frames/
 projects/*/storyboard/stills/
 *.wav
 remotion/public/fonts/*.ttf
+__pycache__/
