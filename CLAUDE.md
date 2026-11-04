@@ -13,6 +13,22 @@ Claude acts as the video editor for The Bear & Joy Co. (bearandjoy.com), a bilin
 - Put renders in `remotion/out/` or `renders/` (git-ignored).
 
 ## Tools
-Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp (`pip install yt-dlp`) and Whisper (whisper.cpp) for captions.
-In a fresh cloud session, reinstall with `npm ci --prefix remotion` and `pip install yt-dlp`. Render Remotion with `--browser-executable=/opt/pw-browsers/chromium`.
-YouTube blocks cloud downloads without cookies. Instagram works for public reels.
+Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper (whisper.cpp) for transcripts.
+
+### Fresh cloud session setup (do this first, about 5 minutes)
+1. `npm ci --prefix remotion` (installs Remotion, HyperFrames and the Pretendard font package)
+2. `pip install yt-dlp numpy`
+3. `sh remotion/fetch-fonts.sh` (TTF fonts are not committed; the Pretendard woff2 files and the emoji font list are)
+4. Whisper: `git clone --depth 1 https://github.com/ggml-org/whisper.cpp /opt/tools/whisper.cpp`, then `cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j --target whisper-cli` inside it, then `sh ./models/download-ggml-model.sh large-v3-turbo`. Use `-l en` or `-l ko` per section; the owner may supply exact bilingual translations, so use them word for word.
+5. Render Remotion with `--browser-executable=/opt/pw-browsers/chromium`.
+
+## Making a new reel (the workflow the owner approved)
+1. Get the footage. Large files arrive as a Google Drive "anyone with the link" share. Download with
+   `curl -L "https://drive.usercontent.google.com/download?id=<ID>&export=download&confirm=t"` into `raw-footage/`.
+2. Ask for the **day number** of the daily-posting series ("DAY N · 출간까지 매일 업로드") and whether there are Korean translations.
+3. Transcribe, then copy `projects/2026-11-confidence/` as the starting point for `projects/<yyyy-mm>-<topic>/`:
+   `script.txt` → `captions.json` → `build_timeline_v2.py` (cuts, pops, behind-head words, SFX) → `cut.py` → `hyperframes remove-background` for the subject matte (about 40 min for 90 s on CPU; start it early) → `audio/synth_lofi.py` → Remotion `BearJoyReelV2` → `mix.py ... timeline_v2.json -8 2.5`.
+4. Show a storyboard (stills rendered from the real footage) and wait for approval before the final export.
+5. Deliver an Instagram package in `exports/instagram/dayN/`: standard-range H.264 MP4 (see the Day 23 ffmpeg settings in git history), a cover JPG from the hook, and `caption.txt` (Korean, catchy, a "send to a friend" line, a follow line, 5 hashtags).
+
+Notes: YouTube blocks cloud downloads without cookies. Instagram profiles need a login, so ask the owner for screenshots instead. Public reels can be downloaded with yt-dlp.
