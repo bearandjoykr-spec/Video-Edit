@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'Black Han Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(ea8Aad44WunzF9a-dL6toA8r8nqV.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Jua';
+  font-style: normal;
+  font-weight: 400;
+  src: url(co3KmW9ljjAjcw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lilita One';
+  font-style: normal;
+  font-weight: 400;
+  src: url(i7dPIFZ9Zz-WBtRtedDbUEY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Noto Color Emoji';
+  font-style: normal;
+  font-weight: 400;
+  src: url(Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  src: url(pxiByp8kv8JHgFVrLCz7V1s.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 800;
+  src: url(pxiByp8kv8JHgFVrLDD4V1s.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 900;
+  src: url(pxiByp8kv8JHgFVrLBT5V1s.ttf) format('truetype');
+}
+body {
+  --google-font-color-notocoloremoji:none;
+}

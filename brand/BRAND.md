@@ -1,5 +1,18 @@
 # The Bear & Joy Co. — Reels brand rules (approved 4 Nov 2026)
 
+## v2 reel style (owner request, 4 Nov 2026) — overrides the type, caption, pacing and music rules below for Reels
+The owner found v1 "a little boring" and asked for more energy. For every Reel:
+- **Fonts:** Korean captions in Jua. Key-point pops and words behind the head in Black Han Sans. English pops in Lilita One. English caption line in Poppins ExtraBold. Flags and emoji in Noto Color Emoji. Playfair Display only on the end card.
+- **Colours:** add Joy Yellow #FFD23F for pops and highlight words, with Ink #14203A outlines. Navy, gold and cream stay for cards and the end card.
+- **Captions:** white with a thick Ink outline. Each Korean line has one yellow highlight word. English words light up yellow as they are spoken.
+- **Key-point pops:** yellow sticker pills (Black Han Sans, Ink border, slight tilt, bouncy entrance) about every 3–5 s, with emoji and 🇬🇧 / 🇰🇷 flags where relevant. Each has a pop or boing sound.
+- **Behind the head:** 2–3 big Korean words per reel (yellow, Black Han Sans, small English kicker above), with an impact and sparkle sound.
+- **Camera:** punch zoom on every caption (100% / 108%), shake on key moments, a big punch-in for jokes.
+- **Series:** "🔥 DAY N · 출간까지 매일 업로드 📚" badge, big during the hook, then docked top-right. A progress bar along the top with the bear walking along it. The end card shows "DAY N ✅", "내일 DAY N+1에서 만나요!", "팔로우하고 출간까지 함께해요" and the Kakao button.
+- **Music:** original lo-fi hip hop, about 82 BPM, about 8 dB under the voice with light ducking. The beat stops for jokes and drops back in with a hit.
+- **Look:** a brighter, punchier grade (more contrast and saturation) with light grain.
+- Template: `remotion/src/BearJoyReelV2.tsx`. Plans: `projects/*/build_timeline_v2.py`. Mix: `mix.py <version> <picture> <out> timeline_v2.json -8 2.5`.
+
 Visual version: `brand/brand-sheet.html` (published at https://claude.ai/artifact/MU7MQRqet5eMyBhUcyqNq1).
 Source of the look: bearandjoy.com. Structure adapted from a reference reel and from research on top-performing Reels.
 

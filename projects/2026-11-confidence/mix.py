@@ -1,21 +1,26 @@
 """Mix voice + music + SFX for a version and mux with the rendered picture.
 
-Usage: python3 mix.py VERSION RENDERED_VIDEO OUT_MP4
-Brand: voice first, music ~20 dB under and ducked under speech, -14 LUFS, peaks <= -1 dBTP.
+Usage: python3 mix.py VERSION RENDERED_VIDEO OUT_MP4 [PLAN_FILE] [MUSIC_DB] [DUCK_RATIO]
+Defaults (v1 storybook): timeline.json, music -21 dB, duck ratio 5.
+v2 high-energy reels: timeline_v2.json, music -8 dB, duck ratio 2.5.
+Always: voice first, final mix -14 LUFS, peaks <= -1 dBTP.
 """
 import json, subprocess, sys, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 name, picture, out = sys.argv[1:4]
+plan_file = sys.argv[4] if len(sys.argv) > 4 else "timeline.json"
+music_db = float(sys.argv[5]) if len(sys.argv) > 5 else -21
+duck = float(sys.argv[6]) if len(sys.argv) > 6 else 5
 V = f"{HERE}/versions/{name}"
-plan = json.load(open(f"{V}/timeline.json"))
+plan = json.load(open(f"{V}/{plan_file}"))
 dur = plan["duration"]
 
 inputs = ["-i", f"{V}/cut.mov", "-i", f"{V}/audio/music.wav"]
 fc = [
     # voice: tidy low end, gentle compression, pad to full length (end card has no speech)
     f"[0:a]highpass=f=80,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=3,apad=whole_dur={dur},asplit=2[voice][key]",
-    f"[1:a]volume=-21dB,atrim=0:{dur}[mus0]",
-    "[mus0][key]sidechaincompress=threshold=0.02:ratio=5:attack=25:release=450[mus]",
+    f"[1:a]volume={music_db}dB,atrim=0:{dur}[mus0]",
+    f"[mus0][key]sidechaincompress=threshold=0.02:ratio={duck}:attack=25:release=450[mus]",
 ]
 labels = ["[voice]", "[mus]"]
 for k, cue in enumerate(plan["sfx"]):

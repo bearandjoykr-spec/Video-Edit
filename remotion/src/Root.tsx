@@ -3,6 +3,9 @@ import {AbsoluteFill, Composition, interpolate, useCurrentFrame} from 'remotion'
 import {BearJoyReel, Plan} from './BearJoyReel';
 import shortPlan from '../../projects/2026-11-confidence/versions/short/timeline.json';
 import fullPlan from '../../projects/2026-11-confidence/versions/full/timeline.json';
+import {BearJoyReelV2, PlanV2} from './BearJoyReelV2';
+import shortV2 from '../../projects/2026-11-confidence/versions/short/timeline_v2.json';
+import fullV2 from '../../projects/2026-11-confidence/versions/full/timeline_v2.json';
 
 const Hello: React.FC = () => {
   const f = useCurrentFrame();
@@ -18,10 +21,17 @@ const reel = (id: string, plan: Plan) => (
     defaultProps={{plan}} />
 );
 
+const reelV2 = (id: string, plan: PlanV2) => (
+  <Composition id={id} component={BearJoyReelV2} durationInFrames={plan.frames} fps={plan.fps} width={1080} height={1920}
+    defaultProps={{plan}} />
+);
+
 export const Root: React.FC = () => (
   <>
     <Composition id="Hello" component={Hello} durationInFrames={60} fps={30} width={1280} height={720} />
     {reel('ConfidenceShort', shortPlan as Plan)}
     {reel('ConfidenceFull', fullPlan as Plan)}
+    {reelV2('ConfidenceShortV2', shortV2 as unknown as PlanV2)}
+    {reelV2('ConfidenceFullV2', fullV2 as unknown as PlanV2)}
   </>
 );
