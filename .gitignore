@@ -6,3 +6,5 @@ renders/
 *.webm
 .DS_Store
 references/*.info.json
+projects/*/storyboard/frames/
+projects/*/storyboard/stills/

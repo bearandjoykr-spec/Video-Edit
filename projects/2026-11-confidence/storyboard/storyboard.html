@@ -1,0 +1,215 @@
+<title>Confidence Reel Storyboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: a film storyboard. Each scene is one row: still on the left, timing and notes on the right. Brand tokens from brand/BRAND.md. */
+:root {
+  --night: #1E2D4D; --gold: #C9A84C; --cream: #F5F0E6; --kakao: #FEE500;
+  --bg: #FAEEDF; --fg: #173B5C; --muted: #6C6A63; --line: #E6D9C4; --surface: #FFF8EE; --accent: #A8862F;
+  --f-display: "Playfair Display", Georgia, serif;
+  --f-kr: "Gowun Batang", "Noto Serif KR", serif;
+  --f-ui: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #16223C; --fg: #F5F0E6; --muted: #B4B0A6; --line: #2C3B5E; --surface: #1E2D4D; --accent: #C9A84C; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #16223C; --fg: #F5F0E6; --muted: #B4B0A6; --line: #2C3B5E; --surface: #1E2D4D; --accent: #C9A84C; color-scheme: dark; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-ui); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 44px; }
+h1, h2 { font-family: var(--f-display); font-weight: 600; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(34px, 5.5vw, 52px); line-height: 1.08; }
+h2 { font-size: 24px; }
+h3 { font: 700 16px/1.3 var(--f-ui); margin: 0; }
+p { margin: 0; max-width: 66ch; }
+.eyebrow { font: 600 12px/1 var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.status { justify-self: start; font: 700 12px/1 var(--f-ui); letter-spacing: .06em; padding: 8px 14px; border: 1.5px dashed var(--accent); color: var(--accent); border-radius: 999px; }
+header { display: grid; gap: 14px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.facts b { color: var(--fg); }
+
+.versions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 640px) { .versions { grid-template-columns: minmax(0, 1fr); } }
+.versions > div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: grid; gap: 8px; align-content: start; }
+.versions .len { font: 700 34px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.versions .rec { justify-self: start; font: 700 11px/1 var(--f-ui); letter-spacing: .06em; color: var(--night); background: var(--gold); padding: 6px 10px; border-radius: 999px; }
+
+.scenes { display: grid; gap: 28px; }
+.scene { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: start; padding-top: 24px; border-top: 1px solid var(--line); }
+@media (max-width: 560px) { .scene { grid-template-columns: minmax(0, 1fr); } .scene img { width: 200px; } }
+.scene img { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 14px; box-shadow: 0 14px 30px -18px rgba(23,59,92,.6); }
+.scene .body { display: grid; gap: 10px; min-width: 0; }
+.scene .top { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; }
+.scene .n { font: 700 13px/1 var(--f-display); color: var(--accent); letter-spacing: .1em; }
+.scene .t { font: 500 13px/1 ui-monospace, Menlo, monospace; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pill { font: 700 11px/1 var(--f-ui); padding: 5px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.pill.short { border-color: var(--accent); color: var(--accent); }
+.said { font: italic 400 16px/1.5 var(--f-display); }
+.said .ko { font: 400 15px/1.5 var(--f-kr); font-style: normal; display: block; color: var(--muted); }
+.notes { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+.cuts { overflow-x: auto; }
+table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 700 11px/1 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+td.mono { font-family: ui-monospace, Menlo, monospace; font-size: 13px; white-space: nowrap; }
+
+.ask { background: var(--surface); border: 1.5px solid var(--accent); border-radius: 16px; padding: 22px 24px; display: grid; gap: 14px; }
+.ask ol { margin: 0; padding-left: 20px; display: grid; gap: 12px; }
+.ask li b { display: block; }
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="status">Storyboard · waiting for your OK</span>
+  <div class="eyebrow">The Bear &amp; Joy Co. · Reel</div>
+  <h1>The first little step is confidence</h1>
+  <p class="muted">Each still below is rendered from your real footage with the approved brand: Gowun Batang Korean captions using your translations, your English underneath in gold, navy words behind your head, and your logo on the end card. Nothing is exported until you say so.</p>
+  <div class="facts"><span>Source <b>VID_2026110242842524pm.mov</b></span><span><b>90.4 s</b> · 904×1608 · 30 fps</span><span>Export <b>1080×1920</b></span></div>
+</header>
+
+<section style="display:grid;gap:16px">
+  <div class="eyebrow">Two versions from one take</div>
+  <div class="versions">
+    <div>
+      <span class="rec">Recommended for reach</span>
+      <span class="len">≈ 33 s</span>
+      <h3>Short</h3>
+      <p class="muted">The hook, then straight to "the first step is confidence", your Korean example, "making mistakes is okay", fun / happy / light, and the end card. This fits the 15–35 s reach rule in your brand sheet. Scenes marked <b>Short</b> below.</p>
+    </div>
+    <div>
+      <span class="len">≈ 86 s</span>
+      <h3>Full</h3>
+      <p class="muted">Your whole answer, including Korea and appearance and "As a British person". It works as a deeper post or as a pinned reel. It's under your 90 s limit, with the end card included.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scenes">
+  <div class="eyebrow">Scenes</div>
+
+  <div class="scene">
+    <img src="web/01-hook.jpg" alt="Hook frame: navy word Pronunciation behind the speaker's head, Korean question caption">
+    <div class="body">
+      <div class="top"><span class="n">01 · HOOK</span><span class="t">0:00–0:04</span><span class="pill short">Short</span><span class="pill">Behind head</span></div>
+      <p class="said">"Why do Korean parents worry about pronunciation?"<span class="ko">한국 부모들은 왜 아이 영어 발음을 걱정할까요?</span></p>
+      <ul class="notes">
+        <li>"Parent's worry" hook from the brand sheet, on screen from the first frame.</li>
+        <li>The navy "Pronunciation?" fades up behind your head over 400 ms, with the gold "BEAR &amp; JOY · LITTLE STEPS" pill above it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scene">
+    <img src="web/02-korea.jpg" alt="Caption frame about appearance in Korea">
+    <div class="body">
+      <div class="top"><span class="n">02 · KOREA &amp; ACCENT</span><span class="t">0:04–0:22</span><span class="pill">Full</span></div>
+      <p class="said">"I think in Korea, appearance is so important… incredibly important to Korean parents…"<span class="ko">제 생각에 한국에서는 겉으로 보이는 모습을…</span></p>
+      <ul class="notes">
+        <li>"Yeah, that's a good question. And one that I get asked a lot." is <b>cut</b> (see question 2).</li>
+        <li>Each of your lines appears as one caption, on up to two lines. Framing switches between 100% and 105% at each new sentence. Small bear watermark top-left.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scene">
+    <img src="web/03-british.jpg" alt="Caption frame with Born in Oxford, Built in Seoul tag">
+    <div class="body">
+      <div class="top"><span class="n">03 · BRITISH ACCENT</span><span class="t">0:22–0:38</span><span class="pill">Full</span></div>
+      <p class="said">"As a British person, obviously, I have a very distinctive accent… it shouldn't be the first little step."<span class="ko">저는 영국인이다 보니…</span></p>
+      <ul class="notes">
+        <li>A "Born in Oxford. Built in Seoul." tag slides in, using the line from your website. Your name can go here too (question 4).</li>
+        <li>A soft page-turn sound plays with the tag.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scene">
+    <img src="web/04-confidence.jpg" alt="Navy word Confidence behind the speaker's head">
+    <div class="body">
+      <div class="top"><span class="n">04 · THE POINT</span><span class="t">0:38–0:45</span><span class="pill short">Short</span><span class="pill">Behind head</span></div>
+      <p class="said">"But really, the first step is confidence."<span class="ko">하지만 진짜 첫걸음은 자신감이에요.</span></p>
+      <ul class="notes">
+        <li>The biggest moment: "Confidence" in navy Playfair rises behind your head on the word itself. "자신감" is highlighted in gold.</li>
+        <li>Slow push-in from 105% to 108%.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scene">
+    <img src="web/05-korean-demo.jpg" alt="Punch-in on the speaker saying Korean words, tilted gold caption">
+    <div class="body">
+      <div class="top"><span class="n">05 · YOUR KOREAN</span><span class="t">0:45–0:57</span><span class="pill short">Short</span></div>
+      <p class="said">"My accent in Korean is terrible. 오른쪽? 왼쪽? 배고파요? See? It's awful. But I have the confidence."</p>
+      <ul class="notes">
+        <li>Quick punch-in to 112% for the Korean words, with a slightly tilted, larger caption. It's the funny beat that makes people rewatch and send it.</li>
+        <li>Back to normal framing on "See? It's awful."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scene">
+    <img src="web/06-mistakes.jpg" alt="Navy words It's okay behind the speaker's head">
+    <div class="body">
+      <div class="top"><span class="n">06 · MISTAKES ARE OKAY</span><span class="t">0:57–1:16</span><span class="pill short">Short (one line)</span><span class="pill">Behind head</span></div>
+      <p class="said">"It's important that children feel that making mistakes is okay. Otherwise, they're forever tested…"<span class="ko">실수해도 괜찮다는 것을요.</span></p>
+      <ul class="notes">
+        <li>"It's okay." in navy italic behind your head, echoing your website's "괜찮습니다".</li>
+        <li>The short version keeps only the "making mistakes is okay" line.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scene">
+    <img src="web/07-fun-happy-light.jpg" alt="Navy card with three checklist rows: fun, happy, light">
+    <div class="body">
+      <div class="top"><span class="n">07 · FUN · HAPPY · LIGHT</span><span class="t">1:16–1:23</span><span class="pill short">Short</span></div>
+      <p class="said">"Keep it fun. Keep it happy, keep it light."<span class="ko">재미있게 · 즐겁게 · 부담 없이</span></p>
+      <ul class="notes">
+        <li>A navy card with a gold border. Each row gets a gold tick and a tiny chime exactly as you say the word.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scene">
+    <img src="web/08-end.jpg" alt="End card with the bear and butterfly, The Bear and Joy Co. wordmark and a Kakao button">
+    <div class="body">
+      <div class="top"><span class="n">08 · END CARD</span><span class="t">1:23–end</span><span class="pill short">Short</span></div>
+      <p class="said">"Let's get that confidence going. And that's the first little step."<span class="ko">그게 바로 첫 번째 작은 걸음이에요.</span></p>
+      <ul class="notes">
+        <li>Your last words lead into the product name: "first little step" fades into "Little Steps, 여기서 시작해요."</li>
+        <li>The footage fades to navy, then the bear and butterfly drift in, followed by the cream wordmark and the Kakao button. It holds for 3–4 s.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section style="display:grid;gap:14px">
+  <div class="eyebrow">Cuts in the full version</div>
+  <div class="cuts">
+    <table>
+      <thead><tr><th>Source time</th><th>What's removed</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">0:00.0–0:00.5</td><td>Silence before you speak</td><td>Start on the first word</td></tr>
+        <tr><td class="mono">0:04.2–0:08.5</td><td>"Yeah, that's a good question. And one that I get asked a lot."</td><td>Brand rule: first value by 5 s, no intros</td></tr>
+        <tr><td class="mono">0:18.2–0:18.6</td><td>Pause</td><td>Longer than 0.4 s</td></tr>
+        <tr><td class="mono">0:38.5–0:38.9</td><td>Pause</td><td>Longer than 0.4 s</td></tr>
+        <tr><td class="mono">1:27.7–1:30.4</td><td>Ending after you finish</td><td>The end card takes over</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">You speak almost nonstop, so there are only three real pauses to trim. The rest of your natural rhythm stays.</p>
+</section>
+
+<section class="ask">
+  <h2>Four quick answers and I'll export</h2>
+  <ol>
+    <li><b>Which version?</b> Short (≈33 s), Full (≈86 s), or both. I recommend both: post the short one for reach and keep the full one for your highlights.</li>
+    <li><b>Cut "Yeah, that's a good question…"?</b> I recommend cutting it, so the full version gets to the point faster. Say "keep it" if you'd rather leave it in.</li>
+    <li><b>Music?</b> (a) I compose a soft, original music-box bed that you fully own, or (b) no music, so you can add an Instagram sound when posting.</li>
+    <li><b>Name tag?</b> Should scene 3 show your name, for example "M. Foster · Bear &amp; Joy 공동 저자"? Tell me exactly how it should read, or say "no name".</li>
+  </ol>
+</section>
+
+</div>
