@@ -11,3 +11,5 @@ projects/*/storyboard/stills/
 *.wav
 remotion/public/fonts/*.ttf
 __pycache__/
+.venv/
+tools/

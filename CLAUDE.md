@@ -22,6 +22,15 @@ Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper 
 4. Whisper: `git clone --depth 1 https://github.com/ggml-org/whisper.cpp /opt/tools/whisper.cpp`, then `cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j --target whisper-cli` inside it, then `sh ./models/download-ggml-model.sh large-v3-turbo`. Use `-l en` or `-l ko` per section; the owner may supply exact bilingual translations, so use them word for word.
 5. Render Remotion with `--browser-executable=/opt/pw-browsers/chromium`.
 
+### Running on the owner's Mac (Marks-MacBook-Pro)
+- One-time setup: `bash setup-mac.sh` from this repo. It clones to `~/Video-Edit`, installs the tools, and adds a pointer to `~/.claude/CLAUDE.md`.
+- Python: use `.venv/bin/python` (not `python3 -I`). Whisper is at `tools/whisper.cpp/build/bin/whisper-cli`, with its model in `tools/whisper.cpp/models/`.
+- Remotion: omit `--browser-executable` (it uses its own Chrome on the Mac). HyperFrames background removal: add `--device coreml`, which is much faster than the cloud CPU.
+- Footage can be read straight from `~/Downloads` or `~/Desktop/Footage For Claude`, so no Drive link is needed.
+
+### Keeping sessions in sync
+Claude sessions cannot read each other's chats. This repo is the shared memory. Start every session with `git pull` and end it with a commit and push (videos stay out of git). Record new owner feedback in `brand/BRAND.md`.
+
 ## Making a new reel (the workflow the owner approved)
 1. Get the footage. Large files arrive as a Google Drive "anyone with the link" share. Download with
    `curl -L "https://drive.usercontent.google.com/download?id=<ID>&export=download&confirm=t"` into `raw-footage/`.
