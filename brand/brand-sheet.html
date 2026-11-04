@@ -1,0 +1,261 @@
+<title>Reels Brand Sheet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: a storybook spec sheet. Left = the rule, right = a 9:16 frame showing it. Light = cream page, dark = night-navy page, like bearandjoy.com. */
+:root {
+  --night: #1E2D4D;      /* bearandjoy.com section navy */
+  --deep: #173B5C;       /* logo / heading blue */
+  --gold: #C9A84C;       /* antique gold accent */
+  --cream: #F5F0E6;      /* text on navy */
+  --parchment: #FAEEDF;  /* hero cream */
+  --kakao: #FEE500;      /* Kakao channel button only */
+  --bg: #FAEEDF; --fg: #173B5C; --muted: #6C6A63; --line: #E6D9C4; --surface: #FFF8EE; --accent: #A8862F;
+  --f-display: "Playfair Display", "Gowun Batang", Georgia, serif;
+  --f-kr: "Gowun Batang", "Playfair Display", "Noto Serif KR", serif;
+  --f-ui: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #16223C; --fg: #F5F0E6; --muted: #B4B0A6; --line: #2C3B5E; --surface: #1E2D4D; --accent: #C9A84C; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #16223C; --fg: #F5F0E6; --muted: #B4B0A6; --line: #2C3B5E; --surface: #1E2D4D; --accent: #C9A84C; color-scheme: dark; }
+
+body { background: var(--bg); color: var(--fg); font-family: var(--f-ui); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 56px; }
+h1, h2 { font-family: var(--f-display); font-weight: 600; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(36px, 6vw, 58px); line-height: 1.08; }
+h1 .kr { font-family: var(--f-kr); font-weight: 400; display: block; font-size: .72em; margin-top: 6px; }
+h2 { font-size: 26px; line-height: 1.2; }
+h3 { font: 700 16px/1.3 var(--f-ui); margin: 0; }
+p { margin: 0; max-width: 64ch; }
+.eyebrow { font: 600 12px/1 var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.mono { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; }
+header { display: grid; gap: 16px; }
+.status { justify-self: start; font: 700 12px/1 var(--f-ui); letter-spacing: .06em; padding: 8px 14px; border: 1.5px dashed var(--accent); color: var(--accent); border-radius: 999px; }
+section { display: grid; gap: 20px; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 32px; align-items: start; }
+@media (max-width: 760px) { .split { grid-template-columns: minmax(0, 1fr); } .frame { justify-self: center; } }
+.rules { display: grid; gap: 14px; padding: 0; margin: 0; list-style: none; }
+.rules li { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+@media (max-width: 480px) { .rules li { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+.compare { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 820px) { .compare { grid-template-columns: minmax(0, 1fr); } }
+.compare > div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; }
+.compare ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+
+/* 9:16 demo frames. Footage is a warm gradient placeholder. */
+.frame { width: 260px; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; position: relative;
+  background: radial-gradient(110% 65% at 50% 88%, #9C7E62 0%, #5E5248 42%, #2A3048 100%); box-shadow: 0 18px 40px -18px rgba(23,59,92,.55); }
+.frame .head { position: absolute; left: 50%; bottom: 47%; width: 26%; aspect-ratio: 1/1.2; transform: translateX(-50%); border-radius: 50%; background: #B08A70; }
+.frame .person { position: absolute; left: 50%; bottom: -8%; width: 62%; aspect-ratio: 1/1.25; transform: translateX(-50%); border-radius: 50% 50% 18% 18%; background: linear-gradient(#E9DCC6, #CDBEA6); }
+.safe { position: absolute; inset: 11.5% 11% 20% 4%; border: 1px dashed rgba(245,240,230,.3); border-radius: 6px; }
+.cap { position: absolute; left: 6%; right: 6%; top: 63%; text-align: center; display: grid; gap: 3px; }
+.cap .kr { font: 700 19px/1.2 var(--f-kr); color: #F5F0E6; text-shadow: 0 1px 0 rgba(30,45,77,.9), 0 0 12px rgba(30,45,77,.7); }
+.cap .en { font: italic 400 12px/1.2 var(--f-display); color: #C9A84C; text-shadow: 0 1px 6px rgba(30,45,77,.8); }
+.cap .hi { color: #E7CC7E; }
+.hook { position: absolute; left: 8%; right: 8%; top: 13%; display: grid; gap: 6px; text-align: center; }
+.hook .small { font: 600 8.5px/1 var(--f-display); letter-spacing: .18em; text-transform: uppercase; color: #C9A84C; }
+.hook .big { font: 600 30px/1.02 var(--f-display); color: #F5F0E6; text-shadow: 0 2px 14px rgba(30,45,77,.6); }
+.hook .kr2 { font: 400 15px/1.2 var(--f-kr); color: #F5F0E6; text-shadow: 0 1px 8px rgba(30,45,77,.7); }
+.card { position: absolute; left: 7%; right: 13%; top: 14%; background: rgba(30,45,77,.86); border-radius: 12px; padding: 11px 12px; display: grid; gap: 6px; color: #F5F0E6; border: 1px solid rgba(201,168,76,.45); }
+.chip { justify-self: start; font: 600 8px/1 var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: #C9A84C; border: 1px solid rgba(201,168,76,.6); padding: 4px 7px; border-radius: 999px; }
+.card .t { font: 700 14px/1.2 var(--f-kr); }
+.card .row { display: flex; justify-content: space-between; gap: 8px; font: 400 9px/1.3 var(--f-ui); color: rgba(245,240,230,.75); border-top: 1px solid rgba(245,240,230,.1); padding-top: 5px; }
+.stars { position: absolute; top: 9%; left: 7%; display: flex; gap: 5px; font-size: 9px; color: rgba(245,240,230,.35); }
+.stars .on { color: #C9A84C; }
+.end { position: absolute; inset: 0; background: linear-gradient(rgba(30,45,77,.55), rgba(22,34,60,.94)); display: grid; place-content: center; gap: 10px; text-align: center; padding: 0 18px; color: #F5F0E6; }
+.end .logo { font: 700 26px/1 var(--f-display); color: #F5F0E6; }
+.end .logo i { font-style: normal; color: #C9A84C; }
+.end .sub { font: 400 11px/1.5 var(--f-kr); color: rgba(245,240,230,.8); }
+.end .btn { justify-self: center; font: 700 10.5px/1 var(--f-ui); background: #FEE500; color: #191600; padding: 9px 14px; border-radius: 999px; }
+
+.swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sw { display: grid; gap: 6px; }
+.sw .c { aspect-ratio: 4/3; border-radius: 10px; border: 1px solid var(--line); }
+.sw b { font-size: 14px; }
+.sw span { font-size: 12.5px; color: var(--muted); }
+.spec { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 16px; align-items: baseline; padding-top: 14px; border-top: 1px solid var(--line); }
+@media (max-width: 520px) { .spec { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+
+.tl-wrap { overflow-x: auto; }
+.tl { min-width: 640px; display: grid; gap: 8px; }
+.track { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; }
+.track label { font: 700 11px/1 var(--f-ui); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.bar { position: relative; height: 26px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+.bar i { position: absolute; top: 3px; bottom: 3px; border-radius: 4px; }
+.axis { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; }
+.axis div { position: relative; height: 16px; font: 500 11px/1 ui-monospace, Menlo, monospace; color: var(--muted); font-variant-numeric: tabular-nums; }
+.axis span { position: absolute; transform: translateX(-50%); }
+.review { background: var(--surface); border: 1.5px solid var(--accent); border-radius: 16px; padding: 22px 24px; display: grid; gap: 12px; }
+.review ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="status">Draft 2 · waiting for your approval</span>
+  <div class="eyebrow">The bear &amp; Joy co. · Reels</div>
+  <h1>Little reels, made like a storybook<span class="kr">그림책처럼 만드는 짧은 영상</span></h1>
+  <p class="muted">This sheet combines two sources. The colours, type and mood come from bearandjoy.com. The structure (hook, step cards, captions, pacing) comes from the reference reel. Once you approve it, every edit I make for Bear &amp; Joy will follow this sheet.</p>
+</header>
+
+<section>
+  <div class="eyebrow">What I studied</div>
+  <div class="compare">
+    <div>
+      <h3>bearandjoy.com</h3>
+      <ul>
+        <li>Night navy sections, a cream hero, antique gold accents</li>
+        <li>Playfair Display for English, Gowun Batang for Korean</li>
+        <li>Soft watercolour art: the little blue bear in a straw hat, a butterfly, the cottage</li>
+        <li>Gentle, reassuring voice for parents: 함께 읽어요, 괜찮습니다, 함께 배워요</li>
+        <li>Main call to action: add the KakaoTalk channel</li>
+        <li>Story line: "Born in Oxford. Built in Seoul."</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Reference reel</h3>
+      <p class="mono muted">reel/De9roZQMgAF</p>
+      <ul>
+        <li>9:16, 30 fps, 65 s, one talking-head take</li>
+        <li>The screen changes about every 10 s</li>
+        <li>A big title hook, then a card for each step</li>
+        <li>Burned-in captions, no dead air</li>
+        <li>Ends on a single call to action</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Not included yet</h3>
+      <p class="mono muted">reel/De2SEI7JP8r</p>
+      <p>Instagram restricts this reel, so it won't download without a login. Upload the file and I'll add it.</p>
+      <p class="muted">Section 5 is my proposal for sound, since I can't tell from the file whether music plays under the voice.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">1 · Colour</div>
+  <h2>Night navy, antique gold, warm cream</h2>
+  <p class="muted">These are the website's own colours, so the reels and the site look like one brand. Gold is used sparingly, the way stars sit in a night sky. Kakao yellow appears only on the Kakao button.</p>
+  <div class="swatches">
+    <div class="sw"><div class="c" style="background:#1E2D4D"></div><b>Night</b><span class="mono">#1E2D4D</span><span>Cards, end screen, caption shadow</span></div>
+    <div class="sw"><div class="c" style="background:#173B5C"></div><b>Deep blue</b><span class="mono">#173B5C</span><span>Logo and headings on cream</span></div>
+    <div class="sw"><div class="c" style="background:#C9A84C"></div><b>Gold</b><span class="mono">#C9A84C</span><span>Highlight word, English line, borders</span></div>
+    <div class="sw"><div class="c" style="background:#F5F0E6"></div><b>Cream</b><span class="mono">#F5F0E6</span><span>All text on video</span></div>
+    <div class="sw"><div class="c" style="background:#FEE500"></div><b>Kakao</b><span class="mono">#FEE500</span><span>Kakao button only</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">2 · Type</div>
+  <h2>Serif all the way, like the books</h2>
+  <div style="display:grid;gap:16px">
+    <div class="spec"><span class="muted">English titles, logo</span><span style="font:600 32px/1.1 var(--f-display)">Playfair Display · <i style="font-weight:400">Little Steps</i></span></div>
+    <div class="spec"><span class="muted">Korean titles and captions</span><span style="font:700 26px/1.3 var(--f-kr)">고운바탕 · 아이와 함께 읽어요</span></div>
+    <div class="spec"><span class="muted">Small labels on cards</span><span style="font:400 16px/1.5 var(--f-ui)">Noto Sans KR · 1일차 무료 체험 · ₩47,000</span></div>
+  </div>
+  <p class="muted">The website is all serif. On a phone screen, a serif caption needs Bold weight and a soft navy shadow to stay readable. Noto Sans is only for small details like prices and dates.</p>
+</section>
+
+<section>
+  <div class="eyebrow">3 · Captions and hook</div>
+  <div class="split">
+    <div style="display:grid;gap:20px">
+      <h2>Korean first, English underneath</h2>
+      <ul class="rules">
+        <li><b>Two lines</b><span>Korean caption in Gowun Batang Bold and Cream. When the spoken line includes an English book phrase, it appears below in gold Playfair italic. This bilingual line is something only Bear &amp; Joy would do.</span></li>
+        <li><b>Chunk</b><span>One short phrase at a time (about 6–10 Korean syllables). Parents can follow at reading pace, with no single-word flashing.</span></li>
+        <li><b>Highlight</b><span>At most one gold word per caption, on the word that carries the meaning (그림책, 자신감, Joy).</span></li>
+        <li><b>Place</b><span>Centred, top edge at 63% of the frame height, inside Instagram's safe zone (dashed box).</span></li>
+        <li><b>Hook</b><span>First 2 s: a small gold "BEAR &amp; JOY · LITTLE STEPS" line, a big English title, and the Korean title under it. The same layout as the website hero.</span></li>
+      </ul>
+    </div>
+    <div class="frame" role="img" aria-label="9:16 frame with an English and Korean hook title and a bilingual caption">
+      <div class="head"></div><div class="person"></div><div class="safe"></div>
+      <div class="hook"><span class="small">Bear &amp; Joy · Little Steps</span><span class="big">Little Steps,</span><span class="kr2">여기서 시작해요.</span></div>
+      <div class="cap"><span class="kr">아이와 함께하는 <span class="hi">7일</span>의 영어놀이</span><span class="en">"Stop, look, listen."</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">4 · Cards and motion</div>
+  <div class="split">
+    <div style="display:grid;gap:20px">
+      <h2>Night-sky cards that turn like pages</h2>
+      <ul class="rules">
+        <li><b>Cards</b><span>Night navy at 86% with a thin gold border and 24 px corners, sitting in the top third. Book pages and watercolour art go inside cards with a cream mat.</span></li>
+        <li><b>Step label</b><span>A gold outline pill in Playfair caps, e.g. "DAY 1" or "1일차". This matches Little Steps' day-by-day format.</span></li>
+        <li><b>Progress</b><span>A row of small stars at the top-left, one per step. A star turns gold when its step is done.</span></li>
+        <li><b>Motion</b><span>Cards fade and rise 16 px over 400 ms with a gentle ease. Book spreads change with a soft page turn or a 10-frame dissolve. No hard slides or glitch effects.</span></li>
+        <li><b>Zooms</b><span>Soft framing changes at each jump cut (100% to 105%). Slow push-ins on illustrations, like a camera drifting over a picture book.</span></li>
+        <li><b>Art</b><span>The bear and the butterfly can appear in corners or on transitions, using your own artwork files.</span></li>
+      </ul>
+    </div>
+    <div class="frame" role="img" aria-label="9:16 frame with a navy step card, gold day pill and star progress">
+      <div class="head"></div><div class="person"></div><div class="safe"></div>
+      <div class="stars"><span class="on">★</span><span class="on">★</span><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="card"><span class="chip">Day 2 · 2일차</span><span class="t">놀이로 배워요</span>
+        <div class="row"><span>활동지 인쇄하기</span><span>10분</span></div>
+        <div class="row"><span>그림책 함께 읽기</span><span>15분</span></div>
+        <div class="row"><span>오늘의 영어 한 마디</span><span>5분</span></div>
+      </div>
+      <div class="cap"><span class="kr">놀이로 <span class="hi">함께</span> 배워요</span><span class="en">Let's play and learn.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">5 · Pacing and sound</div>
+  <h2>Calm, but never still</h2>
+  <p class="muted">The reference changes the screen about every 10 s. Bear &amp; Joy keeps that slower rhythm because parents are listening, not skimming. Long pauses and repeated takes are still cut so it never drags. This example shows a 60 s reel.</p>
+  <div class="tl-wrap">
+    <div class="tl" role="img" aria-label="Timeline of a 60 second reel: hook 0 to 2 s, cards about every 10 s, call to action from 54 s">
+      <div class="axis"><span></span><div><span style="left:0%">0s</span><span style="left:25%">15</span><span style="left:50%">30</span><span style="left:75%">45</span><span style="left:100%">60</span></div></div>
+      <div class="track"><label>Hook</label><div class="bar"><i style="left:0%;width:3.3%;background:var(--gold)"></i></div></div>
+      <div class="track"><label>Cards</label><div class="bar"><i style="left:5%;width:14%;background:var(--night)"></i><i style="left:22%;width:14%;background:var(--night)"></i><i style="left:39%;width:14%;background:var(--night)"></i><i style="left:56%;width:14%;background:var(--night)"></i><i style="left:73%;width:14%;background:var(--night)"></i></div></div>
+      <div class="track"><label>Book art</label><div class="bar"><i style="left:12%;width:6%;background:var(--gold);opacity:.55"></i><i style="left:46%;width:6%;background:var(--gold);opacity:.55"></i><i style="left:80%;width:6%;background:var(--gold);opacity:.55"></i></div></div>
+      <div class="track"><label>CTA</label><div class="bar"><i style="left:90%;width:10%;background:var(--kakao)"></i></div></div>
+      <div class="track"><label>Music</label><div class="bar"><i style="left:0%;width:100%;background:var(--line)"></i></div></div>
+    </div>
+  </div>
+  <ul class="rules">
+    <li><b>Cuts</b><span>Remove pauses longer than 0.4 s and repeated takes. Keep natural breaths so you sound warm, not rushed.</span></li>
+    <li><b>Music</b><span>Soft piano, celesta or acoustic guitar at 70–90 BPM, like a bedtime story. Mixed about 20 dB under the voice. Royalty-free or Instagram's library only.</span></li>
+    <li><b>Sound effects</b><span>A paper page turn when book art appears and a tiny chime when a star turns gold. Nothing else.</span></li>
+    <li><b>Loudness</b><span>Final mix at −14 LUFS with peaks no higher than −1 dBTP.</span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="eyebrow">6 · Ending and export</div>
+  <div class="split">
+    <div style="display:grid;gap:20px">
+      <h2>End with the logo and the Kakao button</h2>
+      <ul class="rules">
+        <li><b>End card</b><span>The last 5 s fade to night navy. The logo appears ("The bear &amp; Joy", ampersand in gold), with one warm Korean line below it.</span></li>
+        <li><b>CTA</b><span>A Kakao-yellow pill reading "카카오톡 채널 추가하기", matching the website. If a reel asks for comments instead, the keyword appears in gold Playfair.</span></li>
+        <li><b>Export</b><span>1080×1920, 30 fps, H.264, about 12 Mbps, AAC 48 kHz. Captions burned in, plus Korean and English .srt files.</span></li>
+        <li><b>Storyboard</b><span>Before every export I'll send you a storyboard to approve, the same way you're approving this sheet.</span></li>
+      </ul>
+    </div>
+    <div class="frame" role="img" aria-label="9:16 end card with the Bear and Joy logo and a Kakao channel button">
+      <div class="head"></div><div class="person"></div>
+      <div class="end"><span class="logo">The bear <i>&amp;</i> Joy</span><span class="sub">아이와 영어를 읽으며,<br>자신감을 키워요.</span><span class="btn">카카오톡 채널 추가하기</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="review">
+  <h2>To approve, reply in chat</h2>
+  <ol>
+    <li>Say <b>"approved"</b> to lock it in, or tell me what to change, for example "English captions first" or "faster pacing".</li>
+    <li>Send your logo and the bear and butterfly artwork as files (PNG with a transparent background works best), so I can use the real art in videos.</li>
+    <li>Upload the second reference reel if you want it included.</li>
+  </ol>
+</section>
+
+</div>

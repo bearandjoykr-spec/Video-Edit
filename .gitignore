@@ -5,3 +5,4 @@ renders/
 *.mov
 *.webm
 .DS_Store
+references/*.info.json
