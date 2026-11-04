@@ -7,6 +7,7 @@ import {BearJoyReelV2, PlanV2} from './BearJoyReelV2';
 import shortV2 from '../../projects/2026-11-confidence/versions/short/timeline_v2.json';
 import fullV2 from '../../projects/2026-11-confidence/versions/full/timeline_v2.json';
 import day24 from '../../projects/2026-11-day24-early-english/versions/main/timeline_v2.json';
+import day24tight from '../../projects/2026-11-day24-early-english/versions/tight/timeline_v2.json';
 
 const Hello: React.FC = () => {
   const f = useCurrentFrame();
@@ -35,5 +36,6 @@ export const Root: React.FC = () => (
     {reelV2('ConfidenceShortV2', shortV2 as unknown as PlanV2)}
     {reelV2('ConfidenceFullV2', fullV2 as unknown as PlanV2)}
     {reelV2('Day24', day24 as unknown as PlanV2)}
+    {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
   </>
 );

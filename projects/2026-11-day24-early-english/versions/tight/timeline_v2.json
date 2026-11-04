@@ -886,7 +886,7 @@
    "text": "😵 막막하시죠?",
    "kicker": "",
    "slot": "mid",
-   "k": 9
+   "k": 10
   },
   {
    "type": "punch",
@@ -902,7 +902,7 @@
    "text": "준비했어요 🎁",
    "kicker": "그래서 베어앤조이가",
    "slot": "mid",
-   "k": 10
+   "k": 11
   },
   {
    "type": "punch",
@@ -918,7 +918,7 @@
    "text": "📚 7일 홈 잉글리시",
    "kicker": "",
    "slot": "mid",
-   "k": 11
+   "k": 12
   },
   {
    "type": "punch",
@@ -934,7 +934,7 @@
    "text": "Little Steps 🐾",
    "kicker": "👆 프로필 링크",
    "slot": "mid",
-   "k": 15
+   "k": 16
   },
   {
    "type": "punch",
@@ -979,7 +979,8 @@
    "type": "end",
    "s": 47.59,
    "e": 50.79,
-   "short": true
+   "short": true,
+   "share": "💌 아이 영어 고민하는 부모님께 공유해 주세요"
   },
   {
    "type": "badge",
