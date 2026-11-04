@@ -1,0 +1,7 @@
+node_modules/
+out/
+renders/
+*.mp4
+*.mov
+*.webm
+.DS_Store
