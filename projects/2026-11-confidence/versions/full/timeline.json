@@ -1,0 +1,620 @@
+{
+ "name": "full",
+ "fps": 30,
+ "duration": 86.24,
+ "frames": 2588,
+ "speechEnd": 82.64,
+ "segments": [
+  {
+   "src_s": 0.51,
+   "src_e": 4.2,
+   "out_s": 0.0
+  },
+  {
+   "src_s": 8.36,
+   "src_e": 18.18,
+   "out_s": 3.69
+  },
+  {
+   "src_s": 18.57,
+   "src_e": 38.6,
+   "out_s": 13.51
+  },
+  {
+   "src_s": 38.75,
+   "src_e": 87.85,
+   "out_s": 33.54
+  }
+ ],
+ "captions": [
+  {
+   "i": 0,
+   "s": 0.0,
+   "e": 3.69,
+   "ko": "한국 부모들은 왜 아이 영어 발음을 걱정할까요?",
+   "en": "Why do Korean parents worry about their child's English pronunciation?",
+   "hi": "영어 발음",
+   "demo": false
+  },
+  {
+   "i": 2,
+   "s": 3.69,
+   "e": 3.83,
+   "ko": "실제로 자주 받는 질문이기도 해요.",
+   "en": "And one that I get asked a lot.",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 3,
+   "s": 3.83,
+   "e": 5.83,
+   "ko": "제 생각에 한국에서는",
+   "en": "I think in Korea,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 4,
+   "s": 5.83,
+   "e": 8.05,
+   "ko": "겉으로 보이는 모습을 굉장히 중요하게 생각하는 것 같아요.",
+   "en": "appearance is so important,",
+   "hi": "굉장히 중요하게",
+   "demo": false
+  },
+  {
+   "i": 5,
+   "s": 8.05,
+   "e": 10.83,
+   "ko": "영어 억양도 그중 하나고요.",
+   "en": "and that includes your accent.",
+   "hi": "억양",
+   "demo": false
+  },
+  {
+   "i": 6,
+   "s": 10.83,
+   "e": 13.81,
+   "ko": "영어 억양은 굉장히 중요하게 여겨지는 것 같아요.",
+   "en": "I find accent is incredibly important",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 7,
+   "s": 13.81,
+   "e": 15.44,
+   "ko": "특히 한국 부모님들께는요.",
+   "en": "to Korean parents,",
+   "hi": "한국 부모님들",
+   "demo": false
+  },
+  {
+   "i": 8,
+   "s": 15.44,
+   "e": 18.44,
+   "ko": "영어를 배우고 말하고 싶어 하는 분들도 마찬가지고요.",
+   "en": "but also people who want to learn and speak English.",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 9,
+   "s": 18.44,
+   "e": 20.99,
+   "ko": "저는 영국인이다 보니",
+   "en": "As a British person, obviously,",
+   "hi": "영국인",
+   "demo": false
+  },
+  {
+   "i": 10,
+   "s": 20.99,
+   "e": 25.44,
+   "ko": "특유의 영국식 억양이 뚜렷하죠.",
+   "en": "I have a very distinctive accent.",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 11,
+   "s": 25.25,
+   "e": 27.12,
+   "ko": "그래서 부모님들께 말씀드리고 싶어요.",
+   "en": "And I would say to parents",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 12,
+   "s": 27.12,
+   "e": 28.46,
+   "ko": "아이의 영어 발음을 고민하고 계신다면,",
+   "en": "who are looking at pronunciation,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 13,
+   "s": 28.46,
+   "e": 32.16,
+   "ko": "발음이 첫 번째 단계가 될 필요는 없다는 거예요.",
+   "en": "that it shouldn't be the first little step.",
+   "hi": "첫 번째 단계",
+   "demo": false
+  },
+  {
+   "i": 14,
+   "s": 33.54,
+   "e": 34.82,
+   "ko": "물론 발음을 교정하고",
+   "en": "It is something that we want to fix",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 15,
+   "s": 34.82,
+   "e": 37.57,
+   "ko": "정확하게 하고 싶은 마음은 이해해요.",
+   "en": "and get right. I understand that.",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 16,
+   "s": 37.57,
+   "e": 40.31,
+   "ko": "하지만 진짜 첫걸음은 자신감이에요.",
+   "en": "But really, the first step is confidence.",
+   "hi": "자신감",
+   "demo": false
+  },
+  {
+   "i": 17,
+   "s": 40.99,
+   "e": 41.51,
+   "ko": "예를 들어볼게요.",
+   "en": "For example,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 18,
+   "s": 41.51,
+   "e": 44.23,
+   "ko": "제 한국어 억양은 정말 엉망이에요.",
+   "en": "my accent in Korean is terrible.",
+   "hi": "엉망",
+   "demo": false
+  },
+  {
+   "i": 19,
+   "s": 44.23,
+   "e": 47.23,
+   "ko": "오른쪽? 왼쪽? 배고파요?",
+   "en": "",
+   "hi": "배고파요?",
+   "demo": true
+  },
+  {
+   "i": 20,
+   "s": 47.23,
+   "e": 50.19,
+   "ko": "보셨죠? 정말 엉망이죠.",
+   "en": "See? It's awful.",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 21,
+   "s": 50.19,
+   "e": 52.02,
+   "ko": "그래도 저는 자신 있게 말해요.",
+   "en": "But I have the confidence,",
+   "hi": "자신 있게",
+   "demo": false
+  },
+  {
+   "i": 22,
+   "s": 52.02,
+   "e": 53.54,
+   "ko": "그리고 가장 중요한 건",
+   "en": "and the most important thing is",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 23,
+   "s": 53.54,
+   "e": 55.65,
+   "ko": "사람들이 제 말을 이해한다는 거예요.",
+   "en": "people understand me.",
+   "hi": "이해한다는",
+   "demo": false
+  },
+  {
+   "i": 24,
+   "s": 55.65,
+   "e": 56.83,
+   "ko": "그래서 어릴 때부터",
+   "en": "So when we are young,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 25,
+   "s": 56.83,
+   "e": 59.09,
+   "ko": "그런 자신감을 길러주는 게 중요해요.",
+   "en": "we want to build that confidence.",
+   "hi": "자신감",
+   "demo": false
+  },
+  {
+   "i": 26,
+   "s": 59.09,
+   "e": 61.01,
+   "ko": "아이들이 스스로 느껴야 해요.",
+   "en": "It's important that children feel",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 27,
+   "s": 61.01,
+   "e": 63.67,
+   "ko": "실수해도 괜찮다는 것을요.",
+   "en": "that making mistakes is okay.",
+   "hi": "실수해도 괜찮다는",
+   "demo": false
+  },
+  {
+   "i": 28,
+   "s": 63.67,
+   "e": 65.21,
+   "ko": "그렇지 않으면 계속 평가받는 기분이 들 수 있어요.",
+   "en": "Otherwise, they're forever tested.",
+   "hi": "평가받는",
+   "demo": false
+  },
+  {
+   "i": 29,
+   "s": 65.89,
+   "e": 67.53,
+   "ko": "그러다 보면 결국",
+   "en": "And then essentially, at the end,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 30,
+   "s": 67.53,
+   "e": 69.51,
+   "ko": "스스로에 대한 자신감이 떨어지고",
+   "en": "you don't feel great about yourself,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 31,
+   "s": 69.51,
+   "e": 70.85,
+   "ko": "배우고 싶은 마음도 사라지게 되죠.",
+   "en": "and you don't want to learn.",
+   "hi": "배우고 싶은 마음",
+   "demo": false
+  },
+  {
+   "i": 32,
+   "s": 70.85,
+   "e": 73.27,
+   "ko": "그래서 어릴 때는 정말 중요해요.",
+   "en": "So it's really important at a young age",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 33,
+   "s": 73.27,
+   "e": 75.13,
+   "ko": "배우는 과정을 재미있게 만들어 주는 것이요.",
+   "en": "make sure that you keep it fun.",
+   "hi": "재미있게",
+   "demo": false
+  },
+  {
+   "i": 34,
+   "s": 75.13,
+   "e": 77.51,
+   "ko": "즐겁게, 부담 없이,",
+   "en": "Keep it happy, keep it light,",
+   "hi": "부담 없이,",
+   "demo": false
+  },
+  {
+   "i": 35,
+   "s": 77.51,
+   "e": 78.43,
+   "ko": "그리고 무엇보다 중요한 건",
+   "en": "and most importantly,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 36,
+   "s": 78.43,
+   "e": 81.03,
+   "ko": "아이의 자신감을 키워주는 거예요.",
+   "en": "let's get that confidence going.",
+   "hi": "자신감",
+   "demo": false
+  },
+  {
+   "i": 37,
+   "s": 81.03,
+   "e": 82.49,
+   "ko": "그게 바로 첫 번째 작은 걸음이에요.",
+   "en": "And that's the first little step.",
+   "hi": "첫 번째 작은 걸음",
+   "demo": false
+  }
+ ],
+ "events": [
+  {
+   "type": "behind",
+   "text": "Pronunciation?",
+   "style": "italic",
+   "size": 138,
+   "top": 600,
+   "eyebrow": true,
+   "s": 0.0,
+   "e": 3.69
+  },
+  {
+   "type": "behind",
+   "text": "Confidence",
+   "style": "roman",
+   "size": 165,
+   "top": 485,
+   "s": 38.39,
+   "e": 40.79
+  },
+  {
+   "type": "behind",
+   "text": "It's okay.",
+   "style": "italic",
+   "size": 210,
+   "top": 500,
+   "s": 61.39,
+   "e": 63.79
+  },
+  {
+   "type": "zoom",
+   "s": 44.23,
+   "e": 47.23,
+   "from": 1.12,
+   "to": 1.12,
+   "snap": true
+  },
+  {
+   "type": "zoom",
+   "s": 37.57,
+   "e": 40.81,
+   "from": 1.05,
+   "to": 1.09,
+   "snap": false
+  },
+  {
+   "type": "card",
+   "s": 73.09,
+   "e": 77.39,
+   "rows": [
+    {
+     "ko": "재미있게",
+     "en": "keep it fun",
+     "t": 74.39
+    },
+    {
+     "ko": "즐겁게",
+     "en": "keep it happy",
+     "t": 75.39
+    },
+    {
+     "ko": "부담 없이",
+     "en": "keep it light",
+     "t": 76.39
+    }
+   ]
+  },
+  {
+   "type": "tag",
+   "s": 18.44,
+   "e": 25.24,
+   "name": "M. Foster",
+   "role": "Bear & Joy 공동 저자",
+   "line": "Born in Oxford. Built in Seoul."
+  },
+  {
+   "type": "zoom",
+   "s": 79.64,
+   "e": 82.64,
+   "from": 1.0,
+   "to": 1.08,
+   "snap": false
+  },
+  {
+   "type": "end",
+   "s": 82.24,
+   "e": 86.24
+  }
+ ],
+ "zooms": [
+  {
+   "t": 0.0,
+   "z": 1.0
+  },
+  {
+   "t": 3.69,
+   "z": 1.05
+  },
+  {
+   "t": 3.83,
+   "z": 1.0
+  },
+  {
+   "t": 8.05,
+   "z": 1.05
+  },
+  {
+   "t": 13.51,
+   "z": 1.0
+  },
+  {
+   "t": 13.81,
+   "z": 1.05
+  },
+  {
+   "t": 18.44,
+   "z": 1.0
+  },
+  {
+   "t": 25.25,
+   "z": 1.05
+  },
+  {
+   "t": 28.46,
+   "z": 1.0
+  },
+  {
+   "t": 33.54,
+   "z": 1.05
+  },
+  {
+   "t": 34.82,
+   "z": 1.0
+  },
+  {
+   "t": 40.99,
+   "z": 1.05
+  },
+  {
+   "t": 44.23,
+   "z": 1.0
+  },
+  {
+   "t": 50.19,
+   "z": 1.05
+  },
+  {
+   "t": 53.54,
+   "z": 1.0
+  },
+  {
+   "t": 56.83,
+   "z": 1.05
+  },
+  {
+   "t": 61.01,
+   "z": 1.0
+  },
+  {
+   "t": 65.89,
+   "z": 1.05
+  },
+  {
+   "t": 69.51,
+   "z": 1.0
+  },
+  {
+   "t": 73.27,
+   "z": 1.05
+  },
+  {
+   "t": 77.51,
+   "z": 1.0
+  },
+  {
+   "t": 81.03,
+   "z": 1.05
+  }
+ ],
+ "sfx": [
+  {
+   "t": 0,
+   "sound": "rise",
+   "gain": -9
+  },
+  {
+   "t": 3.61,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 13.43,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 18.44,
+   "sound": "page",
+   "gain": -13
+  },
+  {
+   "t": 33.46,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 38.14,
+   "sound": "rise",
+   "gain": -9
+  },
+  {
+   "t": 44.11,
+   "sound": "whoosh",
+   "gain": -8
+  },
+  {
+   "t": 47.129999999999995,
+   "sound": "whoosh",
+   "gain": -12
+  },
+  {
+   "t": 61.14,
+   "sound": "rise",
+   "gain": -9
+  },
+  {
+   "t": 73.09,
+   "sound": "page",
+   "gain": -12
+  },
+  {
+   "t": 74.39,
+   "sound": "chime",
+   "gain": -14
+  },
+  {
+   "t": 75.39,
+   "sound": "chime",
+   "gain": -14
+  },
+  {
+   "t": 76.39,
+   "sound": "chime",
+   "gain": -14
+  },
+  {
+   "t": 82.44,
+   "sound": "chime",
+   "gain": -10
+  },
+  {
+   "t": 83.24,
+   "sound": "rise",
+   "gain": -14
+  }
+ ]
+}

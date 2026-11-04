@@ -8,3 +8,5 @@ renders/
 references/*.info.json
 projects/*/storyboard/frames/
 projects/*/storyboard/stills/
+*.wav
+remotion/public/fonts/*.ttf

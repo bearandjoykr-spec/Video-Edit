@@ -1,5 +1,9 @@
 import React from 'react';
 import {AbsoluteFill, Composition, interpolate, useCurrentFrame} from 'remotion';
+import {BearJoyReel, Plan} from './BearJoyReel';
+import shortPlan from '../../projects/2026-11-confidence/versions/short/timeline.json';
+import fullPlan from '../../projects/2026-11-confidence/versions/full/timeline.json';
+
 const Hello: React.FC = () => {
   const f = useCurrentFrame();
   return (
@@ -8,6 +12,16 @@ const Hello: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+const reel = (id: string, plan: Plan) => (
+  <Composition id={id} component={BearJoyReel} durationInFrames={plan.frames} fps={plan.fps} width={1080} height={1920}
+    defaultProps={{plan}} />
+);
+
 export const Root: React.FC = () => (
-  <Composition id="Hello" component={Hello} durationInFrames={60} fps={30} width={1280} height={720} />
+  <>
+    <Composition id="Hello" component={Hello} durationInFrames={60} fps={30} width={1280} height={720} />
+    {reel('ConfidenceShort', shortPlan as Plan)}
+    {reel('ConfidenceFull', fullPlan as Plan)}
+  </>
 );

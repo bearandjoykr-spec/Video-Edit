@@ -1,0 +1,370 @@
+{
+ "name": "short",
+ "fps": 30,
+ "duration": 33.84,
+ "frames": 1016,
+ "speechEnd": 30.24,
+ "segments": [
+  {
+   "src_s": 0.51,
+   "src_e": 4.2,
+   "out_s": 0.0
+  },
+  {
+   "src_s": 42.78,
+   "src_e": 56.88,
+   "out_s": 3.69
+  },
+  {
+   "src_s": 64.26,
+   "src_e": 68.83,
+   "out_s": 17.79
+  },
+  {
+   "src_s": 76.02,
+   "src_e": 82.28,
+   "out_s": 22.36
+  },
+  {
+   "src_s": 86.23,
+   "src_e": 87.85,
+   "out_s": 28.62
+  }
+ ],
+ "captions": [
+  {
+   "i": 0,
+   "s": 0.0,
+   "e": 3.69,
+   "ko": "한국 부모들은 왜 아이 영어 발음을 걱정할까요?",
+   "en": "Why do Korean parents worry about their child's English pronunciation?",
+   "hi": "영어 발음",
+   "demo": false
+  },
+  {
+   "i": 16,
+   "s": 3.69,
+   "e": 6.43,
+   "ko": "하지만 진짜 첫걸음은 자신감이에요.",
+   "en": "But really, the first step is confidence.",
+   "hi": "자신감",
+   "demo": false
+  },
+  {
+   "i": 17,
+   "s": 7.11,
+   "e": 7.63,
+   "ko": "예를 들어볼게요.",
+   "en": "For example,",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 18,
+   "s": 7.63,
+   "e": 10.35,
+   "ko": "제 한국어 억양은 정말 엉망이에요.",
+   "en": "my accent in Korean is terrible.",
+   "hi": "엉망",
+   "demo": false
+  },
+  {
+   "i": 19,
+   "s": 10.35,
+   "e": 13.35,
+   "ko": "오른쪽? 왼쪽? 배고파요?",
+   "en": "",
+   "hi": "배고파요?",
+   "demo": true
+  },
+  {
+   "i": 20,
+   "s": 13.35,
+   "e": 16.31,
+   "ko": "보셨죠? 정말 엉망이죠.",
+   "en": "See? It's awful.",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 21,
+   "s": 16.31,
+   "e": 17.83,
+   "ko": "그래도 저는 자신 있게 말해요.",
+   "en": "But I have the confidence,",
+   "hi": "자신 있게",
+   "demo": false
+  },
+  {
+   "i": 26,
+   "s": 17.83,
+   "e": 19.75,
+   "ko": "아이들이 스스로 느껴야 해요.",
+   "en": "It's important that children feel",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 27,
+   "s": 19.75,
+   "e": 22.4,
+   "ko": "실수해도 괜찮다는 것을요.",
+   "en": "that making mistakes is okay.",
+   "hi": "실수해도 괜찮다는",
+   "demo": false
+  },
+  {
+   "i": 32,
+   "s": 22.4,
+   "e": 24.82,
+   "ko": "그래서 어릴 때는 정말 중요해요.",
+   "en": "So it's really important at a young age",
+   "hi": "",
+   "demo": false
+  },
+  {
+   "i": 33,
+   "s": 24.82,
+   "e": 26.68,
+   "ko": "배우는 과정을 재미있게 만들어 주는 것이요.",
+   "en": "make sure that you keep it fun.",
+   "hi": "재미있게",
+   "demo": false
+  },
+  {
+   "i": 34,
+   "s": 26.68,
+   "e": 28.63,
+   "ko": "즐겁게, 부담 없이,",
+   "en": "Keep it happy, keep it light,",
+   "hi": "부담 없이,",
+   "demo": false
+  },
+  {
+   "i": 37,
+   "s": 28.63,
+   "e": 30.09,
+   "ko": "그게 바로 첫 번째 작은 걸음이에요.",
+   "en": "And that's the first little step.",
+   "hi": "첫 번째 작은 걸음",
+   "demo": false
+  }
+ ],
+ "events": [
+  {
+   "type": "behind",
+   "text": "Pronunciation?",
+   "style": "italic",
+   "size": 138,
+   "top": 600,
+   "eyebrow": true,
+   "s": 0.0,
+   "e": 3.69
+  },
+  {
+   "type": "behind",
+   "text": "Confidence",
+   "style": "roman",
+   "size": 165,
+   "top": 485,
+   "s": 4.51,
+   "e": 6.91
+  },
+  {
+   "type": "behind",
+   "text": "It's okay.",
+   "style": "italic",
+   "size": 210,
+   "top": 500,
+   "s": 20.13,
+   "e": 22.36
+  },
+  {
+   "type": "zoom",
+   "s": 10.35,
+   "e": 13.35,
+   "from": 1.12,
+   "to": 1.12,
+   "snap": true
+  },
+  {
+   "type": "zoom",
+   "s": 3.69,
+   "e": 6.93,
+   "from": 1.05,
+   "to": 1.09,
+   "snap": false
+  },
+  {
+   "type": "card",
+   "s": 24.64,
+   "e": 28.62,
+   "rows": [
+    {
+     "ko": "재미있게",
+     "en": "keep it fun",
+     "t": 25.94
+    },
+    {
+     "ko": "즐겁게",
+     "en": "keep it happy",
+     "t": 26.94
+    },
+    {
+     "ko": "부담 없이",
+     "en": "keep it light",
+     "t": 27.94
+    }
+   ]
+  },
+  {
+   "type": "tag",
+   "s": 7.11,
+   "e": 10.31,
+   "name": "M. Foster",
+   "role": "Bear & Joy 공동 저자",
+   "line": "Born in Oxford. Built in Seoul."
+  },
+  {
+   "type": "zoom",
+   "s": 27.23999999999999,
+   "e": 30.23999999999999,
+   "from": 1.0,
+   "to": 1.08,
+   "snap": false
+  },
+  {
+   "type": "end",
+   "s": 29.839999999999993,
+   "e": 33.83999999999999
+  }
+ ],
+ "zooms": [
+  {
+   "t": 0.0,
+   "z": 1.0
+  },
+  {
+   "t": 3.69,
+   "z": 1.05
+  },
+  {
+   "t": 7.11,
+   "z": 1.0
+  },
+  {
+   "t": 10.35,
+   "z": 1.05
+  },
+  {
+   "t": 16.31,
+   "z": 1.0
+  },
+  {
+   "t": 17.79,
+   "z": 1.05
+  },
+  {
+   "t": 19.75,
+   "z": 1.0
+  },
+  {
+   "t": 22.36,
+   "z": 1.05
+  },
+  {
+   "t": 24.82,
+   "z": 1.0
+  },
+  {
+   "t": 28.62,
+   "z": 1.05
+  },
+  {
+   "t": 28.63,
+   "z": 1.0
+  }
+ ],
+ "sfx": [
+  {
+   "t": 0,
+   "sound": "rise",
+   "gain": -9
+  },
+  {
+   "t": 3.61,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 4.26,
+   "sound": "rise",
+   "gain": -9
+  },
+  {
+   "t": 7.11,
+   "sound": "page",
+   "gain": -13
+  },
+  {
+   "t": 10.23,
+   "sound": "whoosh",
+   "gain": -8
+  },
+  {
+   "t": 13.25,
+   "sound": "whoosh",
+   "gain": -12
+  },
+  {
+   "t": 17.71,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 19.88,
+   "sound": "rise",
+   "gain": -9
+  },
+  {
+   "t": 22.28,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 24.64,
+   "sound": "page",
+   "gain": -12
+  },
+  {
+   "t": 25.94,
+   "sound": "chime",
+   "gain": -14
+  },
+  {
+   "t": 26.94,
+   "sound": "chime",
+   "gain": -14
+  },
+  {
+   "t": 27.94,
+   "sound": "chime",
+   "gain": -14
+  },
+  {
+   "t": 28.540000000000003,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 30.039999999999992,
+   "sound": "chime",
+   "gain": -10
+  },
+  {
+   "t": 30.839999999999993,
+   "sound": "rise",
+   "gain": -14
+  }
+ ]
+}
