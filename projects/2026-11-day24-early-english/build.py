@@ -71,9 +71,9 @@ HI = {0: "무조건 어릴 때", 1: "사실일까요?", 2: "구별", 3: "민감�
 
 # Big words behind her head, revealed by a camera pull-back (source seconds)
 BEHIND = [
-    {"kicker": "아이 영어는", "ko": "무조건 어릴 때?", "s": 0.09, "e": 3.99, "size": 150},
-    {"kicker": "늦으면 끝?", "ko": "아니에요!", "s": 24.10, "e": 26.02, "size": 190},
-    {"kicker": "더 중요한 건", "ko": "경험!", "s": 50.03, "e": 51.83, "size": 230},
+    {"kicker": "아이 영어는", "ko": "무조건 어릴 때?", "s": 0.09, "e": 3.99, "size": 200},
+    {"kicker": "늦으면 끝?", "ko": "아니에요!", "s": 24.10, "e": 26.02, "size": 250},
+    {"kicker": "더 중요한 건", "ko": "경험!", "s": 50.03, "e": 51.83, "size": 290},
 ]
 # Key-point pops (source s, e, kicker, text, slot, sound)
 POPS = [
@@ -188,7 +188,7 @@ def build(db, name="main"):
         if not inside(b["s"], b["e"]):
             continue
         s, e = to_out(b["s"]), to_out(b["e"])
-        ev.append({"type": "behind", "ko": b["ko"], "en": b["kicker"], "size": b["size"], "top": 330, "s": s, "e": e, "k": k})
+        ev.append({"type": "behind", "ko": b["ko"], "en": b["kicker"], "size": b["size"], "top": 250 - b["size"], "s": s, "e": e, "k": k})
         ev.append({"type": "pull", "s": s - 0.12, "e": e, "z": 0.74})
         add(s - 0.15, "whoosh", -9); add(s, "impact", -7); add(s + 0.05, "sparkle", -13)
     for k, (s, e, kick, text, slot, snd) in enumerate(POPS):
