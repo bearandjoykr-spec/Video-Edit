@@ -12,6 +12,7 @@ The owner found v1 "a little boring" and asked for more energy. For every Reel:
 - **Follow CTA (5 s end card):** logo, "DAY N ✅ · 출간까지 매일 업로드 중 📚", a big two-line "팔로우하고 / DAY N+1 같이 봐요!", and a large "＋ 팔로우" button that a 👆 taps and that flips to "팔로잉 ✓", with the Kakao button below.
 - **Music:** original lo-fi hip hop, about 82 BPM, about 8 dB under the voice with light ducking. The beat stops for jokes and drops back in with a hit.
 - **Look:** a brighter, punchier grade (more contrast and saturation) with light grain.
+- **Caption reading speed (owner feedback, Day 23):** in Day 23 the Korean lines around "보셨죠? 정말 엉망이죠." flashed by too fast. Keep every Korean caption to at most ~6 characters per second and on screen for at least 1.2 s. Achieve that by showing it slightly before the speech, holding it into the next pause, or merging very short lines (e.g. "예를 들어볼게요." with the next line). Never speed up the footage. Check the reading-speed table before rendering.
 - Template: `remotion/src/BearJoyReelV2.tsx`. Plans: `projects/*/build_timeline_v2.py`. Mix: `mix.py <version> <picture> <out> timeline_v2.json -8 2.5`.
 
 Visual version: `brand/brand-sheet.html` (published at https://claude.ai/artifact/MU7MQRqet5eMyBhUcyqNq1).
