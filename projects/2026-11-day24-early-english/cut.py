@@ -2,7 +2,7 @@
 import json, subprocess, sys, os
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = sys.argv[1]; what = sys.argv[2]  # what: video | matte
-for name in ("main",):
+for name in ("main", "tight"):
     p = json.load(open(f"{HERE}/versions/{name}/timeline_v2.json"))
     segs = p["segments"]; n = len(segs)
     if what == "video":

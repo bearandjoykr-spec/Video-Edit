@@ -102,8 +102,18 @@ TAG_POS = {"left": 50, "top": 1450}  # under the captions
 CAPTION_TOP = 1250
 
 
-def build(db):
-    keep = [l for l in lines if not l["cut"]]
+# Versions: which script lines (0-based, in script order) each cut keeps. None = every line not marked "-".
+VERSIONS = {
+    "main": None,  # follows the owner's script in full
+    # tight (~48 s) for reach: hook + twist, one fact, the payoff, key point, both tips, "경험", the pitch, CTA
+    "tight": [0, 1, 2, 5, 7, 8, 9, 11, 12, 13, 14, 17, 18, 19],
+}
+
+
+def build(db, name="main"):
+    sel = VERSIONS[name]
+    use = lambda idx, l: (not l["cut"]) and (sel is None or idx in sel)
+    keep = [l for idx, l in enumerate(lines) if use(idx, l)]
     # segments: each kept sentence, padded, snapped to the quietest moment; merge if the gap is tiny
     segs = []
     for l in keep:
@@ -124,10 +134,14 @@ def build(db):
         best = min(out, key=lambda g: min(abs(x - g["src_s"]), abs(x - g["src_e"])))
         return round(best["out_s"] + (0 if x < best["src_s"] else best["src_e"] - best["src_s"]), 3)
 
+    def inside(s, e, min_len=0.4):
+        """True when a source-time event overlaps the kept footage by at least min_len seconds."""
+        return any(min(e, g["src_e"]) - max(s, g["src_s"]) >= min_len for g in out)
+
     # captions: split each line into chunks of <= MAX_CHUNK characters at word boundaries
     C = []
     for idx, l in enumerate(lines):
-        if l["cut"]:
+        if not use(idx, l):
             continue
         wt = word_times(l)
         chunk = []
@@ -170,16 +184,21 @@ def build(db):
     ev, sfx = [], []
     add = lambda tt, s, g: sfx.append({"t": round(max(0, tt), 3), "sound": s, "gain": g})
     for k, b in enumerate(BEHIND):
+        if not inside(b["s"], b["e"]):
+            continue
         s, e = to_out(b["s"]), to_out(b["e"])
         ev.append({"type": "behind", "ko": b["ko"], "en": b["kicker"], "size": b["size"], "top": 330, "s": s, "e": e, "k": k})
         ev.append({"type": "pull", "s": s - 0.12, "e": e, "z": 0.74})
         add(s - 0.15, "whoosh", -9); add(s, "impact", -7); add(s + 0.05, "sparkle", -13)
     for k, (s, e, kick, text, slot, snd) in enumerate(POPS):
+        if not inside(s, e):
+            continue
         ev.append({"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k + 1})
         add(to_out(s), snd, -9 if snd == "pop" else -11)
         ev.append({"type": "punch", "s": to_out(s), "e": to_out(s) + 0.25, "z": 1.035, "shake": 5})
-    ev.append({"type": "avatar", **{k: v for k, v in AVATAR.items() if k not in ("s", "e")}, "s": to_out(AVATAR["s"]), "e": to_out(AVATAR["e"]), "slot": "mid"})
-    add(to_out(AVATAR["s"]), "pop", -8)
+    if inside(AVATAR["s"], AVATAR["e"]):
+        ev.append({"type": "avatar", **{k: v for k, v in AVATAR.items() if k not in ("s", "e")}, "s": to_out(AVATAR["s"]), "e": to_out(AVATAR["e"]), "slot": "mid"})
+        add(to_out(AVATAR["s"]), "pop", -8)
     fs, fe = to_out(FOLLOW[0]), to_out(FOLLOW[1])
     ev.append({"type": "follow", "s": fs, "e": fe + 0.15, "tap1": fs + 0.55, "tap2": fs + 1.15})
     add(fs, "whoosh", -10); add(fs + 0.55, "pop", -6); add(fs + 1.15, "pop", -6); add(fs + 1.2, "chime", -9)
@@ -195,17 +214,18 @@ def build(db):
     for g in out[1:]:
         add(g["out_s"] - 0.05, "whoosh", -15)
     total = round(speech_end + END, 3)
-    ev.append({"type": "end", "s": round(speech_end - 0.2, 3), "e": total, "short": True})
+    ev.append({"type": "end", "s": round(speech_end - 0.2, 3), "e": total, "short": True,
+               "share": "💌 아이 영어 고민하는 부모님께 공유해 주세요"})
     ev.append({"type": "badge", "s": 0.0, "e": speech_end - 0.2, "day": DAY})
     add(speech_end - 0.2, "impact", -8); add(speech_end, "sparkle", -10)
     music = {"dropouts": [[ts - 0.05, te - 0.05], [speech_end - 0.3, speech_end - 0.05]], "drops": [te - 0.05, speech_end - 0.05]}
 
-    plan = {"name": "day24", "media": "day24", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
+    plan = {"name": f"day24-{name}", "media": f"day24/{name}", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
             "day": DAY, "segments": out, "captions": C, "events": ev, "zooms": zooms, "music": music,
             "slots": SLOTS, "tagPos": TAG_POS, "scrim": True, "captionTop": CAPTION_TOP, "sfx": sorted(sfx, key=lambda x: x["t"])}
-    os.makedirs(f"{HERE}/versions/main", exist_ok=True)
-    json.dump(plan, open(f"{HERE}/versions/main/timeline_v2.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
-    print(f"main: {total:.1f}s ({speech_end:.1f}s speech, {len(out)} segments), {len(C)} caption chunks, "
+    os.makedirs(f"{HERE}/versions/{name}", exist_ok=True)
+    json.dump(plan, open(f"{HERE}/versions/{name}/timeline_v2.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
+    print(f"{name}: {total:.1f}s ({speech_end:.1f}s speech, {len(out)} segments), {len(C)} caption chunks, "
           f"{sum(e['type'] == 'pop' for e in ev)} pops, {len(sfx)} sfx")
     for c in C:
         n = len(clean(c["ko"])); d = c["e"] - c["s"]
@@ -214,4 +234,6 @@ def build(db):
 
 
 if __name__ == "__main__":
-    build(load_db(sys.argv[1]))
+    db = load_db(sys.argv[1])
+    for n in VERSIONS:
+        build(db, n)

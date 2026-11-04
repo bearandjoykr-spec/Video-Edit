@@ -278,6 +278,8 @@ const EndV2: React.FC<{ev: Ev; t: number; fps: number; day: number}> = ({ev, t, 
           background: following ? C.white : C.blue, color: C.ink, boxShadow: '0 16px 40px rgba(0,0,0,.35)'}}>{following ? '팔로잉 ✓' : '＋ 팔로우'}</div>
         <div style={{position: 'absolute', right: -40, top: 60, fontSize: 120, opacity: handIn, transform: `translateY(${handY}px) rotate(-12deg)`}}>👆</div>
       </div>
+      {ev.share ? <div style={{fontWeight: 800, fontSize: 46, color: C.white, marginTop: 34, opacity: kakao, textShadow: stroke(8),
+        transform: `translateY(${(1 - kakao) * 16}px)`}}>{ev.share}</div> : null}
       <div style={{fontWeight: 700, fontSize: 34, background: C.kakao, color: '#191600', padding: '18px 38px', borderRadius: 999, marginTop: 40,
         opacity: kakao, transform: `scale(${0.9 + 0.1 * kakao})`}}>카카오톡 채널 추가하기</div>
     </AbsoluteFill>
