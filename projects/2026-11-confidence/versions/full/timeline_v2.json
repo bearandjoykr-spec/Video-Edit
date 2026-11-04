@@ -1,8 +1,8 @@
 {
  "name": "full",
  "fps": 30,
- "duration": 86.24,
- "frames": 2588,
+ "duration": 87.64,
+ "frames": 2630,
  "speechEnd": 82.64,
  "day": 23,
  "segments": [
@@ -1218,7 +1218,8 @@
    "size": 210,
    "top": 680,
    "s": 0.0,
-   "e": 3.69
+   "e": 3.69,
+   "k": 0
   },
   {
    "type": "punch",
@@ -1234,7 +1235,8 @@
    "size": 250,
    "top": 470,
    "s": 39.09,
-   "e": 40.99
+   "e": 40.99,
+   "k": 1
   },
   {
    "type": "punch",
@@ -1250,7 +1252,8 @@
    "size": 250,
    "top": 490,
    "s": 62.59,
-   "e": 64.19
+   "e": 64.19,
+   "k": 2
   },
   {
    "type": "punch",
@@ -1264,28 +1267,32 @@
    "s": 6.23,
    "e": 8.03,
    "text": "겉모습 👀",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 1
   },
   {
    "type": "pop",
    "s": 13.84,
    "e": 15.44,
    "text": "🇰🇷 부모님",
-   "slot": "tl"
+   "slot": "tl",
+   "k": 2
   },
   {
    "type": "pop",
    "s": 18.94,
    "e": 21.34,
    "text": "🇬🇧 영국인!",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 3
   },
   {
    "type": "pop",
    "s": 29.54,
    "e": 32.24,
    "text": "발음 = 1단계 ❌",
-   "slot": "center"
+   "slot": "center",
+   "k": 4
   },
   {
    "type": "punch",
@@ -1299,21 +1306,24 @@
    "s": 42.19,
    "e": 44.19,
    "text": "한국어 억양 = 😅",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 5
   },
   {
    "type": "pop",
    "s": 47.29,
    "e": 50.09,
    "text": "엉망 😂",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 6
   },
   {
    "type": "pop",
    "s": 50.29,
    "e": 51.69,
    "text": "그래도 자신감 💪",
-   "slot": "center"
+   "slot": "center",
+   "k": 7
   },
   {
    "type": "punch",
@@ -1327,56 +1337,64 @@
    "s": 53.69,
    "e": 55.49,
    "text": "통한다! ✅",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 8
   },
   {
    "type": "pop",
    "s": 57.39,
    "e": 58.89,
    "text": "자신감 키우기 🌱",
-   "slot": "tl"
+   "slot": "tl",
+   "k": 9
   },
   {
    "type": "pop",
    "s": 63.79,
    "e": 65.29,
    "text": "평가 ❌",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 10
   },
   {
    "type": "pop",
    "s": 69.59,
    "e": 70.89,
    "text": "배우기 싫어요 😢",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 11
   },
   {
    "type": "pop",
    "s": 74.72,
    "e": 77.39,
    "text": "재미있게 🎉",
-   "slot": "stack0"
+   "slot": "stack0",
+   "k": 12
   },
   {
    "type": "pop",
    "s": 75.81,
    "e": 77.39,
    "text": "즐겁게 😊",
-   "slot": "stack1"
+   "slot": "stack1",
+   "k": 13
   },
   {
    "type": "pop",
    "s": 76.49,
    "e": 77.39,
    "text": "부담 없이 🪶",
-   "slot": "stack2"
+   "slot": "stack2",
+   "k": 14
   },
   {
    "type": "pop",
    "s": 78.99,
    "e": 80.59,
    "text": "자신감 UP! 🚀",
-   "slot": "center"
+   "slot": "center",
+   "k": 15
   },
   {
    "type": "punch",
@@ -1390,7 +1408,8 @@
    "s": 81.19,
    "e": 82.64,
    "text": "첫걸음 👣",
-   "slot": "center"
+   "slot": "center",
+   "k": 16
   },
   {
    "type": "punch",
@@ -1444,7 +1463,7 @@
   {
    "type": "end",
    "s": 82.34,
-   "e": 86.24
+   "e": 87.64
   },
   {
    "type": "badge",
@@ -1871,9 +1890,29 @@
    "gain": -10
   },
   {
-   "t": 83.84,
+   "t": 82.94,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 83.14,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 84.34,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 85.24,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 85.29,
    "sound": "chime",
-   "gain": -12
+   "gain": -9
   }
  ]
 }

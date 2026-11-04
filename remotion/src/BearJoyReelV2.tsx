@@ -1,6 +1,7 @@
 // The Bear & Joy Co. reel template v2 — high-energy "daily posting" style.
-// Owner-approved changes over v1: catchy reel fonts, karaoke captions, key-point pops, flags,
-// Day badge, punch zooms, progress bar with the bear walking along it.
+// Owner-approved changes over v1: karaoke captions, key-point pops, flags, Day badge, punch zooms,
+// progress bar with the bear walking along it, big follow CTA.
+// Type: Pretendard throughout, soft shadows, pastel butter-yellow / sky-blue key words (owner reference, 4 Nov 2026).
 import React, {useEffect, useState} from 'react';
 import {
   AbsoluteFill, Img, OffthreadVideo, Sequence, continueRender, delayRender, interpolate,
@@ -15,22 +16,20 @@ export type PlanV2 = {
   captions: Caption[]; events: Ev[]; zooms: {t: number; z: number}[];
 };
 
-const C = {navy: '#1E2D4D', ink: '#14203A', yellow: '#FFD23F', gold: '#C9A84C', cream: '#F5F0E6', white: '#FFFFFF', kakao: '#FEE500'};
+const C = {navy: '#1E2D4D', ink: '#14203A', yellow: '#F6F0BA', blue: '#AECCE6', gold: '#C9A84C', cream: '#F5F0E6', white: '#FFFFFF', kakao: '#FEE500'};
+const PASTEL = [C.yellow, C.blue];
 const EMOJI = "'Noto Color Emoji'";
-const HAN = `'Black Han Sans', ${EMOJI}, sans-serif`;
-const JUA = `'Jua', ${EMOJI}, sans-serif`;
-const LILITA = `'Lilita One', ${EMOJI}, sans-serif`;
-const POPPINS = `'Poppins', ${EMOJI}, sans-serif`;
+const PRE = `'Pretendard', ${EMOJI}, 'Noto Sans KR', sans-serif`;
+const HAN = PRE, JUA = PRE, LILITA = PRE, POPPINS = PRE;
 const PLAYFAIR = "'Playfair Display', Georgia, serif";
 const GRADE = 'contrast(1.1) saturate(1.18) brightness(1.03) sepia(0.04)';
 
 const FONTS: [string, string, string, string][] = [
-  ['Black Han Sans', 'normal', '400', 'ea8Aad44WunzF9a-dL6toA8r8nqV.ttf'],
-  ['Jua', 'normal', '400', 'co3KmW9ljjAjcw.ttf'],
-  ['Lilita One', 'normal', '400', 'i7dPIFZ9Zz-WBtRtedDbUEY.ttf'],
+  ['Pretendard', 'normal', '600', 'Pretendard-SemiBold.woff2'],
+  ['Pretendard', 'normal', '700', 'Pretendard-Bold.woff2'],
+  ['Pretendard', 'normal', '800', 'Pretendard-ExtraBold.woff2'],
+  ['Pretendard', 'normal', '900', 'Pretendard-Black.woff2'],
   ['Noto Color Emoji', 'normal', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
-  ['Poppins', 'normal', '800', 'pxiByp8kv8JHgFVrLDD4V1s.ttf'],
-  ['Poppins', 'normal', '900', 'pxiByp8kv8JHgFVrLBT5V1s.ttf'],
   ['Playfair Display', 'italic', '400', 'nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTbtY.ttf'],
 ];
 
@@ -43,12 +42,8 @@ const useFonts = () => {
 };
 
 // Thick outline that works on any text (ring of hard shadows) + soft drop shadow.
-const stroke = (px: number, color = C.ink, drop = true) => {
-  const out: string[] = [];
-  for (let a = 0; a < 16; a++) out.push(`${(Math.cos(a * Math.PI / 8) * px).toFixed(1)}px ${(Math.sin(a * Math.PI / 8) * px).toFixed(1)}px 0 ${color}`);
-  if (drop) out.push(`0 ${px + 4}px ${px * 2}px rgba(0,0,0,.35)`);
-  return out.join(',');
-};
+const stroke = (px: number) =>
+  `0 ${Math.max(1, px / 3).toFixed(1)}px ${px}px rgba(10,16,30,.55), 0 ${px / 2}px ${px * 4}px rgba(10,16,30,.35)`;
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
 
 // Bouncy entrance (0 -> overshoot -> 1) and quick exit.
@@ -91,17 +86,17 @@ const CaptionV2: React.FC<{c: Caption; t: number; fps: number}> = ({c, t, fps}) 
   return (
     <div style={{position: 'absolute', left: 50, right: 50, top: 1170, textAlign: 'center', display: 'grid', gap: 16,
       transform: `translateY(${(1 - inS) * 26}px) scale(${interpolate(inS, [0, 1], [0.92, 1])})`, opacity: Math.min(1, inS * 2)}}>
-      <div style={{fontFamily: JUA, fontSize: 76, lineHeight: 1.18, color: C.white, textShadow: stroke(7), wordBreak: 'keep-all', textWrap: 'balance' as any}}>
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 74, lineHeight: 1.2, letterSpacing: '-0.02em', color: C.white, textShadow: stroke(8), wordBreak: 'keep-all', textWrap: 'balance' as any}}>
         <Hi text={c.ko} hi={c.hi} pop={hiPop} />
       </div>
       {c.en ? (
-        <div style={{fontFamily: POPPINS, fontWeight: 800, fontSize: 40, lineHeight: 1.25, textShadow: stroke(4), textWrap: 'balance' as any}}>
+        <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 40, lineHeight: 1.25, textShadow: stroke(6), textWrap: 'balance' as any}}>
           {ws.length ? ws.map((w, k) => {
             const next = ws[k + 1]?.t ?? c.e;
             const active = w.t !== null && t >= w.t && t < next;
             const said = w.t !== null && t >= w.t;
-            return <React.Fragment key={k}>{k ? ' ' : ''}<span style={{display: 'inline-block', padding: '0 0.08em', color: active ? C.yellow : C.white,
-              opacity: said ? 1 : 0.55, transform: `scale(${active ? 1.07 : 1}) translateY(${active ? -3 : 0}px)`}}>{w.w}</span></React.Fragment>;
+            return <React.Fragment key={k}>{k ? ' ' : ''}<span style={{display: 'inline-block', padding: '0 0.08em', color: active ? C.blue : C.white,
+              opacity: said ? 1 : 0.6, transform: `scale(${active ? 1.07 : 1}) translateY(${active ? -3 : 0}px)`}}>{w.w}</span></React.Fragment>;
           }) : <span style={{color: C.white, opacity: 0.9}}>{c.en}</span>}
         </div>
       ) : null}
@@ -113,9 +108,10 @@ const Behind: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = usePop(t, ev.s, ev.e, fps);
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top: ev.top - 90, textAlign: 'center', opacity: p.opacity,
-      transform: `scale(${p.scale}) rotate(-3deg)`, transformOrigin: '50% 70%'}}>
-      <div style={{fontFamily: LILITA, fontSize: 70, color: C.white, letterSpacing: '.04em', textShadow: stroke(6)}}>{ev.en}</div>
-      <div style={{fontFamily: HAN, fontSize: ev.size, lineHeight: 1, color: C.yellow, textShadow: stroke(12), whiteSpace: 'nowrap'}}>{ev.ko}</div>
+      transform: `scale(${p.scale})`, transformOrigin: '50% 70%'}}>
+      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 66, color: C.white, textShadow: stroke(10), marginBottom: 6}}>{ev.en}</div>
+      <div style={{fontFamily: PRE, fontWeight: 900, fontSize: ev.size, lineHeight: 1, letterSpacing: '-0.03em', color: PASTEL[ev.k % 2],
+        textShadow: stroke(16), whiteSpace: 'nowrap'}}>{ev.ko}</div>
     </div>
   );
 };
@@ -131,9 +127,8 @@ const Pop: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const wobble = Math.sin((t - ev.s) * 6) * 1.5;
   return (
     <div style={{position: 'absolute', ...pos, display: 'flex', justifyContent: centered ? 'center' : undefined, opacity: p.opacity}}>
-      <div style={{transform: `scale(${p.scale}) rotate(${rot + wobble}deg)`, background: C.yellow, color: C.ink, fontFamily: HAN, fontSize: 74,
-        lineHeight: 1, padding: '20px 30px 18px', borderRadius: 26, border: `6px solid ${C.ink}`, boxShadow: `0 10px 0 ${C.ink}, 0 18px 30px rgba(0,0,0,.3)`,
-        whiteSpace: 'nowrap'}}>{ev.text}</div>
+      <div style={{transform: `scale(${p.scale}) rotate(${(rot + wobble) * 0.3}deg)`, color: PASTEL[ev.k % 2], fontFamily: PRE, fontWeight: 900, fontSize: 92,
+        lineHeight: 1.05, letterSpacing: '-0.03em', textShadow: stroke(14), whiteSpace: 'nowrap'}}>{ev.text}</div>
     </div>
   );
 };
@@ -149,7 +144,7 @@ const Demo: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
         return (
           <div key={k} style={{position: 'absolute', ...at, textAlign: 'center', opacity: p.opacity,
             transform: `scale(${p.scale}) rotate(${rot}deg)`}}>
-            <span style={{fontFamily: HAN, fontSize: size, color: k === 2 ? C.yellow : C.white, textShadow: stroke(11)}}>{w.w}</span>
+            <span style={{fontFamily: PRE, fontWeight: 900, fontSize: size, letterSpacing: '-0.03em', color: [C.white, C.blue, C.yellow][k], textShadow: stroke(14)}}>{w.w}</span>
           </div>
         );
       })}
@@ -160,11 +155,10 @@ const Demo: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
 const Tag: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = usePop(t, ev.s, ev.e, fps);
   return (
-    <div style={{position: 'absolute', left: 50, top: 400, opacity: p.opacity, transform: `scale(${p.scale}) rotate(-2deg)`, transformOrigin: '0 50%'}}>
-      <div style={{background: C.navy, border: `5px solid ${C.yellow}`, borderRadius: 26, padding: '20px 30px', display: 'grid', gap: 8,
-        boxShadow: `0 10px 0 ${C.ink}, 0 18px 30px rgba(0,0,0,.3)`}}>
-        <span style={{fontFamily: LILITA, fontSize: 62, color: C.white, lineHeight: 1}}>{ev.name} <span style={{fontSize: 52}}>{ev.flags}</span></span>
-        <span style={{fontFamily: JUA, fontSize: 34, color: C.yellow, lineHeight: 1.2}}>{ev.role}</span>
+    <div style={{position: 'absolute', left: 50, top: 235, opacity: p.opacity, transform: `scale(${p.scale}) rotate(-2deg)`, transformOrigin: '0 50%'}}>
+      <div style={{background: 'rgba(20,32,58,.62)', borderRadius: 28, padding: '20px 30px', display: 'grid', gap: 8, boxShadow: '0 14px 34px rgba(0,0,0,.25)'}}>
+        <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 62, color: C.yellow, lineHeight: 1, letterSpacing: '-0.02em'}}>{ev.name} <span style={{fontSize: 52}}>{ev.flags}</span></span>
+        <span style={{fontFamily: PRE, fontWeight: 600, fontSize: 32, color: C.white, lineHeight: 1.25}}>{ev.role}</span>
       </div>
     </div>
   );
@@ -180,9 +174,9 @@ const Badge: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   return (
     <div style={{position: 'absolute', left: x, top: y, transform: `translate(-50%, 0) scale(${s * inS})`, transformOrigin: '50% 0', opacity: out,
       display: 'grid', justifyItems: 'center', gap: 10}}>
-      <div style={{background: C.yellow, color: C.ink, fontFamily: LILITA, fontSize: 70, lineHeight: 1, padding: '16px 30px 12px', borderRadius: 999,
-        border: `6px solid ${C.ink}`, boxShadow: `0 8px 0 ${C.ink}`, whiteSpace: 'nowrap', transform: `rotate(${-3 + Math.sin(t * 3) * 1.5}deg)`}}>🔥 DAY {ev.day}</div>
-      <div style={{fontFamily: JUA, fontSize: 38, color: C.white, textShadow: stroke(5), opacity: 1 - shrink, whiteSpace: 'nowrap'}}>출간까지 매일 업로드 📚</div>
+      <div style={{background: C.yellow, color: C.ink, fontFamily: PRE, fontWeight: 900, fontSize: 66, lineHeight: 1, padding: '18px 34px', borderRadius: 999,
+        boxShadow: '0 10px 28px rgba(0,0,0,.28)', whiteSpace: 'nowrap', letterSpacing: '-0.01em'}}>🔥 DAY {ev.day}</div>
+      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 38, color: C.white, textShadow: stroke(8), opacity: 1 - shrink, whiteSpace: 'nowrap'}}>출간까지 매일 업로드 📚</div>
     </div>
   );
 };
@@ -201,18 +195,35 @@ const Progress: React.FC<{t: number; total: number}> = ({t, total}) => {
 
 const EndV2: React.FC<{ev: Ev; t: number; fps: number; day: number}> = ({ev, t, fps, day}) => {
   const bg = interpolate(t, [ev.s, ev.s + 0.35], [0, 1], clamp);
-  const sp = (d: number) => spring({frame: Math.round((t - ev.s - d) * fps), fps, config: {damping: 10, stiffness: 170}});
-  const bear = sp(0.2), wm = sp(0.45), stamp = sp(0.75), line = sp(1.0), btn = sp(1.25);
+  const sp = (d: number, damping = 11) => spring({frame: Math.round((t - ev.s - d) * fps), fps, config: {damping, stiffness: 170}});
+  const top = sp(0.15), small = sp(0.4), l1 = sp(0.6, 9), l2 = sp(0.8, 9), btn = sp(1.1, 8), kakao = sp(1.5);
+  // the hand taps the follow button twice; on the second tap it flips to "following"
+  const tap1 = ev.s + 2.0, tap2 = ev.s + 2.9;
+  const press = (tt: number) => interpolate(t, [tt - 0.06, tt, tt + 0.16], [0, 1, 0], clamp);
+  const pressed = Math.max(press(tap1), press(tap2));
+  const following = t >= tap2;
+  const handIn = interpolate(t, [ev.s + 1.5, ev.s + 1.85], [0, 1], {...clamp, easing: Easing.out(Easing.back(1.6))});
+  const handY = (1 - handIn) * 160 + pressed * 18;
+  const pulse = following ? 1 : 1 + 0.035 * Math.sin((t - ev.s) * 7);
   return (
-    <AbsoluteFill style={{background: `rgba(20,32,58,${0.93 * bg})`, display: 'grid', placeContent: 'center', justifyItems: 'center', gap: 30, textAlign: 'center', padding: '0 70px'}}>
-      <Img src={staticFile('brand/bear-butterfly.png')} style={{width: 470, transform: `scale(${bear}) translateY(${Math.sin(t * 4) * 8}px)`}} />
-      <Img src={staticFile('brand/wordmark-cream.png')} style={{width: 820, opacity: wm, transform: `translateY(${(1 - wm) * 30}px)`}} />
-      <div style={{background: C.yellow, color: C.ink, fontFamily: LILITA, fontSize: 64, padding: '12px 30px 8px', borderRadius: 18, border: `6px solid ${C.ink}`,
-        transform: `scale(${stamp}) rotate(-5deg)`, boxShadow: `0 8px 0 ${C.ink}`}}>DAY {day} ✅</div>
-      <div style={{fontFamily: JUA, fontSize: 54, color: C.white, lineHeight: 1.35, opacity: line, transform: `translateY(${(1 - line) * 20}px)`}}>
-        내일 DAY {day + 1}에서 만나요! 👋<br /><span style={{fontSize: 40, color: C.yellow}}>팔로우하고 출간까지 함께해요 📚</span>
+    <AbsoluteFill style={{background: `rgba(20,32,58,${0.94 * bg})`, display: 'grid', placeContent: 'center', justifyItems: 'center', gap: 22,
+      textAlign: 'center', padding: '0 60px', fontFamily: PRE}}>
+      <div style={{display: 'flex', alignItems: 'center', gap: 18, opacity: top, transform: `translateY(${(1 - top) * 24}px)`}}>
+        <Img src={staticFile('brand/bear-butterfly.png')} style={{width: 210, transform: `translateY(${Math.sin(t * 4) * 6}px)`}} />
+        <Img src={staticFile('brand/wordmark-cream.png')} style={{width: 560}} />
       </div>
-      <div style={{fontFamily: JUA, fontSize: 42, background: C.kakao, color: '#191600', padding: '22px 44px 18px', borderRadius: 999, transform: `scale(${btn})`}}>카카오톡 채널 추가하기</div>
+      <div style={{fontWeight: 700, fontSize: 42, color: C.white, opacity: small, marginTop: 30}}>DAY {day} ✅ · 출간까지 매일 업로드 중 📚</div>
+      <div style={{fontWeight: 900, fontSize: 116, lineHeight: 1.06, letterSpacing: '-0.04em', textShadow: stroke(14), wordBreak: 'keep-all'}}>
+        <div style={{color: C.yellow, transform: `scale(${l1})`}}>팔로우하고</div>
+        <div style={{color: C.blue, transform: `scale(${l2})`}}>DAY {day + 1} 같이 봐요!</div>
+      </div>
+      <div style={{position: 'relative', marginTop: 26, transform: `scale(${btn * pulse * (1 - pressed * 0.06)})`}}>
+        <div style={{fontWeight: 900, fontSize: 88, lineHeight: 1, padding: '36px 110px', borderRadius: 999, letterSpacing: '-0.02em',
+          background: following ? C.white : C.blue, color: C.ink, boxShadow: '0 16px 40px rgba(0,0,0,.35)'}}>{following ? '팔로잉 ✓' : '＋ 팔로우'}</div>
+        <div style={{position: 'absolute', right: -40, top: 60, fontSize: 120, opacity: handIn, transform: `translateY(${handY}px) rotate(-12deg)`}}>👆</div>
+      </div>
+      <div style={{fontWeight: 700, fontSize: 34, background: C.kakao, color: '#191600', padding: '18px 38px', borderRadius: 999, marginTop: 40,
+        opacity: kakao, transform: `scale(${0.9 + 0.1 * kakao})`}}>카카오톡 채널 추가하기</div>
     </AbsoluteFill>
   );
 };

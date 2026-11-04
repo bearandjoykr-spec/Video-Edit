@@ -1,8 +1,8 @@
 {
  "name": "short",
  "fps": 30,
- "duration": 33.84,
- "frames": 1016,
+ "duration": 35.24,
+ "frames": 1058,
  "speechEnd": 30.24,
  "day": 23,
  "segments": [
@@ -423,7 +423,8 @@
    "size": 210,
    "top": 680,
    "s": 0.0,
-   "e": 3.69
+   "e": 3.69,
+   "k": 0
   },
   {
    "type": "punch",
@@ -439,7 +440,8 @@
    "size": 250,
    "top": 470,
    "s": 5.21,
-   "e": 7.11
+   "e": 7.11,
+   "k": 1
   },
   {
    "type": "punch",
@@ -455,7 +457,8 @@
    "size": 250,
    "top": 490,
    "s": 21.33,
-   "e": 22.36
+   "e": 22.36,
+   "k": 2
   },
   {
    "type": "punch",
@@ -469,21 +472,24 @@
    "s": 8.31,
    "e": 10.31,
    "text": "한국어 억양 = 😅",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 1
   },
   {
    "type": "pop",
    "s": 13.41,
    "e": 16.21,
    "text": "엉망 😂",
-   "slot": "tr"
+   "slot": "tr",
+   "k": 2
   },
   {
    "type": "pop",
    "s": 16.41,
    "e": 17.79,
    "text": "그래도 자신감 💪",
-   "slot": "center"
+   "slot": "center",
+   "k": 3
   },
   {
    "type": "punch",
@@ -497,28 +503,32 @@
    "s": 26.27,
    "e": 28.62,
    "text": "재미있게 🎉",
-   "slot": "stack0"
+   "slot": "stack0",
+   "k": 4
   },
   {
    "type": "pop",
    "s": 27.36,
    "e": 28.62,
    "text": "즐겁게 😊",
-   "slot": "stack1"
+   "slot": "stack1",
+   "k": 5
   },
   {
    "type": "pop",
    "s": 28.04,
    "e": 28.62,
    "text": "부담 없이 🪶",
-   "slot": "stack2"
+   "slot": "stack2",
+   "k": 6
   },
   {
    "type": "pop",
    "s": 28.79,
    "e": 30.24,
    "text": "첫걸음 👣",
-   "slot": "center"
+   "slot": "center",
+   "k": 7
   },
   {
    "type": "punch",
@@ -572,7 +582,7 @@
   {
    "type": "end",
    "s": 29.94,
-   "e": 33.84
+   "e": 35.24
   },
   {
    "type": "badge",
@@ -803,9 +813,29 @@
    "gain": -10
   },
   {
-   "t": 31.44,
+   "t": 30.54,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 30.74,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 31.94,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 32.84,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 32.89,
    "sound": "chime",
-   "gain": -12
+   "gain": -9
   }
  ]
 }

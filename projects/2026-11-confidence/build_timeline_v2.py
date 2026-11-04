@@ -12,6 +12,7 @@ from build_timeline import VERSIONS, HI, END_CARD, FPS, load_db, snap  # noqa: E
 caps = json.load(open(f"{HERE}/captions.json", encoding="utf8"))
 words = json.load(open(f"{HERE}/words.json", encoding="utf8"))
 DAY = 23
+END_V2 = 5.0  # longer end card for the follow CTA
 
 # Words behind the head (Korean punch + small English kicker)
 BEHIND = [
@@ -99,13 +100,14 @@ def build(name, segs, db):
     for bw in BEHIND:
         sp = span(bw["s"], bw["e"])
         if sp:
-            ev.append({"type": "behind", **{k: v for k, v in bw.items() if k not in ("s", "e", "sfx")}, "s": sp[0], "e": sp[1]})
+            ev.append({"type": "behind", **{k: v for k, v in bw.items() if k not in ("s", "e", "sfx")}, "s": sp[0], "e": sp[1],
+                       "k": sum(e["type"] == "behind" for e in ev)})
             add(sp[0] - 0.05, bw["sfx"], -6); add(sp[0], "sparkle", -14)
             ev.append({"type": "punch", "s": sp[0], "e": sp[0] + 0.35, "z": 1.06, "shake": 10})
     for s, e, text, slot, snd in POPS:
         sp = span(s, e, 0.4)
         if sp:
-            ev.append({"type": "pop", "s": sp[0], "e": sp[1], "text": text, "slot": slot})
+            ev.append({"type": "pop", "s": sp[0], "e": sp[1], "text": text, "slot": slot, "k": sum(e["type"] == "pop" for e in ev) + 1})
             add(sp[0], snd, -9 if snd == "pop" else -11)
             if slot in ("center",):
                 ev.append({"type": "punch", "s": sp[0], "e": sp[0] + 0.3, "z": 1.04, "shake": 6})
@@ -135,9 +137,12 @@ def build(name, segs, db):
         add(g["out_s"] - 0.06, "whoosh", -12)
     ev.append({"type": "push", "s": max(0, speech_end - 2.5), "e": speech_end, "from": 1.0, "to": 1.1})
 
-    total = round(speech_end + END_CARD, 3)
+    total = round(speech_end + END_V2, 3)
     ev.append({"type": "end", "s": round(speech_end - 0.3, 3), "e": total})
-    add(speech_end - 0.3, "impact", -8); add(speech_end, "sparkle", -10); add(speech_end + 1.2, "chime", -12)
+    add(speech_end - 0.3, "impact", -8); add(speech_end, "sparkle", -10)
+    end_s = speech_end - 0.3
+    add(end_s + 0.6, "pop", -10); add(end_s + 0.8, "pop", -10)          # headline lines land
+    add(end_s + 2.0, "pop", -6); add(end_s + 2.9, "pop", -6); add(end_s + 2.95, "chime", -9)  # follow taps
     # Beat stops on the end card hit and comes back for the outro.
     music["dropouts"].append([speech_end - 0.35, speech_end - 0.05]); music["drops"].append(speech_end - 0.05)
     ev.append({"type": "badge", "s": 0.0, "e": speech_end - 0.3, "day": DAY})
