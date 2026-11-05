@@ -9,6 +9,9 @@ import fullV2 from '../../projects/2026-11-confidence/versions/full/timeline_v2.
 import day24 from '../../projects/2026-11-day24-early-english/versions/main/timeline_v2.json';
 import day24tight from '../../projects/2026-11-day24-early-english/versions/tight/timeline_v2.json';
 
+import {BearJoyClass, ClassPlan} from './BearJoyClass';
+import day1 from '../../projects/2026-11-day1-class/versions/main/timeline.json';
+
 const Hello: React.FC = () => {
   const f = useCurrentFrame();
   return (
@@ -37,5 +40,7 @@ export const Root: React.FC = () => (
     {reelV2('ConfidenceFullV2', fullV2 as unknown as PlanV2)}
     {reelV2('Day24', day24 as unknown as PlanV2)}
     {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
+    <Composition id="Day1Class" component={BearJoyClass} durationInFrames={(day1 as unknown as ClassPlan).frames} fps={30} width={1920} height={1080}
+      defaultProps={{plan: day1 as unknown as ClassPlan}} />
   </>
 );

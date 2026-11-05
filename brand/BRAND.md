@@ -83,3 +83,6 @@ Source of the look: bearandjoy.com. Structure adapted from a reference reel and 
 
 ## Process
 - Always show a storyboard for approval before exporting.
+
+## Class video feedback (owner, 5 Nov 2026)
+See "Owner feedback from Day 1" in `docs/class-video-style.md`: a plan card and countdown instead of a cold open, music only on the ending, and no QR code or link on screen.

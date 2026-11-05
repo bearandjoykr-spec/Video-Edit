@@ -26,6 +26,19 @@ The Day 6 code lived in a temporary folder on the Mac and was **not** saved here
 Same reading-speed rule as Reels: at most ~6 Korean characters per second and at least 1.2 s on screen. Shorten long captions if needed, and say so.
 
 ## Extras the owner wants
-- A **YouTube thumbnail prompt** for ChatGPT (watercolour storybook style, Mark as a real photo using `brand/assets/mark-photo.jpg`, the bear with the straw hat, a "Day N / [title]" wooden sign). Claude can't generate the image itself.
+- A **YouTube thumbnail prompt** for ChatGPT (watercolour storybook style, Mark as a real photo using `brand/assets/mark-photo.jpg`, the bear with the straw hat, a "Day N / [title]" wooden sign). Claude can't generate the image itself. Skipped for Day 1 at the owner's request; ask each time.
 - A **Korean YouTube description.**
 - A **vertical Reel cut** from the class if asked (use the Reels style in BRAND.md).
+
+## Code (rebuilt for Day 1, saved here)
+- Template: `remotion/src/BearJoyClass.tsx` (composition `Day1Class`, registered in `remotion/src/Root.tsx`).
+- Lesson plan: `projects/2026-11-day1-class/build_timeline.py` → `versions/main/timeline.json`. Copy this project for the next class video.
+- Words behind heads: `make_mattes.sh` (about 30 s per clip with `--device coreml`). Mix: `mix.py`. Storyboard page: `storyboard/build_page.py`. Stills with one reused browser: `remotion/class-stills.mjs`.
+- Renders on the Mac need `/opt/homebrew/bin` on PATH in a Claude session.
+
+## Owner feedback from Day 1 (5 Nov 2026), the free day that sells the course
+- **No cold open in the class video.** People have already pressed play, so tell them what's coming: a "오늘의 순서" card with rough times over the intro, then a 3-2-1 countdown that ends as the first phrase starts. Keep the most exciting moment for Instagram hooks.
+- **Music only on the goodbye and the ending** (recap, reviews, offer, logo). The lesson itself is voice and sound effects.
+- **Viewers are already on the Little Steps page**, so no QR code or link on screen. The offer card uses the page's own wording and button text ("전체 과정 열기 · ₩47,000").
+- Joy's Korean translation of Mark's lines is available on request and is used word for word.
+- Check the footage first for burned-in items (logo, labels, small previews) and keep cards clear of them.
