@@ -215,9 +215,9 @@ burst(326.2, 1660, 420, ["👋", "💛"], n=14)
 add("progress", INTRO, MAIN_END, marks=[c(41.4), c(122.8), c(155.0), c(196.4), c(259.6)])
 
 # ------------------------------------------------------------ the offer (music up, big finish)
-scenes = [{"t": -1, "bg": "bg-sky"}]
+scenes = [{"t": -1, "bg": "art-both"}]   # the owner's watercolour backgrounds
 for e in [x for x in ev if x["type"] == "scene"]:
-    scenes.append({"t": e["s"], "bg": ["bg-butter", "bg-peach", "bg-sky", "bg-lilac", "bg-butter", "bg-peach", "bg-sky"][len(scenes) - 1]})
+    scenes.append({"t": e["s"], "bg": ["art-lawn", "art-river", "art-both", "art-lawn", "art-river", "art-both", "art-lawn"][len(scenes) - 1]})
 ev = [x for x in ev if x["type"] not in ("scene", "mini")]
 
 t = MAIN_END

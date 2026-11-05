@@ -39,10 +39,11 @@ const Backdrop: React.FC<{scenes: WelcomePlan['scenes']; t: number}> = ({scenes,
         return <Img key={i} src={img(`${s.bg}.jpg`)} style={{position: 'absolute', left: -160, top: -90, width: 2240, height: 1260, opacity: o, transform: `translate(${dx}px,${dy}px)`}} />;
       })}
       {[0, 1, 2, 0, 1].map((c, i) => {
+        // the owner likes these moving clouds; they stay in the painted sky, above the buildings
         const w = 2500, speed = 14 + i * 6, x = ((i * 530 + t * speed) % w) - 500;
-        return <Img key={i} src={img(`cloud${c}.png`)} style={{position: 'absolute', left: x, top: 20 + (i * 170) % 620, width: 520 + i * 90, opacity: .8}} />;
+        return <Img key={i} src={img(`cloud${c}.png`)} style={{position: 'absolute', left: x, top: -30 + (i * 110) % 330, width: 460 + i * 70, opacity: .85}} />;
       })}
-    </AbsoluteFill>
+</AbsoluteFill>
   );
 };
 
@@ -161,9 +162,10 @@ const PATH = 'M 150 800 C 240 640 300 560 400 560 S 560 800 680 760 S 840 520 96
 const DAYS = ['안녕, 곰아!', '같이 찾아봐요', '조이와 움직여요', '무엇을 좋아하나요?', '이야기 탐정', '깔깔 영어놀이', '우리의 모험'];
 
 // ------------------------------------------------------------ full-screen moments
-const Scene: React.FC<{bg: string; children: React.ReactNode; t: number}> = ({bg, children, t}) => (
+const Scene: React.FC<{bg: string; children: React.ReactNode; t: number; wash?: number}> = ({bg, children, t, wash = .4}) => (
   <AbsoluteFill style={{fontFamily: FF, color: C.deep}}>
     <Backdrop scenes={[{t: -1, bg}]} t={t} />
+    <AbsoluteFill style={{background: `rgba(255,255,255,${wash})`}} />
     <Drift t={t} />
     {children}
   </AbsoluteFill>
@@ -174,7 +176,7 @@ const Title: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const bob = t < ev.s + 1.4 ? Math.abs(Math.sin(t * 9)) * 22 : Math.sin(t * 2) * 5;
   const a = pop(t, ev.s + .7), b = pop(t, ev.s + 1.05), c = pop(t, ev.s + 1.4);
   return (
-    <Scene bg="bg-sky" t={t}>
+    <Scene bg="art-both" t={t} wash={.3}>
       <Img src={staticFile(BEAR)} style={{position: 'absolute', left: 90, top: 230, height: 620, transform: `translateX(${walk}px) translateY(${-bob}px)`, filter: 'drop-shadow(0 20px 30px rgba(10,16,30,.22))'}} />
       <div style={{position: 'absolute', left: 800, right: 40, top: 210}}>
         <div style={{transform: `scale(${a})`, transformOrigin: 'left center', display: 'inline-block', background: C.navy, color: C.butter, fontWeight: 900, fontSize: 44, padding: '12px 40px', borderRadius: 99}}>Bear &amp; Joy</div>
@@ -186,7 +188,7 @@ const Title: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
 };
 
 const Promise_: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
-  <Scene bg="bg-butter" t={t}>
+  <Scene bg="art-river" t={t}>
     <div style={{position: 'absolute', left: 130, top: 120, fontWeight: 900, fontSize: 92, letterSpacing: '-.02em', transform: `scale(${pop(t, ev.s)})`, transformOrigin: 'left center'}}>이 영상에서 알려드려요</div>
     <div style={{position: 'absolute', left: 130, right: 130, top: 300, display: 'grid', gap: 30}}>
       {(ev.rows as any[]).map((r, i) => {
@@ -225,7 +227,7 @@ const Stamp: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
 
 // Offer 1: Day 1 is free, and what's in it
 const FreeDay: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
-  <Scene bg="bg-butter" t={t}>
+  <Scene bg="art-lawn" t={t} wash={.5}>
     <EmojiBurst ev={{...ev, e: ev.s + 2, x: 960, y: 300, n: 26, emoji: ['✨', '🎉', '⭐', '🦋']}} t={t} />
     <div style={{position: 'absolute', left: 0, right: 0, top: 60, textAlign: 'center', transform: `scale(${pop(t, ev.s)})`}}>
       <div style={{fontWeight: 900, fontSize: 210, letterSpacing: '-.04em', lineHeight: 1}}>1일차는 무료!</div>
@@ -250,7 +252,7 @@ const Journey: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const p = interpolate(t, [ev.s + .5, ev.s + ev.walk], [0, 1], {...clamp, easing: Easing.inOut(Easing.quad)});
   const len = getLength(PATH), at = getPointAtLength(PATH, p * len);
   return (
-    <Scene bg="bg-sky" t={t}>
+    <Scene bg="art-both" t={t} wash={.55}>
       <div style={{position: 'absolute', left: 0, right: 0, top: 60, textAlign: 'center', fontWeight: 900, fontSize: 104, letterSpacing: '-.03em', transform: `scale(${pop(t, ev.s)})`}}>7번의 작은 걸음. 하나의 큰 모험.</div>
       <div style={{position: 'absolute', inset: 0, transform: 'scale(.86)', transformOrigin: '960px 680px'}}>
       <svg width="1920" height="1080" style={{position: 'absolute', inset: 0}}>
@@ -263,7 +265,7 @@ const Journey: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
         return (
           <React.Fragment key={i}>
             <div style={{position: 'absolute', left: x - 62, top: y - 62, width: 124, height: 124, borderRadius: 99, background: lit ? (i === 0 ? C.butter : C.navy) : C.white, color: lit ? (i === 0 ? C.ink : C.white) : C.deep, display: 'grid', placeItems: 'center', fontWeight: 900, fontSize: 62, boxShadow: '0 10px 26px rgba(10,16,30,.25)', transform: `scale(${lit ? .85 + .15 * k + (1 - k) * .4 : .85})`}}>{i + 1}</div>
-            <div style={{position: 'absolute', left: x - 170, width: 340, top: up ? y - 150 : y + 76, textAlign: 'center', fontWeight: 900, fontSize: 38, whiteSpace: 'nowrap', opacity: Math.min(1, k * 3), color: C.deep, textShadow: '0 0 14px rgba(255,255,255,.9)'}}>{DAYS[i]}{i === 0 ? <div style={{display: 'inline-block', marginLeft: 10, background: C.navy, color: C.butter, fontSize: 28, padding: '3px 14px', borderRadius: 99}}>무료</div> : null}</div>
+            <div style={{position: 'absolute', left: x - 170, width: 340, top: up ? y - 150 : y + 76, textAlign: 'center', fontWeight: 900, fontSize: 44, whiteSpace: 'nowrap', opacity: Math.min(1, k * 3), color: C.deep, textShadow: '0 0 14px rgba(255,255,255,.9)'}}>{DAYS[i]}{i === 0 ? <div style={{display: 'inline-block', marginLeft: 10, background: C.navy, color: C.butter, fontSize: 28, padding: '3px 14px', borderRadius: 99}}>무료</div> : null}</div>
           </React.Fragment>
         );
       })}
@@ -275,7 +277,7 @@ const Journey: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
 
 // Offer 3: what's inside (the page's own list)
 const Inside: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
-  <Scene bg="bg-lilac" t={t}>
+  <Scene bg="art-river" t={t} wash={.5}>
     <div style={{position: 'absolute', left: 110, top: 60, fontWeight: 900, fontSize: 100, letterSpacing: '-.03em', transform: `scale(${pop(t, ev.s)})`, transformOrigin: 'left center'}}>Little Steps에 담긴 것들</div>
     <div style={{position: 'absolute', left: 110, right: 110, top: 220, display: 'grid', gap: 22}}>
       {(ev.rows as any[]).map((r, i) => {
@@ -298,7 +300,7 @@ const Price: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const pulse = 1 + .03 * Math.max(0, Math.sin((t - ev.s) * 4.5));
   const tap = interpolate(t, [ev.s + 5.2, ev.s + 5.7], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   return (
-    <Scene bg="bg-butter" t={t}>
+    <Scene bg="art-lawn" t={t} wash={.55}>
       <div style={{position: 'absolute', left: 0, right: 0, top: 56, textAlign: 'center', transform: `scale(${pop(t, ev.s)})`}}>
         <div style={{fontWeight: 900, fontSize: 56}}>2–7일차, 전체 과정</div>
         <div style={{fontWeight: 900, fontSize: 230, letterSpacing: '-.04em', lineHeight: 1.02}}>₩{n.toLocaleString('en-US')}</div>
@@ -356,7 +358,7 @@ export const BearJoyWelcome: React.FC<{plan: WelcomePlan}> = ({plan}) => {
               </Sequence>
             ))}
           </div>
-          {cap ? <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,0) 74%, rgba(10,16,30,.5) 100%)'}} /> : null}
+          {cap ? <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,0) 70%, rgba(10,16,30,.68) 100%)'}} /> : null}
           <Resident t={t} hide={E('bear').some((b) => live(b)) || E('sheets').some((b) => live(b, .3))} />
           {R('phrase', Phrase)}
           {R('chip', ChipEl)}

@@ -786,35 +786,35 @@
  "scenes": [
   {
    "t": -1,
-   "bg": "bg-sky"
+   "bg": "art-both"
   },
   {
    "t": 45.47,
-   "bg": "bg-butter"
+   "bg": "art-lawn"
   },
   {
    "t": 69.47,
-   "bg": "bg-peach"
+   "bg": "art-river"
   },
   {
    "t": 126.87,
-   "bg": "bg-sky"
+   "bg": "art-both"
   },
   {
    "t": 159.07,
-   "bg": "bg-lilac"
+   "bg": "art-lawn"
   },
   {
    "t": 200.47,
-   "bg": "bg-butter"
+   "bg": "art-river"
   },
   {
    "t": 263.67,
-   "bg": "bg-peach"
+   "bg": "art-both"
   },
   {
    "t": 289.37,
-   "bg": "bg-sky"
+   "bg": "art-lawn"
   }
  ],
  "events": [
