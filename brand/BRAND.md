@@ -95,3 +95,4 @@ Do not generate music (`synth_lofi.py` is for sound effects only from now on). T
 ## Little Steps welcome film (owner, 5 Nov 2026)
 "Day 0" is an internal name only. On screen and in public it is **Little Steps to Big Adventures**. Keep words well away from the frame edges (at least 64 px at the sides and 40 px at the top of a 1920×1080 frame).
 Backgrounds: the owner's watercolour Oxford and Seoul paintings (`brand/assets/art-river.jpg`, `art-both.jpg`, `art-lawn.jpg`), with slow moving clouds kept in the sky over them.
+No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from their end card clipped the bear's head. The owner's animated logo closes the video.

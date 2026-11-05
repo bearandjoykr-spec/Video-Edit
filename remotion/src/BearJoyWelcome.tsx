@@ -211,7 +211,8 @@ const Stick: React.FC<{ev: Ev; t: number; plan: WelcomePlan}> = ({ev, t, plan}) 
   if (ev.kind === 'palm') return <Img src={staticFile(BEAR)} style={{...base, height: size, transform: `translateY(${(1 - k) * 120 + Math.sin(t * 6) * 5}px) scale(${.5 + .5 * k}) rotate(${wob}deg)`, transformOrigin: '50% 100%', filter: 'drop-shadow(0 10px 16px rgba(10,16,30,.35))'}} />;
   if (ev.kind === 'giant') {
     const up = interpolate(t, [ev.s, ev.s + .18], [-700, 0], {...clamp, easing: Easing.out(Easing.back(1.6))});
-    return <Img src={staticFile(BEAR)} style={{...base, height: size, transform: `translateX(${up}px) rotate(${-8 + wob}deg)`, filter: 'drop-shadow(0 18px 30px rgba(10,16,30,.35))'}} />;
+    // framed to the bear only: the butterfly in the artwork would land on Mark's face
+    return <div style={{...base, width: size * .68, height: size, overflow: 'hidden', transform: `translateX(${up}px) rotate(${-8 + wob}deg)`, transformOrigin: '30% 60%'}}><Img src={staticFile(BEAR)} style={{height: size, maxWidth: 'none'}} /></div>;
   }
   if (ev.kind === 'row') {
     return <div style={{...base, display: 'flex', gap: 14, fontSize: size}}>{[0, 1, 2, 3].map((i) => { const q = pop(t, ev.s + i * .35); return <span key={i} style={{display: 'inline-block', transform: `scale(${q}) rotate(${Math.sin(t * 3 + i) * 12}deg)`}}>{ev.emoji}</span>; })}</div>;
@@ -422,7 +423,6 @@ export const BearJoyWelcome: React.FC<{plan: WelcomePlan}> = ({plan}) => {
             ))}
             {E('stick').map((ev, k) => (live(ev) ? <Stick key={`st${k}`} ev={ev} t={t} plan={plan} /> : null))}
           </div>
-          <div style={{position: 'absolute', left: 56, top: 34, padding: '8px 16px', borderRadius: 18, background: 'rgba(255,255,255,.82)', boxShadow: '0 6px 18px rgba(10,16,30,.12)'}}><Img src={img('little-steps-wordmark.png')} style={{height: 84, display: 'block'}} /></div>
           {cap ? <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,0) 70%, rgba(10,16,30,.68) 100%)'}} /> : null}
           <Resident t={t} hide={E('bear').some((b) => live(b)) || E('sheets').some((b) => live(b, .3)) || E('pip').some((b) => live(b, .3))} />
           {R('phrase', Phrase)}
