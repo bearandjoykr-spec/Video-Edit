@@ -26,6 +26,8 @@ Source of the look: bearandjoy.com. Structure adapted from a reference reel and 
 
 ## People
 - **Mark (마크 선생님, British teacher):** always use `brand/assets/mark-photo.jpg` (owner-supplied, 5 Nov 2026), shown as `mark-avatar.png` (circle with a sky-blue and butter-yellow ring) whenever a video mentions him. Never cut his image from other footage.
+- **Joy (조이 선생님):** use `brand/assets/joy-photo.png` (owner-supplied, 5 Nov 2026), shown as `joy-avatar.png`, until the owner supplies a headshot.
+- **Mark and Joy together (support from both):** `brand/assets/mark-joy-photo.jpg` (owner-supplied, 5 Nov 2026).
 
 ## Colour
 | Name | Hex | Use |
@@ -89,3 +91,6 @@ See "Owner feedback from Day 1" in `docs/class-video-style.md`: a plan card and 
 
 ## Music source (owner, 5 Nov 2026) — overrides "original lo-fi" above and in docs/class-video-style.md
 Do not generate music (`synth_lofi.py` is for sound effects only from now on). The owner found the generated music not good enough. Find real licensed tracks, keep each track's source and licence with the project, and let the owner choose by ear, because Claude cannot hear them.
+
+## Little Steps welcome film (owner, 5 Nov 2026)
+"Day 0" is an internal name only. On screen and in public it is **Little Steps to Big Adventures**. Keep words well away from the frame edges (at least 64 px at the sides and 40 px at the top of a 1920×1080 frame).

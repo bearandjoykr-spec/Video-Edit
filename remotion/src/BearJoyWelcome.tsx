@@ -72,7 +72,7 @@ const Phrase: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const words: string[] = ev.text.split(' ');
   const step = Math.min(.28, (ev.e - ev.s - .3) / words.length);
   return (
-    <div style={{position: 'absolute', left: 40, right: 40, top: ev.y ?? 24, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0 22px', opacity: fadeOut(t, ev.e), fontFamily: FF, fontWeight: 900, fontSize: ev.size ?? 92, letterSpacing: '-.02em', textShadow: INK_GLOW}}>
+    <div style={{position: 'absolute', left: 70, right: 70, top: ev.y ?? 48, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0 22px', opacity: fadeOut(t, ev.e), fontFamily: FF, fontWeight: 900, fontSize: ev.size ?? 92, letterSpacing: '-.02em', textShadow: INK_GLOW}}>
       {words.map((w, i) => {
         const k = pop(t, ev.s + i * step);
         const hot = (ev.hot ?? []).includes(i);
@@ -140,7 +140,7 @@ const FlyBear: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
 const Resident: React.FC<{t: number; hide: boolean}> = ({t, hide}) => {
   const y = Math.sin(t * 1.1) * 12, o = hide ? 0 : 1;
   return (
-    <div style={{position: 'absolute', left: 1500, top: 600, width: 400, height: 330, opacity: o, transform: `translateY(${y}px)`}}>
+    <div style={{position: 'absolute', left: 1450, top: 600, width: 400, height: 330, opacity: o, transform: `translateY(${y}px)`}}>
       <Img src={staticFile(BEAR)} style={{position: 'absolute', left: 60, top: 0, height: 270, transform: `rotate(${Math.sin(t * 1.7) * 3}deg)`, transformOrigin: '50% 100%'}} />
       <Img src={img('cloud1.png')} style={{position: 'absolute', left: 30, top: 165, width: 380}} />
     </div>
@@ -177,8 +177,8 @@ const Title: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
     <Scene bg="bg-sky" t={t}>
       <Img src={staticFile(BEAR)} style={{position: 'absolute', left: 90, top: 230, height: 620, transform: `translateX(${walk}px) translateY(${-bob}px)`, filter: 'drop-shadow(0 20px 30px rgba(10,16,30,.22))'}} />
       <div style={{position: 'absolute', left: 800, right: 40, top: 210}}>
-        <div style={{transform: `scale(${a})`, transformOrigin: 'left center', display: 'inline-block', background: C.navy, color: C.butter, fontWeight: 900, fontSize: 60, padding: '12px 44px', borderRadius: 99}}>DAY 0</div>
-        <div style={{transform: `translateY(${(1 - b) * 60}px)`, opacity: Math.min(1, b * 2), fontWeight: 900, fontSize: 136, lineHeight: 1.04, letterSpacing: '-.03em', marginTop: 34, color: C.deep}}>Welcome to<br />Little Steps</div>
+        <div style={{transform: `scale(${a})`, transformOrigin: 'left center', display: 'inline-block', background: C.navy, color: C.butter, fontWeight: 900, fontSize: 44, padding: '12px 40px', borderRadius: 99}}>Bear &amp; Joy</div>
+        <div style={{transform: `translateY(${(1 - b) * 60}px)`, opacity: Math.min(1, b * 2), fontWeight: 900, fontSize: 124, lineHeight: 1.06, letterSpacing: '-.03em', marginTop: 34, color: C.deep}}>Little Steps to<br />Big Adventures</div>
         <div style={{transform: `translateY(${(1 - c) * 60}px)`, opacity: Math.min(1, c * 2), fontWeight: 800, fontSize: 62, marginTop: 26}}>Mark와 Joy가 전하는 첫 인사</div>
       </div>
     </Scene>
@@ -236,7 +236,7 @@ const FreeDay: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
         const k = pop(t, ev.s + 1.1 + i * .55);
         return (
           <div key={i} style={{background: C.paper, borderRadius: 40, padding: '44px 26px', textAlign: 'center', boxShadow: '0 18px 44px rgba(23,59,92,.16)', transform: `translateY(${(1 - k) * 500}px) rotate(${(1 - k) * 12}deg)`, opacity: Math.min(1, k * 3), minHeight: 420}}>
-            {it.sheet ? <Img src={img(it.sheet)} style={{height: 210, borderRadius: 8, boxShadow: '0 8px 20px rgba(10,16,30,.25)', transform: 'rotate(-4deg)'}} /> : it.avatar ? <Img src={staticFile(it.avatar)} style={{height: 210}} /> : <div style={{fontSize: 170, lineHeight: '210px'}}>{it.emoji}</div>}
+            {it.sheet ? <Img src={img(it.sheet)} style={{height: 210, borderRadius: 8, boxShadow: '0 8px 20px rgba(10,16,30,.25)', transform: 'rotate(-4deg)'}} /> : it.photo ? <Img src={staticFile(it.photo)} style={{height: 210, maxWidth: '100%', objectFit: 'cover', borderRadius: 22, boxShadow: '0 8px 20px rgba(10,16,30,.25)'}} /> : it.avatar ? <Img src={staticFile(it.avatar)} style={{height: 210}} /> : <div style={{fontSize: 170, lineHeight: '210px'}}>{it.emoji}</div>}
             <div style={{fontWeight: 900, fontSize: 56, marginTop: 28}}>{it.title}</div>
           </div>
         );
@@ -252,6 +252,7 @@ const Journey: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   return (
     <Scene bg="bg-sky" t={t}>
       <div style={{position: 'absolute', left: 0, right: 0, top: 60, textAlign: 'center', fontWeight: 900, fontSize: 104, letterSpacing: '-.03em', transform: `scale(${pop(t, ev.s)})`}}>7번의 작은 걸음. 하나의 큰 모험.</div>
+      <div style={{position: 'absolute', inset: 0, transform: 'scale(.86)', transformOrigin: '960px 680px'}}>
       <svg width="1920" height="1080" style={{position: 'absolute', inset: 0}}>
         <path d={PATH} fill="none" stroke={C.white} strokeWidth="18" strokeLinecap="round" strokeDasharray="4 34" />
         <path d={PATH} {...evolvePath(p, PATH)} fill="none" stroke={C.gold} strokeWidth="18" strokeLinecap="round" />
@@ -267,6 +268,7 @@ const Journey: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
         );
       })}
       <Img src={staticFile(BEAR)} style={{position: 'absolute', left: at.x - 80, top: at.y - 210 - Math.abs(Math.sin(t * 8)) * 16, height: 170}} />
+      </div>
     </Scene>
   );
 };
@@ -297,9 +299,9 @@ const Price: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const tap = interpolate(t, [ev.s + 5.2, ev.s + 5.7], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   return (
     <Scene bg="bg-butter" t={t}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 40, textAlign: 'center', transform: `scale(${pop(t, ev.s)})`}}>
-        <div style={{fontWeight: 900, fontSize: 60}}>2–7일차, 전체 과정</div>
-        <div style={{fontWeight: 900, fontSize: 250, letterSpacing: '-.04em', lineHeight: 1.02}}>₩{n.toLocaleString('en-US')}</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 56, textAlign: 'center', transform: `scale(${pop(t, ev.s)})`}}>
+        <div style={{fontWeight: 900, fontSize: 56}}>2–7일차, 전체 과정</div>
+        <div style={{fontWeight: 900, fontSize: 230, letterSpacing: '-.04em', lineHeight: 1.02}}>₩{n.toLocaleString('en-US')}</div>
       </div>
       <div style={{position: 'absolute', left: 90, right: 90, top: 410, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 26}}>
         {(ev.facts as any[]).map((f, i) => {
@@ -346,11 +348,11 @@ export const BearJoyWelcome: React.FC<{plan: WelcomePlan}> = ({plan}) => {
       {inMain ? (
         <>
           <div style={{...cam, transform: `translate(${sx * .5}px,${sy * .5}px) scale(${1 + (z - 1) * .4})`}}><Backdrop scenes={plan.scenes} t={t} /><Drift t={t} /></div>
+          {R('behind', Behind)}
           <div style={cam}>
-            {R('behind', Behind)}
             {plan.segments.map((g, i) => (
               <Sequence key={i} from={Math.round(g.out_s * fps)} durationInFrames={Math.round((g.src_e - g.src_s) * fps)} layout="none">
-                <AbsoluteFill style={{transform: 'scale(.88)', transformOrigin: '0 100%'}}><OffthreadVideo src={staticFile('day0/subject.webm')} transparent muted trimBefore={Math.round(g.src_s * fps)} style={vid} /></AbsoluteFill>
+                <AbsoluteFill style={{transform: 'scale(.85)', transformOrigin: '0 100%'}}><OffthreadVideo src={staticFile('day0/subject.webm')} transparent muted trimBefore={Math.round(g.src_s * fps)} style={vid} /></AbsoluteFill>
               </Sequence>
             ))}
           </div>
