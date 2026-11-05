@@ -155,7 +155,6 @@ chip(139.67, 143.7, "함께 하루를 보내며", "☀️", right=64, y=290, ton
 behind(143.7, 147.8, "영어도 조금씩", size=180, y=40)
 phrase(148.7, 150.5, "Hello, little one", (2, ), size=104)
 phrase(151.9, 154.3, "Look! A bear!", (0, ), size=120, sound="whoosh")
-add("bear", c(151.9), c(155.0), "sparkle", -18, x=1440, y=420, h=480)
 burst(152.0, 1660, 560, ["✨", "⭐", "🦋"], sound=None)
 
 # ------------------------------------------------------------ for kids who already know
@@ -245,7 +244,7 @@ stick(127.0, 131.5, "💂", who="mark", dx=-1.25, dy=.55, size=170, sound="pop")
 stick(157.0, 159.4, "🐥", x=40, y=510, size=330, text="HELLO!", sound="boing", gain=-16)
 stick(159.5, 163.6, who=None, kind="palm", x=760, y=510, size=300, sound="sparkle")
 stick(169.0, 171.8, "⬆️", x=800, y=320, size=120, text="LEVEL UP", sound="chime", gain=-15)
-stick(189.3, 191.0, kind="giant", x=-470, y=70, size=1000, sound="impact", gain=-14)
+stick(189.3, 191.0, kind="giant", x=-720, y=70, size=1000, sound="impact", gain=-14)
 shakes.append(o(189.3))
 stick(192.0, 194.6, "🐹", x=1100, y=720, size=210, sound="pop")
 stick(239.5, 244.4, kind="row", emoji="🌻", x=500, y=470, size=96, sound="pop")
