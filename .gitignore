@@ -18,3 +18,4 @@ remotion/public/day0/sheets/
 remotion/public/day0/subject*.webm
 projects/*/music/*.mp3
 remotion/public/day0/owner/
+projects/*/versions/*/mix.wav

@@ -15,6 +15,11 @@ import day1 from '../../projects/2026-11-day1-class/versions/main/timeline.json'
 import {BearJoyWelcome, WelcomePlan} from './BearJoyWelcome';
 import day0 from '../../projects/2026-11-day0-welcome/versions/main/timeline.json';
 
+import {BearJoyWelcomeReel, WelcomeReelPlan} from './BearJoyWelcomeReel';
+import reelUse from '../../projects/2026-11-welcome-reels/versions/use/timeline.json';
+import reelPerfect from '../../projects/2026-11-welcome-reels/versions/perfect/timeline.json';
+import reelBear from '../../projects/2026-11-welcome-reels/versions/bearvoice/timeline.json';
+
 import {BearJoyPromo, PromoPlan} from './BearJoyPromo';
 import promoA from '../../projects/2026-11-day1-promos/versions/kkakkung/timeline.json';
 import promoB from '../../projects/2026-11-day1-promos/versions/three-phrases/timeline.json';
@@ -31,6 +36,10 @@ const Hello: React.FC = () => {
 
 const promo = (id: string, plan: PromoPlan) => (
   <Composition id={id} component={BearJoyPromo} durationInFrames={plan.frames} fps={30} width={1080} height={1920} defaultProps={{plan}} />
+);
+
+const wReel = (id: string, plan: WelcomeReelPlan) => (
+  <Composition id={id} component={BearJoyWelcomeReel} durationInFrames={plan.frames} fps={30} width={1080} height={1920} defaultProps={{plan}} />
 );
 
 const reel = (id: string, plan: Plan) => (
@@ -52,6 +61,9 @@ export const Root: React.FC = () => (
     {reelV2('ConfidenceFullV2', fullV2 as unknown as PlanV2)}
     {reelV2('Day24', day24 as unknown as PlanV2)}
     {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
+    {wReel('ReelUse', reelUse as unknown as WelcomeReelPlan)}
+    {wReel('ReelPerfect', reelPerfect as unknown as WelcomeReelPlan)}
+    {wReel('ReelBearVoice', reelBear as unknown as WelcomeReelPlan)}
     {promo('PromoKkakkung', promoA as unknown as PromoPlan)}
     {promo('PromoThreePhrases', promoB as unknown as PromoPlan)}
     {promo('PromoMistakesOk', promoC as unknown as PromoPlan)}
