@@ -39,11 +39,11 @@ PIC = [
     ("IMG_8407", 0.0, 5.833, {}),                 # hook
     ("IMG_8408", 0.0, 6.067, {}),                 # stones, pan to Mark — "This is Kyobo"
     ("IMG_8408", 0.0, 2.15, {"slow": 2.0, "crop": (864, 1536, 108, 384)}),  # the quote on the stones, closer
-    ("IMG_8411", 0.0, 4.60, {}),                  # walking in
-    ("IMG_8410", 0.0, 3.20, {}),                  # the picture-book table
-    ("IMG_8412", 1.0, 5.90, {}),                  # Mark picks up the books
+    ("IMG_8411", 0.0, 3.00, {}),                  # walking in (from behind only; owner: no face shots in the shop)
+    ("IMG_8410", 0.0, 3.20, {"slow": 1.5}),       # the picture-book table
+    ("IMG_8412", 7.3, 12.2, {}),                  # Mulberry Tree close-up (owner: no face shots in the shop)
     ("IMG_8413", 6.2, 14.0, {}),                  # 1 Mum, Me and the Mulberry Tree
-    ("IMG_8412", 13.0, 16.0, {}),                 # 2 Room on the Broom
+    ("IMG_8412", 13.6, 16.6, {}),                 # 2 Room on the Broom
     ("IMG_8413", 16.0, 25.2, {}),
     ("IMG_8413", 25.2, 37.39, {}),                # 3 I Love You Through and Through
     ("ART", 0.0, None, {}),                       # Bear & Joy Book 1 on the watercolour art, to the end

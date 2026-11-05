@@ -9,7 +9,7 @@ SHOTS = [
     (14.5, "The quote", "Closer, slowed shot of the stones. 사람은 책을 만들고 / 책은 사람을 만든다 pops in as he says it."),
     (19, "Inside", "Walking in. \"TOP 3\" pop."),
     (22.5, "Save it", "Picture-book table. \"📌 저장 필수!\" pop to drive saves."),
-    (25.5, "Book 1", "Mark picks up the books. \"No.1 · BEDTIME\" with a punch zoom."),
+    (25.5, "Book 1", "Close on Mum, Me and the Mulberry Tree in Mark's hands. \"No.1 · BEDTIME\" with a punch zoom."),
     (33.5, "Mulberry Tree", "Close on the cover. English keyword pops: GENTLE, SLOW & COZY, TOGETHER."),
     (38, "Book 2", "Room on the Broom. \"No.2 · RHYME\"."),
     (42.5, "Rhythm", "REPEAT, RHYTHM, KINDNESS pops."),
