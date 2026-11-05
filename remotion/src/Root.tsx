@@ -12,6 +12,9 @@ import day24tight from '../../projects/2026-11-day24-early-english/versions/tigh
 import {BearJoyClass, ClassPlan} from './BearJoyClass';
 import day1 from '../../projects/2026-11-day1-class/versions/main/timeline.json';
 
+import {BearJoyWelcome, WelcomePlan} from './BearJoyWelcome';
+import day0 from '../../projects/2026-11-day0-welcome/versions/main/timeline.json';
+
 import {BearJoyPromo, PromoPlan} from './BearJoyPromo';
 import promoA from '../../projects/2026-11-day1-promos/versions/kkakkung/timeline.json';
 import promoB from '../../projects/2026-11-day1-promos/versions/three-phrases/timeline.json';
@@ -54,5 +57,7 @@ export const Root: React.FC = () => (
     {promo('PromoMistakesOk', promoC as unknown as PromoPlan)}
     <Composition id="Day1Class" component={BearJoyClass} durationInFrames={(day1 as unknown as ClassPlan).frames} fps={30} width={1920} height={1080}
       defaultProps={{plan: day1 as unknown as ClassPlan}} />
+    <Composition id="Day0Welcome" component={BearJoyWelcome} durationInFrames={(day0 as unknown as WelcomePlan).frames} fps={30} width={1920} height={1080}
+      defaultProps={{plan: day0 as unknown as WelcomePlan}} />
   </>
 );

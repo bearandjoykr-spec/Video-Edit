@@ -25,7 +25,7 @@ const FONTS: [string, string, string][] = [
   ['Pretendard', '600', 'Pretendard-SemiBold.woff2'], ['Pretendard', '700', 'Pretendard-Bold.woff2'],
   ['Pretendard', '800', 'Pretendard-ExtraBold.woff2'], ['Pretendard', '900', 'Pretendard-Black.woff2'],
 ];
-const useFonts = () => {
+export const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
   useEffect(() => {
     Promise.all(FONTS.map(([f, w, file]) => new FontFace(f, `url(${staticFile('fonts/' + file)})`, {weight: w}).load().then((x) => document.fonts.add(x))))
@@ -123,7 +123,7 @@ const Rise: React.FC<{a: any; t: number}> = ({a, t}) => {
 };
 
 // ---------------------------------------------------------------- Korean captions
-const Caption: React.FC<{c: {s: number; e: number; ko: string; hi: string; left?: number}; t: number; raised: boolean; compact: boolean}> = ({c, t, raised, compact}) => {
+export const Caption: React.FC<{c: {s: number; e: number; ko: string; hi: string; left?: number}; t: number; raised: boolean; compact: boolean}> = ({c, t, raised, compact}) => {
   const o = interpolate(t, [c.s, c.s + .12, c.e - .1, c.e], [0, 1, 1, 0], clamp);
   const parts = c.hi ? c.ko.split(c.hi) : [c.ko];
   return (
@@ -152,7 +152,7 @@ const Hero: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   );
 };
 
-const Sparkles: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+export const Sparkles: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const p = (t - ev.s) / (ev.e - ev.s);
   if (p < 0 || p > 1) return null;
   return (
@@ -266,7 +266,7 @@ const Countdown: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   );
 };
 
-const Progress: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+export const Progress: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const p = interpolate(t, [ev.s, ev.e], [0, 1], clamp);
   const o = interpolate(t, [ev.s, ev.s + .5, ev.e - .3, ev.e], [0, 1, 1, 0], clamp);
   const bob = Math.abs(Math.sin(t * 5)) * 3;
@@ -312,13 +312,13 @@ const Title: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
 };
 
 // ---------------------------------------------------------------- ending cards
-const Page: React.FC<{children: React.ReactNode; bear?: boolean}> = ({children, bear = true}) => (
+export const Page: React.FC<{children: React.ReactNode; bear?: boolean}> = ({children, bear = true}) => (
   <AbsoluteFill style={{background: C.cream, fontFamily: FF, color: C.deep, padding: '76px 90px'}}>
     {bear ? <Img src={staticFile('brand/bear-butterfly.png')} style={{position: 'absolute', right: 70, top: 44, height: 200}} /> : null}
     {children}
   </AbsoluteFill>
 );
-const Rise2: React.FC<{t: number; at: number; children: React.ReactNode; style?: React.CSSProperties}> = ({t, at, children, style}) => {
+export const Rise2: React.FC<{t: number; at: number; children: React.ReactNode; style?: React.CSSProperties}> = ({t, at, children, style}) => {
   const k = spring({frame: Math.round((t - at) * 30), fps: 30, config: {damping: 13, stiffness: 140}});
   return <div style={{opacity: Math.min(1, k * 2), transform: `translateY(${(1 - k) * 44}px)`, ...style}}>{children}</div>;
 };
@@ -353,7 +353,7 @@ const REVIEWS = [
   {name: 'Ahn J.', who: '임신 32주 | 아빠', text: '부모가 될 준비를 한 걸음 더 할 수 있어 감사해요.', av: AV('#33475a', 'M23 37V29c0-19 34-20 35 0v8l-8-14c-7 6-16 8-27 8Z', '#a9bac9', '#efe0cc')},
   {name: 'Pyo J.', who: '신혼부부', text: '영어 공부에 대한 막연한 두려움을 설렘으로 바꿔준, 너무너무 즐겁고 감사한 7일이었습니다!', av: AV('#705343', 'M19 50V31c0-25 42-25 42 0v19l-9 5-3-9H30l-3 9Z', '#bb8f82', '#e9d8cf')},
 ];
-const Reviews: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
+export const Reviews: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
   <Page>
     <div style={{fontWeight: 900, fontSize: 78, letterSpacing: '-.02em'}}>함께한 작은 순간들</div>
     <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 30, marginTop: 92}}>
@@ -403,7 +403,7 @@ const Offer: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   );
 };
 
-const LogoCard: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+export const LogoCard: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const k = spring({frame: Math.round((t - ev.s) * 30), fps: 30, config: {damping: 16, stiffness: 90}});
   const fade = interpolate(t, [ev.e - .7, ev.e], [1, 0], clamp);
   return (
