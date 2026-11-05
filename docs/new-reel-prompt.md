@@ -31,3 +31,18 @@ then give me the Instagram package: MP4, cover and a Korean caption with 5 hasht
 - End on a line that ties to the brand ("…and that's the first little step").
 - Send Korean translations up front.
 - Good light, head and shoulders clear (needed for words behind the head), clip-on mic.
+
+# New class video prompt (landscape, like Day 6)
+
+```
+New Bear & Joy class video for YouTube, in the Day 6 style. Read CLAUDE.md, brand/BRAND.md and docs/class-video-style.md first.
+
+Footage: [Drive link or file name]
+Day number: DAY [7]   Title: [e.g. "Silly English"]
+Mark's phrases (English | Korean pronunciation | meaning):
+[...]
+Joy's script (Korean, word for word): [...]
+
+Show me a storyboard and a short sample first. Then export, and give me a ChatGPT thumbnail prompt and a Korean YouTube description.
+Also make a vertical Reel cut: [yes / no]
+```

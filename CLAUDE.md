@@ -31,6 +31,9 @@ Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper 
 ### Keeping sessions in sync
 Claude sessions cannot read each other's chats. This repo is the shared memory. Start every session with `git pull` and end it with a commit and push (videos stay out of git). Record new owner feedback in `brand/BRAND.md`.
 
+## Landscape class videos (YouTube, like Day 6)
+Follow `docs/class-video-style.md`. Same brand, approval and storyboard rules; different layout (phrase cards with Korean pronunciation, "Your turn" pauses, stress/flow marks, recap card).
+
 ## Making a new reel (the workflow the owner approved)
 1. Get the footage. Large files arrive as a Google Drive "anyone with the link" share. Download with
    `curl -L "https://drive.usercontent.google.com/download?id=<ID>&export=download&confirm=t"` into `raw-footage/`.
