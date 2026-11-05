@@ -24,6 +24,9 @@ Source of the look: bearandjoy.com. Structure adapted from a reference reel and 
 - Wordmark reads "The Bear & Joy Co." exactly. Never gold, never stretched, never recoloured. Art is never redrawn.
 - Logo only on the end card. Optional small bear watermark at the top-left, 60% opacity.
 
+## People
+- **Mark (마크 선생님, British teacher):** always use `brand/assets/mark-photo.jpg` (owner-supplied, 5 Nov 2026), shown as `mark-avatar.png` (circle with a sky-blue and butter-yellow ring) whenever a video mentions him. Never cut his image from other footage.
+
 ## Colour
 | Name | Hex | Use |
 |---|---|---|
