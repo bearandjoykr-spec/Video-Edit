@@ -12,6 +12,11 @@ import day24tight from '../../projects/2026-11-day24-early-english/versions/tigh
 import {BearJoyClass, ClassPlan} from './BearJoyClass';
 import day1 from '../../projects/2026-11-day1-class/versions/main/timeline.json';
 
+import {BearJoyPromo, PromoPlan} from './BearJoyPromo';
+import promoA from '../../projects/2026-11-day1-promos/versions/kkakkung/timeline.json';
+import promoB from '../../projects/2026-11-day1-promos/versions/three-phrases/timeline.json';
+import promoC from '../../projects/2026-11-day1-promos/versions/mistakes-ok/timeline.json';
+
 const Hello: React.FC = () => {
   const f = useCurrentFrame();
   return (
@@ -20,6 +25,10 @@ const Hello: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+const promo = (id: string, plan: PromoPlan) => (
+  <Composition id={id} component={BearJoyPromo} durationInFrames={plan.frames} fps={30} width={1080} height={1920} defaultProps={{plan}} />
+);
 
 const reel = (id: string, plan: Plan) => (
   <Composition id={id} component={BearJoyReel} durationInFrames={plan.frames} fps={plan.fps} width={1080} height={1920}
@@ -40,6 +49,9 @@ export const Root: React.FC = () => (
     {reelV2('ConfidenceFullV2', fullV2 as unknown as PlanV2)}
     {reelV2('Day24', day24 as unknown as PlanV2)}
     {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
+    {promo('PromoKkakkung', promoA as unknown as PromoPlan)}
+    {promo('PromoThreePhrases', promoB as unknown as PromoPlan)}
+    {promo('PromoMistakesOk', promoC as unknown as PromoPlan)}
     <Composition id="Day1Class" component={BearJoyClass} durationInFrames={(day1 as unknown as ClassPlan).frames} fps={30} width={1920} height={1080}
       defaultProps={{plan: day1 as unknown as ClassPlan}} />
   </>

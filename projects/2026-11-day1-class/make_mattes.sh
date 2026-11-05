@@ -12,4 +12,6 @@ ready 25.0 28.8
 together 278.0 285.0
 discovery 124.0 127.2
 adventure 337.4 341.4
+three 8.7 12.8
+mistake 297.5 304.0
 L
