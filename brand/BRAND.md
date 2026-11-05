@@ -86,3 +86,6 @@ Source of the look: bearandjoy.com. Structure adapted from a reference reel and 
 
 ## Class video feedback (owner, 5 Nov 2026)
 See "Owner feedback from Day 1" in `docs/class-video-style.md`: a plan card and countdown instead of a cold open, music only on the ending, and no QR code or link on screen.
+
+## Music source (owner, 5 Nov 2026) — overrides "original lo-fi" above and in docs/class-video-style.md
+Do not generate music (`synth_lofi.py` is for sound effects only from now on). The owner found the generated music not good enough. Find real licensed tracks, keep each track's source and licence with the project, and let the owner choose by ear, because Claude cannot hear them.
