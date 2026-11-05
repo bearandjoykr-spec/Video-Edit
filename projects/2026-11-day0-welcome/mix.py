@@ -23,11 +23,12 @@ for i, g in enumerate(plan["segments"]):
     fc.append(f"[v{i}]atrim={g['src_s']}:{g['src_e']},asetpts=PTS-STARTPTS,afade=t=in:d=0.02,afade=t=out:st={g['src_e'] - g['src_s'] - .03:.3f}:d=0.03,adelay={ms}|{ms}[vd{i}]")
     labels.append(f"[vd{i}]")
 n = 1
-if a.music:
-    inputs += ["-stream_loop", "-1", "-i", a.music]
-    s, e = plan["mainStart"], plan["mainEnd"]
-    fc.append(f"[{n}:a]atrim=0:{dur},asetpts=PTS-STARTPTS,aformat=channel_layouts=mono,"
-              f"volume='if(between(t,{s + .5},{e - .5}),0.16,1)':eval=frame,volume=-8dB,afade=t=in:d=0.5,afade=t=out:st={dur - 2.5}:d=2.5[mus]")
+# the owner's montage keeps its own sound
+inputs += ["-i", f"{A}/montage.wav"]; fc.append(f"[{n}:a]afade=t=out:st=11.8:d=0.5[mt]"); labels.append("[mt]"); n += 1
+if a.music:  # bed starts when the montage ends: full on title and offer, about 16 dB lower under speech
+    inputs += ["-i", a.music]
+    m0 = next(e["e"] for e in plan["events"] if e["type"] == "montage"); s_, e_ = plan["mainStart"] - m0, plan["mainEnd"] - m0; ms = int(m0 * 1000)
+    fc.append(f"[{n}:a]volume='if(between(t,{s_ + .4},{e_ - .4}),0.16,1)':eval=frame,volume=-8dB,afade=t=in:d=0.3,adelay={ms}|{ms}[mus]")
     labels.append("[mus]"); n += 1
 for k, cue in enumerate(plan["sfx"]):
     inputs += ["-i", f"{A}/sfx_{cue['sound']}.wav"]

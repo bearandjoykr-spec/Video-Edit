@@ -5,12 +5,13 @@ import React from 'react';
 import {AbsoluteFill, Easing, Img, OffthreadVideo, Sequence, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {evolvePath, getPointAtLength, getLength} from '@remotion/paths';
 import {noise2D} from '@remotion/noise';
-import {Caption, LogoCard, Progress, Reviews, Sparkles, useFonts} from './BearJoyClass';
+import {Caption, Progress, Reviews, Sparkles, useFonts} from './BearJoyClass';
 
 type Ev = {type: string; s: number; e: number; [k: string]: any};
 export type WelcomePlan = {
   name: string; fps: number; duration: number; frames: number; mainStart: number; mainEnd: number;
   segments: {src_s: number; src_e: number; out_s: number}[];
+  faces: {fps: number; mark: number[][]; joy: number[][]};
   captions: {s: number; e: number; ko: string; hi: string}[];
   scenes: {t: number; bg: string}[];
   events: Ev[]; zooms: {t: number; z: number; ox: number; oy: number}[]; shakes: number[];
@@ -73,7 +74,7 @@ const Phrase: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const words: string[] = ev.text.split(' ');
   const step = Math.min(.28, (ev.e - ev.s - .3) / words.length);
   return (
-    <div style={{position: 'absolute', left: 70, right: 70, top: ev.y ?? 48, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0 22px', opacity: fadeOut(t, ev.e), fontFamily: FF, fontWeight: 900, fontSize: ev.size ?? 92, letterSpacing: '-.02em', textShadow: INK_GLOW}}>
+    <div style={{position: 'absolute', left: 300, right: 300, top: ev.y ?? 48, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0 22px', opacity: fadeOut(t, ev.e), fontFamily: FF, fontWeight: 900, fontSize: ev.size ?? 92, letterSpacing: '-.02em', textShadow: INK_GLOW}}>
       {words.map((w, i) => {
         const k = pop(t, ev.s + i * step);
         const hot = (ev.hot ?? []).includes(i);
@@ -125,8 +126,8 @@ const EmojiBurst: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   return (
     <>
       {Array.from({length: ev.n ?? 18}).map((_, i) => {
-        const a = random(`ea${ev.s}${i}`) * Math.PI * 2, d = (ev.x > 1400 ? 50 : 160) + random(`ed${ev.s}${i}`) * (ev.x > 1400 ? 250 : 620), q = Easing.out(Easing.cubic)(p);
-        return <div key={i} style={{position: 'absolute', left: ev.x + Math.cos(a) * d * q, top: ev.y + Math.sin(a) * d * q * .7 + p * p * 240, fontSize: 44 + random(`ez${ev.s}${i}`) * 50, opacity: interpolate(p, [0, .1, .7, 1], [0, 1, 1, 0]), transform: `rotate(${p * 200 * (i % 2 ? 1 : -1)}deg) scale(${interpolate(p, [0, .2], [.3, 1], clamp)})`}}>{list[i % list.length]}</div>;
+        const a = random(`ea${ev.s}${i}`) * Math.PI * 2, d = (ev.x > 1400 ? 50 : 160) + random(`ed${ev.s}${i}`) * (ev.x > 1400 ? 250 : ev.big ? 900 : 620), q = Easing.out(Easing.cubic)(p);
+        return <div key={i} style={{position: 'absolute', left: ev.x + Math.cos(a) * d * q, top: ev.y + Math.sin(a) * d * q * .7 + p * p * 240, fontSize: (ev.big ? 70 : 44) + random(`ez${ev.s}${i}`) * (ev.big ? 110 : 50), opacity: interpolate(p, [0, .1, .7, 1], [0, 1, 1, 0]), transform: `rotate(${p * 200 * (i % 2 ? 1 : -1)}deg) scale(${interpolate(p, [0, .2], [.3, 1], clamp)})`}}>{list[i % list.length]}</div>;
       })}
     </>
   );
@@ -160,6 +161,68 @@ const Sheets: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
 const STOPS: [number, number][] = [[150, 800], [400, 560], [680, 760], [960, 520], [1240, 740], [1510, 500], [1770, 690]];
 const PATH = 'M 150 800 C 240 640 300 560 400 560 S 560 800 680 760 S 840 520 960 520 S 1120 760 1240 740 S 1400 500 1510 500 S 1660 700 1770 690';
 const DAYS = ['안녕, 곰아!', '같이 찾아봐요', '조이와 움직여요', '무엇을 좋아하나요?', '이야기 탐정', '깔깔 영어놀이', '우리의 모험'];
+
+// ------------------------------------------------------------ the owner's lesson clips and stickers
+const SUBJECT = .85;   // Mark and Joy are drawn at this scale, anchored bottom-left
+const Pip: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+  const {fps} = useVideoConfig();
+  const n: number = ev.clips.length, w = n > 1 ? 400 : 470, h = w * 9 / 16 * (n > 1 ? 1.0 : 1.0), gap = 16;
+  const top = n > 1 ? 130 : 210;
+  return (
+    <>
+      {(ev.clips as any[]).map((c, i) => {
+        const k = pop(t, ev.s + i * .14, true);
+        return (
+          <div key={c.src} style={{position: 'absolute', right: 64, top: top + i * (h + gap), width: w, height: h, opacity: Math.min(1, k * 3) * fadeOut(t, ev.e), transform: `translateX(${(1 - k) * 560}px) rotate(${(1 - k) * 5}deg)`, borderRadius: 20, overflow: 'hidden', border: `5px solid ${C.white}`, boxShadow: '0 16px 40px rgba(10,16,30,.35)', boxSizing: 'border-box'}}>
+            <Sequence from={Math.round(ev.s * fps)} durationInFrames={Math.round((ev.e - ev.s) * fps)} layout="none">
+              <OffthreadVideo src={img(`owner/${c.src}.mp4`)} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+            </Sequence>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
+// Stickers live inside the camera, so they stay with Mark and Joy; `who` follows that person's face.
+const headAt = (plan: WelcomePlan, who: 'mark' | 'joy', t: number) => {
+  const g = plan.segments.find((x) => t >= x.out_s && t < x.out_s + x.src_e - x.src_s) ?? plan.segments[0];
+  const src = g.src_s + t - g.out_s, list = plan.faces[who], f = src * plan.faces.fps;
+  const a = list[Math.min(list.length - 1, Math.max(0, Math.floor(f)))], b = list[Math.min(list.length - 1, Math.max(0, Math.floor(f) + 1))], m = f - Math.floor(f);
+  const mix = (i: number) => a[i] + (b[i] - a[i]) * m;
+  return {x: mix(0) * SUBJECT, y: 1080 - (1080 - mix(1)) * SUBJECT, w: mix(2) * SUBJECT};
+};
+const Stick: React.FC<{ev: Ev; t: number; plan: WelcomePlan}> = ({ev, t, plan}) => {
+  const k = pop(t, ev.s), o = Math.min(1, k * 3) * fadeOut(t, ev.e, .18);
+  const wob = Math.sin((t - ev.s) * 5) * 4;
+  let cx = ev.x ?? 0, cy = ev.y ?? 0, size = ev.size;
+  if (ev.who) {
+    const h = headAt(plan, ev.who, t);
+    cx = h.x + (ev.dx ?? 0) * h.w - size / 2; cy = h.y + (ev.dy ?? 0) * h.w - size / 2;
+  }
+  const base: React.CSSProperties = {position: 'absolute', left: cx, top: cy, opacity: o, fontFamily: FF, lineHeight: 1};
+  if (ev.kind === 'lines') {
+    return (
+      <svg width={size} height={size} viewBox="-50 -50 100 100" style={{...base, transform: `scale(${.6 + .4 * k})`}}>
+        {[-150, -120, -90, -60, -30].map((a) => { const r = a * Math.PI / 180, p = 34 + Math.sin((t - ev.s) * 12 + a) * 2; return <line key={a} x1={Math.cos(r) * p} y1={Math.sin(r) * p} x2={Math.cos(r) * (p + 12)} y2={Math.sin(r) * (p + 12)} stroke="#E8483F" strokeWidth="3.4" strokeLinecap="round" />; })}
+      </svg>
+    );
+  }
+  if (ev.kind === 'palm') return <Img src={staticFile(BEAR)} style={{...base, height: size, transform: `translateY(${(1 - k) * 120 + Math.sin(t * 6) * 5}px) scale(${.5 + .5 * k}) rotate(${wob}deg)`, transformOrigin: '50% 100%', filter: 'drop-shadow(0 10px 16px rgba(10,16,30,.35))'}} />;
+  if (ev.kind === 'giant') {
+    const up = interpolate(t, [ev.s, ev.s + .18], [-700, 0], {...clamp, easing: Easing.out(Easing.back(1.6))});
+    return <Img src={staticFile(BEAR)} style={{...base, height: size, transform: `translateX(${up}px) rotate(${-8 + wob}deg)`, filter: 'drop-shadow(0 18px 30px rgba(10,16,30,.35))'}} />;
+  }
+  if (ev.kind === 'row') {
+    return <div style={{...base, display: 'flex', gap: 14, fontSize: size}}>{[0, 1, 2, 3].map((i) => { const q = pop(t, ev.s + i * .35); return <span key={i} style={{display: 'inline-block', transform: `scale(${q}) rotate(${Math.sin(t * 3 + i) * 12}deg)`}}>{ev.emoji}</span>; })}</div>;
+  }
+  return (
+    <div style={{...base, transform: `scale(${.4 + .6 * k}) rotate(${(ev.rot ?? 0) + wob}deg)`, textAlign: 'center'}}>
+      <div style={{fontSize: size, filter: 'drop-shadow(0 8px 12px rgba(10,16,30,.28))'}}>{ev.emoji}</div>
+      {ev.text ? <div style={{display: 'inline-block', marginTop: ev.emoji === '🐥' ? -80 : 8, background: ev.emoji === '🐥' ? C.paper : 'transparent', color: ev.emoji === '🐥' ? C.ink : '#E25A2C', fontWeight: 900, fontSize: ev.emoji === '🐥' ? 62 : 84, padding: ev.emoji === '🐥' ? '10px 26px' : 0, borderRadius: 10, whiteSpace: 'nowrap', textShadow: ev.emoji === '🐥' ? 'none' : INK_GLOW, boxShadow: ev.emoji === '🐥' ? '0 8px 18px rgba(10,16,30,.25)' : 'none', position: 'relative'}}>{ev.text}</div> : null}
+    </div>
+  );
+};
 
 // ------------------------------------------------------------ full-screen moments
 const Scene: React.FC<{bg: string; children: React.ReactNode; t: number; wash?: number}> = ({bg, children, t, wash = .4}) => (
@@ -208,7 +271,7 @@ const Wipe: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const x = interpolate(t, [ev.s, mid, ev.e], [-110, 0, 110], {...clamp, easing: Easing.inOut(Easing.cubic)});
   return (
     <AbsoluteFill style={{transform: `translateX(${x}%)`, background: ev.color ?? C.butter, justifyContent: 'center', alignItems: 'center', fontFamily: FF}}>
-      <Img src={staticFile(BEAR)} style={{height: 400, transform: `translateY(${-Math.abs(Math.sin(t * 10)) * 26}px)`}} />
+      {ev.cloud ? [0, 1, 2].map((c) => <Img key={c} src={img(`cloud${c}.png`)} style={{position: 'absolute', left: -300 + c * 500, top: 40 + c * 280, width: 1500, opacity: .95}} />) : <Img src={staticFile(BEAR)} style={{height: 400, transform: `translateY(${-Math.abs(Math.sin(t * 10)) * 26}px)`}} />}
       {ev.text ? <div style={{color: C.deep, fontWeight: 900, fontSize: 90, letterSpacing: '-.02em', marginTop: 10}}>{ev.text}</div> : null}
     </AbsoluteFill>
   );
@@ -357,15 +420,18 @@ export const BearJoyWelcome: React.FC<{plan: WelcomePlan}> = ({plan}) => {
                 <AbsoluteFill style={{transform: 'scale(.85)', transformOrigin: '0 100%'}}><OffthreadVideo src={staticFile('day0/subject.webm')} transparent muted trimBefore={Math.round(g.src_s * fps)} style={vid} /></AbsoluteFill>
               </Sequence>
             ))}
+            {E('stick').map((ev, k) => (live(ev) ? <Stick key={`st${k}`} ev={ev} t={t} plan={plan} /> : null))}
           </div>
+          <div style={{position: 'absolute', left: 56, top: 34, padding: '8px 16px', borderRadius: 18, background: 'rgba(255,255,255,.82)', boxShadow: '0 6px 18px rgba(10,16,30,.12)'}}><Img src={img('little-steps-wordmark.png')} style={{height: 84, display: 'block'}} /></div>
           {cap ? <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,0) 70%, rgba(10,16,30,.68) 100%)'}} /> : null}
-          <Resident t={t} hide={E('bear').some((b) => live(b)) || E('sheets').some((b) => live(b, .3))} />
+          <Resident t={t} hide={E('bear').some((b) => live(b)) || E('sheets').some((b) => live(b, .3)) || E('pip').some((b) => live(b, .3))} />
           {R('phrase', Phrase)}
           {R('chip', ChipEl)}
           {R('bubble', Bubble)}
           {R('strike', Strike)}
           {R('bear', FlyBear)}
           {R('sheets', Sheets)}
+          {R('pip', Pip)}
           {R('stamp', Stamp)}
           {R('burst', EmojiBurst)}
           {R('sparkles', Sparkles as any)}
@@ -373,6 +439,9 @@ export const BearJoyWelcome: React.FC<{plan: WelcomePlan}> = ({plan}) => {
           {R('progress', Progress as any)}
         </>
       ) : null}
+      {E('montage').map((ev, k) => (live(ev) ? (
+        <AbsoluteFill key={`mt${k}`}><Sequence from={0} durationInFrames={Math.round(ev.e * fps) + 2} layout="none"><OffthreadVideo src={img('owner/montage.mp4')} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} /></Sequence></AbsoluteFill>
+      ) : null))}
       {R('title', Title)}
       {R('promise', Promise_)}
       {R('free', FreeDay)}
@@ -380,7 +449,9 @@ export const BearJoyWelcome: React.FC<{plan: WelcomePlan}> = ({plan}) => {
       {R('inside', Inside)}
       {R('reviews', Reviews as any)}
       {R('price', Price)}
-      {R('logo', LogoCard as any)}
+      {E('logoend').map((ev, k) => (live(ev) ? (
+        <AbsoluteFill key={`le${k}`} style={{opacity: interpolate(t, [ev.e - .7, ev.e], [1, 0], clamp), background: C.cream}}><Sequence from={Math.round(ev.s * fps)} durationInFrames={Math.round((ev.e - ev.s) * fps)} layout="none"><OffthreadVideo src={img('owner/logo-end.mp4')} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} /></Sequence></AbsoluteFill>
+      ) : null))}
       {R('wipe', Wipe)}
     </AbsoluteFill>
   );
