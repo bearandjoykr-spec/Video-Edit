@@ -26,6 +26,7 @@ Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper 
 - One-time setup: `bash setup-mac.sh` from this repo. It clones to `~/Video-Edit`, installs the tools, and adds a pointer to `~/.claude/CLAUDE.md`.
 - Python: use `.venv/bin/python` (not `python3 -I`). Whisper is at `tools/whisper.cpp/build/bin/whisper-cli`, with its model in `tools/whisper.cpp/models/`.
 - Remotion: omit `--browser-executable` (it uses its own Chrome on the Mac). HyperFrames background removal: add `--device coreml`, which is much faster than the cloud CPU.
+- Extra tools (in git-ignored `tools/`, install again if missing): voice cleanup `tools/deepfilter/deep-filter`, and `tools/fx-venv` (Python 3.12: MediaPipe, OpenCV, librosa, a current yt-dlp, PyMuPDF). The Little Steps welcome film is the example of using them: `projects/2026-11-day0-welcome/`.
 - Footage can be read straight from `~/Downloads` or `~/Desktop/Footage For Claude`, so no Drive link is needed.
 
 ### Keeping sessions in sync

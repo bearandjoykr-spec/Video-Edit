@@ -271,12 +271,13 @@ for L in LENS[:-1]:
 t = marks[0]; wip(t, "#FFFFFF", cloud=True)
 nx = marks[1]
 add("free", t, nx, "impact", -15, items=[
+    {"title": "1일차 전체 영상", "emoji": "🎬"},
     {"title": "워크시트", "sheet": "sheets/day1.jpg"},
     {"title": "웹사이트 놀이 게임", "emoji": "🎮"},
     {"title": "Mark와 Joy의 지원", "photo": "brand/mark-joy-photo.jpg"}])
 shakes.append(round(t, 3))
-for i in range(3): cue(t + 1.1 + i * .55, "pop", -18)
-cue(t + 2.8, "chime", -19)
+for i in range(4): cue(t + 1.1 + i * .55, "pop", -18)
+cue(t + 3.3, "chime", -19)
 t = nx; nx = marks[2]; wip(t, "#AECCE6")
 add("journey", t, nx, walk=6.5)
 for i in range(7): cue(t + .5 + (i / 6) * 6.0, "pop", -21)

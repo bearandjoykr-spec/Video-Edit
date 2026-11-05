@@ -42,3 +42,7 @@ Same reading-speed rule as Reels: at most ~6 Korean characters per second and at
 - **Viewers are already on the Little Steps page**, so no QR code or link on screen. The offer card uses the page's own wording and button text ("전체 과정 열기 · ₩47,000").
 - Joy's Korean translation of Mark's lines is available on request and is used word for word.
 - Check the footage first for burned-in items (logo, labels, small previews) and keep cards clear of them.
+
+## Little Steps to Big Adventures (welcome film, internal name "Day 0"), approved by the owner 5 Nov 2026
+Template `remotion/src/BearJoyWelcome.tsx`, project `projects/2026-11-day0-welcome/`. The owner liked: Mark and Joy cut out and placed in the owner's watercolour paintings with moving clouds, words behind heads, stickers that follow heads, real lesson clips, and an offer ending in place of a long logo hold. The owner's own edit is worth watching before planning: ask for it first, and build on its cuts and ideas.
+

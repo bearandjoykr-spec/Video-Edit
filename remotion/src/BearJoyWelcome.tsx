@@ -295,15 +295,15 @@ const FreeDay: React.FC<{ev: Ev; t: number}> = ({ev, t}) => (
     <EmojiBurst ev={{...ev, e: ev.s + 2, x: 960, y: 300, n: 26, emoji: ['✨', '🎉', '⭐', '🦋']}} t={t} />
     <div style={{position: 'absolute', left: 0, right: 0, top: 60, textAlign: 'center', transform: `scale(${pop(t, ev.s)})`}}>
       <div style={{fontWeight: 900, fontSize: 210, letterSpacing: '-.04em', lineHeight: 1}}>1일차는 무료!</div>
-      <div style={{fontWeight: 800, fontSize: 56, marginTop: 14}}>무료 계정으로 시작해요</div>
+      <div style={{fontWeight: 800, fontSize: 50, marginTop: 14}}>무료 계정을 만들면 바로 시작해요 · 결제는 필요하지 않아요</div>
     </div>
-    <div style={{position: 'absolute', left: 90, right: 90, top: 440, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 36}}>
+    <div style={{position: 'absolute', left: 70, right: 70, top: 440, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 28}}>
       {(ev.items as any[]).map((it, i) => {
         const k = pop(t, ev.s + 1.1 + i * .55);
         return (
-          <div key={i} style={{background: C.paper, borderRadius: 40, padding: '44px 26px', textAlign: 'center', boxShadow: '0 18px 44px rgba(23,59,92,.16)', transform: `translateY(${(1 - k) * 500}px) rotate(${(1 - k) * 12}deg)`, opacity: Math.min(1, k * 3), minHeight: 420}}>
+          <div key={i} style={{background: C.paper, borderRadius: 40, padding: '44px 16px', textAlign: 'center', boxShadow: '0 18px 44px rgba(23,59,92,.16)', transform: `translateY(${(1 - k) * 500}px) rotate(${(1 - k) * 12}deg)`, opacity: Math.min(1, k * 3), minHeight: 420}}>
             {it.sheet ? <Img src={img(it.sheet)} style={{height: 210, borderRadius: 8, boxShadow: '0 8px 20px rgba(10,16,30,.25)', transform: 'rotate(-4deg)'}} /> : it.photo ? <Img src={staticFile(it.photo)} style={{height: 210, maxWidth: '100%', objectFit: 'cover', borderRadius: 22, boxShadow: '0 8px 20px rgba(10,16,30,.25)'}} /> : it.avatar ? <Img src={staticFile(it.avatar)} style={{height: 210}} /> : <div style={{fontSize: 170, lineHeight: '210px'}}>{it.emoji}</div>}
-            <div style={{fontWeight: 900, fontSize: 56, marginTop: 28}}>{it.title}</div>
+            <div style={{fontWeight: 900, fontSize: 46, marginTop: 28, wordBreak: 'keep-all', lineHeight: 1.15}}>{it.title}</div>
           </div>
         );
       })}
