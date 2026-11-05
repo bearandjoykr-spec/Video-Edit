@@ -96,3 +96,10 @@ Do not generate music (`synth_lofi.py` is for sound effects only from now on). T
 "Day 0" is an internal name only. On screen and in public it is **Little Steps to Big Adventures**. Keep words well away from the frame edges (at least 64 px at the sides and 40 px at the top of a 1920×1080 frame).
 Backgrounds: the owner's watercolour Oxford and Seoul paintings (`brand/assets/art-river.jpg`, `art-both.jpg`, `art-lawn.jpg`), with slow moving clouds kept in the sky over them.
 No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from their end card clipped the bear's head. The owner's animated logo closes the video.
+
+## Day 25 reel feedback (owner, 6 Nov 2026)
+- Captions: Korean only, no English subtitle line. English appears only as big keyword pops (BEDTIME, RHYME, LOVE…) and as the word behind Mark's head ("TOP 3").
+- The owner asked for an energetic, "viral" Korean Instagram feel and a stronger image filter: warm, punchy grade with light sharpening (see `projects/2026-11-day25-kyobo/cut.py`, `LOOK`).
+- iPhone footage arrives as HLG HDR. Convert it to SDR with macOS `avconvert -p Preset1920x1080` before editing, or it looks washed out.
+- Phone voice memos: clean with `projects/2026-11-day25-kyobo/voice.sh` (DeepFilterNet + clarity EQ). The owner approved the result.
+- Book 1 cover for promos: `brand/assets/book1-cover.png` (from the publisher review PDF, page 2). Reservation call to action: comment 🐻 or DM.

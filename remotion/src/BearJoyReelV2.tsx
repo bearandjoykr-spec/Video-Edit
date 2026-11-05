@@ -190,6 +190,31 @@ const Avatar: React.FC<{ev: Ev; t: number; fps: number; slots?: PlanV2['slots']}
   );
 };
 
+// A book cover that bounces in, floats, and catches a light sweep (Day 25: Bear & Joy Book 1).
+const Cover: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const f = Math.round((t - ev.s) * fps);
+  const inS = spring({frame: f, fps, config: {damping: 10, stiffness: 120, mass: 0.8}});
+  const out = interpolate(t, [ev.e - 0.2, ev.e], [1, 0], clamp);
+  const sweep = interpolate((t - ev.s - 0.5) % 3.2, [0, 0.9], [-60, 160], clamp);
+  const bob = Math.sin((t - ev.s) * 2.2) * 10;
+  const width = ev.width ?? 680;
+  return (
+    <div style={{position: 'absolute', left: 0, right: 0, top: ev.top ?? 440, display: 'flex', justifyContent: 'center', opacity: Math.min(1, inS * 2) * out}}>
+      <div style={{position: 'relative', width, height: width, borderRadius: 18, overflow: 'hidden',
+        transform: `translateY(${(1 - inS) * 260 + bob}px) scale(${interpolate(inS, [0, 1], [0.5, 1])}) rotate(${interpolate(inS, [0, 1], [-14, -2])}deg)`,
+        boxShadow: '0 30px 70px rgba(10,16,30,.55), 0 0 0 10px rgba(255,255,255,.95)'}}>
+        <Img src={staticFile(ev.img)} style={{width: '100%', height: '100%'}} />
+        <div style={{position: 'absolute', inset: 0, background: `linear-gradient(115deg, rgba(255,255,255,0) ${sweep - 20}%, rgba(255,255,255,.55) ${sweep}%, rgba(255,255,255,0) ${sweep + 20}%)`}} />
+      </div>
+      {[[-0.42, -0.08, 0], [0.44, 0.1, 0.7], [-0.36, 0.86, 1.4], [0.4, 0.92, 2.1]].map(([x, y, d], k) => {
+        const tw = 0.6 + 0.4 * Math.sin((t - ev.s) * 5 + d * 3);
+        return <div key={k} style={{position: 'absolute', left: `calc(50% + ${x * width * 1.1}px)`, top: y * width - 30, fontSize: 80, fontFamily: EMOJI,
+          opacity: inS * tw, transform: `scale(${tw}) rotate(${k * 20}deg)`}}>✨</div>;
+      })}
+    </div>
+  );
+};
+
 const FollowNow: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = usePop(t, ev.s, ev.e, fps);
   const press = (tt: number) => interpolate(t, [tt - 0.06, tt, tt + 0.16], [0, 1, 0], clamp);
@@ -335,6 +360,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       <Grain frame={frame} />
       {plan.scrim ? <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,0) 38%, rgba(10,16,30,.42) 52%, rgba(10,16,30,.62) 72%, rgba(10,16,30,.45) 100%)'}} /> : null}
       {E('tag').map((ev, k) => (live(ev) ? <Tag key={k} ev={ev} t={t} fps={fps} pos={plan.tagPos} /> : null))}
+      {E('cover').map((ev, k) => (live(ev) ? <Cover key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('pop').map((ev, k) => (live(ev) ? <Pop key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
       {E('avatar').map((ev, k) => (live(ev) ? <Avatar key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
       {E('follow').map((ev, k) => (live(ev) ? <FollowNow key={k} ev={ev} t={t} fps={fps} /> : null))}

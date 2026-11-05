@@ -1,0 +1,834 @@
+{
+ "name": "day25-main",
+ "media": "day25/main",
+ "fps": 30,
+ "duration": 83.06,
+ "frames": 2492,
+ "speechEnd": 78.06,
+ "day": 25,
+ "segments": [
+  {
+   "src_s": 0,
+   "src_e": 83.06,
+   "out_s": 0
+  }
+ ],
+ "captions": [
+  {
+   "i": 0,
+   "s": 0.0,
+   "e": 5.8,
+   "ko": "우리 아이에게 어떤 책 추천하세요?",
+   "en": "",
+   "hi": "어떤 책",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 1,
+   "s": 6.0,
+   "e": 10.4,
+   "ko": "여기는 서울에서 가장 유명한 서점, 교보문고",
+   "en": "",
+   "hi": "교보문고",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 2,
+   "s": 10.4,
+   "e": 16.15,
+   "ko": "입구 앞 돌에 새겨진 글귀 👀",
+   "en": "",
+   "hi": "글귀",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 3,
+   "s": 16.2,
+   "e": 17.9,
+   "ko": "정말 멋진 말이죠.",
+   "en": "",
+   "hi": "멋진",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 4,
+   "s": 17.9,
+   "e": 23.95,
+   "ko": "그래서 모든 부모님께 추천하는 영어 그림책 3권!",
+   "en": "",
+   "hi": "영어 그림책 3권!",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 5,
+   "s": 24.0,
+   "e": 27.95,
+   "ko": "첫 번째 책 Mum, Me and the Mulberry Tree",
+   "en": "",
+   "hi": "첫 번째 책",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 6,
+   "s": 27.95,
+   "e": 31.3,
+   "ko": "잔잔하고 아름다운 이야기",
+   "en": "",
+   "hi": "아름다운",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 7,
+   "s": 31.3,
+   "e": 34.4,
+   "ko": "천천히 읽는 잠자리 독서에 딱이고",
+   "en": "",
+   "hi": "잠자리 독서에",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 8,
+   "s": 34.4,
+   "e": 36.75,
+   "ko": "그림 보며 함께 이야기 나눠요",
+   "en": "",
+   "hi": "함께",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 9,
+   "s": 36.75,
+   "e": 41.0,
+   "ko": "두 번째 책 줄리아 도널드슨의 Room on the Broom",
+   "en": "",
+   "hi": "두 번째 책",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 10,
+   "s": 41.0,
+   "e": 44.5,
+   "ko": "라임과 반복, 아이가 저절로 따라 해요",
+   "en": "",
+   "hi": "저절로",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 11,
+   "s": 44.5,
+   "e": 46.55,
+   "ko": "그렇게 영어 리듬이 몸에 배요",
+   "en": "",
+   "hi": "영어 리듬이",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 12,
+   "s": 46.55,
+   "e": 48.6,
+   "ko": "친절함을 배우는 이야기",
+   "en": "",
+   "hi": "친절함을",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 13,
+   "s": 48.6,
+   "e": 52.1,
+   "ko": "세 번째 책 I Love You Through and Through",
+   "en": "",
+   "hi": "세 번째 책",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 14,
+   "s": 52.1,
+   "e": 56.8,
+   "ko": "아이의 모든 모습을 사랑한다는 짧고 쉬운 문장",
+   "en": "",
+   "hi": "모든 모습을",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 15,
+   "s": 56.8,
+   "e": 61.15,
+   "ko": "어린아이에게 딱! 꼭 안고 읽어주세요 🤗",
+   "en": "",
+   "hi": "꼭 안고",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 16,
+   "s": 61.2,
+   "e": 65.3,
+   "ko": "그리고 깜짝 보너스! 곧 나와요",
+   "en": "",
+   "hi": "깜짝 보너스!",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 17,
+   "s": 65.3,
+   "e": 68.6,
+   "ko": "저희 책 Bear & Joy 1권",
+   "en": "",
+   "hi": "Bear & Joy",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 18,
+   "s": 68.6,
+   "e": 70.9,
+   "ko": "곰이 기쁨을 찾은 이야기 🐻🦋",
+   "en": "",
+   "hi": "기쁨을",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 19,
+   "s": 70.95,
+   "e": 74.9,
+   "ko": "🐻 댓글 또는 DM으로 예약하세요",
+   "en": "",
+   "hi": "예약하세요",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 20,
+   "s": 74.9,
+   "e": 78.06,
+   "ko": "한국에서 가장 먼저 만나보세요!",
+   "en": "",
+   "hi": "가장 먼저",
+   "demo": false,
+   "words": []
+  }
+ ],
+ "events": [
+  {
+   "type": "behind",
+   "ko": "TOP 3",
+   "en": "영국인 선생님이 고른 영어 그림책",
+   "size": 300,
+   "top": 640,
+   "s": 0.25,
+   "e": 5.7,
+   "k": 0
+  },
+  {
+   "type": "pop",
+   "s": 11.8,
+   "e": 16.1,
+   "text": "사람은 책을 만들고",
+   "kicker": "교보문고 앞 ✍️",
+   "slot": "q1",
+   "k": 0
+  },
+  {
+   "type": "pop",
+   "s": 13.7,
+   "e": 16.1,
+   "text": "책은 사람을 만든다",
+   "kicker": "",
+   "slot": "q2",
+   "k": 1
+  },
+  {
+   "type": "pop",
+   "s": 18.1,
+   "e": 20.9,
+   "text": "TOP 3",
+   "kicker": "부모님 추천 📚",
+   "slot": "top",
+   "k": 2
+  },
+  {
+   "type": "punch",
+   "s": 18.1,
+   "e": 18.400000000000002,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 21.0,
+   "e": 23.9,
+   "text": "📌 저장 필수!",
+   "kicker": "",
+   "slot": "top",
+   "k": 3
+  },
+  {
+   "type": "pop",
+   "s": 24.12,
+   "e": 27.9,
+   "text": "📗 BEDTIME",
+   "kicker": "추천 No.1",
+   "slot": "top",
+   "k": 4
+  },
+  {
+   "type": "punch",
+   "s": 24.12,
+   "e": 24.42,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 28.1,
+   "e": 30.9,
+   "text": "GENTLE 🍃",
+   "kicker": "",
+   "slot": "top",
+   "k": 5
+  },
+  {
+   "type": "pop",
+   "s": 32.9,
+   "e": 34.4,
+   "text": "SLOW & COZY 🌙",
+   "kicker": "",
+   "slot": "top",
+   "k": 6
+  },
+  {
+   "type": "pop",
+   "s": 34.5,
+   "e": 36.6,
+   "text": "TOGETHER 💬",
+   "kicker": "",
+   "slot": "top",
+   "k": 7
+  },
+  {
+   "type": "pop",
+   "s": 36.84,
+   "e": 40.9,
+   "text": "🧹 RHYME",
+   "kicker": "추천 No.2",
+   "slot": "top",
+   "k": 8
+  },
+  {
+   "type": "punch",
+   "s": 36.84,
+   "e": 37.14,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 42.2,
+   "e": 43.9,
+   "text": "REPEAT 🔁",
+   "kicker": "",
+   "slot": "top",
+   "k": 9
+  },
+  {
+   "type": "pop",
+   "s": 44.6,
+   "e": 46.5,
+   "text": "RHYTHM 🥁",
+   "kicker": "",
+   "slot": "top",
+   "k": 10
+  },
+  {
+   "type": "pop",
+   "s": 47.25,
+   "e": 48.55,
+   "text": "KINDNESS 💛",
+   "kicker": "",
+   "slot": "top",
+   "k": 11
+  },
+  {
+   "type": "pop",
+   "s": 48.68,
+   "e": 52.0,
+   "text": "💛 LOVE",
+   "kicker": "추천 No.3",
+   "slot": "top",
+   "k": 12
+  },
+  {
+   "type": "punch",
+   "s": 48.68,
+   "e": 48.98,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 52.8,
+   "e": 54.9,
+   "text": "SIMPLE ✨",
+   "kicker": "",
+   "slot": "top",
+   "k": 13
+  },
+  {
+   "type": "pop",
+   "s": 59.4,
+   "e": 61.1,
+   "text": "CUDDLE 🤗",
+   "kicker": "",
+   "slot": "top",
+   "k": 14
+  },
+  {
+   "type": "pop",
+   "s": 61.37,
+   "e": 63.6,
+   "text": "🎁 BONUS",
+   "kicker": "깜짝",
+   "slot": "mid",
+   "k": 15
+  },
+  {
+   "type": "punch",
+   "s": 61.37,
+   "e": 61.669999999999995,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 63.6,
+   "e": 65.3,
+   "text": "COMING SOON 🎉",
+   "kicker": "곧 출간",
+   "slot": "mid",
+   "k": 16
+  },
+  {
+   "type": "pop",
+   "s": 71.0,
+   "e": 74.9,
+   "text": "🐻 BEAR",
+   "kicker": "댓글 = 예약 ✅",
+   "slot": "ctop",
+   "k": 17
+  },
+  {
+   "type": "punch",
+   "s": 71.0,
+   "e": 71.3,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 75.5,
+   "e": 78.0,
+   "text": "FIRST IN KOREA 🇰🇷",
+   "kicker": "한국에서 가장 먼저",
+   "slot": "ctop",
+   "k": 18
+  },
+  {
+   "type": "tag",
+   "s": 8.3,
+   "e": 11.7,
+   "name": "Mark",
+   "flags": "🇬🇧",
+   "role": "영국인 선생님 · Bear & Joy 작가"
+  },
+  {
+   "type": "cover",
+   "s": 65.4,
+   "e": 78.06,
+   "img": "brand/book1-cover.png"
+  },
+  {
+   "type": "punch",
+   "s": 65.4,
+   "e": 65.75,
+   "z": 1.06,
+   "shake": 6
+  },
+  {
+   "type": "push",
+   "s": 61.09,
+   "e": 83.06,
+   "from": 1.0,
+   "to": 1.1
+  },
+  {
+   "type": "end",
+   "s": 77.96,
+   "e": 83.06,
+   "short": false,
+   "share": "🐻 댓글 남기고 Book 1 예약하기"
+  },
+  {
+   "type": "badge",
+   "s": 0.0,
+   "e": 61.09,
+   "day": 25
+  }
+ ],
+ "zooms": [
+  {
+   "t": 0.0,
+   "z": 1.0
+  },
+  {
+   "t": 6.0,
+   "z": 1.06
+  },
+  {
+   "t": 10.4,
+   "z": 1.0
+  },
+  {
+   "t": 16.2,
+   "z": 1.06
+  },
+  {
+   "t": 17.9,
+   "z": 1.0
+  },
+  {
+   "t": 24.0,
+   "z": 1.06
+  },
+  {
+   "t": 27.95,
+   "z": 1.0
+  },
+  {
+   "t": 31.3,
+   "z": 1.06
+  },
+  {
+   "t": 34.4,
+   "z": 1.0
+  },
+  {
+   "t": 36.75,
+   "z": 1.06
+  },
+  {
+   "t": 41.0,
+   "z": 1.0
+  },
+  {
+   "t": 44.5,
+   "z": 1.06
+  },
+  {
+   "t": 46.55,
+   "z": 1.0
+  },
+  {
+   "t": 48.6,
+   "z": 1.06
+  },
+  {
+   "t": 52.1,
+   "z": 1.0
+  },
+  {
+   "t": 56.8,
+   "z": 1.06
+  },
+  {
+   "t": 61.2,
+   "z": 1.0
+  },
+  {
+   "t": 65.3,
+   "z": 1.06
+  },
+  {
+   "t": 68.6,
+   "z": 1.0
+  },
+  {
+   "t": 70.95,
+   "z": 1.06
+  },
+  {
+   "t": 74.9,
+   "z": 1.0
+  }
+ ],
+ "music": {
+  "dropouts": [],
+  "drops": []
+ },
+ "slots": {
+  "top": {
+   "left": 0,
+   "right": 0,
+   "top": 300,
+   "rot": -3
+  },
+  "mid": {
+   "left": 0,
+   "right": 0,
+   "top": 700,
+   "rot": -2
+  },
+  "q1": {
+   "left": 0,
+   "right": 0,
+   "top": 500,
+   "rot": -2
+  },
+  "q2": {
+   "left": 0,
+   "right": 0,
+   "top": 690,
+   "rot": 2
+  },
+  "ctop": {
+   "left": 0,
+   "right": 0,
+   "top": 150,
+   "rot": -2
+  }
+ },
+ "tagPos": {
+  "left": 50,
+  "top": 330
+ },
+ "scrim": true,
+ "captionTop": 1330,
+ "sfx": [
+  {
+   "t": 0.1,
+   "sound": "whoosh",
+   "gain": -9
+  },
+  {
+   "t": 0.25,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 0.3,
+   "sound": "sparkle",
+   "gain": -13
+  },
+  {
+   "t": 5.753,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 8.3,
+   "sound": "whoosh",
+   "gain": -12
+  },
+  {
+   "t": 11.8,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 11.82,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 13.7,
+   "sound": "sparkle",
+   "gain": -11
+  },
+  {
+   "t": 16.12,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 18.1,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 20.72,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 21.0,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 23.92,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 24.12,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 28.1,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 28.82,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 32.9,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 34.5,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 36.62,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 36.84,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 39.62,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 42.2,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 44.6,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 47.25,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 48.68,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 48.82,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 52.8,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 59.4,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 61.01,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 61.37,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 63.6,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 65.2,
+   "sound": "whoosh",
+   "gain": -8
+  },
+  {
+   "t": 65.4,
+   "sound": "impact",
+   "gain": -6
+  },
+  {
+   "t": 65.5,
+   "sound": "sparkle",
+   "gain": -9
+  },
+  {
+   "t": 65.9,
+   "sound": "chime",
+   "gain": -9
+  },
+  {
+   "t": 71.0,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 75.5,
+   "sound": "sparkle",
+   "gain": -11
+  },
+  {
+   "t": 77.96,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 78.11,
+   "sound": "sparkle",
+   "gain": -10
+  },
+  {
+   "t": 79.96,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 80.86,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 80.91,
+   "sound": "chime",
+   "gain": -9
+  }
+ ]
+}
