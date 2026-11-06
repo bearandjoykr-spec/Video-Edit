@@ -103,3 +103,4 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - iPhone footage arrives as HLG HDR. Convert it to SDR with macOS `avconvert -p Preset1920x1080` before editing, or it looks washed out.
 - Phone voice memos: clean with `projects/2026-11-day25-kyobo/voice.sh` (DeepFilterNet + clarity EQ). The owner approved the result.
 - Book 1 cover for promos: `brand/assets/book1-cover.png` (from the publisher review PDF, page 2). Reservation call to action: comment 🐻 or DM.
+- **Describing the Bear & Joy book (owner, 6 Nov 2026):** never translate the title as "곰이 기쁨을 찾았다" or 「곰이 기쁨을 찾은 이야기」. Keep the names: **「Bear가 Joy를 찾은 이야기!」**.
