@@ -8,6 +8,7 @@ import shortV2 from '../../projects/2026-11-confidence/versions/short/timeline_v
 import fullV2 from '../../projects/2026-11-confidence/versions/full/timeline_v2.json';
 import day24 from '../../projects/2026-11-day24-early-english/versions/main/timeline_v2.json';
 import {BearJoyClass, ClassPlan} from './BearJoyClass';
+import day5main from '../../projects/2026-11-firststeps-day5/versions/main/timeline_class.json';
 import day5demo from '../../projects/2026-11-firststeps-day5/versions/demo/timeline_class.json';
 import day24tight from '../../projects/2026-11-day24-early-english/versions/tight/timeline_v2.json';
 
@@ -43,6 +44,7 @@ export const Root: React.FC = () => (
     {reelV2('ConfidenceShortV2', shortV2 as unknown as PlanV2)}
     {reelV2('ConfidenceFullV2', fullV2 as unknown as PlanV2)}
     {reelV2('Day24', day24 as unknown as PlanV2)}
+    {classVideo('Day5Class', day5main as unknown as ClassPlan)}
     {classVideo('Day5ClassDemo', day5demo as unknown as ClassPlan)}
     {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
   </>

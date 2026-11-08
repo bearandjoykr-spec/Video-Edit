@@ -5,11 +5,12 @@
 import React, {useEffect, useState} from 'react';
 import {
   AbsoluteFill, Img, OffthreadVideo, continueRender, delayRender, interpolate,
-  staticFile, useCurrentFrame, useVideoConfig, Easing, spring,
+  staticFile, useCurrentFrame, Sequence, useVideoConfig, Easing, spring,
 } from 'remotion';
 
 type W = {w: string; t: number | null};
 type Caption = {s: number; e: number; ko: string; hi?: string; en?: string; speaker?: 'mark' | 'joy'};
+type Box = {left?: number; right?: number; top?: number; bottom?: number; scale?: number};
 type Ev = {type: string; s: number; e: number; [k: string]: any};
 export type ClassPlan = {
   name: string; fps: number; duration: number; frames: number; day: number;
@@ -17,6 +18,13 @@ export type ClassPlan = {
   media?: string; // folder under public/ holding cut.mov; omitted = placeholder background (layout previews)
   cardSide?: 'left' | 'right' | 'center'; // where phrase/title cards sit (the side away from the speaker)
   captionBottom?: number;
+  watermark?: boolean; // false when the footage already carries the logo
+  card?: Box; // default phrase-card box; a phrase event may override with `at`
+  turn?: Box; // where the Your-turn chip sits
+  titleBacking?: boolean;
+  titleAt?: Box; // where the opening title card sits
+  mediaDuration?: number; // seconds of footage; end cards may run past it
+  scrims?: {s: number; e: number}[]; // soft dark gradient behind captions (light clothing)
   captions: Caption[]; events: Ev[]; zooms?: {t: number; z: number; x?: number; y?: number}[];
 };
 
@@ -65,9 +73,12 @@ const cameraAt = (plan: ClassPlan, t: number) => {
 const TitleCard: React.FC<{ev: Ev; plan: ClassPlan; t: number; fps: number}> = ({ev, plan, t, fps}) => {
   const p = enter(t, ev.s, ev.e, fps, true);
   const side = plan.cardSide ?? 'right';
+  const b = plan.titleAt;
+  const at: React.CSSProperties = b ? {top: b.top ?? 200, left: b.left, right: b.right} : {top: 200, [side === 'left' ? 'left' : 'right']: 110};
   return (
-    <div style={{position: 'absolute', top: 200, [side === 'left' ? 'left' : 'right']: 110, width: 760, opacity: p.opacity,
-      transform: `translateY(${p.y}px) scale(${p.scale})`, display: 'grid', gap: 18, justifyItems: 'start'}}>
+    <div style={{position: 'absolute', ...at, width: 760, opacity: p.opacity, transformOrigin: b?.left !== undefined ? '0 0' : '100% 0',
+      transform: `translateY(${p.y}px) scale(${p.scale * (b?.scale ?? 1)})`, display: 'grid', gap: 18, justifyItems: 'start',
+      ...(plan.titleBacking ? {background: 'rgba(20,32,58,.74)', borderRadius: 34, padding: '34px 44px', boxShadow: '0 20px 50px rgba(10,16,30,.35)'} : {})}}>
       <div style={{background: C.yellow, color: C.ink, fontFamily: PRE, fontWeight: 900, fontSize: 52, padding: '12px 30px', borderRadius: 999,
         boxShadow: chipShadow}}>DAY {plan.day}</div>
       <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 36, color: C.white, textShadow: soft(8)}}>{plan.title.series ?? 'Bear & Joy First Steps'}</div>
@@ -86,7 +97,7 @@ const StressedWord: React.FC<{w: string; st?: Stress; pul: number; on: boolean; 
   if (i < 0) return <span style={base}>{w}</span>;
   return (
     <span style={base}>{w.slice(0, i)}
-      <span style={{display: 'inline-block', color: C.yellow, fontSize: '1.22em', transform: `scale(${1 + 0.14 * pul})`, transformOrigin: '50% 80%',
+      <span style={{display: 'inline-block', color: C.yellow, fontSize: '1.22em', margin: '0 0.03em', transform: `scale(${1 + 0.14 * pul})`, transformOrigin: '50% 80%',
         lineHeight: 0.9}}>{w.slice(i, i + st.part.length).toUpperCase()}</span>{w.slice(i + st.part.length)}
     </span>
   );
@@ -115,8 +126,12 @@ const PhraseCard: React.FC<{ev: Ev; plan: ClassPlan; t: number; fps: number; low
   const tiny = ev.voice?.kind === 'tiny' ? interpolate(t, [ev.voice.s, ev.voice.s + 0.3, ev.voice.e, ev.voice.e + 0.3], [1, 0.55, 0.55, 1], clamp) : 1;
   const big = ev.voice?.kind === 'big' ? interpolate(t, [ev.voice.s, ev.voice.s + 0.2, ev.voice.e, ev.voice.e + 0.3], [1, 1.18, 1.18, 1], clamp) : 1;
   const side = plan.cardSide ?? 'right';
-  const pos: React.CSSProperties = side === 'center' ? {left: 0, right: 0, display: 'flex', justifyContent: 'center'}
-    : side === 'left' ? {left: 80} : {right: 80};
+  const box: Box | undefined = ev.at ?? plan.card;
+  const pos: React.CSSProperties = box ? {left: box.left, right: box.right, top: box.top, bottom: box.top === undefined ? (box.bottom ?? low) : undefined}
+    : side === 'center' ? {left: 0, right: 0, display: 'flex', justifyContent: 'center', bottom: low}
+    : side === 'left' ? {left: 80, bottom: low} : {right: 80, bottom: low};
+  const k = box?.scale ?? 1;
+  const origin = box ? `${box.left !== undefined ? 0 : 100}% ${box.top !== undefined ? 0 : 100}%` : '50% 100%';
   const tone = ev.tone as {dir: 'up' | 'down'; at?: number; why?: string} | undefined;
   const toneDraw = tone ? interpolate(t, [(tone.at ?? ev.s + 0.6), (tone.at ?? ev.s + 0.6) + 0.45], [0, 1], clamp) : 0;
   const pronStress = stress.find((s) => s.pron);
@@ -124,15 +139,19 @@ const PhraseCard: React.FC<{ev: Ev; plan: ClassPlan; t: number; fps: number; low
   const pron: string = ev.pron ?? '';
   const pi = pronStress ? pron.indexOf(pronStress.pron!) : -1;
   return (
-    <div style={{position: 'absolute', bottom: low, ...pos, opacity: p.opacity, transform: `translateY(${p.y}px)`}}>
-      <div style={{transform: `scale(${p.scale})`, transformOrigin: '50% 100%', background: 'rgba(20,32,58,.72)', borderRadius: 34, padding: '30px 50px 34px',
+    <div style={{position: 'absolute', ...pos, opacity: p.opacity, transform: `translateY(${p.y}px)`}}>
+      <div style={{transform: `scale(${p.scale * k})`, transformOrigin: origin, background: 'rgba(20,32,58,.72)', borderRadius: 34, padding: '30px 50px 34px',
         boxShadow: '0 20px 50px rgba(10,16,30,.35)', display: 'grid', justifyItems: 'center', gap: 16, minWidth: 760, maxWidth: 1500}}>
         {ev.n ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 28, color: C.yellow, letterSpacing: '0.08em'}}>PHRASE {ev.n}</div> : null}
         <div style={{display: 'flex', alignItems: 'center', fontFamily: PRE, fontWeight: 900, fontSize: 96, lineHeight: 1.05, letterSpacing: '-0.02em',
           textShadow: soft(10), transform: `scale(${tiny * big})`, whiteSpace: 'nowrap'}}>
           {words.map((w, k) => {
-            const next = words[k + 1]?.t ?? ev.e;
-            const on = w.t !== null && t >= w.t && t < next + 0.15;
+            // `reps`: the phrase is said several times; word times are offsets from each repetition's start
+            const reps: number[] | undefined = ev.reps;
+            const r0 = reps ? reps.filter((r) => r <= t).pop() : undefined;
+            const lt = reps ? (r0 === undefined ? -1 : t - r0) : t;
+            const wt = w.t, nt = words[k + 1]?.t ?? (reps ? (words[words.length - 1].t ?? 0) + 0.7 : ev.e);
+            const on = wt !== null && lt >= wt && lt < nt + 0.15;
             const st = stress.find((s) => s.word === k);
             const flowsIn = flow.some(([a, b]) => b === k && a === k - 1);
             return (
@@ -158,13 +177,15 @@ const PhraseCard: React.FC<{ev: Ev; plan: ClassPlan; t: number; fps: number; low
 };
 
 // ---------- "Your turn": yellow chip + bar counting down the pause ------------------------------
-const YourTurn: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+const YourTurn: React.FC<{ev: Ev; t: number; fps: number; box?: Box}> = ({ev, t, fps, box}) => {
   const p = enter(t, ev.s - 0.1, ev.e + 0.25, fps, true);
   const left = interpolate(t, [ev.s, ev.e], [1, 0], clamp);
   const secs = Math.max(1, Math.ceil(ev.e - t));
   return (
-    <div style={{position: 'absolute', top: 70, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: p.opacity}}>
-      <div style={{transform: `scale(${p.scale})`, display: 'grid', justifyItems: 'center', gap: 14}}>
+    <div style={box ? {position: 'absolute', top: box.top, left: box.left, right: box.right, opacity: p.opacity}
+      : {position: 'absolute', top: 70, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: p.opacity}}>
+      <div style={{transform: `scale(${p.scale * (box?.scale ?? 1)})`, transformOrigin: box ? `${box.left !== undefined ? 0 : 100}% 0` : '50% 0',
+        display: 'grid', justifyItems: 'center', gap: 14}}>
         <div style={{display: 'flex', alignItems: 'center', gap: 22, background: C.yellow, color: C.ink, fontFamily: PRE, fontWeight: 900, fontSize: 60,
           padding: '16px 40px', borderRadius: 999, boxShadow: chipShadow}}>
           <span>🗣️ Your turn!</span><span style={{fontWeight: 800, fontSize: 40}}>{ev.ko ?? '따라 해보세요'}</span>
@@ -184,7 +205,7 @@ const ClassCaption: React.FC<{c: Caption; t: number; fps: number; bottom: number
   const i = c.hi ? c.ko.indexOf(c.hi) : -1;
   return (
     <div style={{position: 'absolute', left: 120, right: 120, bottom, textAlign: 'center', opacity: a, display: 'grid', gap: 6}}>
-      {c.en ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 34, color: C.white, opacity: 0.9, textShadow: soft(6)}}>{c.en}</div> : null}
+      {c.en ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 34, color: c.speaker === 'joy' ? C.yellow : C.white, opacity: 0.92, textShadow: soft(6)}}>{c.en}</div> : null}
       <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 56, lineHeight: 1.25, color: C.white, textShadow: soft(8), wordBreak: 'keep-all',
         textWrap: 'balance' as any}}>
         {i < 0 ? c.ko : <>{c.ko.slice(0, i)}<span style={{color: C.yellow}}>{c.hi}</span>{c.ko.slice(i + c.hi!.length)}</>}
@@ -197,6 +218,7 @@ const ClassCaption: React.FC<{c: Caption; t: number; fps: number; bottom: number
 const VOICE: Record<string, {emoji: string; color: string}> = {
   robot: {emoji: '🤖', color: C.blue}, sleepy: {emoji: '💤', color: C.blue}, sing: {emoji: '🎵', color: C.yellow},
   tiny: {emoji: '🐭', color: C.yellow}, big: {emoji: '🐻', color: C.yellow}, joke: {emoji: '😆', color: C.yellow},
+  tada: {emoji: '🎉', color: C.yellow}, butterfly: {emoji: '🦋', color: C.blue}, snail: {emoji: '🐌', color: C.yellow}, look: {emoji: '🔍', color: C.blue},
 };
 const VoiceCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = enter(t, ev.s, ev.e, fps, true);
@@ -206,7 +228,8 @@ const VoiceCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => 
   return (
     <div style={{position: 'absolute', top: ev.top ?? 150, [ev.side === 'left' ? 'left' : 'right']: 90, opacity: p.opacity,
       transform: `translateY(${p.y}px) scale(${p.scale}) rotate(${ev.side === 'left' ? -3 : 3}deg)`}}>
-      <div style={{display: 'grid', justifyItems: 'center', gap: 6, textAlign: 'center'}}>
+      <div style={{display: 'grid', justifyItems: 'center', gap: 6, textAlign: 'center',
+        ...(ev.backing !== false ? {background: 'rgba(20,32,58,.62)', borderRadius: 30, padding: '18px 34px 22px', boxShadow: chipShadow} : {})}}>
         {ev.label ? <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 30, background: C.white, color: C.ink, padding: '6px 18px', borderRadius: 999}}>{ev.label}</div> : null}
         <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 92, lineHeight: 1.05, color: v.color, textShadow: soft(12), whiteSpace: 'nowrap'}}>
           {words.map((w, k) => {
@@ -214,6 +237,9 @@ const VoiceCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => 
             if (ev.kind === 'robot') tr = `translate(${Math.round(Math.sin(Math.floor(lt * 6) + k * 2) * 6)}px, ${Math.round(Math.cos(Math.floor(lt * 6) + k) * 5)}px)`;
             if (ev.kind === 'sleepy') tr = `translateY(${Math.min(28, lt * 10) * (k + 1) / words.length}px) rotate(${Math.min(10, lt * 4) * (k % 2 ? 1 : -1)}deg)`;
             if (ev.kind === 'sing') tr = `translateY(${Math.sin(lt * 5 + k) * 10}px)`;
+            if (ev.kind === 'butterfly') tr = `translate(${Math.sin(lt * 3 + k) * 8}px, ${Math.cos(lt * 4 + k) * 10}px)`;
+            if (ev.kind === 'snail') tr = `translateX(${Math.min(30, lt * 8)}px)`;
+            if (ev.kind === 'tada') tr = `scale(${1 + 0.08 * Math.sin(lt * 10) * Math.exp(-lt * 1.5)})`;
             if (ev.kind === 'tiny') tr = `scale(${interpolate(lt, [0, 0.6], [1, 0.6], clamp)})`;
             return <span key={k} style={{display: 'inline-block', marginLeft: k ? 22 : 0, transform: tr}}>{w}</span>;
           })}
@@ -229,11 +255,12 @@ const VoiceCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => 
 const MessageCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = enter(t, ev.s, ev.e, fps, true);
   return (
-    <div style={{position: 'absolute', top: ev.top ?? 110, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: p.opacity}}>
-      <div style={{transform: `translateY(${p.y}px) scale(${p.scale})`, background: C.yellow, borderRadius: 34, padding: '28px 56px', maxWidth: 1400,
+    <div style={ev.left !== undefined ? {position: 'absolute', top: ev.top ?? 110, left: ev.left, width: ev.width ?? 800, opacity: p.opacity}
+      : {position: 'absolute', top: ev.top ?? 110, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: p.opacity}}>
+      <div style={{transform: `translateY(${p.y}px) scale(${p.scale})`, background: C.yellow, borderRadius: 34, padding: '28px 56px', maxWidth: ev.width ?? 1400,
         boxShadow: chipShadow, textAlign: 'center', display: 'grid', gap: 10}}>
         {ev.kicker ? <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 32, color: C.ink, opacity: 0.7}}>{ev.kicker}</div> : null}
-        <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 66, lineHeight: 1.15, color: C.ink, wordBreak: 'keep-all'}}>{ev.ko}</div>
+        <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 66, lineHeight: 1.15, color: C.ink, wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>{ev.ko}</div>
         {ev.en ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 36, color: C.ink, opacity: 0.8}}>{ev.en}</div> : null}
       </div>
     </div>
@@ -336,12 +363,17 @@ export const BearJoyClass: React.FC<{plan: ClassPlan}> = ({plan}) => {
   return (
     <AbsoluteFill style={{background: C.navy}}>
       <AbsoluteFill style={{transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})`, transformOrigin: '50% 40%'}}>
-        {plan.media ? <OffthreadVideo src={staticFile(`${plan.media}/cut.mov`)} muted style={{width: '100%', height: '100%', objectFit: 'cover', filter: GRADE}} />
-          : <Placeholder />}
+        {plan.media ? (
+          <Sequence durationInFrames={Math.floor((plan.mediaDuration ?? plan.duration) * fps)} layout="none">
+            <OffthreadVideo src={staticFile(`${plan.media}/cut.mov`)} muted style={{width: '100%', height: '100%', objectFit: 'cover', filter: GRADE}} />
+          </Sequence>
+        ) : <Placeholder />}
       </AbsoluteFill>
+      {(plan.scrims ?? []).map((r, k) => (t >= r.s - 0.5 && t <= r.e + 0.5 ? <AbsoluteFill key={`sc${k}`} style={{opacity: interpolate(t, [r.s - 0.5, r.s, r.e, r.e + 0.5], [0, 1, 1, 0], clamp),
+        background: 'linear-gradient(180deg, rgba(10,16,30,0) 72%, rgba(10,16,30,.38) 86%, rgba(10,16,30,.5) 100%)'}} /> : null))}
       {!fullCard ? (
         <>
-          <Img src={staticFile('brand/bear-butterfly.png')} style={{position: 'absolute', top: 34, left: 44, width: 96, opacity: 0.6}} />
+          {plan.watermark !== false ? <Img src={staticFile('brand/bear-butterfly.png')} style={{position: 'absolute', top: 34, left: 44, width: 96, opacity: 0.6}} /> : null}
           {title && t > title.e ? <DayPill plan={plan} t={t} from={title.e} /> : null}
           {title && live(title) ? <TitleCard ev={title} plan={plan} t={t} fps={fps} /> : null}
           {E('label').map((ev, k) => (live(ev) ? <Label key={k} ev={ev} t={t} fps={fps} /> : null))}
@@ -349,7 +381,7 @@ export const BearJoyClass: React.FC<{plan: ClassPlan}> = ({plan}) => {
           {E('voice').map((ev, k) => (live(ev) ? <VoiceCard key={k} ev={ev} t={t} fps={fps} /> : null))}
           {E('message').map((ev, k) => (live(ev) ? <MessageCard key={k} ev={ev} t={t} fps={fps} /> : null))}
           {E('phrase').map((ev, k) => (live(ev) ? <PhraseCard key={k} ev={ev} plan={plan} t={t} fps={fps} low={cap ? capBottom + 120 : 60} /> : null))}
-          {E('yourturn').map((ev, k) => (live(ev) ? <YourTurn key={k} ev={ev} t={t} fps={fps} /> : null))}
+          {E('yourturn').map((ev, k) => (live(ev) ? <YourTurn key={k} ev={ev} t={t} fps={fps} box={ev.at ?? plan.turn} /> : null))}
           {cap ? <ClassCaption c={cap} t={t} fps={fps} bottom={capBottom} /> : null}
         </>
       ) : null}
