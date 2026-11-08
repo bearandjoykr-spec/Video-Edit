@@ -14,3 +14,4 @@ __pycache__/
 .venv/
 tools/
 projects/*/versions/*/matte-*/
+raw-footage/*/
