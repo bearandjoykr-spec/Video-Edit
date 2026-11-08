@@ -300,7 +300,7 @@ const Recap: React.FC<{ev: Ev; plan: ClassPlan; t: number; fps: number}> = ({ev,
   const bg = interpolate(t, [ev.s, ev.s + 0.5, ev.e - 0.4, ev.e], [0, 1, 1, 0], clamp);
   const rows: {en: string; pron: string; ko: string}[] = ev.phrases;
   return (
-    <AbsoluteFill style={{background: `rgba(20,32,58,${0.93 * bg})`, display: 'grid', placeContent: 'center', justifyItems: 'center', gap: 26, opacity: Math.min(1, bg * 1.4)}}>
+    <AbsoluteFill style={{background: `rgba(30,45,77,${bg})`, display: 'grid', placeContent: 'center', justifyItems: 'center', gap: 26, opacity: Math.min(1, bg * 1.4)}}>
       <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 44, background: C.yellow, color: C.ink, padding: '10px 30px', borderRadius: 999}}>DAY {plan.day} · 오늘의 표현</div>
       {rows.map((r, k) => {
         const a = spring({frame: Math.round((t - ev.s - 0.4 - k * 0.35) * fps), fps, config: {damping: 14, stiffness: 150}});
