@@ -1,6 +1,15 @@
 # First Steps · Day 5 — landscape class video (YouTube)
 
-Status (8 Nov 2026): template ready, waiting for footage and scripts from the owner.
+Status (8 Nov 2026): storyboard + sample approved by the owner; full render exported to `exports/youtube/day5/`.
+
+Owner decisions (8 Nov 2026):
+- No script supplied: Claude wrote the plan from the Whisper transcript. Mark's Korean captions (Claude's translation),
+  Joy's corrected captions and the four condensed lines were approved as shown. Pronunciations approved.
+- The source footage is mirrored (worksheet text reads backwards) with the logo burned in after the flip: leave as is.
+- The source already has music under Mark's section; the lo-fi bed plays only under Joy and the end cards.
+- Mark's cards sit mid-right (his mouth is low in frame, near the mic), not low in frame.
+- Render: `npx remotion render src/index.ts Day5Class out/day5/full.mp4 --crf=16`, then
+  `python3 mix_class.py main ../../remotion/out/day5/full.mp4 <out.mp4> -12`.
 
 - Template: `remotion/src/BearJoyClass.tsx` (composition `Day5ClassDemo` = layout preview on a placeholder background).
 - `spec-demo.json` → `python3 build_class.py spec-demo.json versions/demo` → `versions/demo/timeline_class.json`.
