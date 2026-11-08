@@ -57,7 +57,7 @@ npm ci --prefix remotion
 
 say "Python tools (private venv in .venv)"
 [ -d .venv ] || python3 -m venv .venv
-.venv/bin/pip install -q --upgrade pip numpy yt-dlp pillow
+.venv/bin/pip install -q --upgrade pip numpy yt-dlp pillow scipy librosa soundfile pyloudnorm opencv-python-headless mediapipe
 
 # 4. Fonts and Whisper ----------------------------------------------------------------
 say "Brand fonts"
