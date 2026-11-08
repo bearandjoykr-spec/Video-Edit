@@ -1,0 +1,31 @@
+{
+ "name": "demo", "day": 5, "duration": 34,
+ "title": {"en": "Day 5 title", "ko": "(제목은 대본을 받은 뒤 정해요)", "series": "Bear & Joy First Steps"},
+ "cardSide": "right",
+ "captions": [
+  {"s": 0.3, "e": 3.4, "ko": "안녕하세요! First Steps 다섯째 날이에요!", "hi": "다섯째 날", "speaker": "mark"},
+  {"s": 4.4, "e": 6.4, "ko": "첫 번째 표현은 바로 이거예요.", "hi": "첫 번째", "speaker": "mark"},
+  {"s": 13.4, "e": 15.2, "ko": "'it's a'는 이어서 말해 보세요.", "hi": "이어서", "speaker": "mark"},
+  {"s": 21.0, "e": 22.0, "ko": "궁금한 목소리로 말해 보세요.", "hi": "궁금한", "speaker": "mark"},
+  {"s": 23.4, "e": 25.4, "ko": "로봇처럼 말해 볼까요?", "hi": "로봇", "speaker": "joy"}
+ ],
+ "events": [
+  {"type": "title", "s": 0.2, "e": 4.0},
+  {"type": "phrase", "s": 6.6, "e": 16.0, "n": 1, "en": "Look! It's a bear!", "pron": "룩! 잇츠어 베어!", "ko": "봐! 곰이야!",
+   "words": [{"w": "Look!", "t": 7.0}, {"w": "It's", "t": 7.5}, {"w": "a", "t": 7.75}, {"w": "bear!", "t": 7.95}],
+   "stress": [{"word": 3, "part": "bear", "pron": "베어", "pulses": [8.0, 12.6]}], "flow": [[1, 2]], "note": "'Look!'은 신나는 목소리로 ✨"},
+  {"type": "yourturn", "s": 9.6, "e": 12.6},
+  {"type": "phrase", "s": 16.4, "e": 22.4, "n": 2, "en": "Where's the bear?", "pron": "웨어즈 더 베어?", "ko": "곰이 어디 있지?",
+   "words": [{"w": "Where's", "t": 16.8}, {"w": "the", "t": 17.3}, {"w": "bear?", "t": 17.5}],
+   "tone": {"dir": "up", "at": 17.6, "why": "궁금할 때는 끝을 올려요"}},
+  {"type": "yourturn", "s": 18.4, "e": 21.0},
+  {"type": "label", "s": 22.8, "e": 30.0, "text": "Joy · 조이", "sub": "아이와 놀이하기", "pos": "tl"},
+  {"type": "voice", "s": 25.6, "e": 28.0, "kind": "robot", "text": "WHERE'S THE BEAR", "ko": "로봇 목소리", "side": "right"},
+  {"type": "message", "s": 28.2, "e": 30.0, "kicker": "오늘의 핵심", "ko": "발음을 고치지 말고, 아이에게 반응해 주세요", "en": "Don't correct pronunciation — respond to the child"},
+  {"type": "recap", "s": 30.0, "e": 33.0, "phrases": [
+    {"en": "Look! It's a bear!", "pron": "룩! 잇츠어 베어!", "ko": "봐! 곰이야!"},
+    {"en": "Where's the bear?", "pron": "웨어즈 더 베어?", "ko": "곰이 어디 있지?"}], "next": "다음 시간: DAY 6 👋"},
+  {"type": "logo", "s": 33.0, "e": 34.0}
+ ],
+ "zooms": [{"t": 0, "z": 1}, {"t": 4.4, "z": 1.04}, {"t": 13.4, "z": 1}, {"t": 21.0, "z": 1.04}]
+}

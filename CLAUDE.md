@@ -17,8 +17,8 @@ Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper 
 
 ### Fresh cloud session setup (do this first, about 5 minutes)
 1. `npm ci --prefix remotion` (installs Remotion, HyperFrames and the Pretendard font package)
-2. `pip install yt-dlp numpy`
-3. `sh remotion/fetch-fonts.sh` (TTF fonts are not committed; the Pretendard woff2 files and the emoji font list are)
+2. `pip install yt-dlp numpy scipy librosa soundfile pyloudnorm opencv-python-headless mediapipe` (librosa: beat-synced cuts and music; mediapipe/OpenCV: face and mouth tracking so cards never cover Mark's mouth; pyloudnorm: loudness checks)
+3. `sh remotion/fetch-fonts.sh` (TTF fonts, including Noto Color Emoji, are not committed; the Pretendard woff2 files are). The npm install also brings the Remotion add-ons pinned to the core version: transitions (page-turn/wipe scene changes), paths and shapes (drawn flow lines, arrows), noise (organic wobble), motion-blur, layout-utils (fit text to cards) and lottie (animated stickers).
 4. Whisper: `git clone --depth 1 https://github.com/ggml-org/whisper.cpp /opt/tools/whisper.cpp`, then `cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j --target whisper-cli` inside it, then `sh ./models/download-ggml-model.sh large-v3-turbo`. Use `-l en` or `-l ko` per section; the owner may supply exact bilingual translations, so use them word for word.
 5. Render Remotion with `--browser-executable=/opt/pw-browsers/chromium`.
 
@@ -32,7 +32,7 @@ Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper 
 Claude sessions cannot read each other's chats. This repo is the shared memory. Start every session with `git pull` and end it with a commit and push (videos stay out of git). Record new owner feedback in `brand/BRAND.md`.
 
 ## Landscape class videos (YouTube, like Day 6)
-Follow `docs/class-video-style.md`. Same brand, approval and storyboard rules; different layout (phrase cards with Korean pronunciation, "Your turn" pauses, stress/flow marks, recap card).
+Follow `docs/class-video-style.md`. Template: `remotion/src/BearJoyClass.tsx` (1920×1080, render 4K with `--scale=2`); plan builder: `projects/2026-11-firststeps-day5/build_class.py` (reading-speed check + automatic SFX cues). Start a new class from that folder. Same brand, approval and storyboard rules; different layout (phrase cards with Korean pronunciation, "Your turn" pauses, stress/flow marks, recap card).
 
 ## Making a new reel (the workflow the owner approved)
 1. Get the footage. Large files arrive as a Google Drive "anyone with the link" share. Download with
