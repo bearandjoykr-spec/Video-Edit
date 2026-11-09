@@ -15,3 +15,13 @@ __pycache__/
 tools/
 projects/*/versions/*/matte-*/
 raw-footage/*/
+remotion/public/day0/sheets/
+remotion/public/day0/subject*.webm
+projects/*/music/*.mp3
+remotion/public/day0/owner/
+projects/*/versions/*/mix.wav
+
+# Day 25 working files and local preview pages
+projects/*/work/
+projects/*/storyboard/publish/
+*.m4a

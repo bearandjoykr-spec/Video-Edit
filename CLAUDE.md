@@ -22,10 +22,17 @@ Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper 
 4. Whisper: `git clone --depth 1 https://github.com/ggml-org/whisper.cpp /opt/tools/whisper.cpp`, then `cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j --target whisper-cli` inside it, then `sh ./models/download-ggml-model.sh large-v3-turbo`. Use `-l en` or `-l ko` per section; the owner may supply exact bilingual translations, so use them word for word.
 5. Render Remotion with `--browser-executable=/opt/pw-browsers/chromium`.
 
+### Process on the Mac, not in the cloud (owner, 9 Nov 2026)
+The owner wants Instagram videos made with this Mac's own processor (Apple M4, 10 cores, 24 GB). When a session runs on the Mac:
+- Do every step here: transcription, cuts, mattes, Remotion renders, mix and export. Do not move the work to a cloud session, remote agent or web service, and do not upload footage anywhere to process it.
+- Use the Mac's hardware: Whisper runs on the GPU through Metal automatically (about 2 s for 11 s of audio with large-v3-turbo); background removal with `--device coreml`; Remotion renders with `--concurrency=8`; draft, preview and intermediate encodes with `-c:v h264_videotoolbox -b:v 20M` (fast, hardware). The final Instagram MP4 stays libx264 (`projects/2026-11-welcome-reels/export.sh` settings), which also runs on this Mac's CPU.
+- Run long jobs (mattes, full renders) in the background and keep the Mac awake.
+
 ### Running on the owner's Mac (Marks-MacBook-Pro)
 - One-time setup: `bash setup-mac.sh` from this repo. It clones to `~/Video-Edit`, installs the tools, and adds a pointer to `~/.claude/CLAUDE.md`.
 - Python: use `.venv/bin/python` (not `python3 -I`). Whisper is at `tools/whisper.cpp/build/bin/whisper-cli`, with its model in `tools/whisper.cpp/models/`.
 - Remotion: omit `--browser-executable` (it uses its own Chrome on the Mac). HyperFrames background removal: add `--device coreml`, which is much faster than the cloud CPU.
+- Extra tools (in git-ignored `tools/`, install again if missing): voice cleanup `tools/deepfilter/deep-filter`, and `tools/fx-venv` (Python 3.12: MediaPipe, OpenCV, librosa, a current yt-dlp, PyMuPDF). The Little Steps welcome film is the example of using them: `projects/2026-11-day0-welcome/`.
 - Footage can be read straight from `~/Downloads` or `~/Desktop/Footage For Claude`, so no Drive link is needed.
 
 ### Keeping sessions in sync

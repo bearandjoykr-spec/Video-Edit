@@ -1,0 +1,118 @@
+<title>Day 25 Kyobo Storyboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Playfair+Display:ital,wght@1,600&display=swap">
+<style>
+/* Layout: a phone-first review sheet. Sample on the left (sticky on desktop), shots and checks on the right. */
+:root {
+  --bg: #F7F3EA; --panel: #FFFFFF; --ink: #1E2D4D; --muted: #5D6884; --line: #E3DCCB;
+  --butter: #F6F0BA; --sky: #AECCE6; --accent: #173B5C; --tag: #EFE7D2;
+  --sans: 'Noto Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  --display: 'Playfair Display', Georgia, serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121A2C; --panel: #1A2540; --ink: #EEF1F7; --muted: #A7B1C8; --line: #2A3758;
+  --butter: #F6F0BA; --sky: #AECCE6; --accent: #AECCE6; --tag: #24314F; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121A2C; --panel: #1A2540; --ink: #EEF1F7; --muted: #A7B1C8; --line: #2A3758;
+  --butter: #F6F0BA; --sky: #AECCE6; --accent: #AECCE6; --tag: #24314F; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 32px; }
+header { display: grid; gap: 8px; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+h1 { font-family: var(--display); font-style: italic; font-weight: 600; font-size: clamp(30px, 5vw, 46px); line-height: 1.1; margin: 0; text-wrap: balance; }
+h1 .ko { font-family: var(--sans); font-style: normal; font-weight: 900; display: block; font-size: .62em; margin-top: 6px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { background: var(--tag); border-radius: 999px; padding: 4px 12px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.pill.day { background: var(--butter); color: #1E2D4D; font-weight: 900; }
+.main { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 36px; align-items: start; }
+.player { position: sticky; top: calc(16px + env(safe-area-inset-top, 0px)); display: grid; gap: 10px; }
+video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 14px; background: #000; display: block; }
+.player p { margin: 0; font-size: 13px; color: var(--muted); }
+section { display: grid; gap: 14px; min-width: 0; }
+h2 { font-size: 20px; margin: 0; font-weight: 900; text-wrap: balance; }
+.shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+.shot { margin: 0; display: grid; gap: 8px; align-content: start; }
+.shot img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
+.shot figcaption { font-size: 13px; display: grid; gap: 2px; }
+.shot .tc { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; }
+.shot p { margin: 0; color: var(--muted); }
+.decide { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: grid; gap: 12px; }
+.decide ol { margin: 0; padding-left: 20px; display: grid; gap: 10px; }
+.decide li b { color: var(--accent); }
+.tracks { display: grid; gap: 8px; margin-top: 4px; }
+.tracks a { color: var(--accent); font-weight: 700; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+td.t { font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+td.ko { font-weight: 700; }
+tr.flag td.ko::after { content: " · title"; color: var(--muted); font-weight: 400; font-size: 12px; }
+@media (max-width: 760px) { .main { grid-template-columns: minmax(0, 1fr); } .player { position: static; max-width: 340px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">The Bear &amp; Joy Co. · Instagram Reel · for approval</span>
+    <h1>Mark's three picture books at Kyobo<span class="ko">교보문고에서 고른 영어 그림책 3권</span></h1>
+    <div class="meta"><span class="pill day">🔥 DAY 25</span><span class="pill">83 s · 1080×1920</span><span class="pill">Korean captions · English keywords</span><span class="pill">Ends on Bear &amp; Joy Book 1</span><span class="pill">v2 · cleaned voice</span></div>
+  </header>
+
+  <div class="main">
+    <div class="player">
+      <video src="sample.mp4" controls playsinline preload="metadata" poster=""></video>
+      <p>First 25 seconds of the full render: real footage, your voice memo (cleaned: background noise and room echo reduced, clearer and less boomy), and the track you chose, Happy Advertising Hip-Hop (Magic Moments) by BombinSound. Play with sound on.</p>
+    </div>
+
+    <div class="wrap" style="gap:36px">
+      <section class="decide" aria-labelledby="d">
+        <h2 id="d">What I need from you</h2>
+        <ol>
+          <li><b>OK the cut</b>, or tell me what to change (order, pops, timing).</li>
+          <li><b>Listen to the music level.</b> Magic Moments sits under your voice and dips while you talk. Tell me if it should be louder or quieter.</li>
+          <li><b>Joy checks the Korean</b> in the table below, (Book 1 is described as 「Bear가 Joy를 찾은 이야기!」, per the owner).</li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="s">
+        <h2 id="s">Storyboard</h2>
+        <div class="shots">
+{{SHOTS}}
+        </div>
+      </section>
+
+      <section aria-labelledby="c">
+        <h2 id="c">Korean captions for Joy</h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Time</th><th>Caption</th><th>Mark says</th></tr></thead>
+          <tbody>
+            <tr><td class="t">0:00</td><td class="ko">우리 아이에게 어떤 책 추천하세요?</td><td>(from the footage)</td></tr>
+            <tr><td class="t">0:06</td><td class="ko">여기는 서울에서 가장 유명한 서점, 교보문고</td><td>This is Kyobo, Seoul's most famous bookshop</td></tr>
+            <tr><td class="t">0:10</td><td class="ko">입구 앞 돌에 새겨진 글귀 👀</td><td>and outside it says, people make books and books make people.</td></tr>
+            <tr><td class="t">0:16</td><td class="ko">정말 멋진 말이죠.</td><td>I love that.</td></tr>
+            <tr><td class="t">0:18</td><td class="ko">그래서 모든 부모님께 추천하는 영어 그림책 3권!</td><td>So here are three English picture books I recommend to every parent.</td></tr>
+            <tr class="flag"><td class="t">0:24</td><td class="ko">첫 번째 책 Mum, Me and the Mulberry Tree</td><td>Number one, Mum, Me and the Mulberry Tree.</td></tr>
+            <tr><td class="t">0:28</td><td class="ko">잔잔하고 아름다운 이야기</td><td>A gentle, beautiful story,</td></tr>
+            <tr><td class="t">0:31</td><td class="ko">천천히 읽는 잠자리 독서에 딱이고</td><td>perfect for the slow bedtime reading</td></tr>
+            <tr><td class="t">0:34</td><td class="ko">그림 보며 함께 이야기 나눠요</td><td>and talking about the pictures together.</td></tr>
+            <tr class="flag"><td class="t">0:37</td><td class="ko">두 번째 책 줄리아 도널드슨의 Room on the Broom</td><td>Number two, Room on the Broom by Julia Donaldson.</td></tr>
+            <tr><td class="t">0:41</td><td class="ko">라임과 반복, 아이가 저절로 따라 해요</td><td>It rhymes, it repeats and kids join in.</td></tr>
+            <tr><td class="t">0:44</td><td class="ko">그렇게 영어 리듬이 몸에 배요</td><td>That's how English rhythm sticks</td></tr>
+            <tr><td class="t">0:47</td><td class="ko">친절함을 배우는 이야기</td><td>and it's all about kindness.</td></tr>
+            <tr class="flag"><td class="t">0:49</td><td class="ko">세 번째 책 I Love You Through and Through</td><td>Number three, I Love You Through and Through.</td></tr>
+            <tr><td class="t">0:52</td><td class="ko">아이의 모든 모습을 사랑한다는 짧고 쉬운 문장</td><td>Short, simple lines about loving every part of your child.</td></tr>
+            <tr><td class="t">0:57</td><td class="ko">어린아이에게 딱! 꼭 안고 읽어주세요 🤗</td><td>Perfect for toddlers and best read in a cuddle.</td></tr>
+            <tr><td class="t">1:01</td><td class="ko">그리고 깜짝 보너스! 곧 나와요</td><td>And a cheeky bonus episode coming soon.</td></tr>
+            <tr><td class="t">1:05</td><td class="ko">저희 책 Bear &amp; Joy 1권</td><td>Our very own Bear and Joy book one.</td></tr>
+            <tr><td class="t">1:09</td><td class="ko">Bear가 Joy를 찾은 이야기! 🐻🦋</td><td>How a Bear Found Joy.</td></tr>
+            <tr><td class="t">1:11</td><td class="ko">🐻 댓글 또는 DM으로 예약하세요</td><td>Comment bear or DM us to reserve yours</td></tr>
+            <tr><td class="t">1:15</td><td class="ko">한국에서 가장 먼저 만나보세요!</td><td>and be the first in Korea to own it.</td></tr>
+          </tbody>
+        </table></div>
+        <p style="margin:0;color:var(--muted);font-size:13px">Every Korean line stays on screen at least 1.7 s at 6 characters a second or slower. The three lines marked "title" include an English book title, so they run a little longer on screen.</p>
+      </section>
+    </div>
+  </div>
+</div>

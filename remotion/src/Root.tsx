@@ -11,6 +11,23 @@ import {BearJoyClass, ClassPlan} from './BearJoyClass';
 import day5main from '../../projects/2026-11-firststeps-day5/versions/main/timeline_class.json';
 import day5demo from '../../projects/2026-11-firststeps-day5/versions/demo/timeline_class.json';
 import day24tight from '../../projects/2026-11-day24-early-english/versions/tight/timeline_v2.json';
+import day25 from '../../projects/2026-11-day25-kyobo/versions/main/timeline_v2.json';
+
+import {BearJoyClass as BearJoyClassDay1, ClassPlan as ClassPlanDay1} from './BearJoyClassDay1';
+import day1 from '../../projects/2026-11-day1-class/versions/main/timeline.json';
+
+import {BearJoyWelcome, WelcomePlan} from './BearJoyWelcome';
+import day0 from '../../projects/2026-11-day0-welcome/versions/main/timeline.json';
+
+import {BearJoyWelcomeReel, WelcomeReelPlan} from './BearJoyWelcomeReel';
+import reelUse from '../../projects/2026-11-welcome-reels/versions/use/timeline.json';
+import reelPerfect from '../../projects/2026-11-welcome-reels/versions/perfect/timeline.json';
+import reelBear from '../../projects/2026-11-welcome-reels/versions/bearvoice/timeline.json';
+
+import {BearJoyPromo, PromoPlan} from './BearJoyPromo';
+import promoA from '../../projects/2026-11-day1-promos/versions/kkakkung/timeline.json';
+import promoB from '../../projects/2026-11-day1-promos/versions/three-phrases/timeline.json';
+import promoC from '../../projects/2026-11-day1-promos/versions/mistakes-ok/timeline.json';
 
 const Hello: React.FC = () => {
   const f = useCurrentFrame();
@@ -20,6 +37,14 @@ const Hello: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+const promo = (id: string, plan: PromoPlan) => (
+  <Composition id={id} component={BearJoyPromo} durationInFrames={plan.frames} fps={30} width={1080} height={1920} defaultProps={{plan}} />
+);
+
+const wReel = (id: string, plan: WelcomeReelPlan) => (
+  <Composition id={id} component={BearJoyWelcomeReel} durationInFrames={plan.frames} fps={30} width={1080} height={1920} defaultProps={{plan}} />
+);
 
 const reel = (id: string, plan: Plan) => (
   <Composition id={id} component={BearJoyReel} durationInFrames={plan.frames} fps={plan.fps} width={1080} height={1920}
@@ -47,5 +72,16 @@ export const Root: React.FC = () => (
     {classVideo('Day5Class', day5main as unknown as ClassPlan)}
     {classVideo('Day5ClassDemo', day5demo as unknown as ClassPlan)}
     {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
+    {reelV2('Day25', day25 as unknown as PlanV2)}
+    {wReel('ReelUse', reelUse as unknown as WelcomeReelPlan)}
+    {wReel('ReelPerfect', reelPerfect as unknown as WelcomeReelPlan)}
+    {wReel('ReelBearVoice', reelBear as unknown as WelcomeReelPlan)}
+    {promo('PromoKkakkung', promoA as unknown as PromoPlan)}
+    {promo('PromoThreePhrases', promoB as unknown as PromoPlan)}
+    {promo('PromoMistakesOk', promoC as unknown as PromoPlan)}
+    <Composition id="Day1Class" component={BearJoyClassDay1} durationInFrames={(day1 as unknown as ClassPlanDay1).frames} fps={30} width={1920} height={1080}
+      defaultProps={{plan: day1 as unknown as ClassPlanDay1}} />
+    <Composition id="Day0Welcome" component={BearJoyWelcome} durationInFrames={(day0 as unknown as WelcomePlan).frames} fps={30} width={1920} height={1080}
+      defaultProps={{plan: day0 as unknown as WelcomePlan}} />
   </>
 );

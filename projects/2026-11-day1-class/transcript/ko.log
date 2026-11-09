@@ -1,0 +1,3 @@
+read_audio_data: reading audio data from 'projects/2026-11-day1-class/transcript/audio16k.wav' ...
+read_audio_data: trying to decode with miniaudio
+output_json: saving output to 'projects/2026-11-day1-class/transcript/ko.json'
