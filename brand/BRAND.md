@@ -112,3 +112,6 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Mark's English lines (recorded voice):** a different font from the Korean captions (Playfair Display italic, lighting up sky blue as he speaks), Korean translation underneath, and his small avatar with a 🇬🇧 flag while he speaks.
 - **Mark's name on screen (Joy, 10 Nov 2026):** "Mark T" (not "마크 선생님"), in Playfair Display italic butter yellow, with a big 🇬🇧 flag (about 70–85 px) next to the name so it reads at a glance. In the hook a small pill introduces him: avatar, "Mark T 🇬🇧" and a Korean line in Gowun Batang Bold ("영국인 선생님 발음으로 들어보세요").
 - **Hook (Joy, 10 Nov 2026):** no long caption under the hook title; only the big title shows while the first sentence plays, with punch-ins for energy.
+- **Colour (Joy, 10 Nov 2026):** keep the camera's own colours on Joy's footage. The v2 grade (saturation + sepia) made skin look yellow. Plans set `"look": "original"` (no grade, grain or vignette).
+- **Mark's recorded lines:** clean them on their own (DeepFilterNet + clarity EQ, `projects/2026-11-day28-questions/voice.py`) so his English is crisp; Joy's voice stays as recorded.
+- **Music level:** the licensed track must be clearly audible under talking reels (Day 28 at -20 dB with heavy ducking was "almost inaudible"). Use about -15 dB with light ducking (ratio 2).

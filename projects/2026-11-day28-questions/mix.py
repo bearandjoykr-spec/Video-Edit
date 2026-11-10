@@ -13,13 +13,15 @@ V = f"{HERE}/versions/main"
 plan = json.load(open(f"{V}/timeline_v2.json"))
 dur = plan["duration"]
 
-inputs = ["-i", "remotion/public/day28/main/cut.mov", "-ss", str(m0), "-i", music]
+# voice.wav = the cut audio with Mark's lines cleaned (voice.py, Joy 10 Nov 2026); fall back to the raw cut audio
+VOICE = f"{V}/audio/voice.wav" if os.path.exists(f"{V}/audio/voice.wav") else "remotion/public/day28/main/cut.mov"
+inputs = ["-i", VOICE, "-ss", str(m0), "-i", music]
 fc = [
     # Joy's mic voice (and Mark's recorded lines): tidy low end, gentle compression
-    f"[0:a]highpass=f=80,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=3,apad=whole_dur={dur},asplit=2[voice][key]",
+    f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,highpass=f=80,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=3,apad=whole_dur={dur},asplit=2[voice][key]",
     f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={music_db}dB,atrim=0:{dur},afade=t=in:d=0.4,"
     f"afade=t=out:st={dur - 2.5}:d=2.5[mus0]",
-    "[mus0][key]sidechaincompress=threshold=0.03:ratio=3:attack=25:release=400[mus]",
+    "[mus0][key]sidechaincompress=threshold=0.05:ratio=2:attack=30:release=500[mus]",
 ]
 labels = ["[voice]", "[mus]"]
 for k, cue in enumerate(plan["sfx"]):
@@ -29,10 +31,10 @@ for k, cue in enumerate(plan["sfx"]):
     labels.append(f"[s{k}]")
 fc.append("".join(labels) + f"amix=inputs={len(labels)}:normalize=0:duration=first,atrim=0:{dur}[mix]")
 graph = ";".join(fc)
-m = subprocess.run(["ffmpeg", "-hide_banner", *inputs, "-filter_complex", graph + ";[mix]loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json[o]",
+m = subprocess.run(["ffmpeg", "-hide_banner", *inputs, "-filter_complex", graph + ";[mix]loudnorm=I=-14:TP=-2.5:LRA=11:print_format=json[o]",
                     "-map", "[o]", "-f", "null", "-"], capture_output=True, text=True)
 j = json.loads(re.findall(r"\{[^{}]*\"input_i\"[^{}]*\}", m.stderr)[-1])
-ln = (f"loudnorm=I=-14:TP=-1.5:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:"
+ln = (f"loudnorm=I=-14:TP=-2.5:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:"
       f"measured_thresh={j['input_thresh']}:offset={j['target_offset']}:linear=true")
 os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
 shift = lambda g: re.sub(r"\[(\d+):a\]", lambda mm: f"[{int(mm.group(1)) + 1}:a]", g)

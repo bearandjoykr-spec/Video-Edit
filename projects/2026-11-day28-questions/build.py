@@ -238,7 +238,7 @@ def build(db, name="main"):
 
     plan = {"name": f"day28-{name}", "media": f"day28/{name}", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
             "day": DAY, "segments": out, "captions": C, "events": ev, "zooms": zooms, "music": music,
-            "slots": SLOTS, "tagPos": TAG_POS, "scrim": True, "captionTop": CAPTION_TOP, "sfx": sorted(sfx, key=lambda x: x["t"])}
+            "slots": SLOTS, "tagPos": TAG_POS, "scrim": True, "look": "original", "captionTop": CAPTION_TOP, "sfx": sorted(sfx, key=lambda x: x["t"])}
     os.makedirs(f"{HERE}/versions/{name}", exist_ok=True)
     json.dump(plan, open(f"{HERE}/versions/{name}/timeline_v2.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"{name}: {total:.1f}s ({speech_end:.1f}s speech, {len(out)} segments), {len(C)} captions, "

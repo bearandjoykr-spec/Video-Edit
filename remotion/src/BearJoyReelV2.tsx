@@ -18,6 +18,7 @@ export type PlanV2 = {
   media?: string;
   scrim?: boolean; // dark gradient behind the lower half, for light clothing or bright backgrounds
   slots?: Record<string, {left?: number; right?: number; top: number; rot: number}>; tagPos?: {left: number; top: number}; captionTop?: number;
+  look?: 'original'; // Joy, Day 28: keep the camera's own colours (no grade, grain or vignette)
 };
 
 const C = {navy: '#1E2D4D', ink: '#14203A', yellow: '#F6F0BA', blue: '#AECCE6', gold: '#C9A84C', cream: '#F5F0E6', white: '#FFFFFF', kakao: '#FEE500'};
@@ -387,7 +388,9 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
   const live = (e: Ev, pad = 0.2) => t >= e.s - 0.05 && t <= e.e + pad;
   const cap = plan.captions.find((c) => t >= c.s && t < c.e);
   const camStyle: React.CSSProperties = {position: 'absolute', inset: 0, transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})`, transformOrigin: '50% 36%'};
-  const vid: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: GRADE};
+  const orig = plan.look === 'original';
+  const grade = orig ? 'none' : GRADE;
+  const vid: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: grade};
   // a cream pull-back (Joy, Day 28) keeps the cream clean: fade the vignette and caption scrim while it shows
   const cream = Math.max(0, ...E('pull').filter((e) => e.bg).map((e) => pullAmount(e, t)));
   return (
@@ -398,7 +401,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
           <Sequence key={`b${k}`} from={from} durationInFrames={to - from} layout="none">
             <AbsoluteFill style={{opacity: pullAmount(ev, t)}}>
               {ev.bg ? <AbsoluteFill style={{background: ev.bg}} /> : <OffthreadVideo src={staticFile(`${dir}/cut.mov`)} muted trimBefore={from}
-                style={{...vid, transform: 'scale(1.4)', filter: `${GRADE} blur(36px) brightness(.85)`}} />}
+                style={{...vid, transform: 'scale(1.4)', filter: `${orig ? '' : GRADE} blur(36px) brightness(.85)`}} />}
             </AbsoluteFill>
           </Sequence>
         );
@@ -415,8 +418,8 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
           );
         })}
       </div>
-      <AbsoluteFill style={{opacity: 1 - cream, background: 'radial-gradient(130% 85% at 50% 40%, rgba(0,0,0,0) 62%, rgba(20,32,58,.3) 100%)'}} />
-      <Grain frame={frame} />
+      {orig ? null : <AbsoluteFill style={{opacity: 1 - cream, background: 'radial-gradient(130% 85% at 50% 40%, rgba(0,0,0,0) 62%, rgba(20,32,58,.3) 100%)'}} />}
+      {orig ? null : <Grain frame={frame} />}
       {plan.scrim ? <AbsoluteFill style={{opacity: 1 - cream, background: 'linear-gradient(180deg, rgba(10,16,30,0) 38%, rgba(10,16,30,.42) 52%, rgba(10,16,30,.62) 72%, rgba(10,16,30,.45) 100%)'}} /> : null}
       {E('tag').map((ev, k) => (live(ev) ? <Tag key={k} ev={ev} t={t} fps={fps} pos={plan.tagPos} /> : null))}
       {E('cover').map((ev, k) => (live(ev) ? <Cover key={k} ev={ev} t={t} fps={fps} /> : null))}
