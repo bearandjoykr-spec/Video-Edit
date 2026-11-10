@@ -84,10 +84,12 @@ HI = {0: "한 단어로", 1: "방식", 2: "세 가지", 3: "선택지", 5: "바�
 
 # Big words behind Joy's head, revealed by a camera pull-back (source seconds)
 BEHIND = [
-    {"kicker": "", "ko": "묵묵부답?", "s": 0.03, "e": 4.40, "size": 220, "lift": 30},
     {"kicker": "영어로 대답 안 해도", "ko": "괜찮아요!", "s": 68.55, "e": 70.95, "size": 250, "lift": 60},
 ]
 # Key-point pops (source s, e, kicker, text, slot, sound)
+# The hook (Joy, 10 Nov 2026): no blurred pull-back, so the first frame works as the thumbnail.
+# A big word in front of the sharp, full-frame picture, between the mic and the captions.
+HOOK = {"s": 0.03, "e": 4.40, "kicker": "영어로 물어보면", "text": "묵묵부답? 😶", "size": 170}
 POPS = [
     (9.00, 11.30, "질문 더 많이 ❌", "말하는 방식 🔄", "mid", "boing"),
     (14.40, 16.70, "유아 영어 수업에서 쓰는", "대화법 3가지 💬", "mid", "sparkle"),
@@ -103,7 +105,7 @@ POPS = [
 ]
 TAG = {"s": 6.41, "e": 8.90, "name": "Joy Kim", "flags": "🇰🇷", "role": "Bear & Joy 공동 저자"}
 MARK = {"img": "brand/mark-avatar.png", "name": "Mark", "flags": "🇬🇧"}
-SLOTS = {"mid": {"left": 0, "right": 0, "top": 950, "rot": -2}}  # below chin and mic, above captions
+SLOTS = {"mid": {"left": 0, "right": 0, "top": 950, "rot": -2}, "hook": {"left": 0, "right": 0, "top": 820, "rot": -3}}  # below chin and mic, above captions
 TAG_POS = {"left": 50, "top": 1480}
 CAPTION_TOP = 1250
 
@@ -182,7 +184,7 @@ def build(db, name="main"):
             a["e"] = b["s"]
     for c in C:
         c["s"] = max(0, c["s"] - 0.08)
-    C[0]["s"] = 0.0  # hook text on screen from frame 1
+    C[0]["s"] = -0.3  # hook text already settled on frame 1 (it doubles as the cover)
     # reading speed (owner, Day 23): a fast Korean page borrows up to 0.45 s from the page before it
     for a, b in zip(C, C[1:]):
         n = len(clean(b["ko"]))
@@ -197,6 +199,8 @@ def build(db, name="main"):
         ev.append({"type": "behind", "ko": b["ko"], "en": b["kicker"], "size": b["size"], "top": 250 - b["size"] - b.get("lift", 0), "s": s, "e": e, "k": k})
         ev.append({"type": "pull", "s": max(0, s - 0.12), "e": e, "z": 0.74})
         add(s - 0.15, "whoosh", -9); add(s, "impact", -7); add(s + 0.05, "sparkle", -13)
+    ev.append({"type": "pop", "s": -0.3, "e": to_out(HOOK["e"]), "text": HOOK["text"], "kicker": HOOK["kicker"], "slot": "hook", "k": 0, "size": HOOK["size"]})
+    add(0.0, "impact", -7); add(0.05, "sparkle", -13)
     for k, (s, e, kick, text, slot, snd) in enumerate(POPS):
         ev.append({"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k + 1})
         add(to_out(s), snd, -9 if snd == "pop" else -11)

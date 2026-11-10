@@ -180,8 +180,8 @@ const Pop: React.FC<{ev: Ev; t: number; fps: number; slots?: PlanV2['slots']}> =
   return (
     <div style={{position: 'absolute', ...pos, display: 'flex', justifyContent: centered ? 'center' : undefined, opacity: p.opacity}}>
       <div style={{transform: `scale(${p.scale}) rotate(${(rot + wobble) * 0.3}deg)`, textAlign: 'center', display: 'grid', justifyItems: 'center', gap: 4}}>
-        {ev.kicker ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 50, color: C.white, textShadow: stroke(10)}}>{ev.kicker}</div> : null}
-        <div style={{color: PASTEL[ev.k % 2], fontFamily: PRE, fontWeight: 900, fontSize: ev.text.length > 12 ? 80 : 92,
+        {ev.kicker ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: ev.size ? 62 : 50, color: C.white, textShadow: stroke(10)}}>{ev.kicker}</div> : null}
+        <div style={{color: PASTEL[ev.k % 2], fontFamily: PRE, fontWeight: 900, fontSize: ev.size ?? (ev.text.length > 12 ? 80 : 92),
           lineHeight: 1.05, letterSpacing: '-0.03em', textShadow: stroke(14), whiteSpace: 'nowrap'}}>{ev.text}</div>
       </div>
     </div>
