@@ -156,6 +156,23 @@ const MarkCaption: React.FC<{c: Caption; t: number; fps: number; top?: number}> 
   );
 };
 
+// Small Mark introduction pill (Joy, Day 28): his avatar, a UK flag and one short line.
+const MarkPill: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const p = usePop(t, ev.s, ev.e, fps);
+  return (
+    <div style={{position: 'absolute', left: 0, right: 0, top: ev.top, display: 'flex', justifyContent: 'center', opacity: p.opacity}}>
+      <div style={{display: 'flex', alignItems: 'center', gap: 22, padding: '16px 36px 16px 16px', borderRadius: 999, background: 'rgba(20,32,58,.62)',
+        boxShadow: '0 14px 34px rgba(0,0,0,.28)', transform: `scale(${p.scale}) rotate(-1.5deg)`}}>
+        <Img src={staticFile(ev.img)} style={{width: 120, height: 120}} />
+        <div style={{display: 'grid', gap: 4, textAlign: 'left'}}>
+          <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 52, lineHeight: 1.05, color: C.yellow, whiteSpace: 'nowrap'}}>{ev.name}</div>
+          <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 34, lineHeight: 1.2, color: C.white, whiteSpace: 'nowrap'}}>{ev.line}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Behind: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = usePop(t, ev.s, ev.e, fps);
   return (
@@ -399,6 +416,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('tag').map((ev, k) => (live(ev) ? <Tag key={k} ev={ev} t={t} fps={fps} pos={plan.tagPos} /> : null))}
       {E('cover').map((ev, k) => (live(ev) ? <Cover key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('pop').map((ev, k) => (live(ev) ? <Pop key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
+      {E('markpill').map((ev, k) => (live(ev) ? <MarkPill key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('avatar').map((ev, k) => (live(ev) ? <Avatar key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
       {E('follow').map((ev, k) => (live(ev) ? <FollowNow key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('demo').map((ev, k) => (live(ev, 0.4) ? <Demo key={k} ev={ev} t={t} fps={fps} /> : null))}

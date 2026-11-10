@@ -90,7 +90,7 @@ BEHIND = [
 # The hook (Joy, 10 Nov 2026): no blurred pull-back, so the first frame works as the thumbnail.
 # A big word in front of the sharp, full-frame picture, between the mic and the captions.
 # Joy: no DAY badge over the hook (it covered her face), no emoji, a bigger first line.
-HOOK = {"s": 0.03, "e": 4.40, "kicker": "영어로 물어보면", "text": "묵묵부답?", "size": 190, "kickerSize": 108}
+HOOK = {"s": 0.03, "e": 6.00, "kicker": "영어로 물어보면", "text": "묵묵부답?", "size": 190, "kickerSize": 108}
 POPS = [
     (9.00, 11.30, "질문 더 많이 ❌", "말하는 방식 🔄", "mid", "boing"),
     (14.40, 16.70, "유아 영어 수업에서 쓰는", "대화법 3가지 💬", "mid", "sparkle"),
@@ -185,7 +185,8 @@ def build(db, name="main"):
             a["e"] = b["s"]
     for c in C:
         c["s"] = max(0, c["s"] - 0.08)
-    C[0]["s"] = -0.3  # hook text already settled on frame 1 (it doubles as the cover)
+    # Joy (10 Nov): the long first sentence is too much for the hook; only the big title stays on screen
+    C = [c for c in C if c["i"] != 0]
     # reading speed (owner, Day 23): a fast Korean page borrows up to 0.45 s from the page before it
     for a, b in zip(C, C[1:]):
         n = len(clean(b["ko"]))
@@ -203,6 +204,14 @@ def build(db, name="main"):
         add(s - 0.15, "whoosh", -9); add(s, "impact", -7); add(s + 0.05, "sparkle", -13)
     ev.append({"type": "pop", "s": -0.3, "e": to_out(HOOK["e"]), "text": HOOK["text"], "kicker": HOOK["kicker"], "slot": "hook", "k": 0, "size": HOOK["size"], "kickerSize": HOOK["kickerSize"]})
     add(0.0, "impact", -7); add(0.05, "sparkle", -13)
+    # more energy in the hook (Joy): a punch on "한 단어로", then a held punch-in with a record scratch on "아무 말도 하지 않나요?"
+    ev.append({"type": "punch", "s": 2.70, "e": 2.95, "z": 1.06, "shake": 4})
+    add(2.70, "pop", -9)
+    ev.append({"type": "punch", "s": 4.36, "e": 5.95, "z": 1.16, "shake": 5, "hold": True})
+    add(4.28, "scratch", -7)
+    # Mark is introduced in the hook (Joy): a small face with a UK flag, so viewers know a British teacher speaks the English
+    ev.append({"type": "markpill", "s": 0.5, "e": 6.0, "img": "brand/mark-avatar.png", "name": "마크 선생님 🇬🇧", "line": "영국인 선생님 발음으로 들어보세요", "top": 1240})
+    add(0.5, "whoosh", -12)
     for k, (s, e, kick, text, slot, snd) in enumerate(POPS):
         ev.append({"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k + 1})
         add(to_out(s), snd, -9 if snd == "pop" else -11)
