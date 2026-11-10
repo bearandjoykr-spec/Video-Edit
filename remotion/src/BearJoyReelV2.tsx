@@ -9,7 +9,7 @@ import {
 } from 'remotion';
 
 type W = {w: string; t: number | null};
-type Caption = {i: number; s: number; e: number; ko: string; en: string; hi: string; demo: boolean; words: W[]; kwords?: W[]};
+type Caption = {i: number; s: number; e: number; ko: string; en: string; hi: string; demo: boolean; words: W[]; kwords?: W[]; mark?: boolean};
 type Ev = {type: string; s: number; e: number; [k: string]: any};
 export type PlanV2 = {
   name: string; fps: number; duration: number; frames: number; speechEnd: number; day: number;
@@ -35,6 +35,7 @@ const FONTS: [string, string, string, string][] = [
   ['Pretendard', 'normal', '900', 'Pretendard-Black.woff2'],
   ['Noto Color Emoji', 'normal', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
   ['Playfair Display', 'italic', '400', 'nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTbtY.ttf'],
+  ['Playfair Display', 'italic', '600', 'nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_naUbtY.ttf'],
 ];
 
 const useFonts = () => {
@@ -118,6 +119,39 @@ const CaptionV2: React.FC<{c: Caption; t: number; fps: number; top?: number}> = 
           }) : <span style={{color: C.white, opacity: 0.9}}>{c.en}</span>}
         </div>
       ) : null}
+    </div>
+  );
+};
+
+// Mark's recorded English (Joy, Day 28): his avatar with a UK flag, the English line in Playfair Display italic
+// (a different font from Joy's Korean captions) lighting up sky blue as he speaks, and the Korean translation under it.
+const MarkCaption: React.FC<{c: Caption; t: number; fps: number; top?: number}> = ({c, t, fps, top = 1170}) => {
+  const f = Math.round((t - c.s) * fps);
+  const inS = spring({frame: f, fps, config: {damping: 12, stiffness: 220}});
+  const av = spring({frame: f, fps, config: {damping: 9, stiffness: 200, mass: 0.6}});
+  const ws = c.words;
+  return (
+    <div style={{position: 'absolute', left: 50, right: 50, top: top - 150, textAlign: 'center', display: 'grid', justifyItems: 'center', gap: 10,
+      opacity: Math.min(1, inS * 2)}}>
+      <div style={{display: 'flex', alignItems: 'center', gap: 18, transform: `scale(${av}) rotate(${Math.sin((t - c.s) * 4) * 1.5}deg)`}}>
+        <div style={{position: 'relative', width: 128, height: 128}}>
+          <Img src={staticFile('brand/mark-avatar.png')} style={{width: 128, height: 128, filter: 'drop-shadow(0 8px 18px rgba(0,0,0,.35))'}} />
+          <div style={{position: 'absolute', right: -14, bottom: -6, fontFamily: EMOJI, fontSize: 52, lineHeight: 1}}>🇬🇧</div>
+        </div>
+        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 46, color: C.white, textShadow: stroke(8), whiteSpace: 'nowrap'}}>마크 선생님</div>
+      </div>
+      <div style={{fontFamily: PLAYFAIR, fontStyle: 'italic', fontWeight: 600, fontSize: 80, lineHeight: 1.12, letterSpacing: '-0.005em',
+        textShadow: stroke(9), textWrap: 'balance' as any, transform: `translateY(${(1 - inS) * 22}px)`}}>
+        {ws.map((w, k) => {
+          const next = ws[k + 1]?.t ?? c.e;
+          const active = w.t !== null && t >= w.t && t < next;
+          const said = w.t !== null && t >= w.t;
+          return <React.Fragment key={k}>{k ? ' ' : ''}<span style={{display: 'inline-block', color: said ? C.blue : C.white,
+            opacity: said ? 1 : 0.6, transform: `scale(${active ? 1.07 : 1}) translateY(${active ? -4 : 0}px)`}}>{w.w}</span></React.Fragment>;
+        })}
+      </div>
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 54, lineHeight: 1.2, color: C.white, textShadow: stroke(8), wordBreak: 'keep-all',
+        opacity: interpolate(t, [c.s + 0.15, c.s + 0.4], [0, 1], clamp)}}>{c.ko}</div>
     </div>
   );
 };
@@ -365,7 +399,8 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('avatar').map((ev, k) => (live(ev) ? <Avatar key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
       {E('follow').map((ev, k) => (live(ev) ? <FollowNow key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('demo').map((ev, k) => (live(ev, 0.4) ? <Demo key={k} ev={ev} t={t} fps={fps} /> : null))}
-      {cap && !cap.demo && t < end.s ? <CaptionV2 c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
+      {cap && !cap.demo && !cap.mark && t < end.s ? <CaptionV2 c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
+      {cap && cap.mark && t < end.s ? <MarkCaption c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
       {E('badge').map((ev, k) => (t <= ev.e ? <Badge key={k} ev={ev} t={t} fps={fps} /> : null))}
       {t >= end.s ? <EndV2 ev={end} t={t} fps={fps} day={plan.day} /> : null}
       <Progress t={t} total={plan.duration} />

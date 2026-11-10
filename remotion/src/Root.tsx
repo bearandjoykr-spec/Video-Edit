@@ -12,6 +12,7 @@ import day5main from '../../projects/2026-11-firststeps-day5/versions/main/timel
 import day5demo from '../../projects/2026-11-firststeps-day5/versions/demo/timeline_class.json';
 import day24tight from '../../projects/2026-11-day24-early-english/versions/tight/timeline_v2.json';
 import day25 from '../../projects/2026-11-day25-kyobo/versions/main/timeline_v2.json';
+import day28 from '../../projects/2026-11-day28-questions/versions/main/timeline_v2.json';
 
 import {BearJoyClass as BearJoyClassDay1, ClassPlan as ClassPlanDay1} from './BearJoyClassDay1';
 import day1 from '../../projects/2026-11-day1-class/versions/main/timeline.json';
@@ -73,6 +74,7 @@ export const Root: React.FC = () => (
     {classVideo('Day5ClassDemo', day5demo as unknown as ClassPlan)}
     {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
     {reelV2('Day25', day25 as unknown as PlanV2)}
+    {reelV2('Day28', day28 as unknown as PlanV2)}
     {wReel('ReelUse', reelUse as unknown as WelcomeReelPlan)}
     {wReel('ReelPerfect', reelPerfect as unknown as WelcomeReelPlan)}
     {wReel('ReelBearVoice', reelBear as unknown as WelcomeReelPlan)}
