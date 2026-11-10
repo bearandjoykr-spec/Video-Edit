@@ -31,10 +31,10 @@ for k, cue in enumerate(plan["sfx"]):
     labels.append(f"[s{k}]")
 fc.append("".join(labels) + f"amix=inputs={len(labels)}:normalize=0:duration=first,atrim=0:{dur}[mix]")
 graph = ";".join(fc)
-m = subprocess.run(["ffmpeg", "-hide_banner", *inputs, "-filter_complex", graph + ";[mix]loudnorm=I=-14:TP=-2.5:LRA=11:print_format=json[o]",
+m = subprocess.run(["ffmpeg", "-hide_banner", *inputs, "-filter_complex", graph + ";[mix]loudnorm=I=-14:TP=-3.5:LRA=11:print_format=json[o]",
                     "-map", "[o]", "-f", "null", "-"], capture_output=True, text=True)
 j = json.loads(re.findall(r"\{[^{}]*\"input_i\"[^{}]*\}", m.stderr)[-1])
-ln = (f"loudnorm=I=-14:TP=-2.5:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:"
+ln = (f"loudnorm=I=-14:TP=-3.5:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:"
       f"measured_thresh={j['input_thresh']}:offset={j['target_offset']}:linear=true")
 os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
 shift = lambda g: re.sub(r"\[(\d+):a\]", lambda mm: f"[{int(mm.group(1)) + 1}:a]", g)

@@ -115,3 +115,4 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Colour (Joy, 10 Nov 2026):** keep the camera's own colours on Joy's footage. The v2 grade (saturation + sepia) made skin look yellow. Plans set `"look": "original"` (no grade, grain or vignette).
 - **Mark's recorded lines:** clean them on their own (DeepFilterNet + clarity EQ, `projects/2026-11-day28-questions/voice.py`) so his English is crisp; Joy's voice stays as recorded.
 - **Music level:** the licensed track must be clearly audible under talking reels (Day 28 at -20 dB with heavy ducking was "almost inaudible"). Use about -15 dB with light ducking (ratio 2).
+- **Viral pass (Joy approved, 10 Nov 2026):** open cold on the problem itself (Mark asks a question, the child is silent: crickets + "……", then the title slams in), and cut lines that repeat what a pop or the next line already says. Day 28 went from 111 s to 84 s with every English example kept.
