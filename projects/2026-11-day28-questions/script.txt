@@ -34,3 +34,5 @@ M89.09|92.21|Look! It's going under the table! / 봐! 자동차가 테이블 아
 109.01|112.92|오늘 알려드린 세 가지 방법, / 아이와 놀 때 꼭 한번 사용해 보세요!
 113.37|116.25|영어교육을 고민하는 엄마 아빠에게도 공유해 주세요!
 -116.30|118.30|그럼 내일 만나요. 안녕!
+# Final (10 Nov 2026): .venv/bin/python projects/2026-11-day28-questions/mix.py renders/day28/day28-picture.mp4 renders/day28/day28-final.mp4 projects/2026-11-day25-kyobo/music/magic-moments.mp3 -20
+# then bash projects/2026-11-day28-questions/export.sh. Export: 111.4 s, -14.0 LUFS, -1.1 dBFS peak.
