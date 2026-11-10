@@ -89,7 +89,8 @@ BEHIND = [
 # Key-point pops (source s, e, kicker, text, slot, sound)
 # The hook (Joy, 10 Nov 2026): no blurred pull-back, so the first frame works as the thumbnail.
 # A big word in front of the sharp, full-frame picture, between the mic and the captions.
-HOOK = {"s": 0.03, "e": 4.40, "kicker": "영어로 물어보면", "text": "묵묵부답? 😶", "size": 170}
+# Joy: no DAY badge over the hook (it covered her face), no emoji, a bigger first line.
+HOOK = {"s": 0.03, "e": 4.40, "kicker": "영어로 물어보면", "text": "묵묵부답?", "size": 190, "kickerSize": 108}
 POPS = [
     (9.00, 11.30, "질문 더 많이 ❌", "말하는 방식 🔄", "mid", "boing"),
     (14.40, 16.70, "유아 영어 수업에서 쓰는", "대화법 3가지 💬", "mid", "sparkle"),
@@ -196,10 +197,11 @@ def build(db, name="main"):
     add = lambda tt, s, g: sfx.append({"t": round(max(0, tt), 3), "sound": s, "gain": g})
     for k, b in enumerate(BEHIND):
         s, e = to_out(b["s"]), to_out(b["e"])
-        ev.append({"type": "behind", "ko": b["ko"], "en": b["kicker"], "size": b["size"], "top": 250 - b["size"] - b.get("lift", 0), "s": s, "e": e, "k": k})
-        ev.append({"type": "pull", "s": max(0, s - 0.12), "e": e, "z": 0.74})
+        # Joy: a Bear & Joy cream background behind the pulled-back picture instead of blur
+        ev.append({"type": "behind", "ko": b["ko"], "en": b["kicker"], "size": b["size"], "top": 250 - b["size"] - b.get("lift", 0), "s": s, "e": e, "k": k, "cream": True})
+        ev.append({"type": "pull", "s": max(0, s - 0.12), "e": e, "z": 0.74, "bg": "#F5F0E6"})
         add(s - 0.15, "whoosh", -9); add(s, "impact", -7); add(s + 0.05, "sparkle", -13)
-    ev.append({"type": "pop", "s": -0.3, "e": to_out(HOOK["e"]), "text": HOOK["text"], "kicker": HOOK["kicker"], "slot": "hook", "k": 0, "size": HOOK["size"]})
+    ev.append({"type": "pop", "s": -0.3, "e": to_out(HOOK["e"]), "text": HOOK["text"], "kicker": HOOK["kicker"], "slot": "hook", "k": 0, "size": HOOK["size"], "kickerSize": HOOK["kickerSize"]})
     add(0.0, "impact", -7); add(0.05, "sparkle", -13)
     for k, (s, e, kick, text, slot, snd) in enumerate(POPS):
         ev.append({"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k + 1})
@@ -219,7 +221,7 @@ def build(db, name="main"):
     total = round(speech_end + END, 3)
     ev.append({"type": "end", "s": round(speech_end - 0.2, 3), "e": total,
                "share": "💌 영어교육 고민하는 엄마 아빠에게 공유해 주세요"})
-    ev.append({"type": "badge", "s": 0.0, "e": speech_end - 0.2, "day": DAY})
+    ev.append({"type": "badge", "s": to_out(HOOK["e"]), "e": speech_end - 0.2, "day": DAY, "docked": True})
     add(speech_end - 0.2, "impact", -8); add(speech_end, "sparkle", -10)
     es = speech_end - 0.2
     add(es + 2.0, "pop", -6); add(es + 2.9, "pop", -6); add(es + 2.95, "chime", -9)  # end-card follow taps

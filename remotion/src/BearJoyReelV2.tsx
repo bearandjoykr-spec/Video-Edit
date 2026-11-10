@@ -161,9 +161,9 @@ const Behind: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top: ev.top - 90, textAlign: 'center', opacity: p.opacity,
       transform: `scale(${p.scale})`, transformOrigin: '50% 70%'}}>
-      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 66, color: C.white, textShadow: stroke(10), marginBottom: 6}}>{ev.en}</div>
-      <div style={{fontFamily: PRE, fontWeight: 900, fontSize: ev.size, lineHeight: 1, letterSpacing: '-0.03em', color: PASTEL[ev.k % 2],
-        textShadow: stroke(16), whiteSpace: 'nowrap'}}>{ev.ko}</div>
+      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 66, color: ev.cream ? C.navy : C.white, textShadow: ev.cream ? 'none' : stroke(10), marginBottom: 6}}>{ev.en}</div>
+      <div style={{fontFamily: PRE, fontWeight: 900, fontSize: ev.size, lineHeight: 1, letterSpacing: '-0.03em', color: ev.cream ? '#173B5C' : PASTEL[ev.k % 2],
+        textShadow: ev.cream ? '0 6px 18px rgba(23,59,92,.18)' : stroke(16), whiteSpace: 'nowrap'}}>{ev.ko}</div>
     </div>
   );
 };
@@ -180,7 +180,7 @@ const Pop: React.FC<{ev: Ev; t: number; fps: number; slots?: PlanV2['slots']}> =
   return (
     <div style={{position: 'absolute', ...pos, display: 'flex', justifyContent: centered ? 'center' : undefined, opacity: p.opacity}}>
       <div style={{transform: `scale(${p.scale}) rotate(${(rot + wobble) * 0.3}deg)`, textAlign: 'center', display: 'grid', justifyItems: 'center', gap: 4}}>
-        {ev.kicker ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: ev.size ? 62 : 50, color: C.white, textShadow: stroke(10)}}>{ev.kicker}</div> : null}
+        {ev.kicker ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: ev.kickerSize ?? (ev.size ? 62 : 50), color: C.white, textShadow: stroke(10)}}>{ev.kicker}</div> : null}
         <div style={{color: PASTEL[ev.k % 2], fontFamily: PRE, fontWeight: 900, fontSize: ev.size ?? (ev.text.length > 12 ? 80 : 92),
           lineHeight: 1.05, letterSpacing: '-0.03em', textShadow: stroke(14), whiteSpace: 'nowrap'}}>{ev.text}</div>
       </div>
@@ -280,9 +280,10 @@ const Tag: React.FC<{ev: Ev; t: number; fps: number; pos?: {left: number; top: n
 };
 
 const Badge: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
-  const f = Math.round(t * fps);
+  // docked: no big hook phase, it pops in already docked top-right at ev.s (Joy, Day 28)
+  const f = Math.round((ev.docked ? t - ev.s : t) * fps);
   const inS = spring({frame: f - 4, fps, config: {damping: 10, stiffness: 160}});
-  const shrink = interpolate(t, [3.2, 3.7], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const shrink = ev.docked ? 1 : interpolate(t, [3.2, 3.7], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
   const out = interpolate(t, [ev.e - 0.2, ev.e], [1, 0], clamp);
   // big and centred during the hook, then docks top-right
   const x = interpolate(shrink, [0, 1], [540, 900]), y = interpolate(shrink, [0, 1], [250, 205]), s = interpolate(shrink, [0, 1], [1, 0.5]);
@@ -365,6 +366,8 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
   const cap = plan.captions.find((c) => t >= c.s && t < c.e);
   const camStyle: React.CSSProperties = {position: 'absolute', inset: 0, transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})`, transformOrigin: '50% 36%'};
   const vid: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: GRADE};
+  // a cream pull-back (Joy, Day 28) keeps the cream clean: fade the vignette and caption scrim while it shows
+  const cream = Math.max(0, ...E('pull').filter((e) => e.bg).map((e) => pullAmount(e, t)));
   return (
     <AbsoluteFill style={{background: C.navy}}>
       {E('pull').map((ev, k) => {
@@ -372,8 +375,8 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
         return (
           <Sequence key={`b${k}`} from={from} durationInFrames={to - from} layout="none">
             <AbsoluteFill style={{opacity: pullAmount(ev, t)}}>
-              <OffthreadVideo src={staticFile(`${dir}/cut.mov`)} muted trimBefore={from}
-                style={{...vid, transform: 'scale(1.4)', filter: `${GRADE} blur(36px) brightness(.85)`}} />
+              {ev.bg ? <AbsoluteFill style={{background: ev.bg}} /> : <OffthreadVideo src={staticFile(`${dir}/cut.mov`)} muted trimBefore={from}
+                style={{...vid, transform: 'scale(1.4)', filter: `${GRADE} blur(36px) brightness(.85)`}} />}
             </AbsoluteFill>
           </Sequence>
         );
@@ -390,9 +393,9 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
           );
         })}
       </div>
-      <AbsoluteFill style={{background: 'radial-gradient(130% 85% at 50% 40%, rgba(0,0,0,0) 62%, rgba(20,32,58,.3) 100%)'}} />
+      <AbsoluteFill style={{opacity: 1 - cream, background: 'radial-gradient(130% 85% at 50% 40%, rgba(0,0,0,0) 62%, rgba(20,32,58,.3) 100%)'}} />
       <Grain frame={frame} />
-      {plan.scrim ? <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,0) 38%, rgba(10,16,30,.42) 52%, rgba(10,16,30,.62) 72%, rgba(10,16,30,.45) 100%)'}} /> : null}
+      {plan.scrim ? <AbsoluteFill style={{opacity: 1 - cream, background: 'linear-gradient(180deg, rgba(10,16,30,0) 38%, rgba(10,16,30,.42) 52%, rgba(10,16,30,.62) 72%, rgba(10,16,30,.45) 100%)'}} /> : null}
       {E('tag').map((ev, k) => (live(ev) ? <Tag key={k} ev={ev} t={t} fps={fps} pos={plan.tagPos} /> : null))}
       {E('cover').map((ev, k) => (live(ev) ? <Cover key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('pop').map((ev, k) => (live(ev) ? <Pop key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
@@ -401,7 +404,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('demo').map((ev, k) => (live(ev, 0.4) ? <Demo key={k} ev={ev} t={t} fps={fps} /> : null))}
       {cap && !cap.demo && !cap.mark && t < end.s ? <CaptionV2 c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
       {cap && cap.mark && t < end.s ? <MarkCaption c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
-      {E('badge').map((ev, k) => (t <= ev.e ? <Badge key={k} ev={ev} t={t} fps={fps} /> : null))}
+      {E('badge').map((ev, k) => (t <= ev.e && (!ev.docked || t >= ev.s) ? <Badge key={k} ev={ev} t={t} fps={fps} /> : null))}
       {t >= end.s ? <EndV2 ev={end} t={t} fps={fps} day={plan.day} /> : null}
       <Progress t={t} total={plan.duration} />
     </AbsoluteFill>

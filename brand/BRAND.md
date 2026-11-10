@@ -104,3 +104,9 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Phone voice memos: clean with `projects/2026-11-day25-kyobo/voice.sh` (DeepFilterNet + clarity EQ). The owner approved the result.
 - Book 1 cover for promos: `brand/assets/book1-cover.png` (from the publisher review PDF, page 2). Reservation call to action: comment 🐻 or DM.
 - **Describing the Bear & Joy book (owner, 6 Nov 2026):** never translate the title as "곰이 기쁨을 찾았다" or 「곰이 기쁨을 찾은 이야기」. Keep the names: **「Bear가 Joy를 찾은 이야기!」**.
+
+## Day 28 reel feedback (Joy, co-owner, 10 Nov 2026)
+- **Hook / thumbnail:** no blurred pull-back on the first scene, so the frame works as the thumbnail. A big two-line title in front of the sharp picture, between the mic and the captions ("영어로 물어보면" white ~108 px over "묵묵부답?" butter yellow ~190 px), with no emoji. It is already on screen at frame 1.
+- **DAY badge:** do not show it over the hook (it covered Joy's face). It pops in already docked top-right once the hook ends.
+- **Behind-the-head pull-backs:** use a plain Bear & Joy cream background (#F5F0E6) instead of the blurred video, with deep-blue (#173B5C) words.
+- **Mark's English lines (recorded voice):** a different font from the Korean captions (Playfair Display italic, lighting up sky blue as he speaks), Korean translation underneath, and his small avatar with a 🇬🇧 flag while he speaks.
