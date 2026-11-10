@@ -92,16 +92,12 @@ BEHIND = [
 # Joy: no DAY badge over the hook (it covered her face), no emoji, a bigger first line.
 HOOK = {"s": 0.03, "e": 6.00, "kicker": "영어로 물어보면", "text": "묵묵부답?", "size": 190, "kickerSize": 108}
 POPS = [
-    (9.00, 11.30, "질문 더 많이 ❌", "말하는 방식 🔄", "mid", "boing"),
-    (14.40, 16.70, "유아 영어 수업에서 쓰는", "대화법 3가지 💬", "mid", "sparkle"),
+    (9.00, 11.30, "말하는 방식을 바꾸는", "대화법 3가지 💬", "mid", "sparkle"),
     (17.24, 20.90, "방법 1", "정답 대신 선택지 🔴🔵", "mid", "pop"),
-    (38.40, 41.50, "", "👉 손짓도 대답이에요", "mid", "pop"),
     (42.05, 45.30, "방법 2", "말 대신 행동으로 🧱", "mid", "pop"),
     (71.41, 75.90, "", "👂 듣고 · 🔍 찾고 · 🏃 움직이고", "mid", "pop"),
     (76.50, 79.45, "방법 3", "짧은 대답 확장 ➕", "mid", "pop"),
     (81.20, 83.55, "", "🚗 Car!", "mid", "boing"),
-    (99.30, 102.20, "", "질문 공세 ❌", "mid", "boing"),
-    (104.80, 108.40, "", "💬 반응을 이어주기", "mid", "pop"),
     (109.01, 112.90, "", "✅ 오늘 놀 때 바로!", "mid", "sparkle"),
 ]
 TAG = {"s": 6.41, "e": 8.90, "name": "Joy Kim", "flags": "🇰🇷", "role": "Bear & Joy 공동 저자"}
@@ -111,6 +107,9 @@ TAG_POS = {"left": 50, "top": 1480}
 CAPTION_TOP = 1250
 
 VERSIONS = {"main": None}
+# Cold open (Joy approved, 10 Nov 2026, "viral" pass): Mark asks "What colour is this?", the child says nothing
+# (crickets + "……" for a beat), then a hard cut to the title. The line plays again later in tip 1.
+COLD = {"src_s": 21.60, "src_e": 24.00, "line": 4, "silent": 23.35}
 
 
 def build(db, name="main"):
@@ -122,16 +121,18 @@ def build(db, name="main"):
             segs[-1] = (segs[-1][0], e)
         else:
             segs.append((s, e))
-    out, t = [], 0.0
+    cold = round(COLD["src_e"] - COLD["src_s"], 3)
+    out, t = [{"src_s": COLD["src_s"], "src_e": COLD["src_e"], "out_s": 0.0, "cold": True}], cold
     for s, e in segs:
         out.append({"src_s": round(s, 3), "src_e": round(e, 3), "out_s": round(t, 3)}); t += e - s
     speech_end = round(t, 3)
 
     def to_out(x):
-        for g in out:
+        body = [g for g in out if not g.get("cold")]
+        for g in body:
             if g["src_s"] - 1e-6 <= x <= g["src_e"] + 1e-6:
                 return round(g["out_s"] + x - g["src_s"], 3)
-        best = min(out, key=lambda g: min(abs(x - g["src_s"]), abs(x - g["src_e"])))
+        best = min(body, key=lambda g: min(abs(x - g["src_s"]), abs(x - g["src_e"])))
         return round(best["out_s"] + (0 if x < best["src_s"] else best["src_e"] - best["src_s"]), 3)
 
     # captions
@@ -179,12 +180,18 @@ def build(db, name="main"):
                 flush(w["t"]); chunk = []; n_pages += 1
             chunk.append(w); acc += n
         flush(l["e"]); chunk = []
+    # cold open: Mark's question, then the silent beat
+    cl = lines[COLD["line"]]
+    C.append({"i": COLD["line"], "s": 0.0, "e": round(COLD["silent"] - COLD["src_s"], 3), "ko": cl["ko"], "en": cl["en"], "hi": "", "demo": False,
+              "mark": True, "words": [{"w": w["w"], "t": round(w["t"] - COLD["src_s"], 3)} for w in en_times(cl)], "kwords": []})
     C.sort(key=lambda c: c["s"])
     for a, b in zip(C, C[1:]):
         if 0 < b["s"] - a["e"] < 0.6:
             a["e"] = b["s"]
     for c in C:
         c["s"] = max(0, c["s"] - 0.08)
+        if c["s"] < cold <= c["e"] and c["s"] > 0:
+            c["s"] = cold
     # Joy (10 Nov): the long first sentence is too much for the hook; only the big title stays on screen
     C = [c for c in C if c["i"] != 0]
     # reading speed (owner, Day 23): a fast Korean page borrows up to 0.45 s from the page before it
@@ -202,30 +209,35 @@ def build(db, name="main"):
         ev.append({"type": "behind", "ko": b["ko"], "en": b["kicker"], "size": b["size"], "top": 250 - b["size"] - b.get("lift", 0), "s": s, "e": e, "k": k, "cream": True})
         ev.append({"type": "pull", "s": max(0, s - 0.12), "e": e, "z": 0.74, "bg": "#F5F0E6"})
         add(s - 0.15, "whoosh", -9); add(s, "impact", -7); add(s + 0.05, "sparkle", -13)
-    ev.append({"type": "pop", "s": -0.3, "e": to_out(HOOK["e"]), "text": HOOK["text"], "kicker": HOOK["kicker"], "slot": "hook", "k": 0, "size": HOOK["size"], "kickerSize": HOOK["kickerSize"]})
-    add(0.0, "impact", -7); add(0.05, "sparkle", -13)
+    sil = round(COLD["silent"] - COLD["src_s"], 3)
+    ev.append({"type": "mark", "s": 0.0, "e": sil, **MARK})
+    ev.append({"type": "pop", "s": sil - 0.05, "e": cold, "text": "……", "kicker": "아이 반응 🦗", "slot": "hook", "k": 98, "size": 190, "kickerSize": 90})
+    ev.append({"type": "punch", "s": sil, "e": cold, "z": 1.12, "hold": True, "shake": 0})
+    add(sil, "crickets", -10)
+    ev.append({"type": "pop", "s": cold - 0.05, "e": to_out(HOOK["e"]), "text": HOOK["text"], "kicker": HOOK["kicker"], "slot": "hook", "k": 0, "size": HOOK["size"], "kickerSize": HOOK["kickerSize"]})
+    add(cold, "impact", -6); add(cold + 0.05, "sparkle", -13)
     # more energy in the hook (Joy): a punch on "한 단어로", then a held punch-in with a record scratch on "아무 말도 하지 않나요?"
-    ev.append({"type": "punch", "s": 2.70, "e": 2.95, "z": 1.06, "shake": 4})
-    add(2.70, "pop", -9)
-    ev.append({"type": "punch", "s": 4.36, "e": 5.95, "z": 1.16, "shake": 5, "hold": True})
-    add(4.28, "scratch", -7)
+    ev.append({"type": "punch", "s": to_out(2.70), "e": to_out(2.95), "z": 1.06, "shake": 4})
+    add(to_out(2.70), "pop", -9)
+    ev.append({"type": "punch", "s": to_out(4.36), "e": to_out(5.95), "z": 1.16, "shake": 5, "hold": True})
+    add(to_out(4.28), "scratch", -7)
     # Mark is introduced in the hook (Joy): a small face with a UK flag, so viewers know a British teacher speaks the English
-    ev.append({"type": "markpill", "s": 0.5, "e": 6.0, "img": "brand/mark-avatar.png", "name": "Mark T", "line": "영국인 선생님 발음으로 들어보세요", "top": 1240})
-    add(0.5, "whoosh", -12)
+    ev.append({"type": "markpill", "s": to_out(0.5), "e": to_out(6.0), "img": "brand/mark-avatar.png", "name": "Mark T", "line": "영국인 선생님 발음으로 들어보세요", "top": 1240})
+    add(to_out(0.5), "whoosh", -12)
     for k, (s, e, kick, text, slot, snd) in enumerate(POPS):
         ev.append({"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k + 1})
         add(to_out(s), snd, -9 if snd == "pop" else -11)
         ev.append({"type": "punch", "s": to_out(s), "e": to_out(s) + 0.25, "z": 1.035, "shake": 5})
     # Mark speaking: small avatar + UK flag rides on the caption; a soft pop when each line starts
     for c in C:
-        if c.get("mark"):
+        if c.get("mark") and c["s"] >= cold:
             ev.append({"type": "mark", "s": c["s"], "e": c["e"], **MARK})
             add(c["s"], "pop", -12)
     ev.append({"type": "tag", "s": to_out(TAG["s"]), "e": to_out(TAG["e"]), **{k: v for k, v in TAG.items() if k not in ("s", "e")}})
     add(to_out(TAG["s"]), "whoosh", -12)
 
     zooms = [{"t": c["s"], "z": 1.07 if k % 2 else 1.0} for k, c in enumerate(C)]
-    for g in out[1:]:
+    for g in out[2:]:
         add(g["out_s"] - 0.05, "whoosh", -15)
     total = round(speech_end + END, 3)
     ev.append({"type": "end", "s": round(speech_end - 0.2, 3), "e": total,
@@ -240,6 +252,9 @@ def build(db, name="main"):
             "day": DAY, "segments": out, "captions": C, "events": ev, "zooms": zooms, "music": music,
             "slots": SLOTS, "tagPos": TAG_POS, "scrim": True, "look": "original", "captionTop": CAPTION_TOP, "sfx": sorted(sfx, key=lambda x: x["t"])}
     os.makedirs(f"{HERE}/versions/{name}", exist_ok=True)
+    # Mark's lines in output time, for voice.py (cleanup applies to his recorded voice only)
+    mr = [[0.0, sil]] + [[to_out(l["s"]), to_out(l["e"])] for l in lines if l["mark"] and not l["cut"]]
+    json.dump(mr, open(f"{HERE}/versions/{name}/mark_ranges.json", "w"))
     json.dump(plan, open(f"{HERE}/versions/{name}/timeline_v2.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"{name}: {total:.1f}s ({speech_end:.1f}s speech, {len(out)} segments), {len(C)} captions, "
           f"{sum(e['type'] == 'pop' for e in ev)} pops, {len(sfx)} sfx")
