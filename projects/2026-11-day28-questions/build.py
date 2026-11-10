@@ -210,7 +210,7 @@ def build(db, name="main"):
     ev.append({"type": "punch", "s": 4.36, "e": 5.95, "z": 1.16, "shake": 5, "hold": True})
     add(4.28, "scratch", -7)
     # Mark is introduced in the hook (Joy): a small face with a UK flag, so viewers know a British teacher speaks the English
-    ev.append({"type": "markpill", "s": 0.5, "e": 6.0, "img": "brand/mark-avatar.png", "name": "마크 선생님 🇬🇧", "line": "영국인 선생님 발음으로 들어보세요", "top": 1240})
+    ev.append({"type": "markpill", "s": 0.5, "e": 6.0, "img": "brand/mark-avatar.png", "name": "Mark T", "line": "영국인 선생님 발음으로 들어보세요", "top": 1240})
     add(0.5, "whoosh", -12)
     for k, (s, e, kick, text, slot, snd) in enumerate(POPS):
         ev.append({"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k + 1})

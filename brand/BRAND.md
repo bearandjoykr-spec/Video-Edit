@@ -110,3 +110,5 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **DAY badge:** do not show it over the hook (it covered Joy's face). It pops in already docked top-right once the hook ends.
 - **Behind-the-head pull-backs:** use a plain Bear & Joy cream background (#F5F0E6) instead of the blurred video, with deep-blue (#173B5C) words.
 - **Mark's English lines (recorded voice):** a different font from the Korean captions (Playfair Display italic, lighting up sky blue as he speaks), Korean translation underneath, and his small avatar with a 🇬🇧 flag while he speaks.
+- **Mark's name on screen (Joy, 10 Nov 2026):** "Mark T" (not "마크 선생님"), in Playfair Display italic butter yellow, with a big 🇬🇧 flag (about 70–85 px) next to the name so it reads at a glance. In the hook a small pill introduces him: avatar, "Mark T 🇬🇧" and a Korean line in Gowun Batang Bold ("영국인 선생님 발음으로 들어보세요").
+- **Hook (Joy, 10 Nov 2026):** no long caption under the hook title; only the big title shows while the first sentence plays, with punch-ins for energy.

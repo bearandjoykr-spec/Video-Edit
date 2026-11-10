@@ -36,6 +36,7 @@ const FONTS: [string, string, string, string][] = [
   ['Noto Color Emoji', 'normal', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
   ['Playfair Display', 'italic', '400', 'nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTbtY.ttf'],
   ['Playfair Display', 'italic', '600', 'nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_naUbtY.ttf'],
+  ['Gowun Batang', 'normal', '700', 'ijwNs5nhRMIjYsdSgcMa3wRZ4J7awg.ttf'],
 ];
 
 const useFonts = () => {
@@ -136,9 +137,9 @@ const MarkCaption: React.FC<{c: Caption; t: number; fps: number; top?: number}> 
       <div style={{display: 'flex', alignItems: 'center', gap: 18, transform: `scale(${av}) rotate(${Math.sin((t - c.s) * 4) * 1.5}deg)`}}>
         <div style={{position: 'relative', width: 128, height: 128}}>
           <Img src={staticFile('brand/mark-avatar.png')} style={{width: 128, height: 128, filter: 'drop-shadow(0 8px 18px rgba(0,0,0,.35))'}} />
-          <div style={{position: 'absolute', right: -14, bottom: -6, fontFamily: EMOJI, fontSize: 52, lineHeight: 1}}>🇬🇧</div>
         </div>
-        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 46, color: C.white, textShadow: stroke(8), whiteSpace: 'nowrap'}}>마크 선생님</div>
+        <div style={{fontFamily: PLAYFAIR, fontStyle: 'italic', fontWeight: 600, fontSize: 54, color: C.yellow, textShadow: stroke(8), whiteSpace: 'nowrap'}}>Mark T</div>
+        <div style={{fontFamily: EMOJI, fontSize: 72, lineHeight: 1, transform: `rotate(${Math.sin((t - c.s) * 5) * 6}deg)`}}>🇬🇧</div>
       </div>
       <div style={{fontFamily: PLAYFAIR, fontStyle: 'italic', fontWeight: 600, fontSize: 80, lineHeight: 1.12, letterSpacing: '-0.005em',
         textShadow: stroke(9), textWrap: 'balance' as any, transform: `translateY(${(1 - inS) * 22}px)`}}>
@@ -161,12 +162,16 @@ const MarkPill: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = usePop(t, ev.s, ev.e, fps);
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top: ev.top, display: 'flex', justifyContent: 'center', opacity: p.opacity}}>
-      <div style={{display: 'flex', alignItems: 'center', gap: 22, padding: '16px 36px 16px 16px', borderRadius: 999, background: 'rgba(20,32,58,.62)',
+      <div style={{display: 'flex', alignItems: 'center', gap: 24, padding: '18px 40px 18px 18px', borderRadius: 999, background: 'rgba(20,32,58,.66)',
         boxShadow: '0 14px 34px rgba(0,0,0,.28)', transform: `scale(${p.scale}) rotate(-1.5deg)`}}>
-        <Img src={staticFile(ev.img)} style={{width: 120, height: 120}} />
-        <div style={{display: 'grid', gap: 4, textAlign: 'left'}}>
-          <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 52, lineHeight: 1.05, color: C.yellow, whiteSpace: 'nowrap'}}>{ev.name}</div>
-          <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 34, lineHeight: 1.2, color: C.white, whiteSpace: 'nowrap'}}>{ev.line}</div>
+        <Img src={staticFile(ev.img)} style={{width: 150, height: 150}} />
+        <div style={{display: 'grid', gap: 6, textAlign: 'left'}}>
+          {/* Mark's own look (Joy): Playfair italic like his English lines, a big UK flag, Gowun Batang for the Korean line */}
+          <div style={{display: 'flex', alignItems: 'center', gap: 18, whiteSpace: 'nowrap'}}>
+            <span style={{fontFamily: PLAYFAIR, fontStyle: 'italic', fontWeight: 600, fontSize: 76, lineHeight: 1, color: C.yellow}}>{ev.name}</span>
+            <span style={{fontFamily: EMOJI, fontSize: 84, lineHeight: 1, transform: `rotate(${Math.sin((t - ev.s) * 5) * 6}deg)`, display: 'inline-block'}}>🇬🇧</span>
+          </div>
+          <div style={{fontFamily: "'Gowun Batang', serif", fontWeight: 700, fontSize: 40, lineHeight: 1.2, color: C.white, whiteSpace: 'nowrap'}}>{ev.line}</div>
         </div>
       </div>
     </div>
