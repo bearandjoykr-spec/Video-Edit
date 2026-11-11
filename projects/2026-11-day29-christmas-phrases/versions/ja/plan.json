@@ -1,0 +1,1108 @@
+{
+ "name": "day29-ja",
+ "fps": 30,
+ "duration": 65.493,
+ "frames": 1965,
+ "day": 29,
+ "background": "day29/great-hall.jpg",
+ "props": [
+  {
+   "dir": "day29/props-start",
+   "srcFrom": 0.0,
+   "frames": 237,
+   "s": 0.0,
+   "e": 6.754,
+   "poofIn": false
+  },
+  {
+   "dir": "day29/props-end",
+   "srcFrom": 53.9,
+   "frames": 168,
+   "s": 55.993,
+   "e": 60.992999999999995,
+   "poofIn": true
+  }
+ ],
+ "hook": {
+  "s": 0.0,
+  "e": 6.754,
+  "strike": 0.85,
+  "happy": 1.45,
+  "top": "Why does Ron say…",
+  "no": "Merry Christmas",
+  "yes": "Happy Christmas?",
+  "ko": "なぜ「メリー」じゃなくて「ハッピー」クリスマス？"
+ },
+ "cta": {
+  "ko1": "新しいハリー・ポッターのシリーズ",
+  "ko2": "12月25日スタート！",
+  "q": "Is your English ready?",
+  "qKo": "英語の準備はできてる？",
+  "follow": "フォローして一緒に準備しよう",
+  "small": "The new Harry Potter series · 25 December",
+  "comment": "好きなハリー・ポッターのフレーズは？コメントで教えてね 👇",
+  "commentEn": "Comment your favourite Harry Potter phrase!"
+ },
+ "title": {
+  "s": 11.254,
+  "e": 16.762,
+  "en": "5 Harry Potter Phrases",
+  "sub": "to teach your child before Christmas",
+  "ko": "クリスマスまでに教えたい、ハリー・ポッターのフレーズ5つ"
+ },
+ "segments": [
+  {
+   "kind": "mark",
+   "src": 0.62,
+   "srcEnd": 1.323,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 0.0,
+   "e": 0.703
+  },
+  {
+   "kind": "mark",
+   "src": 1.398,
+   "srcEnd": 3.608,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 0.703,
+   "e": 2.913
+  },
+  {
+   "kind": "mark",
+   "src": 3.665,
+   "srcEnd": 5.265,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 2.913,
+   "e": 4.513
+  },
+  {
+   "kind": "mark",
+   "src": 5.391,
+   "srcEnd": 6.08,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 4.513,
+   "e": 5.201
+  },
+  {
+   "kind": "mark",
+   "src": 6.227,
+   "srcEnd": 7.78,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 5.201,
+   "e": 6.754
+  },
+  {
+   "kind": "film",
+   "clip": "christmas",
+   "src": "day29/clips/christmas.mp4",
+   "clipIn": 15.3,
+   "clipOut": 16.6,
+   "silent": false,
+   "big": false,
+   "s": 6.754,
+   "e": 8.494,
+   "lineS": 6.974,
+   "en": "Happy Christmas, Harry!",
+   "ko": "ハッピー・クリスマス、ハリー！"
+  },
+  {
+   "kind": "mark",
+   "src": 8.78,
+   "srcEnd": 11.424,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 8.494,
+   "e": 11.139
+  },
+  {
+   "kind": "mark",
+   "src": 11.885,
+   "srcEnd": 16.052,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 11.139,
+   "e": 15.306
+  },
+  {
+   "kind": "mark",
+   "src": 16.244,
+   "srcEnd": 17.792,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 15.306,
+   "e": 16.854
+  },
+  {
+   "kind": "mark",
+   "src": 18.011,
+   "srcEnd": 19.518,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 16.854,
+   "e": 18.362
+  },
+  {
+   "kind": "mark",
+   "src": 19.892,
+   "srcEnd": 21.257,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 18.362,
+   "e": 19.727
+  },
+  {
+   "kind": "mark",
+   "src": 21.422,
+   "srcEnd": 22.589,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 19.727,
+   "e": 20.894
+  },
+  {
+   "kind": "mark",
+   "src": 22.665,
+   "srcEnd": 23.35,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 20.894,
+   "e": 21.58
+  },
+  {
+   "kind": "mark",
+   "src": 23.41,
+   "srcEnd": 24.31,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 21.58,
+   "e": 22.479
+  },
+  {
+   "kind": "film",
+   "clip": "christmas",
+   "src": "day29/clips/christmas.mp4",
+   "clipIn": 16.6,
+   "clipOut": 17.65,
+   "silent": false,
+   "big": false,
+   "s": 22.479,
+   "e": 23.969,
+   "lineS": 22.699,
+   "en": "Happy Christmas, Ron.",
+   "ko": "ハッピー・クリスマス、ロン。"
+  },
+  {
+   "kind": "mark",
+   "src": 24.56,
+   "srcEnd": 25.338,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 23.969,
+   "e": 24.747
+  },
+  {
+   "kind": "mark",
+   "src": 25.757,
+   "srcEnd": 26.899,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 24.747,
+   "e": 25.889
+  },
+  {
+   "kind": "mark",
+   "src": 27.208,
+   "srcEnd": 28.454,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 25.889,
+   "e": 27.134
+  },
+  {
+   "kind": "mark",
+   "src": 28.832,
+   "srcEnd": 29.97,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 27.134,
+   "e": 28.272
+  },
+  {
+   "kind": "film",
+   "clip": "brilliant",
+   "src": "day29/clips/brilliant.mp4",
+   "clipIn": 15.0,
+   "clipOut": 16.5,
+   "silent": false,
+   "big": false,
+   "s": 28.272,
+   "e": 30.212,
+   "lineS": 28.492,
+   "en": "Brilliant!",
+   "ko": "最高！"
+  },
+  {
+   "kind": "mark",
+   "src": 30.36,
+   "srcEnd": 31.401,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.0,
+   "s": 30.212,
+   "e": 31.254
+  },
+  {
+   "kind": "mark",
+   "src": 31.876,
+   "srcEnd": 32.843,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.06,
+   "s": 31.254,
+   "e": 32.221
+  },
+  {
+   "kind": "mark",
+   "src": 33.545,
+   "srcEnd": 36.178,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.0,
+   "s": 32.221,
+   "e": 34.853
+  },
+  {
+   "kind": "mark",
+   "src": 36.334,
+   "srcEnd": 37.58,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.06,
+   "s": 34.853,
+   "e": 36.099
+  },
+  {
+   "kind": "film",
+   "clip": "blimey",
+   "src": "day29/clips/blimey.mp4",
+   "clipIn": 20.0,
+   "clipOut": 21.15,
+   "silent": false,
+   "big": false,
+   "s": 36.099,
+   "e": 37.689,
+   "lineS": 36.319,
+   "en": "Blimey, Hermione.",
+   "ko": "なんてこった、ハーマイオニー。"
+  },
+  {
+   "kind": "mark",
+   "src": 38.23,
+   "srcEnd": 38.5,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.0,
+   "s": 37.689,
+   "e": 37.959
+  },
+  {
+   "kind": "mark",
+   "src": 38.5,
+   "srcEnd": 38.929,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 37.959,
+   "e": 38.388
+  },
+  {
+   "kind": "mark",
+   "src": 39.175,
+   "srcEnd": 40.514,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 38.388,
+   "e": 39.727
+  },
+  {
+   "kind": "mark",
+   "src": 40.795,
+   "srcEnd": 41.761,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 39.727,
+   "e": 40.692
+  },
+  {
+   "kind": "mark",
+   "src": 42.018,
+   "srcEnd": 42.922,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 40.692,
+   "e": 41.596
+  },
+  {
+   "kind": "mark",
+   "src": 43.199,
+   "srcEnd": 44.43,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 41.596,
+   "e": 42.827
+  },
+  {
+   "kind": "film",
+   "clip": "platform",
+   "src": "day29/clips/platform.mp4",
+   "clipIn": 92.3,
+   "clipOut": 94.6,
+   "silent": true,
+   "big": true,
+   "s": 42.827,
+   "e": 45.567,
+   "lineS": 43.047,
+   "en": "Off you gooooooo!",
+   "ko": "いってらっしゃーーーい！"
+  },
+  {
+   "kind": "mark",
+   "src": 44.93,
+   "srcEnd": 46.107,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 45.567,
+   "e": 46.744
+  },
+  {
+   "kind": "mark",
+   "src": 46.642,
+   "srcEnd": 50.243,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 46.744,
+   "e": 50.344
+  },
+  {
+   "kind": "mark",
+   "src": 50.439,
+   "srcEnd": 51.267,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 50.344,
+   "e": 51.172
+  },
+  {
+   "kind": "mark",
+   "src": 51.581,
+   "srcEnd": 52.624,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 51.172,
+   "e": 52.215
+  },
+  {
+   "kind": "mark",
+   "src": 52.762,
+   "srcEnd": 53.89,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 52.215,
+   "e": 53.343
+  },
+  {
+   "kind": "film",
+   "clip": "map",
+   "src": "day29/clips/map.mp4",
+   "clipIn": 117.9,
+   "clipOut": 119.6,
+   "silent": false,
+   "big": false,
+   "s": 53.343,
+   "e": 55.483,
+   "lineS": 53.563,
+   "en": "Mischief managed.",
+   "ko": "いたずら完了。"
+  },
+  {
+   "kind": "mark",
+   "src": 54.09,
+   "srcEnd": 59.3,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 55.483,
+   "e": 60.693
+  }
+ ],
+ "captions": [
+  {
+   "s": 8.494,
+   "e": 11.139,
+   "en": "Because that's how we say it in Britain.",
+   "ko": "イギリスではそう言うからです。",
+   "words": [
+    {
+     "w": "Because",
+     "t": 8.599
+    },
+    {
+     "w": "that's",
+     "t": 9.097
+    },
+    {
+     "w": "how",
+     "t": 9.523
+    },
+    {
+     "w": "we",
+     "t": 9.736
+    },
+    {
+     "w": "say",
+     "t": 9.878
+    },
+    {
+     "w": "it",
+     "t": 10.092
+    },
+    {
+     "w": "in",
+     "t": 10.234
+    },
+    {
+     "w": "Britain.",
+     "t": 10.551
+    }
+   ]
+  },
+  {
+   "s": 11.139,
+   "e": 16.854,
+   "en": "Five Harry Potter phrases to teach your child before Christmas Day.",
+   "ko": "クリスマスまでに子どもに教えたい、ハリー・ポッターの英語フレーズ5つ！",
+   "words": [
+    {
+     "w": "Five",
+     "t": 11.229
+    },
+    {
+     "w": "Harry",
+     "t": 11.805
+    },
+    {
+     "w": "Potter",
+     "t": 12.225
+    },
+    {
+     "w": "phrases",
+     "t": 12.848
+    },
+    {
+     "w": "to",
+     "t": 13.436
+    },
+    {
+     "w": "teach",
+     "t": 13.604
+    },
+    {
+     "w": "your",
+     "t": 14.024
+    },
+    {
+     "w": "child",
+     "t": 14.459
+    },
+    {
+     "w": "before",
+     "t": 14.879
+    },
+    {
+     "w": "Christmas",
+     "t": 15.562
+    },
+    {
+     "w": "Day.",
+     "t": 16.512
+    }
+   ]
+  },
+  {
+   "s": 16.854,
+   "e": 19.727,
+   "en": "Number five, Happy Christmas.",
+   "ko": "5番、ハッピー・クリスマス。",
+   "words": [
+    {
+     "w": "Number",
+     "t": 16.944
+    },
+    {
+     "w": "five,",
+     "t": 17.709
+    },
+    {
+     "w": "Happy",
+     "t": 18.097
+    },
+    {
+     "w": "Christmas.",
+     "t": 18.763
+    }
+   ]
+  },
+  {
+   "s": 19.727,
+   "e": 22.479,
+   "en": "Same meaning, more British.",
+   "ko": "意味は同じ、でももっとイギリス流！",
+   "words": [
+    {
+     "w": "Same",
+     "t": 19.817
+    },
+    {
+     "w": "meaning,",
+     "t": 20.213
+    },
+    {
+     "w": "more",
+     "t": 21.086
+    },
+    {
+     "w": "British.",
+     "t": 21.482
+    }
+   ]
+  },
+  {
+   "s": 23.969,
+   "e": 25.889,
+   "en": "Four, Brilliant.",
+   "ko": "4番、ブリリアント。",
+   "words": [
+    {
+     "w": "Four,",
+     "t": 24.069
+    },
+    {
+     "w": "Brilliant.",
+     "t": 24.566
+    }
+   ]
+  },
+  {
+   "s": 25.889,
+   "e": 28.272,
+   "en": "Not “good job” — brilliant.",
+   "ko": "「よくできたね」じゃなくて「最高！」",
+   "words": [
+    {
+     "w": "Not",
+     "t": 25.979
+    },
+    {
+     "w": "“good",
+     "t": 26.224
+    },
+    {
+     "w": "job”",
+     "t": 26.655
+    },
+    {
+     "w": "—",
+     "t": 26.9
+    },
+    {
+     "w": "brilliant.",
+     "t": 27.243
+    }
+   ]
+  },
+  {
+   "s": 30.212,
+   "e": 32.221,
+   "en": "Number three, Blimey.",
+   "ko": "3番、ブライミー。",
+   "words": [
+    {
+     "w": "Number",
+     "t": 30.317
+    },
+    {
+     "w": "three,",
+     "t": 30.894
+    },
+    {
+     "w": "Blimey.",
+     "t": 31.554
+    }
+   ]
+  },
+  {
+   "s": 32.221,
+   "e": 36.099,
+   "en": "For when the snow is this deep… Blimey.",
+   "ko": "雪がこーんなに積もったら…「なんてこった！」",
+   "words": [
+    {
+     "w": "For",
+     "t": 32.311
+    },
+    {
+     "w": "when",
+     "t": 32.587
+    },
+    {
+     "w": "the",
+     "t": 32.955
+    },
+    {
+     "w": "snow",
+     "t": 33.232
+    },
+    {
+     "w": "is",
+     "t": 33.893
+    },
+    {
+     "w": "this",
+     "t": 34.077
+    },
+    {
+     "w": "deep…",
+     "t": 35.06
+    },
+    {
+     "w": "Blimey.",
+     "t": 35.428
+    }
+   ]
+  },
+  {
+   "s": 37.689,
+   "e": 39.727,
+   "en": "Two, Off you go.",
+   "ko": "2番、オフ・ユー・ゴー。",
+   "words": [
+    {
+     "w": "Two,",
+     "t": 37.792
+    },
+    {
+     "w": "Off",
+     "t": 38.246
+    },
+    {
+     "w": "you",
+     "t": 38.88
+    },
+    {
+     "w": "go.",
+     "t": 39.334
+    }
+   ]
+  },
+  {
+   "s": 39.727,
+   "e": 42.827,
+   "en": "Shoes on, coat on, off you go.",
+   "ko": "靴をはいて、コートを着て、「さあ、いってらっしゃい！」",
+   "words": [
+    {
+     "w": "Shoes",
+     "t": 39.817
+    },
+    {
+     "w": "on,",
+     "t": 40.419
+    },
+    {
+     "w": "coat",
+     "t": 40.839
+    },
+    {
+     "w": "on,",
+     "t": 41.321
+    },
+    {
+     "w": "off",
+     "t": 41.742
+    },
+    {
+     "w": "you",
+     "t": 42.103
+    },
+    {
+     "w": "go.",
+     "t": 42.464
+    }
+   ]
+  },
+  {
+   "s": 45.567,
+   "e": 50.344,
+   "en": "And number one, for when the toys are finally tidied away…",
+   "ko": "そして1番、おもちゃをやっと片付けたら…",
+   "words": [
+    {
+     "w": "And",
+     "t": 45.671
+    },
+    {
+     "w": "number",
+     "t": 45.938
+    },
+    {
+     "w": "one,",
+     "t": 46.472
+    },
+    {
+     "w": "for",
+     "t": 46.918
+    },
+    {
+     "w": "when",
+     "t": 47.185
+    },
+    {
+     "w": "the",
+     "t": 47.641
+    },
+    {
+     "w": "toys",
+     "t": 47.908
+    },
+    {
+     "w": "are",
+     "t": 48.364
+    },
+    {
+     "w": "finally",
+     "t": 48.631
+    },
+    {
+     "w": "tidied",
+     "t": 49.364
+    },
+    {
+     "w": "away…",
+     "t": 49.898
+    }
+   ]
+  },
+  {
+   "s": 50.344,
+   "e": 53.343,
+   "en": "(whisper) Mischief managed.",
+   "ko": "（ささやいて）「いたずら完了」",
+   "words": [
+    {
+     "w": "(whisper)",
+     "t": null
+    },
+    {
+     "w": "Mischief",
+     "t": 50.434
+    },
+    {
+     "w": "managed.",
+     "t": 51.839
+    }
+   ]
+  },
+  {
+   "s": 55.483,
+   "e": 60.503,
+   "en": "Save this and try one tonight. Happy Christmas from Oxford.",
+   "ko": "保存して、今夜ひとつ使ってみてね。オックスフォードから、ハッピー・クリスマス！",
+   "words": [
+    {
+     "w": "Save",
+     "t": 55.588
+    },
+    {
+     "w": "this",
+     "t": 55.928
+    },
+    {
+     "w": "and",
+     "t": 56.268
+    },
+    {
+     "w": "try",
+     "t": 56.652
+    },
+    {
+     "w": "one",
+     "t": 56.907
+    },
+    {
+     "w": "tonight.",
+     "t": 57.162
+    },
+    {
+     "w": "Happy",
+     "t": 57.757
+    },
+    {
+     "w": "Christmas",
+     "t": 58.616
+    },
+    {
+     "w": "from",
+     "t": 59.54
+    },
+    {
+     "w": "Oxford.",
+     "t": 59.88
+    }
+   ]
+  }
+ ],
+ "flags": [
+  {
+   "s": 10.551,
+   "e": 11.203999999999999,
+   "emoji": "🇬🇧"
+  }
+ ],
+ "phrases": [
+  {
+   "s": 16.854,
+   "num": 17.709,
+   "n": 5,
+   "en": "Happy Christmas",
+   "ko": "ハッピー・クリスマス"
+  },
+  {
+   "s": 23.969,
+   "num": 24.069,
+   "n": 4,
+   "en": "Brilliant",
+   "ko": "最高！"
+  },
+  {
+   "s": 30.212,
+   "num": 30.894,
+   "n": 3,
+   "en": "Blimey",
+   "ko": "なんてこった！"
+  },
+  {
+   "s": 37.689,
+   "num": 37.792,
+   "n": 2,
+   "en": "Off you go",
+   "ko": "いってらっしゃい！"
+  },
+  {
+   "s": 45.567,
+   "num": 46.472,
+   "n": 1,
+   "en": "Mischief managed",
+   "ko": "いたずら完了"
+  }
+ ],
+ "endCard": {
+  "s": 60.693,
+  "e": 65.493
+ },
+ "sfx": [
+  {
+   "t": 0.0,
+   "k": "sparkle"
+  },
+  {
+   "t": 0.85,
+   "k": "swish"
+  },
+  {
+   "t": 1.45,
+   "k": "chime"
+  },
+  {
+   "t": 6.574,
+   "k": "whoosh"
+  },
+  {
+   "t": 6.754,
+   "k": "ding"
+  },
+  {
+   "t": 8.344,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 22.299,
+   "k": "whoosh"
+  },
+  {
+   "t": 22.479,
+   "k": "ding"
+  },
+  {
+   "t": 23.819,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 28.092,
+   "k": "whoosh"
+  },
+  {
+   "t": 28.272,
+   "k": "ding"
+  },
+  {
+   "t": 30.062,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 35.919,
+   "k": "whoosh"
+  },
+  {
+   "t": 36.099,
+   "k": "ding"
+  },
+  {
+   "t": 37.539,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 42.647,
+   "k": "whoosh"
+  },
+  {
+   "t": 42.827,
+   "k": "ding"
+  },
+  {
+   "t": 45.417,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 53.163,
+   "k": "whoosh"
+  },
+  {
+   "t": 53.343,
+   "k": "ding"
+  },
+  {
+   "t": 55.333,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 17.689,
+   "k": "boom"
+  },
+  {
+   "t": 24.049,
+   "k": "boom"
+  },
+  {
+   "t": 30.874,
+   "k": "boom"
+  },
+  {
+   "t": 37.772,
+   "k": "boom"
+  },
+  {
+   "t": 46.452,
+   "k": "boom"
+  },
+  {
+   "t": 18.209,
+   "k": "chime"
+  },
+  {
+   "t": 24.569,
+   "k": "chime"
+  },
+  {
+   "t": 31.394,
+   "k": "chime"
+  },
+  {
+   "t": 38.292,
+   "k": "chime"
+  },
+  {
+   "t": 46.972,
+   "k": "chime"
+  },
+  {
+   "t": 10.551,
+   "k": "ding"
+  },
+  {
+   "t": 43.047,
+   "k": "rise"
+  },
+  {
+   "t": 44.747,
+   "k": "sparkle"
+  },
+  {
+   "t": 55.993,
+   "k": "sparkle"
+  },
+  {
+   "t": 60.193,
+   "k": "whoosh"
+  },
+  {
+   "t": 61.043,
+   "k": "chime"
+  },
+  {
+   "t": 62.293,
+   "k": "ding"
+  },
+  {
+   "t": 62.993,
+   "k": "sparkle"
+  }
+ ],
+ "series": {
+  "en": "Christmas Countdown",
+  "ko": "クリスマス・カウントダウン",
+  "dday": "D-43"
+ },
+ "capFont": "fell",
+ "lang": "ja"
+}

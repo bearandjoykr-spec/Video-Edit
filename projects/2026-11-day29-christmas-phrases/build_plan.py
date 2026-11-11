@@ -179,6 +179,42 @@ plan = {
     "series": {"en": "Christmas Countdown", "ko": "크리스마스 카운트다운", "dday": f"D-{DAYS_TO_GO}"},
     "capFont": os.environ.get("CAPFONT", "fell"),
 }
+# ── Japanese version (owner, 11 Nov 2026: "the exact same video but with Japanese captions") ──
+# Same cut, audio and effects; every Korean string is swapped for Japanese. "いたずら完了" follows the Japanese books.
+JA = {
+    "captions": [
+        "イギリスではそう言うからです。",
+        "クリスマスまでに子どもに教えたい、ハリー・ポッターの英語フレーズ5つ！",
+        "5番、ハッピー・クリスマス。",
+        "意味は同じ、でももっとイギリス流！",
+        "4番、ブリリアント。",
+        "「よくできたね」じゃなくて「最高！」",
+        "3番、ブライミー。",
+        "雪がこーんなに積もったら…「なんてこった！」",
+        "2番、オフ・ユー・ゴー。",
+        "靴をはいて、コートを着て、「さあ、いってらっしゃい！」",
+        "そして1番、おもちゃをやっと片付けたら…",
+        "（ささやいて）「いたずら完了」",
+        "保存して、今夜ひとつ使ってみてね。オックスフォードから、ハッピー・クリスマス！",
+    ],
+    "films": ["ハッピー・クリスマス、ハリー！", "ハッピー・クリスマス、ロン。", "最高！", "なんてこった、ハーマイオニー。",
+              "いってらっしゃーーーい！", "いたずら完了。"],
+    "phrases": ["ハッピー・クリスマス", "最高！", "なんてこった！", "いってらっしゃい！", "いたずら完了"],
+    "hook": "なぜ「メリー」じゃなくて「ハッピー」クリスマス？",
+    "title": "クリスマスまでに教えたい、ハリー・ポッターのフレーズ5つ",
+    "series": "クリスマス・カウントダウン",
+    "cta": {"ko1": "新しいハリー・ポッターのシリーズ", "ko2": "12月25日スタート！", "qKo": "英語の準備はできてる？",
+            "follow": "フォローして一緒に準備しよう", "comment": "好きなハリー・ポッターのフレーズは？コメントで教えてね 👇"},
+}
+if os.environ.get("LANG_OUT") == "ja":
+    plan["lang"] = "ja"
+    for c, ja in zip(plan["captions"], JA["captions"]): c["ko"] = ja
+    for sgm, ja in zip([x for x in plan["segments"] if x["kind"] == "film"], JA["films"]): sgm["ko"] = ja
+    for ph, ja in zip(plan["phrases"], JA["phrases"]): ph["ko"] = ja
+    plan["hook"]["ko"] = JA["hook"]; plan["title"]["ko"] = JA["title"]; plan["series"]["ko"] = JA["series"]
+    plan["cta"].update(JA["cta"])
+    for f_ in plan["flags"]: f_["e"] = min(f_["e"], plan["title"]["s"] - 0.05)  # JA title wraps to 2 lines; keep the flag clear
+
 os.makedirs(f"{P}/versions/{V}", exist_ok=True)
 json.dump(plan, open(f"{P}/versions/{V}/plan.json", "w"), ensure_ascii=False, indent=1)
 print(f"{V}: {total:.2f} s, {plan['frames']} frames, {len(films)} film cuts, "

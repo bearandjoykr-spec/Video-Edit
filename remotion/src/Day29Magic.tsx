@@ -20,6 +20,7 @@ export type Day29Plan = {
   cta: {ko1: string; ko2: string; q: string; qKo: string; follow: string; small: string; comment?: string; commentEn?: string};
   title: {s: number; e: number; en: string; sub: string; ko: string};
   flags?: {s: number; e: number; emoji: string}[];
+  lang?: 'ko' | 'ja';
   capFont?: 'cinzel' | 'fell' | 'cormorant' | 'pretendard';
   series?: {en: string; ko: string; dday: string};
   segments: Seg[]; captions: Cap[]; phrases: Phrase[]; endCard: {s: number; e: number};
@@ -27,8 +28,8 @@ export type Day29Plan = {
 
 const GOLD = '#FFD970', GOLD_LIGHT = '#FFF4C8', INK = '#120C06';
 const HP = "'HarryP', serif";
-const PRE = "'Pretendard', sans-serif";
-const KO_SERIF = "'Gowun Batang', 'Pretendard', serif";
+let PRE = "'Pretendard', sans-serif";
+let KO_SERIF = "'Gowun Batang', 'Pretendard', serif";
 const FONTS: [string, string, string][] = [
   ['HarryP', '400', 'HarryP.ttf'],
   ['Pretendard', '700', 'Pretendard-Bold.woff2'],
@@ -37,6 +38,8 @@ const FONTS: [string, string, string][] = [
   ['Gowun Batang', '700', 'ijwNs5nhRMIjYsdSgcMa3wRZ4J7awg.ttf'],
   ['Noto Color Emoji', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
   ['Cinzel', '700', '8vIU7ww63mVu7gtR-kwKxNvkNOjw-jHgTYo.ttf'],
+  ['Shippori Mincho B1', '800', 'wXK1E2wCr44tulPdnn-xbIpJ9RgT9-nKLoxP3g.ttf'],
+  ['M PLUS Rounded 1c', '800', 'VdGBAYIAV6gnpUpoWwNkYvrugw9RuM0m4psK.ttf'],
   ['Cinzel', '900', '8vIU7ww63mVu7gtR-kwKxNvkNOjw-n_gTYo.ttf'],
   ['IM Fell English', '400', 'Ktk1ALSLW8zDe0rthJysWrnLsAz3Fw.ttf'],
   ['Cormorant Garamond', '700', 'co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd5FTfOjw.ttf'],
@@ -404,6 +407,9 @@ const EndCard: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
 
 export const Day29Magic: React.FC<{plan: Day29Plan}> = ({plan}) => {
   useFonts();
+  // Japanese version: Japanese fonts in every slot that carried Korean (Pretendard has kana but no kanji)
+  PRE = plan.lang === 'ja' ? "'M PLUS Rounded 1c', sans-serif" : "'Pretendard', sans-serif";
+  KO_SERIF = plan.lang === 'ja' ? "'Shippori Mincho B1', serif" : "'Gowun Batang', 'Pretendard', serif";
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = f / fps;
