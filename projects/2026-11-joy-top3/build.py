@@ -10,16 +10,16 @@ from edl import DAY, END, SPEECH_END, SCRIPT, PROG, PIC, LIVE_LINES  # noqa: E40
 FPS = 30
 TOTAL = round(SPEECH_END + END, 3)
 syl = lambda p: len(re.findall(r"[가-힣0-9]", p)) + 1.5 * len(re.findall(r"[A-Za-z']+", p))
-HI = ["한 번 더!", "딱 3권!", "3위부터", "어디로", "My Mum, My Dad.", "짧은 문장", "자랑하는", "우리 엄마는?", "물어봐", "Caterpillar.",
-      "요일, 숫자, 음식", "한 권에", "손가락을 쏙", "읽어", "1위!", "계속", "Have you seen my hat?", "따라 하는데요,", "직접 확인해",
+HI = ["한 번 더!", "딱 3권!", "첫 번째 책부터", "어디로", "My Mum, My Dad.", "짧은 문장", "자랑하는", "우리 엄마는?", "물어봐", "Caterpillar.",
+      "요일, 숫자, 음식", "한 권에", "손가락을 쏙", "읽어", "I Want My Hat Back.", "계속", "Have you seen my hat?", "따라 하는데요,", "직접 확인해",
       "저장해 두고", "친구에게", "보내"]
-# Books, in countdown order. Info cards are the save-worthy part (age, key sentence, how to read it).
+# Books, numbered in the order they appear (Joy: no ranking). Info cards are the save-worthy part (age, key sentence, how to read it).
 BOOKS = {
-    3: {"title": "My Mum · My Dad", "author": "Anthony Browne", "cover": "mumdad.jpg",
+    1: {"title": "My Mum · My Dad", "author": "Anthony Browne", "cover": "mumdad.jpg",
         "info": [("👶", "추천 나이", "3세부터"), ("🗣", "핵심 문장", "She's… / He's…"), ("💡", "읽는 팁", "다 읽고 \"우리 엄마는?\" 물어보기")]},
     2: {"title": "The Very Hungry Caterpillar", "author": "Eric Carle", "cover": "caterpillar.jpg",
         "info": [("👶", "추천 나이", "1세부터 (보드북)"), ("🗣", "핵심 문장", "On Monday he ate…"), ("💡", "읽는 팁", "책 구멍에 손가락 쏙!")]},
-    1: {"title": "I Want My Hat Back", "author": "Jon Klassen", "cover": "hat.jpg",
+    3: {"title": "I Want My Hat Back", "author": "Jon Klassen", "cover": "hat.jpg",
         "info": [("👶", "추천 나이", "4세부터"), ("🗣", "핵심 문장", "Have you seen my hat?"), ("💡", "읽는 팁", "동물 역할 나눠 읽기")]},
 }
 
