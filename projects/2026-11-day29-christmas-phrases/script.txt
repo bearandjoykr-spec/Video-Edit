@@ -15,3 +15,10 @@ Open questions for the owner (11 Nov 2026): Korean translations; Harry Potter as
 (film clips, score, logo font, Great Hall image are Warner Bros. — proposed original "magical"
 look instead); one-off font/colour exception for Day 29. Owner asked for round glasses and a
 lightning scar on Mark for the first ~3 s (face-tracked overlay).
+
+Decisions (owner, 11 Nov 2026):
+- Gold magic outline around Mark (thin warm-gold line #FFF4C8 + soft halo #FFD970), pulsing, sparkles drifting off; flares on each phrase. Approved as shown ("nice").
+- Film clips play BEHIND Mark (matte: remotion/public/day29/subject.webm), 2-3 s each, on the phrase; Mark scales to ~85% while a clip plays.
+- Clip moments: christmas 0:15-0:18 "Happy Christmas, Harry/Ron"; brilliant 0:15.7; blimey supercut 0:15.1 (alt 0:03.8);
+  platform barrier run ~2:18; map "Mischief managed" 1:56-2:01.
+- Waiting on: 720p/1080p re-downloads of christmas, brilliant, platform, map (have 144p only); clip-audio choice.
