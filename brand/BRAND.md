@@ -116,3 +116,8 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Mark's recorded lines:** clean them on their own (DeepFilterNet + clarity EQ, `projects/2026-11-day28-questions/voice.py`) so his English is crisp; Joy's voice stays as recorded.
 - **Music level:** the licensed track must be clearly audible under talking reels (Day 28 at -20 dB with heavy ducking was "almost inaudible"). Use about -15 dB with light ducking (ratio 2).
 - **Viral pass (Joy approved, 10 Nov 2026):** open cold on the problem itself (Mark asks a question, the child is silent: crickets + "……", then the title slams in), and cut lines that repeat what a pop or the next line already says. Day 28 went from 111 s to 84 s with every English example kept.
+
+## Promo / ad videos (Joy, 11 Nov 2026)
+- For ads Joy lifted the Reels brand look: clean ad style is fine (white page, black Pretendard headline with a yellow marker, footage in a rounded 4:5 card, speaker badges "Mark T 🇬🇧" / "Joy 🇰🇷", white end card with the logo). Template: `remotion/src/LittleStepsAd.tsx`, project `projects/2026-11-day1-ad/`.
+- Format that Joy asked for: Mark says one phrase, Joy shows it in the activity, alternating; short (~28 s).
+- Joy's Day 1 class footage is mirrored (worksheet text reads backwards); flip her shots back.
