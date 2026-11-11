@@ -129,3 +129,6 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Music still licensed: Day 29 uses Pixabay "School of Magic" (source in the project's `music/SOURCE.md`).
 - Owner asked for face-tracked round glasses and a lightning scar on Mark for the first ~3 s (`projects/2026-11-day29-christmas-phrases/face_props.py`).
 - Korean captions: Claude drafts when the owner has none; use "장난 완료" for "Mischief managed" (Korean edition).
+- **Series label (owner, 11 Nov 2026):** these Harry Potter/Christmas reels are a new series, "Christmas Countdown · 크리스마스 카운트다운 · D-n", where n = days from the posting date to 25 Dec (Day 29 posts 12 Nov → D-43). It replaces "DAY N · 출간까지 매일 업로드" on these videos.
+- **Caption type for this series:** IM Fell English (storybook serif) for English captions and subtitles, Gowun Batang 700 for Korean; words light up gold with a golden snitch hopping on the spoken word. Harry P font for titles, countdown numbers and film lines.
+- **Engagement:** end card asks parents to comment their favourite Harry Potter phrase; "Is your English ready?" stays in English.
