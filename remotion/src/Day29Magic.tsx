@@ -64,7 +64,7 @@ const Mark: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI);
   const line = 2.2 + pulse * 0.8 + flare * 1.6, halo = 22 + pulse * 8 + flare * 26;
   const glow = `drop-shadow(0 0 ${line}px ${GOLD_LIGHT}) drop-shadow(0 0 ${line}px ${GOLD_LIGHT}) drop-shadow(0 0 ${halo}px ${GOLD}) drop-shadow(0 0 ${halo * 1.8}px rgba(255,170,60,${0.35 + flare * 0.3}))`;
-  const propsFrame = Math.round((t + plan.propsFrom) * fps);
+  const propsFrame = Math.min(104, Math.round((t + plan.propsFrom) * fps));
   return (
     <AbsoluteFill style={{filter: glow}}>
       {plan.segments.filter((s) => s.kind === 'mark').map((s, i) => (
