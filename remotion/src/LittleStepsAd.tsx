@@ -6,7 +6,7 @@ import {AbsoluteFill, Img, OffthreadVideo, continueRender, delayRender, interpol
 
 type Head = {kicker: string; big: string; ko: string; step?: number; words: number[]};
 type Shot = {who: 'mark' | 'joy'; src_s: number; src_e: number; out_s: number; out_e: number; cx0: number; cx1: number; head: Head; hook: boolean; mirror?: boolean};
-export type AdPlan = {fps: number; duration: number; frames: number; speechEnd: number; shots: Shot[]; caps: {s: number; e: number; ko: string}[]; media: string; theme?: 'cream' | 'oxford'};
+export type AdPlan = {fps: number; duration: number; frames: number; speechEnd: number; shots: Shot[]; caps: {s: number; e: number; ko: string}[]; media: string; theme?: 'cream' | 'oxford'; titleFont?: 'pretendard' | 'serif' | 'gothic'};
 
 const FF = "'Pretendard', 'Noto Color Emoji', sans-serif";
 // Page themes. Mark (11 Nov 2026): not white, use our cream. Joy also asked to see Oxford blue.
@@ -15,6 +15,14 @@ const THEMES = {
   oxford: {page: '#002147', glow: '#0B3166', ink: '#F5F0E6', sub: '#C3CEE0', step: '#AECCE6', mark: '#FFD84D', chip: 'rgba(255,255,255,.12)', dot: '#2A4470', btn: '#F5F0E6', btnOn: '#FFFFFF', btnText: '#002147', logo: 'cream', thin: true},
 };
 let T = THEMES.cream;
+// Title fonts (Joy, 11 Nov 2026, choosing): pretendard = Pretendard Black; serif = Playfair Display italic (English) + Gowun Batang (Korean),
+// as in Mark's Day 28 pill; gothic = Apple SD Gothic Neo Heavy (the Mac system font of the storyboard labels).
+const TITLE = {
+  pretendard: {family: FF, weight: 900, spacing: '-.035em', style: 'normal'},
+  serif: {family: "'Playfair Display', 'Gowun Batang', 'Noto Color Emoji', serif", weight: 700, spacing: '-.01em', style: 'italic'},
+  gothic: {family: "'Apple SD Gothic Neo', 'Noto Color Emoji', sans-serif", weight: 800, spacing: '-.03em', style: 'normal'},
+};
+let TF = TITLE.pretendard;
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
 const CARD = {x: 40, y: 470, w: 1000, h: 1250};
 const K = CARD.h / 1080; // source px -> card px
@@ -25,6 +33,8 @@ const FONTS: [string, string, string, string][] = [
   ['Pretendard', 'normal', '900', 'Pretendard-Black.woff2'],
   ['Noto Color Emoji', 'normal', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
   ['Playfair Display', 'italic', '600', 'nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_naUbtY.ttf'],
+  ['Playfair Display', 'italic', '700', 'nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_naUbtY.ttf'],
+  ['Gowun Batang', 'normal', '700', 'ijwNs5nhRMIjYsdSgcMa3wRZ4J7awg.ttf'],
 ];
 const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
@@ -45,14 +55,14 @@ const Header: React.FC<{sh: Shot; t: number; fps: number; first: boolean}> = ({s
       fontFamily: FF, textAlign: 'center', transform: `translateY(${(1 - k) * 40}px) scale(${0.9 + 0.1 * k})`, opacity: Math.min(1, k * 2)}}>
       {h.kicker ? <div style={{fontWeight: 800, fontSize: h.step ? 40 : 50, letterSpacing: h.step ? '.12em' : '-.01em', color: h.step ? T.step : T.sub, marginBottom: 12}}>
         {h.step ? <>PHRASE <span style={{color: T.ink}}>{h.step}</span> / 3</> : h.kicker}</div> : null}
-      <div style={{fontWeight: 900, fontSize: size, lineHeight: 1.05, letterSpacing: '-.035em', color: T.ink, whiteSpace: 'nowrap'}}>
+      <div style={{fontFamily: TF.family, fontStyle: TF.style, fontWeight: TF.weight, fontSize: size, lineHeight: 1.1, letterSpacing: TF.spacing, color: T.ink, whiteSpace: 'nowrap'}}>
         {words.map((w, i) => {
           const at = h.words[i];
           const lit = at === undefined ? (h.words.length ? 0 : 1) : interpolate(t, [at - .02, at + .12], [0, 1], clamp);
           return (
             <span key={i} style={{position: 'relative', display: 'inline-block', marginRight: i < words.length - 1 ? '.24em' : 0}}>
-              <span style={{position: 'absolute', left: '-.02em', right: '-.02em', bottom: T.thin ? '-.04em' : '.06em', height: T.thin ? '.11em' : '.42em', background: T.mark, borderRadius: 8,
-                transform: `scaleX(${lit})`, transformOrigin: 'left', zIndex: 0}} />
+              {T.thin ? null : <span style={{position: 'absolute', left: '-.02em', right: '-.02em', bottom: T.thin ? '-.04em' : '.06em', height: T.thin ? '.11em' : '.42em', background: T.mark, borderRadius: 8,
+                transform: `scaleX(${lit})`, transformOrigin: 'left', zIndex: 0}}/>}
               <span style={{position: 'relative', zIndex: 1, color: T.thin && lit > .5 ? T.mark : undefined}}>{w}</span>
             </span>
           );
@@ -71,7 +81,7 @@ const Badge: React.FC<{who: 'mark' | 'joy'; t: number; s: number; fps: number}> 
       borderRadius: 999, padding: '10px 28px 10px 10px', boxShadow: '0 8px 24px rgba(0,0,0,.18)', fontFamily: FF, transform: `translateX(${(1 - k) * -60}px)`, opacity: k}}>
       <Img src={staticFile(mark ? 'brand/mark-avatar.png' : 'brand/joy-avatar.png')} style={{width: 84, height: 84, borderRadius: '50%'}} />
       <div style={{lineHeight: 1.1}}>
-        <div style={{fontWeight: 900, fontSize: 40, color: '#111'}}>{mark ? 'Mark T' : 'Joy'} <span style={{fontSize: 44}}>{mark ? '🇬🇧' : '🇰🇷'}</span></div>
+        <div style={{fontWeight: 900, fontSize: 40, color: '#111'}}>{mark ? 'Mark T' : 'Joy T'} <span style={{fontSize: 44}}>{mark ? '🇬🇧' : '🇰🇷'}</span></div>
         <div style={{fontWeight: 700, fontSize: 28, color: mark ? '#2F6BFF' : '#E2556B'}}>{mark ? '영국 원어민 발음' : '놀이로 바로 써보기'}</div>
       </div>
     </div>
@@ -88,11 +98,11 @@ const EndCard: React.FC<{t: number; s: number; fps: number}> = ({t, s, fps}) => 
         : <div style={{marginTop: 250, display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `scale(${k(0)})`}}>
           <Img src={staticFile('brand/bear-butterfly.png')} style={{width: 300}} /><Img src={staticFile('brand/wordmark-cream.png')} style={{width: 420, marginTop: 10}} /></div>}
       <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 64, color: T.ink, marginTop: 40, opacity: k(.15)}}>Little Steps to Big Adventures</div>
-      <div style={{fontWeight: 900, fontSize: 92, color: T.ink, marginTop: 50, letterSpacing: '-.03em', textAlign: 'center', lineHeight: 1.15, transform: `scale(${.85 + .15 * k(.3)})`, opacity: k(.3)}}>
+      <div style={{fontFamily: TF.family, fontWeight: TF.weight, fontSize: 92, color: T.ink, marginTop: 50, letterSpacing: TF.spacing, textAlign: 'center', lineHeight: 1.15, transform: `scale(${.85 + .15 * k(.3)})`, opacity: k(.3)}}>
         하루 <span style={{...(T.thin ? {color: T.mark} : {background: `linear-gradient(transparent 58%, ${T.mark} 58%)`})}}>영어 3문장</span>,<br />놀면서 익혀요
       </div>
       <div style={{display: 'flex', gap: 20, marginTop: 50, opacity: k(.5)}}>
-        {[['brand/mark-avatar.png', 'Mark T 🇬🇧'], ['brand/joy-avatar.png', 'Joy 🇰🇷']].map(([img, n]) => (
+        {[['brand/mark-avatar.png', 'Mark T 🇬🇧'], ['brand/joy-avatar.png', 'Joy T 🇰🇷']].map(([img, n]) => (
           <div key={n} style={{display: 'flex', alignItems: 'center', gap: 12, background: T.chip, color: T.ink, borderRadius: 999, padding: '8px 26px 8px 8px'}}>
             <Img src={staticFile(img)} style={{width: 70, height: 70, borderRadius: '50%'}} /><span style={{fontWeight: 800, fontSize: 36}}>{n}</span>
           </div>
@@ -110,6 +120,7 @@ const EndCard: React.FC<{t: number; s: number; fps: number}> = ({t, s, fps}) => 
 export const LittleStepsAd: React.FC<{plan: AdPlan}> = ({plan}) => {
   useFonts();
   T = THEMES[plan.theme ?? 'cream'];
+  TF = TITLE[plan.titleFont ?? 'pretendard'];
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;

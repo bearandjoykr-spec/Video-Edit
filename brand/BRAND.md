@@ -122,3 +122,4 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Format that Joy asked for: Mark says one phrase, Joy shows it in the activity, alternating; short (~28 s).
 - Joy's Day 1 class footage is mirrored (worksheet text reads backwards); flip her shots back.
 - Ad call to action (Joy, 11 Nov 2026): "무료 체험 신청은 프로필 링크에서" on the end card (Day 1 is free; sign-up is on the profile link), and the same line near the top of the post caption. No voice line needed.
+- Ad titles (Joy, 11 Nov 2026): Apple SD Gothic Neo ExtraBold for the headline (not Pretendard Black, not Playfair), no highlight bars (spoken words just turn yellow), no 🐻 emoji (it is not our bear). On screen the hosts are "Mark T 🇬🇧" and "Joy T 🇰🇷".

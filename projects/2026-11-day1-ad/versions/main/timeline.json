@@ -14,7 +14,7 @@
    "cx1": 900,
    "head": {
     "kicker": "영국 원어민 × 엄마표 놀이",
-    "big": "영어 까꿍 놀이 🐻",
+    "big": "영어 까꿍 놀이",
     "ko": "",
     "words": []
    },
@@ -302,5 +302,6 @@
   }
  ],
  "media": "day1ad/main",
- "theme": "oxford"
+ "theme": "oxford",
+ "titleFont": "gothic"
 }
