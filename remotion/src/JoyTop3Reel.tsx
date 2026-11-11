@@ -2,7 +2,7 @@
 // Mystery hook (three "?" books), a 3-2-1 countdown with card-flip reveals, a save-worthy info card per book,
 // a summary card to screenshot, then the Bear & Joy follow end card. Footage keeps its own colours (Joy, Day 28).
 import React, {useEffect, useState} from 'react';
-import {AbsoluteFill, Img, OffthreadVideo, Sequence, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Easing} from 'remotion';
+import {AbsoluteFill, Img, OffthreadVideo, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Easing} from 'remotion';
 
 type Scene = {name: string; s: number; e: number};
 type Book = {title: string; author: string; cover: string; info: [string, string, string][]};
@@ -68,46 +68,6 @@ const RankDots: React.FC<{t: number; scenes: Scene[]}> = ({t, scenes}) => {
 };
 
 
-// Storybook ending (Joy, 11 Nov 2026): a small Joy in a watercolour landscape says "I know the best place to go!"
-// and runs off to the Bear & Joy cottage (the Day 1 worksheet house) far away on the hill.
-const StoryScene: React.FC<{t: number; s: number; e: number; media: string; fps: number}> = ({t, s, e, media, fps}) => {
-  const local = t - s;
-  const run = interpolate(local, [2.45, e - s - .1], [0, 1], {...clamp, easing: Easing.in(Easing.quad)});
-  const intro = sp(t, s, fps, 14);
-  // Joy: bottom-left, then along the path towards the cottage door, getting smaller
-  const scale = interpolate(run, [0, 1], [.58, .09]);
-  const x = interpolate(run, [0, 1], [-60, 560]);
-  const y = interpolate(run, [0, 1], [1920 - 1920 * .6 + 40, 1010]);
-  const drift = (k: number) => ((local * (14 + 6 * k) + k * 420) % 1500) - 300;
-  return (
-    <AbsoluteFill style={{opacity: Math.min(1, intro * 2)}}>
-      <Img src={staticFile('day0/bg-sky.jpg')} style={{position: 'absolute', height: 1920, left: -600, top: -300, filter: 'saturate(1.15)'}} />
-      {[0, 1, 2].map((k) => <Img key={k} src={staticFile(`day0/cloud${k}.png`)} style={{position: 'absolute', width: 520 - 80 * k, top: 140 + 160 * k, left: drift(k), opacity: .9}} />)}
-      <svg width="1080" height="1920" style={{position: 'absolute', inset: 0}}>
-        <defs>
-          <filter id="wc"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="7" /><feDisplacementMap in="SourceGraphic" scale="26" /></filter>
-          <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#B9D98E" /><stop offset="1" stopColor="#8DBB6A" /></linearGradient>
-          <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#A6CF7C" /><stop offset="1" stopColor="#6FA557" /></linearGradient>
-          <linearGradient id="pth" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#EADBB5" /><stop offset="1" stopColor="#E2C997" /></linearGradient>
-        </defs>
-        <g filter="url(#wc)">
-          <path d="M-100 1080 Q 300 900 620 1010 T 1200 960 L 1200 1920 L -100 1920 Z" fill="url(#h1)" />
-          <path d="M-100 1300 Q 400 1120 760 1260 T 1200 1220 L 1200 1920 L -100 1920 Z" fill="url(#h2)" opacity=".95" />
-          <path d="M 120 1920 C 260 1600, 420 1400, 600 1250 S 700 1080, 700 1040 L 742 1040 C 760 1100, 720 1250, 640 1400 S 500 1700, 520 1920 Z" fill="url(#pth)" opacity=".9" />
-        </g>
-      </svg>
-      <Img src={staticFile(`${media}/cottage.png`)} style={{position: 'absolute', width: 300, left: 570, top: 760, filter: 'drop-shadow(0 10px 14px rgba(40,60,30,.25))'}} />
-      <Sequence from={Math.round(s * fps)} layout="none">
-        <div style={{position: 'absolute', left: x, top: y, width: 1080, height: 1920, transform: `scale(${scale})`, transformOrigin: '0 0',
-          // soft edges: feet fade into the grass, and the source frame's left edge never shows as a straight cut
-          WebkitMaskImage: 'linear-gradient(180deg, #000 70%, transparent 96%), linear-gradient(90deg, transparent 0%, #000 9%)', WebkitMaskComposite: 'source-in',
-          maskImage: 'linear-gradient(180deg, #000 70%, transparent 96%), linear-gradient(90deg, transparent 0%, #000 9%)', maskComposite: 'intersect'} as React.CSSProperties}>
-          <OffthreadVideo src={staticFile(`${media}/outro-joy.webm`)} transparent muted style={{width: 1080, height: 1920}} />
-        </div>
-      </Sequence>
-    </AbsoluteFill>
-  );
-};
 
 export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
   useFonts();
@@ -130,8 +90,6 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
       </AbsoluteFill>
       <AbsoluteFill style={{background: `rgba(14,22,40,${dark})`}} />
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,.35) 0%, rgba(10,16,30,0) 22%, rgba(10,16,30,0) 60%, rgba(10,16,30,.45) 78%, rgba(10,16,30,.3) 100%)'}} />
-
-      {name === 'outro' ? <StoryScene t={t} s={sc.s} e={sc.e} media={plan.media} fps={fps} /> : null}
 
       {/* HOOK: three mystery books on the shelves */}
       {name === 'hook' ? (() => {
@@ -257,7 +215,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
       })() : null}
 
       {!['hook', 'summary', 'end', 'markq', 'outro'].includes(name) ? <RankDots t={t} scenes={plan.scenes} /> : null}
-      {name !== 'hook' && name !== 'end' && name !== 'outro' ? (
+      {name !== 'hook' && name !== 'end' ? (
         <div style={{position: 'absolute', top: 120, right: 60, background: 'rgba(30,45,77,.85)', color: C.white, borderRadius: 999, padding: '10px 24px', fontWeight: 800, fontSize: 30}}>
           🔥 DAY {plan.day}</div>
       ) : null}
@@ -270,7 +228,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         const o = interpolate(t, [l.e, l.e + .3], [1, 0], clamp);
         const mark = l.who === 'mark';
         return (
-          <div key={i} style={{position: 'absolute', left: 60, right: 60, top: mark ? 1180 : 300, textAlign: 'center', opacity: Math.min(1, p * 2) * o, transform: `translateY(${(1 - p) * 30}px)`}}>
+          <div key={i} style={{position: 'absolute', left: 60, right: 60, top: 1180, textAlign: 'center', opacity: Math.min(1, p * 2) * o, transform: `translateY(${(1 - p) * 30}px)`}}>
             <div style={{display: 'inline-flex', alignItems: 'center', gap: 14, background: 'rgba(30,45,77,.9)', borderRadius: 999, padding: '8px 28px 8px 8px'}}>
               <Img src={staticFile(mark ? 'brand/mark-avatar.png' : 'brand/joy-avatar.png')} style={{width: 84, height: 84, borderRadius: '50%'}} />
               <span style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 48, color: C.yellow}}>{mark ? 'Mark T' : 'Joy T'}</span>
@@ -284,7 +242,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
       {/* teaser for the next episode (Joy) */}
       {t >= plan.next.s && t < plan.speechEnd ? (() => {
         const p = sp(t, plan.next.s, fps, 8);
-        return <div style={{position: 'absolute', top: 330, left: 40, right: 40, textAlign: 'center', fontWeight: 900, fontSize: 84, whiteSpace: 'nowrap', color: C.yellow, textShadow: SHADOW,
+        return <div style={{position: 'absolute', top: 1250, left: 40, right: 40, textAlign: 'center', fontWeight: 900, fontSize: 84, whiteSpace: 'nowrap', color: C.yellow, textShadow: SHADOW,
           transform: `scale(${.6 + .4 * p}) rotate(${(1 - p) * -6}deg)`, opacity: Math.min(1, p * 2)}}>{plan.next.text}</div>;
       })() : null}
 
