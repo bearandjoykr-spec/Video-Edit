@@ -1097,5 +1097,11 @@
    "t": 62.993,
    "k": "sparkle"
   }
- ]
+ ],
+ "series": {
+  "en": "Christmas Countdown",
+  "ko": "크리스마스 카운트다운",
+  "dday": "D-44"
+ },
+ "capFont": "cinzel"
 }

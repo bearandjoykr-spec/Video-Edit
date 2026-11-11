@@ -12,6 +12,9 @@ Usage (repo root): python3 projects/2026-11-day29-christmas-phrases/build_plan.p
 import json, os, re, subprocess, sys
 
 V = sys.argv[1] if len(sys.argv) > 1 else "main"
+import datetime
+POST_DATE = datetime.date.fromisoformat(os.environ.get("POST_DATE", "2026-11-11"))  # day the reel goes up
+DAYS_TO_GO = (datetime.date(POST_DATE.year, 12, 25) - POST_DATE).days
 P = os.path.dirname(os.path.abspath(__file__)); R = os.path.dirname(os.path.dirname(P))
 FPS = 30
 PAD = 0.22          # clip picture either side of the film line (covers the magic-cut transition)
@@ -172,6 +175,9 @@ plan = {
                  for a, b, en, ko in LINES],
     "flags": [{"s": r(out(britain)), "e": r(out(britain) + 1.9), "emoji": "🇬🇧"}],
     "phrases": phr, "endCard": {"s": end_s, "e": r(total)}, "sfx": sfx,
+    # v8 (owner): series is now "Christmas Countdown" with days to go (posting date → D-n), not "DAY 29"
+    "series": {"en": "Christmas Countdown", "ko": "크리스마스 카운트다운", "dday": f"D-{DAYS_TO_GO}"},
+    "capFont": os.environ.get("CAPFONT", "cinzel"),
 }
 os.makedirs(f"{P}/versions/{V}", exist_ok=True)
 json.dump(plan, open(f"{P}/versions/{V}/plan.json", "w"), ensure_ascii=False, indent=1)

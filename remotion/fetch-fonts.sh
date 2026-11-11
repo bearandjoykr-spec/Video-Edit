@@ -12,3 +12,7 @@ done
 ls *.ttf
 # Noto Color Emoji (BearJoyReelV2 loads this exact file name)
 curl -sS -o Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf "https://fonts.gstatic.com/s/notocoloremoji/v50/Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf"
+# Day 29 "Countdown to Christmas" caption options: Cinzel 700/900, IM Fell English, Cormorant Garamond 700 italic
+for u in https://fonts.gstatic.com/s/cinzel/v26/8vIU7ww63mVu7gtR-kwKxNvkNOjw-jHgTYo.ttf https://fonts.gstatic.com/s/cinzel/v26/8vIU7ww63mVu7gtR-kwKxNvkNOjw-n_gTYo.ttf \
+  https://fonts.gstatic.com/s/imfellenglish/v14/Ktk1ALSLW8zDe0rthJysWrnLsAz3Fw.ttf \
+  https://fonts.gstatic.com/s/cormorantgaramond/v21/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd5FTfOjw.ttf; do curl -sS -o "$(basename "$u")" "$u"; done

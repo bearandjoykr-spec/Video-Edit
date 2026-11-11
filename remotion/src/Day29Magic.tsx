@@ -20,6 +20,8 @@ export type Day29Plan = {
   cta: {ko1: string; ko2: string; q: string; qKo: string; follow: string; small: string; comment?: string; commentEn?: string};
   title: {s: number; e: number; en: string; sub: string; ko: string};
   flags?: {s: number; e: number; emoji: string}[];
+  capFont?: 'cinzel' | 'fell' | 'cormorant' | 'pretendard';
+  series?: {en: string; ko: string; dday: string};
   segments: Seg[]; captions: Cap[]; phrases: Phrase[]; endCard: {s: number; e: number};
 };
 
@@ -34,11 +36,15 @@ const FONTS: [string, string, string][] = [
   ['Pretendard', '900', 'Pretendard-Black.woff2'],
   ['Gowun Batang', '700', 'ijwNs5nhRMIjYsdSgcMa3wRZ4J7awg.ttf'],
   ['Noto Color Emoji', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
+  ['Cinzel', '700', '8vIU7ww63mVu7gtR-kwKxNvkNOjw-jHgTYo.ttf'],
+  ['Cinzel', '900', '8vIU7ww63mVu7gtR-kwKxNvkNOjw-n_gTYo.ttf'],
+  ['IM Fell English', '400', 'Ktk1ALSLW8zDe0rthJysWrnLsAz3Fw.ttf'],
+  ['Cormorant Garamond', '700', 'co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd5FTfOjw.ttf'],
 ];
 const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
   useEffect(() => {
-    Promise.all(FONTS.map(([f, w, file]) => new FontFace(f, `url(${staticFile('fonts/' + file)})`, {weight: w}).load().then((x) => document.fonts.add(x))))
+    Promise.all(FONTS.map(([f, w, file]) => new FontFace(f, `url(${staticFile('fonts/' + file)})`, {weight: w, style: f === 'Cormorant Garamond' ? 'italic' : 'normal'}).load().then((x) => document.fonts.add(x))))
       .then(() => continueRender(h)).catch((e) => { console.error(e); continueRender(h); });
   }, [h]);
 };
@@ -202,12 +208,24 @@ const Sparkles: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
 };
 
 // ── Text ──
-const DayChip: React.FC = () => (
-  <div style={{position: 'absolute', top: 92, left: 0, right: 0, display: 'flex', justifyContent: 'center'}}>
-    <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 34, color: GOLD_LIGHT, padding: '10px 28px', borderRadius: 999,
-      border: `2px solid ${GOLD}`, background: 'rgba(18,12,6,.55)', boxShadow: `0 0 22px rgba(255,200,90,.35)`}}>DAY 29 · 출간까지 매일 업로드</div>
-  </div>
-);
+// Series label: "Christmas Countdown · D-44" (owner, 11 Nov 2026: replaces "DAY N · 출간까지 매일 업로드" for this series)
+const DayChip: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
+  const se = plan.series;
+  const glow = 0.35 + 0.15 * Math.sin(t * 2.4);
+  return (
+    <div style={{position: 'absolute', top: 84, left: 0, right: 0, display: 'flex', justifyContent: 'center'}}>
+      <div style={{display: 'flex', alignItems: 'center', gap: 16, padding: '8px 14px 8px 26px', borderRadius: 999,
+        border: `2px solid ${GOLD}`, background: 'rgba(18,12,6,.6)', boxShadow: `0 0 26px rgba(255,200,90,${glow})`}}>
+        {se ? <>
+          <span style={{fontFamily: "'Cinzel', serif", fontWeight: 900, fontSize: 30, color: GOLD_LIGHT, letterSpacing: '0.06em'}}>{se.en}</span>
+          <span style={{fontFamily: PRE, fontWeight: 800, fontSize: 28, color: '#fff'}}>{se.ko}</span>
+          <span style={{fontFamily: "'Cinzel', serif", fontWeight: 900, fontSize: 36, color: INK, background: GOLD, borderRadius: 999, padding: '2px 18px',
+            boxShadow: `0 0 16px ${GOLD}`}}>{se.dday}</span>
+        </> : <span style={{fontFamily: PRE, fontWeight: 800, fontSize: 34, color: GOLD_LIGHT}}>DAY {plan.day} · 출간까지 매일 업로드</span>}
+      </div>
+    </div>
+  );
+};
 const Title: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   const {fps} = useVideoConfig();
   const {s, e, en, sub, ko} = plan.title;
@@ -216,7 +234,7 @@ const Title: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   return (
     <div style={{position: 'absolute', top: 190, left: 40, right: 40, textAlign: 'center', opacity: fade(t, s, e, 0.2, 0.4), transform: `scale(${0.8 + 0.2 * sp})`}}>
       <div style={{fontFamily: HP, fontSize: 150, lineHeight: 0.95, color: GOLD, textShadow: glowText()}}>{en}</div>
-      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 40, color: '#fff', marginTop: 14, textShadow: '0 4px 18px rgba(0,0,0,.9)'}}>{sub}</div>
+      <div style={{...capStyle(plan), fontSize: capStyle(plan).fontSize * 0.95, color: '#fff', marginTop: 14, textShadow: '0 4px 18px rgba(0,0,0,.9)'}}>{sub}</div>
       <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 46, color: GOLD_LIGHT, marginTop: 8, textShadow: '0 4px 18px rgba(0,0,0,.9)', wordBreak: 'keep-all'}}>{ko}</div>
     </div>
   );
@@ -238,6 +256,15 @@ const PhraseCard: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
     </div>
   );
 };
+// Caption type options (owner: "a little more interesting, not too crazy")
+const CAP_STYLES = {
+  pretendard: {fontFamily: PRE, fontWeight: 800, fontSize: 46, fontStyle: 'normal', letterSpacing: '0'},
+  cinzel: {fontFamily: "'Cinzel', serif", fontWeight: 900, fontSize: 44, fontStyle: 'normal', letterSpacing: '0.01em'},
+  fell: {fontFamily: "'IM Fell English', serif", fontWeight: 400, fontSize: 54, fontStyle: 'normal', letterSpacing: '0'},
+  cormorant: {fontFamily: "'Cormorant Garamond', serif", fontWeight: 700, fontSize: 56, fontStyle: 'italic', letterSpacing: '0'},
+} as const;
+const capStyle = (plan: Day29Plan) => CAP_STYLES[plan.capFont ?? 'pretendard'];
+
 // Captions: words light up gold as Mark says them; a little golden snitch hops onto each word as it is spoken.
 const CAP_FONT = 46, CAP_W = 900;
 const Snitch: React.FC<{t: number; k: number}> = ({t, k}) => {
@@ -267,7 +294,7 @@ const Captions: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
     <div style={{position: 'absolute', bottom: 200, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: o}}>
       <div style={{padding: '40px 30px 16px', borderRadius: 26, background: 'rgba(18,12,6,.62)', border: '1px solid rgba(255,217,112,.4)',
         boxShadow: '0 0 30px rgba(255,190,80,.18)', maxWidth: CAP_W + 60}}>
-        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', columnGap: '0.28em', rowGap: 6, fontFamily: PRE, fontWeight: 800, fontSize: CAP_FONT, lineHeight: 1.22}}>
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', columnGap: '0.28em', rowGap: 6, ...capStyle(plan), lineHeight: 1.22}}>
           {words.map((w, i) => {
             const on = cur === i, done = w.t !== null && i < cur;
             const pop = on ? interpolate(t, [w.t!, w.t! + 0.12, w.t! + 0.3], [1, 1.16, 1.08], clamp) : 1;
@@ -279,7 +306,7 @@ const Captions: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
             </span>;
           })}
         </div>
-        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, lineHeight: 1.25, color: GOLD_LIGHT, marginTop: 8, textAlign: 'center', wordBreak: 'keep-all'}}>{c.ko}</div>
+        <div style={{fontFamily: plan.capFont && plan.capFont !== 'pretendard' ? KO_SERIF : PRE, fontWeight: 800, fontSize: 42, lineHeight: 1.25, color: GOLD_LIGHT, marginTop: 8, textAlign: 'center', wordBreak: 'keep-all'}}>{c.ko}</div>
       </div>
     </div>
   );
@@ -290,7 +317,7 @@ const Flags: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   return <>{(plan.flags ?? []).filter((f) => t >= f.s && t < f.e).map((f, i) => {
     const sp = spring({frame: Math.round((t - f.s) * fps), fps, config: {damping: 8, stiffness: 160}});
     const out = interpolate(t, [f.e - 0.3, f.e], [1, 0], clamp);
-    return <div key={i} style={{position: 'absolute', left: 760, top: 470, fontFamily: "'Noto Color Emoji'", fontSize: 150, lineHeight: 1,
+    return <div key={i} style={{position: 'absolute', left: 800, top: 720, fontFamily: "'Noto Color Emoji'", fontSize: 150, lineHeight: 1,
       transform: `scale(${sp * out}) rotate(${Math.sin(t * 9) * 8}deg)`, filter: `drop-shadow(0 0 18px ${GOLD}) drop-shadow(0 8px 16px rgba(0,0,0,.6))`}}>{f.emoji}</div>;
   })}</>;
 };
@@ -388,7 +415,7 @@ export const Day29Magic: React.FC<{plan: Day29Plan}> = ({plan}) => {
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(0,0,0,.45), transparent 22%, transparent 70%, rgba(0,0,0,.55))'}} />
       <FilmCut plan={plan} t={t} />
       <Sparkles plan={plan} t={t} />
-      <DayChip />
+      <DayChip plan={plan} t={t} />
       <Hook plan={plan} t={t} />
       {film ? null : <Flags plan={plan} t={t} />}
       {film ? null : <><Title plan={plan} t={t} /><PhraseCard plan={plan} t={t} /><Captions plan={plan} t={t} /></>}
