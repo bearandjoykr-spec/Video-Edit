@@ -30,6 +30,9 @@ import promoA from '../../projects/2026-11-day1-promos/versions/kkakkung/timelin
 import promoB from '../../projects/2026-11-day1-promos/versions/three-phrases/timeline.json';
 import promoC from '../../projects/2026-11-day1-promos/versions/mistakes-ok/timeline.json';
 
+import {LittleStepsAd, AdPlan} from './LittleStepsAd';
+import day1ad from '../../projects/2026-11-day1-ad/versions/main/timeline.json';
+
 const Hello: React.FC = () => {
   const f = useCurrentFrame();
   return (
@@ -78,6 +81,7 @@ export const Root: React.FC = () => (
     {wReel('ReelUse', reelUse as unknown as WelcomeReelPlan)}
     {wReel('ReelPerfect', reelPerfect as unknown as WelcomeReelPlan)}
     {wReel('ReelBearVoice', reelBear as unknown as WelcomeReelPlan)}
+    <Composition id="Day1Ad" component={LittleStepsAd} durationInFrames={(day1ad as unknown as AdPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day1ad as unknown as AdPlan}} />
     {promo('PromoKkakkung', promoA as unknown as PromoPlan)}
     {promo('PromoThreePhrases', promoB as unknown as PromoPlan)}
     {promo('PromoMistakesOk', promoC as unknown as PromoPlan)}

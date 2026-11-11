@@ -1,0 +1,305 @@
+{
+ "fps": 30,
+ "duration": 27.84,
+ "frames": 836,
+ "speechEnd": 24.24,
+ "shots": [
+  {
+   "who": "joy",
+   "src_s": 214.92,
+   "src_e": 217.4,
+   "out_s": 0.0,
+   "out_e": 2.48,
+   "cx0": 900,
+   "cx1": 900,
+   "head": {
+    "kicker": "영국 원어민 × 엄마표 놀이",
+    "big": "영어 까꿍 놀이 🐻",
+    "ko": "",
+    "words": []
+   },
+   "mirror": true,
+   "hook": true
+  },
+  {
+   "who": "mark",
+   "src_s": 29.99,
+   "src_e": 32.54,
+   "out_s": 2.48,
+   "out_e": 5.03,
+   "cx0": 1050,
+   "cx1": 1050,
+   "head": {
+    "kicker": "PHRASE 1 / 3",
+    "big": "Look, it's a bear!",
+    "ko": "봐, 곰이야!",
+    "step": 1,
+    "words": [
+     2.55,
+     3.28,
+     3.8,
+     3.93
+    ]
+   },
+   "mirror": false,
+   "hook": false
+  },
+  {
+   "who": "joy",
+   "src_s": 192.0,
+   "src_e": 195.8,
+   "out_s": 5.03,
+   "out_e": 8.83,
+   "cx0": 940,
+   "cx1": 940,
+   "head": {
+    "kicker": "PHRASE 1 / 3",
+    "big": "Look, it's a bear!",
+    "ko": "봐, 곰이야!",
+    "step": 1,
+    "words": [
+     5.09,
+     5.81,
+     5.85,
+     5.88
+    ]
+   },
+   "mirror": true,
+   "hook": false
+  },
+  {
+   "who": "mark",
+   "src_s": 98.92,
+   "src_e": 100.9,
+   "out_s": 8.83,
+   "out_e": 10.81,
+   "cx0": 1000,
+   "cx1": 1000,
+   "head": {
+    "kicker": "PHRASE 2 / 3",
+    "big": "Where's the bear?",
+    "ko": "곰이 어디 있지?",
+    "step": 2,
+    "words": [
+     8.87,
+     8.97,
+     9.44
+    ]
+   },
+   "mirror": false,
+   "hook": false
+  },
+  {
+   "who": "joy",
+   "src_s": 203.54,
+   "src_e": 206.3,
+   "out_s": 10.81,
+   "out_e": 13.57,
+   "cx0": 900,
+   "cx1": 900,
+   "head": {
+    "kicker": "PHRASE 2 / 3",
+    "big": "Where's the bear?",
+    "ko": "곰이 어디 있지?",
+    "step": 2,
+    "words": [
+     10.89,
+     10.95,
+     11.07
+    ]
+   },
+   "mirror": true,
+   "hook": false
+  },
+  {
+   "who": "mark",
+   "src_s": 127.93,
+   "src_e": 130.1,
+   "out_s": 13.57,
+   "out_e": 15.74,
+   "cx0": 1000,
+   "cx1": 1000,
+   "head": {
+    "kicker": "PHRASE 3 / 3",
+    "big": "There he is!",
+    "ko": "여기 있네!",
+    "step": 3,
+    "words": [
+     13.7,
+     13.76,
+     14.15
+    ]
+   },
+   "mirror": false,
+   "hook": false
+  },
+  {
+   "who": "joy",
+   "src_s": 210.93,
+   "src_e": 214.54,
+   "out_s": 15.74,
+   "out_e": 19.35,
+   "cx0": 1100,
+   "cx1": 900,
+   "head": {
+    "kicker": "PHRASE 3 / 3",
+    "big": "There he is!",
+    "ko": "여기 있네!",
+    "step": 3,
+    "words": [
+     15.78,
+     16.61,
+     17.22
+    ]
+   },
+   "mirror": true,
+   "hook": false
+  },
+  {
+   "who": "joy",
+   "src_s": 218.69,
+   "src_e": 222.57,
+   "out_s": 19.35,
+   "out_e": 23.23,
+   "cx0": 880,
+   "cx1": 880,
+   "head": {
+    "kicker": "영어 3문장 + 창문 하나",
+    "big": "까꿍 놀이 완성! 🎉",
+    "ko": "",
+    "words": []
+   },
+   "mirror": true,
+   "hook": false
+  },
+  {
+   "who": "mark",
+   "src_s": 150.68,
+   "src_e": 151.69,
+   "out_s": 23.23,
+   "out_e": 24.24,
+   "cx0": 1000,
+   "cx1": 1000,
+   "head": {
+    "kicker": "",
+    "big": "Lovely! 💛",
+    "ko": "참 잘했어요!",
+    "words": [
+     23.37
+    ]
+   },
+   "mirror": false,
+   "hook": false
+  }
+ ],
+ "caps": [
+  {
+   "s": 0.0,
+   "e": 2.38,
+   "ko": "There he is! · 여기 있었네!"
+  },
+  {
+   "s": 6.53,
+   "e": 8.68,
+   "ko": "봐, 여기 곰이 있어."
+  },
+  {
+   "s": 11.77,
+   "e": 13.42,
+   "ko": "곰이 어디 있지?"
+  },
+  {
+   "s": 17.509999999999998,
+   "e": 19.21,
+   "ko": "여기 있었네!"
+  },
+  {
+   "s": 19.65,
+   "e": 23.11,
+   "ko": "이렇게만 해도 짧은 놀이 하나가 완성돼요."
+  }
+ ],
+ "sfx": [
+  {
+   "t": 0.0,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 0.05,
+   "sound": "sparkle",
+   "gain": -14
+  },
+  {
+   "t": 2.42,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 2.48,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 4.970000000000001,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 8.77,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 8.83,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 10.75,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 13.51,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 13.57,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 15.68,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 19.290000000000003,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 19.400000000000002,
+   "sound": "sparkle",
+   "gain": -10
+  },
+  {
+   "t": 23.17,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 24.24,
+   "sound": "chime",
+   "gain": -9
+  },
+  {
+   "t": 25.84,
+   "sound": "pop",
+   "gain": -8
+  }
+ ],
+ "media": "day1ad/main"
+}
