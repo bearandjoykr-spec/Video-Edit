@@ -123,3 +123,9 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Joy's Day 1 class footage is mirrored (worksheet text reads backwards); flip her shots back.
 - Ad call to action (Joy, 11 Nov 2026): "무료 체험 신청은 프로필 링크에서" on the end card (Day 1 is free; sign-up is on the profile link), and the same line near the top of the post caption. No voice line needed.
 - Ad titles (Joy, 11 Nov 2026): Apple SD Gothic Neo ExtraBold for the headline (not Pretendard Black, not Playfair), no highlight bars (spoken words just turn yellow), no 🐻 emoji (it is not our bear). On screen the hosts are "Mark T 🇬🇧" and "Joy T 🇰🇷".
+
+## Harry Potter episodes (owner, 11 Nov 2026) — one-off override when the topic is Harry Potter
+- Owner accepts the copyright risk of using Harry Potter film clips, the "Harry P" fan font (dafont, `remotion/public/fonts/HarryP.ttf`, git-ignored) for the opening title, and the Great Hall image as background.
+- Music still licensed: Day 29 uses Pixabay "School of Magic" (source in the project's `music/SOURCE.md`).
+- Owner asked for face-tracked round glasses and a lightning scar on Mark for the first ~3 s (`projects/2026-11-day29-christmas-phrases/face_props.py`).
+- Korean captions: Claude drafts when the owner has none; use "장난 완료" for "Mischief managed" (Korean edition).
