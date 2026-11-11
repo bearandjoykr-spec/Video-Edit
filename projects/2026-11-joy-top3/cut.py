@@ -4,14 +4,17 @@ Run from the repo root: .venv/bin/python projects/2026-11-joy-top3/cut.py  -> ve
 import os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from edl import PIC, RAW, SPEECH_END, END  # noqa: E402
+from edl import PIC, RAW, SPEECH_END, END, LIVE  # noqa: E402
 TOTAL = round(SPEECH_END + END, 3)
 OUT = f"{HERE}/versions/main"; os.makedirs(OUT, exist_ok=True)
 ins, fc = [], []
-for k, (clip, s, e, _n) in enumerate(PIC):
+for k, (clip, s, e, scene) in enumerate(PIC):
+    # live scenes keep their sound (Mark's question, Joy's line); elsewhere the shop sound is low ambience
+    gain = "volume=0dB" if scene in LIVE else "volume=-14dB"
+    cut = f",afade=t=out:st={LIVE[scene] - s:.3f}:d=0.15" if LIVE.get(scene) else ""
     ins += ["-ss", str(s), "-t", str(round(e - s, 3)), "-i", f"{RAW}/{clip}"]
     fc.append(f"[{k}:v]scale=1080:1920:flags=lanczos,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v{k}]")
-    fc.append(f"[{k}:a]aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.05,afade=t=out:st={e - s - 0.08:.3f}:d=0.08,asetpts=PTS-STARTPTS[a{k}]")
+    fc.append(f"[{k}:a]aresample=48000,aformat=channel_layouts=stereo,{gain},afade=t=in:d=0.05,afade=t=out:st={e - s - 0.08:.3f}:d=0.08{cut},asetpts=PTS-STARTPTS[a{k}]")
 fc.append("".join(f"[v{k}][a{k}]" for k in range(len(PIC))) + f"concat=n={len(PIC)}:v=1:a=1[v0][a0]")
 # hold the last frame under the end card
 fc.append(f"[v0]tpad=stop_mode=clone:stop_duration={END}[v];[a0]apad=whole_dur={TOTAL}[a]")

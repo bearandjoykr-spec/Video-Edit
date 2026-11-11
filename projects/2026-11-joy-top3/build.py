@@ -5,12 +5,12 @@ Run: .venv/bin/python projects/2026-11-joy-top3/build.py   -> versions/main/time
 import json, math, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from edl import DAY, END, SPEECH_END, SCRIPT, PROG, PIC  # noqa: E402
+from edl import DAY, END, SPEECH_END, SCRIPT, PROG, PIC, LIVE_LINES  # noqa: E402
 
 FPS = 30
 TOTAL = round(SPEECH_END + END, 3)
 syl = lambda p: len(re.findall(r"[가-힣0-9]", p)) + 1.5 * len(re.findall(r"[A-Za-z']+", p))
-HI = ["한 번 더!", "딱 3권!", "직접", "3위부터", "My Mum, My Dad.", "짧은 문장", "자랑하는", "우리 엄마는?", "물어봐", "Caterpillar.",
+HI = ["한 번 더!", "딱 3권!", "3위부터", "어디로", "My Mum, My Dad.", "짧은 문장", "자랑하는", "우리 엄마는?", "물어봐", "Caterpillar.",
       "요일, 숫자, 음식", "한 권에", "손가락을 쏙", "읽어", "1위!", "계속", "Have you seen my hat?", "따라 하는데요,", "직접 확인해",
       "저장해 두고", "친구에게", "보내"]
 # Books, in countdown order. Info cards are the save-worthy part (age, key sentence, how to read it).
@@ -52,6 +52,11 @@ def main():
             scenes.append({"name": name, "s": t, "e": round(t + e - s, 3)})
     scenes[-1]["e"] = SPEECH_END
     sc = {x["name"]: x for x in scenes}
+    # live lines (Mark's question, Joy's "I know the best place to go!") in program time
+    live = []
+    for ln in LIVE_LINES:
+        (clip, s0, e0, _n), t0 = next((p, t) for p, t in zip(PIC, PROG) if p[3] == ln["scene"])
+        live.append({"who": ln["who"], "en": ln["en"], "ko": ln["ko"], "s": round(t0 + max(0, ln["src_s"] - s0), 3), "e": round(t0 + ln["src_e"] - s0, 3)})
     sfx = []
     add = lambda t, s, g: sfx.append({"t": round(max(0, t), 3), "sound": s, "gain": g})
     for k in range(3):  # hook: three mystery books thud in
@@ -65,10 +70,12 @@ def main():
         bk = sc[f"book{r}"]
         add(bk["e"] - 3.6, "pop", -9)  # info card
     add(sc["summary"]["s"] + 0.1, "chime", -9)
+    add(live[0]["s"] - 0.1, "pop", -12); add(live[1]["s"] - 0.1, "pop", -12)
+    add(SCRIPT[-1][0], "boing", -10)  # "다음엔 어디로 갈까요?"
     add(SPEECH_END, "impact", -8); add(SPEECH_END + 0.05, "sparkle", -10)
     add(SPEECH_END + 1.9, "pop", -6); add(SPEECH_END + 2.8, "pop", -6); add(SPEECH_END + 2.85, "chime", -9)
     plan = {"fps": FPS, "duration": TOTAL, "frames": int(math.ceil(TOTAL * FPS)), "speechEnd": SPEECH_END, "day": DAY,
-            "media": "joytop3/main", "scenes": scenes, "captions": C, "books": {str(k): v for k, v in BOOKS.items()},
+            "media": "joytop3/main", "scenes": scenes, "captions": C, "live": live, "next": {"s": SCRIPT[-1][0], "text": "다음엔 어디로 갈까요? 👀"}, "books": {str(k): v for k, v in BOOKS.items()},
             "sfx": sorted(sfx, key=lambda x: x["t"])}
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)
     json.dump(plan, open(f"{HERE}/versions/main/timeline.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)

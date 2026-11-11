@@ -11,7 +11,7 @@ music = sys.argv[4] if len(sys.argv) > 4 else "projects/2026-11-day25-kyobo/musi
 music_db = float(sys.argv[5]) if len(sys.argv) > 5 else -15
 plan = json.load(open(f"{V}/timeline.json")); dur = plan["duration"]
 inputs = ["-i", f"{V}/cut.mov", "-i", music] + (["-i", vo] if vo else [])
-fc = [f"[0:a]volume=-14dB,apad=whole_dur={dur}[amb]",
+fc = [f"[0:a]apad=whole_dur={dur}[amb]",  # cut.py sets the levels (live lines full, shop sound low)
       f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={music_db}dB,atrim=0:{dur},afade=t=in:d=0.3,afade=t=out:st={dur - 2.5}:d=2.5[mus0]"]
 if vo:
     fc.append(f"[2:a]aformat=sample_rates=48000:channel_layouts=stereo,highpass=f=80,acompressor=threshold=-20dB:ratio=2.5:attack=8:release=130:makeup=2,"

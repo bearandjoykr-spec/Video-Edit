@@ -7,7 +7,8 @@ import {AbsoluteFill, Img, OffthreadVideo, continueRender, delayRender, interpol
 type Scene = {name: string; s: number; e: number};
 type Book = {title: string; author: string; cover: string; info: [string, string, string][]};
 export type Top3Plan = {fps: number; duration: number; frames: number; speechEnd: number; day: number; media: string;
-  scenes: Scene[]; captions: {s: number; e: number; ko: string; hi: string}[]; books: Record<string, Book>};
+  scenes: Scene[]; captions: {s: number; e: number; ko: string; hi: string}[]; books: Record<string, Book>;
+  live: {who: 'mark' | 'joy'; en: string; ko: string; s: number; e: number}[]; next: {s: number; text: string}};
 
 const C = {navy: '#1E2D4D', deep: '#173B5C', cream: '#F5F0E6', yellow: '#F6E27A', butter: '#F6F0BA', sky: '#AECCE6', white: '#FFFFFF', kakao: '#FEE500'};
 const FF = "'Pretendard', 'Noto Color Emoji', sans-serif";
@@ -59,8 +60,8 @@ const RankDots: React.FC<{t: number; scenes: Scene[]}> = ({t, scenes}) => {
     <div style={{position: 'absolute', top: 236, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 18, fontFamily: FF}}>
       {[3, 2, 1].map((n) => {
         const on = t >= at(n);
-        return <div key={n} style={{minWidth: 96, height: 60, borderRadius: 30, fontWeight: 900, fontSize: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: on ? C.yellow : 'rgba(255,255,255,.22)', color: on ? C.navy : 'rgba(255,255,255,.85)', boxShadow: '0 6px 16px rgba(0,0,0,.25)'}}>{n}위</div>;
+        return <div key={n} style={{minWidth: 60, height: 60, borderRadius: 30, fontWeight: 900, fontSize: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: on ? C.yellow : 'rgba(255,255,255,.22)', color: on ? C.navy : 'rgba(255,255,255,.85)', boxShadow: '0 6px 16px rgba(0,0,0,.25)'}}>{n}</div>;
       })}
     </div>
   );
@@ -133,8 +134,8 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         const flip = interpolate(local, [.45, .85], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
         return (
           <>
-            <div style={{position: 'absolute', top: 330, left: 0, right: 0, textAlign: 'center', fontWeight: 900, fontSize: rank === 1 ? 210 : 190, color: C.yellow,
-              textShadow: SHADOW, transform: `scale(${2.2 - 1.2 * r})`, opacity: Math.min(1, r * 2)}}>{rank === 1 ? '🏆 1위' : `${rank}위`}</div>
+            <div style={{position: 'absolute', top: 330, left: 0, right: 0, textAlign: 'center', fontWeight: 900, fontSize: rank === 1 ? 300 : 260, color: C.yellow, lineHeight: 1,
+              textShadow: SHADOW, transform: `scale(${2.2 - 1.2 * r})`, opacity: Math.min(1, r * 2)}}>{rank}</div>
             <div style={{position: 'absolute', top: 640, left: 0, right: 0, display: 'flex', justifyContent: 'center', transform: `scale(${.9 + .1 * r})`}}>
               <BookCard w={500} h={660} flip={flip} cover={book.cover} media={plan.media} rot={(1 - flip) * -4} />
             </div>
@@ -149,9 +150,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         const k = sp(t, cardAt, fps, 12);
         return (
           <>
-            <div style={{position: 'absolute', top: 320, left: 50, right: 50, textAlign: 'center', transform: `translateY(${(1 - p) * -30}px)`, opacity: p}}>
-              <span style={{display: 'inline-block', background: C.yellow, color: C.navy, fontWeight: 900, fontSize: 44, borderRadius: 999, padding: '6px 26px'}}>
-                {rank === 1 ? '🏆 1위' : `${rank}위`}</span>
+            <div style={{position: 'absolute', top: 310, left: 50, right: 50, textAlign: 'center', transform: `translateY(${(1 - p) * -30}px)`, opacity: p}}>
               <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: book.title.length > 20 ? 66 : 80, color: C.white,
                 textShadow: SHADOW, marginTop: 12, lineHeight: 1.1}}>{book.title}</div>
               <div style={{fontWeight: 700, fontSize: 34, color: C.butter, textShadow: SHADOW, marginTop: 6}}>by {book.author}</div>
@@ -191,7 +190,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         return (
           <AbsoluteFill style={{background: `rgba(245,240,230,${.97 * Math.min(1, p * 1.5)})`, alignItems: 'center'}}>
             <div style={{marginTop: 250, fontWeight: 900, fontSize: 44, color: '#C0392B', opacity: p}}>📌 저장 · 💌 공유 필수</div>
-            <div style={{fontWeight: 900, fontSize: 84, color: C.navy, letterSpacing: '-.03em', opacity: p, marginTop: 6}}>조이쌤 영어 그림책 TOP 3</div>
+            <div style={{fontWeight: 900, fontSize: 84, color: C.navy, letterSpacing: '-.03em', opacity: p, marginTop: 6}}>영어 그림책 TOP 3</div>
             <div style={{marginTop: 40, width: 940}}>
               {[1, 2, 3].map((r, i) => {
                 const b = plan.books[String(r)];
@@ -199,7 +198,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
                 return (
                   <div key={r} style={{display: 'flex', alignItems: 'center', gap: 28, background: C.white, borderRadius: 28, padding: 20, marginBottom: 22,
                     boxShadow: '0 10px 26px rgba(30,45,77,.12)', opacity: q, transform: `translateX(${(1 - q) * 80}px)`}}>
-                    <div style={{fontWeight: 900, fontSize: 56, color: r === 1 ? '#C0392B' : C.deep, width: 110, textAlign: 'center'}}>{r === 1 ? '🏆1' : r}</div>
+                    <div style={{fontWeight: 900, fontSize: 56, color: r === 1 ? '#C0392B' : C.deep, width: 90, textAlign: 'center'}}>{r}</div>
                     <Img src={staticFile(`${plan.media}/covers/${b.cover}`)} style={{width: 130, height: 165, objectFit: 'cover', borderRadius: 12}} />
                     <div style={{flex: 1}}>
                       <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: b.title.length > 20 ? 40 : 46, color: C.deep, lineHeight: 1.1}}>{b.title}</div>
@@ -213,13 +212,37 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         );
       })() : null}
 
-      {name !== 'hook' && name !== 'summary' && name !== 'end' ? <RankDots t={t} scenes={plan.scenes} /> : null}
+      {!['hook', 'summary', 'end', 'markq', 'outro'].includes(name) ? <RankDots t={t} scenes={plan.scenes} /> : null}
       {name !== 'hook' && name !== 'end' ? (
         <div style={{position: 'absolute', top: 120, right: 60, background: 'rgba(30,45,77,.85)', color: C.white, borderRadius: 999, padding: '10px 24px', fontWeight: 800, fontSize: 30}}>
           🔥 DAY {plan.day}</div>
       ) : null}
       {/* the hook title and the summary card already carry the words, so no captions there */}
-      {cap && !['hook', 'summary', 'end'].includes(name) ? <Caption c={cap} t={t} /> : null}
+      {cap && !['hook', 'summary', 'end'].includes(name) && t < plan.next.s ? <Caption c={cap} t={t} /> : null}
+
+      {/* live lines: Mark's question at the start, Joy's answer at the end (their own voices) */}
+      {plan.live.map((l, i) => (t >= l.s - .1 && t < l.e + .3 ? (() => {
+        const p = sp(t, l.s - .1, fps, 12);
+        const o = interpolate(t, [l.e, l.e + .3], [1, 0], clamp);
+        const mark = l.who === 'mark';
+        return (
+          <div key={i} style={{position: 'absolute', left: 60, right: 60, top: 1180, textAlign: 'center', opacity: Math.min(1, p * 2) * o, transform: `translateY(${(1 - p) * 30}px)`}}>
+            <div style={{display: 'inline-flex', alignItems: 'center', gap: 14, background: 'rgba(30,45,77,.9)', borderRadius: 999, padding: '8px 28px 8px 8px'}}>
+              <Img src={staticFile(mark ? 'brand/mark-avatar.png' : 'brand/joy-avatar.png')} style={{width: 84, height: 84, borderRadius: '50%'}} />
+              <span style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 48, color: C.yellow}}>{mark ? 'Mark T' : 'Joy T'}</span>
+              <span style={{fontSize: 56}}>{mark ? '🇬🇧' : '🇰🇷'}</span>
+            </div>
+            <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 76, lineHeight: 1.1, color: C.white, textShadow: SHADOW, marginTop: 18}}>{l.en}</div>
+            <div style={{fontWeight: 800, fontSize: 50, color: C.butter, textShadow: SHADOW, marginTop: 10}}>{l.ko}</div>
+          </div>
+        );
+      })() : null))}
+      {/* teaser for the next episode (Joy) */}
+      {t >= plan.next.s && t < plan.speechEnd ? (() => {
+        const p = sp(t, plan.next.s, fps, 8);
+        return <div style={{position: 'absolute', top: 1250, left: 40, right: 40, textAlign: 'center', fontWeight: 900, fontSize: 84, whiteSpace: 'nowrap', color: C.yellow, textShadow: SHADOW,
+          transform: `scale(${.6 + .4 * p}) rotate(${(1 - p) * -6}deg)`, opacity: Math.min(1, p * 2)}}>{plan.next.text}</div>;
+      })() : null}
 
       {/* END: follow card */}
       {t >= plan.speechEnd - .05 ? (() => {
