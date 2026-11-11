@@ -24,7 +24,7 @@ FILMS = [
     (24.31, 24.56, "christmas", 16.60, 17.65, 0.0, "Happy Christmas, Ron.", "해피 크리스마스, 론."),
     (29.97, 30.36, "brilliant", 15.00, 16.50, 0.0, "Brilliant!", "최고야!"),
     (37.58, 38.23, "blimey",    20.00, 21.15, 0.0, "Blimey, Hermione.", "세상에, 헤르미온느."),  # v5: Ron + Harry (14.95 was a troll)
-    (44.43, 44.93, "platform",  92.30, 94.60, 0.0, "Off you go!", "자, 출발!"),  # v6: silent barrier run (no one says "off you go" in the film)
+    (44.43, 44.93, "platform",  92.30, 94.60, 0.0, "Off you gooooooo!", "자, 출바아아알!"),  # v6: silent barrier run (no one says "off you go" in the film)
     (53.89, 54.09, "map",      117.90, 119.60, 0.0, "Mischief managed.", "장난 완료."),
 ]
 MARK_START, MARK_END = 0.62, 59.30
@@ -89,7 +89,7 @@ for k, (a, b) in enumerate(ranges):
     if k < len(FILMS):
         _, _, clip, cs, ce, tail, en, ko = FILMS[k]
         d = PAD + (ce - cs) + tail + PAD
-        segs.append({"kind": "film", "clip": clip, "src": f"day29/clips/{clip}.mp4", "clipIn": cs, "clipOut": ce, "silent": clip == "platform",
+        segs.append({"kind": "film", "clip": clip, "src": f"day29/clips/{clip}.mp4", "clipIn": cs, "clipOut": ce, "silent": clip == "platform", "big": clip == "platform",
                      "s": t, "e": t + d, "lineS": t + PAD, "en": en, "ko": ko}); t += d
         z = 0
 END_CARD = 4.8   # v6: + "comment your favourite phrase" line
@@ -153,6 +153,8 @@ for s in films:
     sfx += [{"t": r(s["s"] - 0.18), "k": "whoosh"}, {"t": r(s["s"]), "k": "ding"}, {"t": r(s["e"] - 0.15), "k": "whoosh_out"}]
 sfx += [{"t": r(p["num"] - 0.02), "k": "boom"} for p in phr] + [{"t": r(p["num"] + 0.5), "k": "chime"} for p in phr]
 sfx += [{"t": r(out(britain)), "k": "ding"}]
+for f_ in films:  # v7: rising magic swirl + sparkle as "Off you gooooooo!" stretches out
+    if f_["clip"] == "platform": sfx += [{"t": r(f_["lineS"]), "k": "rise"}, {"t": r(f_["lineS"] + 1.7), "k": "sparkle"}]
 sfx += [{"t": props[1]["s"], "k": "sparkle"}, {"t": r(end_s - 0.5), "k": "whoosh"}, {"t": r(end_s + 0.35), "k": "chime"},
         {"t": r(end_s + 1.6), "k": "ding"}, {"t": r(end_s + 2.3), "k": "sparkle"}]
 

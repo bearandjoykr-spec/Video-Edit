@@ -8,7 +8,7 @@ import {
   staticFile, useCurrentFrame, useVideoConfig, Easing, random,
 } from 'remotion';
 
-type Seg = {kind: 'mark' | 'film'; s: number; e: number; src: number | string; srcEnd?: number; file?: string; fileFrom?: number; zoom?: number;
+type Seg = {kind: 'mark' | 'film'; s: number; e: number; src: number | string; srcEnd?: number; file?: string; fileFrom?: number; zoom?: number; big?: boolean;
   clip?: string; clipIn?: number; clipOut?: number; lineS?: number; en?: string; ko?: string};
 type Cap = {s: number; e: number; en: string; ko: string; words?: {w: string; t: number | null}[]};
 type Phrase = {s: number; num?: number; n: number; en: string; ko: string};
@@ -119,14 +119,46 @@ const FilmCut: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
           </div>
           <div style={{position: 'absolute', left: 50, right: 50, top: 1240, textAlign: 'center', opacity: capO,
             transform: `translateY(${(1 - capO) * 14}px)`}}>
+            {s.big ? <BigStretch text={s.en!} ko={s.ko!} t={t} s={s.lineS!} e={s.e} /> : <>
             <div style={{fontFamily: HP, fontSize: s.en!.length > 30 ? 74 : 96, lineHeight: 1.05, color: GOLD, textShadow: glowText()}}>{s.en}</div>
             <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 54, lineHeight: 1.3, color: GOLD_LIGHT, marginTop: 18,
-              textShadow: '0 0 14px rgba(255,200,90,.6), 0 4px 16px rgba(0,0,0,.9)', wordBreak: 'keep-all'}}>{s.ko}</div>
+              textShadow: '0 0 14px rgba(255,200,90,.6), 0 4px 16px rgba(0,0,0,.9)', wordBreak: 'keep-all'}}>{s.ko}</div></>}
           </div>
         </AbsoluteFill>
       </Sequence>
     );
   })}</>;
+};
+
+// "Off you gooooooo!": the o's stretch out one by one (as Fred runs at the wall) with a sparkle trail off the end
+const BigStretch: React.FC<{text: string; ko: string; t: number; s: number; e: number}> = ({text, ko, t, s, e}) => {
+  const m = text.match(/^(.*?g)(o+)(!?)$/);
+  const head = m ? m[1] : text, os = m ? m[2].length : 0, tail = m ? m[3] : '';
+  const prog = interpolate(t, [s, s + 1.5], [0, 1], {...clamp, easing: Easing.out(Easing.quad)});
+  const shown = Math.max(1, Math.ceil(prog * os));
+  const pop = interpolate(t, [s - 0.05, s + 0.15], [0.5, 1], {...clamp, easing: Easing.out(Easing.back(2))});
+  const wave = (i: number) => Math.sin(t * 9 - i * 0.7) * 10;
+  const fs = 186 - (shown - 1) * 3; // big; shrinks a touch as it grows so it stays on screen
+  const trail = [] as React.ReactNode[];
+  for (let i = 0; i < 14; i++) {
+    const ph = ((t * 1.6 + i / 14) % 1);
+    trail.push(<Star key={i} x={10 + ph * 140} y={-20 + Math.sin(i * 2.3 + t * 6) * 40 * ph} r={5 + (1 - ph) * 9} o={(1 - ph) * 0.95} rot={ph * 200} />);
+  }
+  return (
+    <div style={{transform: `scale(${pop})`}}>
+      <div style={{fontFamily: HP, fontSize: fs, lineHeight: 1.05, color: GOLD, textShadow: glowText(), whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'baseline'}}>
+        <span>{head}</span>
+        {Array.from({length: shown}, (_, i) => (
+          <span key={i} style={{display: 'inline-block', transform: `translateY(${wave(i)}px) scale(${i === shown - 1 ? interpolate(prog * os - i, [0, 1], [1.5, 1], clamp) : 1})`}}>o</span>
+        ))}
+        <span style={{position: 'relative', display: 'inline-block'}}>{tail}
+          <div style={{position: 'absolute', left: '100%', top: '50%', width: 0, height: 0}}>{trail}</div>
+        </span>
+      </div>
+      <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 60, lineHeight: 1.3, color: GOLD_LIGHT, marginTop: 14,
+        textShadow: '0 0 14px rgba(255,200,90,.6), 0 4px 16px rgba(0,0,0,.9)', opacity: interpolate(t, [s + 0.3, s + 0.6], [0, 1], clamp)}}>{ko}</div>
+    </div>
+  );
 };
 
 // gold flash at each magic cut (in and out)

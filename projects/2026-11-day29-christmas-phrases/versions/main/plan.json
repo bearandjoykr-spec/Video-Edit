@@ -108,6 +108,7 @@
    "clipIn": 15.3,
    "clipOut": 16.6,
    "silent": false,
+   "big": false,
    "s": 6.754,
    "e": 8.494,
    "lineS": 6.974,
@@ -201,6 +202,7 @@
    "clipIn": 16.6,
    "clipOut": 17.65,
    "silent": false,
+   "big": false,
    "s": 22.479,
    "e": 23.969,
    "lineS": 22.699,
@@ -254,6 +256,7 @@
    "clipIn": 15.0,
    "clipOut": 16.5,
    "silent": false,
+   "big": false,
    "s": 28.272,
    "e": 30.212,
    "lineS": 28.492,
@@ -307,6 +310,7 @@
    "clipIn": 20.0,
    "clipOut": 21.15,
    "silent": false,
+   "big": false,
    "s": 36.099,
    "e": 37.689,
    "lineS": 36.319,
@@ -380,11 +384,12 @@
    "clipIn": 92.3,
    "clipOut": 94.6,
    "silent": true,
+   "big": true,
    "s": 42.827,
    "e": 45.567,
    "lineS": 43.047,
-   "en": "Off you go!",
-   "ko": "자, 출발!"
+   "en": "Off you gooooooo!",
+   "ko": "자, 출바아아알!"
   },
   {
    "kind": "mark",
@@ -443,6 +448,7 @@
    "clipIn": 117.9,
    "clipOut": 119.6,
    "silent": false,
+   "big": false,
    "s": 53.343,
    "e": 55.483,
    "lineS": 53.563,
@@ -1062,6 +1068,14 @@
   {
    "t": 10.551,
    "k": "ding"
+  },
+  {
+   "t": 43.047,
+   "k": "rise"
+  },
+  {
+   "t": 44.747,
+   "k": "sparkle"
   },
   {
    "t": 55.993,

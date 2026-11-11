@@ -100,6 +100,11 @@ def make(kind):
         hit = rng.standard_normal(n) * np.exp(-t_ / 0.03) * 0.5
         y = y + hit + 0.25 * np.pad(bell(2093, 1.0), (0, n - int(1.0 * SR)))
         return y / np.abs(y).max()
+    if kind == "rise":  # magical upward swirl: whoosh sweeping up + rising bell run
+        y = bp_noise(1.9, 300, 7000, 2.5); n = len(y); y *= np.sin(np.linspace(0, np.pi, n)) ** 1.5; y /= np.abs(y).max()
+        for k, f in enumerate((784, 988, 1175, 1397, 1568, 1976, 2349, 2794)):
+            b = bell(f, 0.9, 0.35); i = int((0.15 + k * 0.17) * SR); y[i:i + len(b)] += b[: n - i]
+        return y / np.abs(y).max()
     if kind == "sparkle":
         y = np.zeros(int(1.0 * SR))
         for k in range(16):
@@ -107,7 +112,7 @@ def make(kind):
             y[i:i + len(b)] += b[: len(y) - i]
         return y / np.abs(y).max()
     raise ValueError(kind)
-GAIN = {"boom": 0.30, "whoosh": 0.16, "whoosh_out": 0.12, "swish": 0.14, "ding": 0.10, "chime": 0.09, "sparkle": 0.08}
+GAIN = {"rise": 0.16, "boom": 0.30, "whoosh": 0.16, "whoosh_out": 0.12, "swish": 0.14, "ding": 0.10, "chime": 0.09, "sparkle": 0.08}
 sfx = np.zeros_like(voice); cache = {}
 for c in plan.get("sfx", []):
     y = cache.setdefault(c["k"], make(c["k"]))
