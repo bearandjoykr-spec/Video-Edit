@@ -1,0 +1,707 @@
+{
+ "name": "joytop3-main",
+ "media": "joytop3/main",
+ "fps": 30,
+ "duration": 50.8,
+ "frames": 1524,
+ "speechEnd": 45.8,
+ "day": 29,
+ "segments": [
+  {
+   "src_s": 0,
+   "src_e": 50.8,
+   "out_s": 0
+  }
+ ],
+ "captions": [
+  {
+   "i": 0,
+   "s": 0.15,
+   "e": 2.887,
+   "ko": "영어 그림책, 뭐부터 살지 고민이라면?",
+   "en": "",
+   "hi": "고민이라면?",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 1,
+   "s": 2.887,
+   "e": 4.1,
+   "ko": "이 세 권부터!",
+   "en": "",
+   "hi": "세 권",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 2,
+   "s": 4.1,
+   "e": 5.921,
+   "ko": "조이예요! 오늘은 서점에서",
+   "en": "",
+   "hi": "서점에서",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 3,
+   "s": 5.921,
+   "e": 9.2,
+   "ko": "아이랑 읽기 좋은 영어 그림책을 골라봤어요.",
+   "en": "",
+   "hi": "영어 그림책",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 4,
+   "s": 9.2,
+   "e": 10.359,
+   "ko": "기준은 딱 하나,",
+   "en": "",
+   "hi": "딱 하나",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 5,
+   "s": 10.359,
+   "e": 12.29,
+   "ko": "아이가 '한 번 더!'를",
+   "en": "",
+   "hi": "한 번 더!",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 6,
+   "s": 12.29,
+   "e": 13.641,
+   "ko": "외치는 책이에요.",
+   "en": "",
+   "hi": "",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 7,
+   "s": 13.641,
+   "e": 15.1,
+   "ko": "자, 바로 볼게요!",
+   "en": "",
+   "hi": "바로",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 8,
+   "s": 15.1,
+   "e": 16.915,
+   "ko": "첫 번째, I Want My Hat Back.",
+   "en": "",
+   "hi": "I Want My Hat Back.",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 9,
+   "s": 16.915,
+   "e": 18.988,
+   "ko": "모자 잃은 곰이 계속 물어봐요.",
+   "en": "",
+   "hi": "계속",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 10,
+   "s": 18.988,
+   "e": 20.544,
+   "ko": "'Have you seen my hat?'",
+   "en": "",
+   "hi": "Have you seen my hat?",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 11,
+   "s": 20.544,
+   "e": 22.272,
+   "ko": "반복이라 금방 따라 하고,",
+   "en": "",
+   "hi": "따라 하고",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 12,
+   "s": 22.272,
+   "e": 24.3,
+   "ko": "마지막 반전에 빵 터져요!",
+   "en": "",
+   "hi": "빵 터져요!",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 13,
+   "s": 24.3,
+   "e": 26.475,
+   "ko": "두 번째, The Very Hungry Caterpillar.",
+   "en": "",
+   "hi": "The Very Hungry Caterpillar.",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 14,
+   "s": 26.475,
+   "e": 29.133,
+   "ko": "요일, 숫자, 과일까지 한 권에!",
+   "en": "",
+   "hi": "한 권에!",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 15,
+   "s": 29.133,
+   "e": 31.792,
+   "ko": "책 구멍에 손가락 쏙 넣으며",
+   "en": "",
+   "hi": "손가락 쏙",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 16,
+   "s": 31.792,
+   "e": 33.2,
+   "ko": "읽어 주세요.",
+   "en": "",
+   "hi": "읽어",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 17,
+   "s": 33.2,
+   "e": 34.853,
+   "ko": "세 번째, My Mum과 My Dad.",
+   "en": "",
+   "hi": "My Dad.",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 18,
+   "s": 34.853,
+   "e": 36.837,
+   "ko": "'She's…', 'He's…' 짧은 문장으로",
+   "en": "",
+   "hi": "짧은 문장",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 19,
+   "s": 36.837,
+   "e": 38.324,
+   "ko": "엄마 아빠를 자랑해요.",
+   "en": "",
+   "hi": "자랑해요.",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 20,
+   "s": 38.324,
+   "e": 40.308,
+   "ko": "읽고 나서 우리 가족 이야기로",
+   "en": "",
+   "hi": "가족 이야기로",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 21,
+   "s": 40.308,
+   "e": 41.5,
+   "ko": "이어가 보세요!",
+   "en": "",
+   "hi": "이어가",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 22,
+   "s": 41.5,
+   "e": 43.796,
+   "ko": "저장해 두고 서점 갈 때 꺼내 보세요!",
+   "en": "",
+   "hi": "저장해 두고",
+   "demo": false,
+   "words": []
+  },
+  {
+   "i": 23,
+   "s": 43.796,
+   "e": 45.6,
+   "ko": "친구에게도 공유해 주세요.",
+   "en": "",
+   "hi": "공유해",
+   "demo": false,
+   "words": []
+  }
+ ],
+ "events": [
+  {
+   "type": "pop",
+   "s": -0.3,
+   "e": 4.0,
+   "text": "TOP 3",
+   "kicker": "📌 저장 필수 · 조이쌤 영어 그림책",
+   "slot": "hook",
+   "k": 0,
+   "size": 230,
+   "kickerSize": 64
+  },
+  {
+   "type": "punch",
+   "s": 0.0,
+   "e": 0.3,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 9.4,
+   "e": 12.6,
+   "text": "\"한 번 더!\" 👆",
+   "kicker": "기준은 딱 하나",
+   "slot": "top",
+   "k": 1
+  },
+  {
+   "type": "punch",
+   "s": 9.4,
+   "e": 9.700000000000001,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 15.1,
+   "e": 18.2,
+   "text": "🎩 I Want My Hat Back",
+   "kicker": "No.1 · Jon Klassen",
+   "slot": "top",
+   "k": 2,
+   "size": 92
+  },
+  {
+   "type": "punch",
+   "s": 15.1,
+   "e": 15.4,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 19.3,
+   "e": 21.4,
+   "text": "REPEAT 🔁",
+   "kicker": "",
+   "slot": "top",
+   "k": 3
+  },
+  {
+   "type": "pop",
+   "s": 22.2,
+   "e": 24.1,
+   "text": "TWIST 😲",
+   "kicker": "",
+   "slot": "top",
+   "k": 4
+  },
+  {
+   "type": "pop",
+   "s": 24.3,
+   "e": 27.6,
+   "text": "🐛 The Very Hungry Caterpillar",
+   "kicker": "No.2 · Eric Carle",
+   "slot": "top",
+   "k": 5,
+   "size": 62
+  },
+  {
+   "type": "punch",
+   "s": 24.3,
+   "e": 24.6,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 27.7,
+   "e": 30.1,
+   "text": "DAYS · NUMBERS · FOOD",
+   "kicker": "",
+   "slot": "top",
+   "k": 6,
+   "size": 72
+  },
+  {
+   "type": "pop",
+   "s": 30.3,
+   "e": 33.0,
+   "text": "TOUCH 👆",
+   "kicker": "",
+   "slot": "top",
+   "k": 7
+  },
+  {
+   "type": "pop",
+   "s": 33.2,
+   "e": 36.4,
+   "text": "💛 My Mum & My Dad",
+   "kicker": "No.3 · Anthony Browne",
+   "slot": "top",
+   "k": 8,
+   "size": 92
+  },
+  {
+   "type": "punch",
+   "s": 33.2,
+   "e": 33.5,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 36.5,
+   "e": 38.8,
+   "text": "She's… He's…",
+   "kicker": "",
+   "slot": "top",
+   "k": 9
+  },
+  {
+   "type": "pop",
+   "s": 39.0,
+   "e": 41.3,
+   "text": "TALK 💬",
+   "kicker": "",
+   "slot": "top",
+   "k": 10
+  },
+  {
+   "type": "pop",
+   "s": 41.5,
+   "e": 43.6,
+   "text": "📌 저장",
+   "kicker": "",
+   "slot": "top",
+   "k": 11
+  },
+  {
+   "type": "punch",
+   "s": 41.5,
+   "e": 41.8,
+   "z": 1.08,
+   "shake": 7
+  },
+  {
+   "type": "pop",
+   "s": 43.6,
+   "e": 45.7,
+   "text": "💌 공유",
+   "kicker": "",
+   "slot": "top",
+   "k": 12
+  },
+  {
+   "type": "tag",
+   "s": 4.3,
+   "e": 8.7,
+   "name": "Joy T",
+   "flags": "🇰🇷",
+   "role": "Bear & Joy 공동 저자"
+  },
+  {
+   "type": "end",
+   "s": 45.7,
+   "e": 50.8,
+   "short": false,
+   "share": "💌 영어 그림책 고민하는 친구에게 공유해 주세요"
+  },
+  {
+   "type": "badge",
+   "s": 4.0,
+   "e": 45.699999999999996,
+   "day": 29,
+   "docked": true
+  }
+ ],
+ "zooms": [
+  {
+   "t": 0.15,
+   "z": 1.0
+  },
+  {
+   "t": 2.887,
+   "z": 1.06
+  },
+  {
+   "t": 4.1,
+   "z": 1.0
+  },
+  {
+   "t": 5.921,
+   "z": 1.06
+  },
+  {
+   "t": 9.2,
+   "z": 1.0
+  },
+  {
+   "t": 10.359,
+   "z": 1.06
+  },
+  {
+   "t": 12.29,
+   "z": 1.0
+  },
+  {
+   "t": 13.641,
+   "z": 1.06
+  },
+  {
+   "t": 15.1,
+   "z": 1.0
+  },
+  {
+   "t": 16.915,
+   "z": 1.06
+  },
+  {
+   "t": 18.988,
+   "z": 1.0
+  },
+  {
+   "t": 20.544,
+   "z": 1.06
+  },
+  {
+   "t": 22.272,
+   "z": 1.0
+  },
+  {
+   "t": 24.3,
+   "z": 1.06
+  },
+  {
+   "t": 26.475,
+   "z": 1.0
+  },
+  {
+   "t": 29.133,
+   "z": 1.06
+  },
+  {
+   "t": 31.792,
+   "z": 1.0
+  },
+  {
+   "t": 33.2,
+   "z": 1.06
+  },
+  {
+   "t": 34.853,
+   "z": 1.0
+  },
+  {
+   "t": 36.837,
+   "z": 1.06
+  },
+  {
+   "t": 38.324,
+   "z": 1.0
+  },
+  {
+   "t": 40.308,
+   "z": 1.06
+  },
+  {
+   "t": 41.5,
+   "z": 1.0
+  },
+  {
+   "t": 43.796,
+   "z": 1.06
+  }
+ ],
+ "music": {
+  "dropouts": [],
+  "drops": []
+ },
+ "slots": {
+  "top": {
+   "left": 0,
+   "right": 0,
+   "top": 300,
+   "rot": -3
+  },
+  "hook": {
+   "left": 0,
+   "right": 0,
+   "top": 620,
+   "rot": -3
+  }
+ },
+ "tagPos": {
+  "left": 50,
+  "top": 1120
+ },
+ "scrim": true,
+ "look": "original",
+ "captionTop": 1330,
+ "sfx": [
+  {
+   "t": 0,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 3.92,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 4.3,
+   "sound": "whoosh",
+   "gain": -12
+  },
+  {
+   "t": 8.92,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 9.4,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 11.42,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 14.92,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 15.1,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 19.3,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 22.2,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 24.12,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 24.3,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 27.7,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 30.3,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 33.02,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 33.2,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 36.5,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 38.02,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 39.0,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 41.32,
+   "sound": "whoosh",
+   "gain": -15
+  },
+  {
+   "t": 41.5,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 43.6,
+   "sound": "sparkle",
+   "gain": -11
+  },
+  {
+   "t": 45.7,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 45.85,
+   "sound": "sparkle",
+   "gain": -10
+  },
+  {
+   "t": 47.7,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 48.6,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 48.65,
+   "sound": "chime",
+   "gain": -9
+  }
+ ]
+}
