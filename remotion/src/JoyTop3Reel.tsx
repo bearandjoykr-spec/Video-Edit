@@ -125,7 +125,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
             padding: '12px 34px 12px 12px', transform: `translateX(${(1 - p) * -80}px)`, opacity: p, boxShadow: '0 10px 24px rgba(0,0,0,.3)'}}>
             <Img src={staticFile('brand/joy-avatar.png')} style={{width: 96, height: 96, borderRadius: '50%'}} />
             <div><div style={{fontWeight: 900, fontSize: 46, color: C.white}}>Joy T <span style={{fontSize: 48}}>🇰🇷</span></div>
-              <div style={{fontWeight: 700, fontSize: 28, color: C.butter}}>영어 선생님 · Bear & Joy 공동 저자</div></div>
+              <div style={{fontWeight: 700, fontSize: 28, color: C.butter}}>Bear & Joy 공동 저자</div></div>
           </div>
         );
       })() : null}
@@ -210,6 +210,8 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
                 );
               })}
             </div>
+            {/* Joy: the bottom looked empty, so the Bear & Joy logo sits at the bottom centre */}
+            <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', bottom: 400, left: '50%', width: 340, transform: `translateX(-50%) scale(${.8 + .2 * sp(t, sc.s + 1, fps, 12)})`, opacity: sp(t, sc.s + 1, fps, 12)}} />
           </AbsoluteFill>
         );
       })() : null}
