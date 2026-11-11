@@ -30,6 +30,7 @@ for s in plan["segments"]:
     if s["kind"] == "mark":
         a = fades(load(src, s["src"], s["srcEnd"])); voice[o:o + len(a)] += a
     else:
+        if s.get("silent"): continue  # picture only (e.g. the barrier run for "Off you go")
         a = load(f"{R}/raw-footage/day29/clips/{s['clip']}.mp4", s["clipIn"], s["clipOut"])
         a = fades(a, 60)
         a *= 10 ** ((-20 - meter.integrated_loudness(a)) / 20) if len(a) > SR * 0.4 else 10 ** (-1 / 20)  # match the voice
@@ -92,6 +93,13 @@ def make(kind):
         for k, f in enumerate((1047, 1175, 1397, 1568, 1760, 2093)):
             b = bell(f, 1.3, 0.7 + 0.06 * k); i = int(k * 0.055 * SR); y[i:i + len(b)] += b[: len(y) - i]
         return y / np.abs(y).max()
+    if kind == "boom":  # countdown slam: low sweep + noise hit + bell sparkle on top
+        n = int(1.2 * SR); t_ = np.arange(n) / SR
+        f = 110 * np.exp(-t_ * 3) + 38
+        y = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t_ / 0.35)
+        hit = rng.standard_normal(n) * np.exp(-t_ / 0.03) * 0.5
+        y = y + hit + 0.25 * np.pad(bell(2093, 1.0), (0, n - int(1.0 * SR)))
+        return y / np.abs(y).max()
     if kind == "sparkle":
         y = np.zeros(int(1.0 * SR))
         for k in range(16):
@@ -99,7 +107,7 @@ def make(kind):
             y[i:i + len(b)] += b[: len(y) - i]
         return y / np.abs(y).max()
     raise ValueError(kind)
-GAIN = {"whoosh": 0.16, "whoosh_out": 0.12, "swish": 0.14, "ding": 0.10, "chime": 0.09, "sparkle": 0.08}
+GAIN = {"boom": 0.30, "whoosh": 0.16, "whoosh_out": 0.12, "swish": 0.14, "ding": 0.10, "chime": 0.09, "sparkle": 0.08}
 sfx = np.zeros_like(voice); cache = {}
 for c in plan.get("sfx", []):
     y = cache.setdefault(c["k"], make(c["k"]))

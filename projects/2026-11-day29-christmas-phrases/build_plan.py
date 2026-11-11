@@ -24,7 +24,7 @@ FILMS = [
     (24.31, 24.56, "christmas", 16.60, 17.65, 0.0, "Happy Christmas, Ron.", "해피 크리스마스, 론."),
     (29.97, 30.36, "brilliant", 15.00, 16.50, 0.0, "Brilliant!", "최고야!"),
     (37.58, 38.23, "blimey",    20.00, 21.15, 0.0, "Blimey, Hermione.", "세상에, 헤르미온느."),  # v5: Ron + Harry (14.95 was a troll)
-    (44.43, 44.93, "platform",  86.80, 89.10, 0.9, "All right, Percy. You first.", "자, 퍼시. 너부터 가렴."),
+    (44.43, 44.93, "platform",  92.30, 94.60, 0.0, "Off you go!", "자, 출발!"),  # v6: silent barrier run (no one says "off you go" in the film)
     (53.89, 54.09, "map",      117.90, 119.60, 0.0, "Mischief managed.", "장난 완료."),
 ]
 MARK_START, MARK_END = 0.62, 59.30
@@ -89,10 +89,10 @@ for k, (a, b) in enumerate(ranges):
     if k < len(FILMS):
         _, _, clip, cs, ce, tail, en, ko = FILMS[k]
         d = PAD + (ce - cs) + tail + PAD
-        segs.append({"kind": "film", "clip": clip, "src": f"day29/clips/{clip}.mp4", "clipIn": cs, "clipOut": ce,
+        segs.append({"kind": "film", "clip": clip, "src": f"day29/clips/{clip}.mp4", "clipIn": cs, "clipOut": ce, "silent": clip == "platform",
                      "s": t, "e": t + d, "lineS": t + PAD, "en": en, "ko": ko}); t += d
         z = 0
-END_CARD = 3.6
+END_CARD = 4.8   # v6: + "comment your favourite phrase" line
 total = t + END_CARD
 
 def out(x, end=False):
@@ -134,7 +134,13 @@ def word_times(a, b, text):
 
 r = lambda v: round(v, 3)
 films = [s for s in segs if s["kind"] == "film"]
-phr = [{"s": r(out(a)), "n": n, "en": en, "ko": ko} for a, n, en, ko in PHRASES]
+# v6: giant countdown number slams in on the spoken number word
+NUM_LINE = {5: 2, 4: 4, 3: 6, 2: 8, 1: 10}
+NUM_WORD = {5: "five", 4: "four", 3: "three", 2: "two", 1: "one"}
+def num_time(n):
+    a, b, en, _ = LINES[NUM_LINE[n]]
+    return next(x["t"] for x in word_times(a, b, en) if x["w"].lower().strip(",.") == NUM_WORD[n])
+phr = [{"s": r(out(a)), "num": r(out(num_time(n))), "n": n, "en": en, "ko": ko} for a, n, en, ko in PHRASES]
 hook = {"s": 0.0, "e": r(out(7.78, True)), "strike": 0.85, "happy": 1.45,
         "top": "Why does Ron say…", "no": "Merry Christmas", "yes": "Happy Christmas?", "ko": "왜 ‘메리’가 아니라 ‘해피’ 크리스마스일까?"}
 props = [{"dir": "day29/props-start", "srcFrom": 0.0, "frames": 237, "s": 0.0, "e": hook["e"], "poofIn": False},
@@ -145,16 +151,17 @@ britain = next(x["t"] for x in word_times(8.78, 11.60, LINES[0][2]) if x["w"].st
 sfx = [{"t": 0.0, "k": "sparkle"}, {"t": hook["strike"], "k": "swish"}, {"t": hook["happy"], "k": "chime"}]
 for s in films:
     sfx += [{"t": r(s["s"] - 0.18), "k": "whoosh"}, {"t": r(s["s"]), "k": "ding"}, {"t": r(s["e"] - 0.15), "k": "whoosh_out"}]
-sfx += [{"t": p["s"], "k": "chime"} for p in phr]
+sfx += [{"t": r(p["num"] - 0.02), "k": "boom"} for p in phr] + [{"t": r(p["num"] + 0.5), "k": "chime"} for p in phr]
 sfx += [{"t": r(out(britain)), "k": "ding"}]
 sfx += [{"t": props[1]["s"], "k": "sparkle"}, {"t": r(end_s - 0.5), "k": "whoosh"}, {"t": r(end_s + 0.35), "k": "chime"},
-        {"t": r(end_s + 1.6), "k": "ding"}]
+        {"t": r(end_s + 1.6), "k": "ding"}, {"t": r(end_s + 2.3), "k": "sparkle"}]
 
 plan = {
     "name": f"day29-{V}", "fps": FPS, "duration": r(total), "frames": int(round(total * FPS)), "day": 29,
     "background": "day29/great-hall.jpg", "props": props, "hook": hook,
     "cta": {"ko1": "새 해리 포터 시리즈", "ko2": "12월 25일 공개!", "q": "Is your English ready?", "qKo": "영어 준비됐나요?",
-            "follow": "팔로우하고 함께 준비해요", "small": "The new Harry Potter series · 25 December"},
+            "follow": "팔로우하고 함께 준비해요", "small": "The new Harry Potter series · 25 December",
+            "comment": "가장 좋아하는 해리 포터 표현은? 댓글로 알려 주세요 👇", "commentEn": "Comment your favourite Harry Potter phrase!"},
     "title": {"s": r(out(12.0)), "e": r(out(17.7, True)), "en": "5 Harry Potter Phrases",
               "sub": "to teach your child before Christmas", "ko": "크리스마스 전에 알려 줄 해리 포터 표현 5가지"},
     "segments": [{k: (r(v) if isinstance(v, float) else v) for k, v in s.items()} for s in segs],

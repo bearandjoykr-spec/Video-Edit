@@ -11,13 +11,13 @@ import {
 type Seg = {kind: 'mark' | 'film'; s: number; e: number; src: number | string; srcEnd?: number; file?: string; fileFrom?: number; zoom?: number;
   clip?: string; clipIn?: number; clipOut?: number; lineS?: number; en?: string; ko?: string};
 type Cap = {s: number; e: number; en: string; ko: string; words?: {w: string; t: number | null}[]};
-type Phrase = {s: number; n: number; en: string; ko: string};
+type Phrase = {s: number; num?: number; n: number; en: string; ko: string};
 export type Day29Plan = {
   name: string; fps: number; duration: number; frames: number; day: number;
   background: string;
   props: {dir: string; srcFrom: number; frames: number; s: number; e: number; poofIn: boolean}[];
   hook: {s: number; e: number; strike: number; happy: number; top: string; no: string; yes: string; ko: string};
-  cta: {ko1: string; ko2: string; q: string; qKo: string; follow: string; small: string};
+  cta: {ko1: string; ko2: string; q: string; qKo: string; follow: string; small: string; comment?: string; commentEn?: string};
   title: {s: number; e: number; en: string; sub: string; ko: string};
   flags?: {s: number; e: number; emoji: string}[];
   segments: Seg[]; captions: Cap[]; phrases: Phrase[]; endCard: {s: number; e: number};
@@ -195,9 +195,11 @@ const PhraseCard: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   const i = plan.phrases.findIndex((p, k) => t >= p.s && t < (plan.phrases[k + 1]?.s ?? last));
   if (i < 0) return null;
   const p = plan.phrases[i], e = plan.phrases[i + 1]?.s ?? last;
-  const sp = spring({frame: Math.round((t - p.s) * fps), fps, config: {damping: 10, stiffness: 140}});
+  const s0 = (p.num ?? p.s) + 0.5;
+  if (t < s0) return null;
+  const sp = spring({frame: Math.round((t - s0) * fps), fps, config: {damping: 10, stiffness: 140}});
   return (
-    <div style={{position: 'absolute', top: 175, left: 30, right: 30, textAlign: 'center', opacity: fade(t, p.s, e, 0.15, 0.3)}}>
+    <div style={{position: 'absolute', top: 175, left: 30, right: 30, textAlign: 'center', opacity: fade(t, s0, e, 0.1, 0.3)}}>
       <div style={{fontFamily: HP, fontSize: 92, color: GOLD_LIGHT, textShadow: glowText(), transform: `scale(${0.6 + 0.4 * sp})`}}>No. {p.n}</div>
       <div style={{fontFamily: HP, fontSize: p.en.length > 12 ? 128 : 160, lineHeight: 0.95, color: GOLD, textShadow: glowText(), transform: `scale(${0.75 + 0.25 * sp})`}}>{p.en}</div>
       <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 50, color: '#fff', marginTop: 10, textShadow: '0 4px 18px rgba(0,0,0,.9)'}}>{p.ko}</div>
@@ -260,6 +262,30 @@ const Flags: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
       transform: `scale(${sp * out}) rotate(${Math.sin(t * 9) * 8}deg)`, filter: `drop-shadow(0 0 18px ${GOLD}) drop-shadow(0 8px 16px rgba(0,0,0,.6))`}}>{f.emoji}</div>;
   })}</>;
 };
+// Countdown: a giant Harry Potter-font number slams in over everything on the spoken number, then flies up into the card
+const BigNumber: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
+  const {fps} = useVideoConfig();
+  const p = plan.phrases.find((p) => p.num !== undefined && t >= p.num - 0.04 && t < p.num + 0.75);
+  if (!p) return null;
+  const d = t - p.num!;
+  const slam = spring({frame: Math.max(0, Math.round((d + 0.04) * fps)), fps, config: {damping: 13, stiffness: 260, mass: 0.7}});
+  const fly = interpolate(d, [0.42, 0.72], [0, 1], {...clamp, easing: Easing.in(Easing.cubic)});
+  const scale = interpolate(slam, [0, 1], [2.6, 1]) * interpolate(fly, [0, 1], [1, 0.12]);
+  const y = interpolate(fly, [0, 1], [0, -720]);
+  const shake = d < 0.2 ? Math.sin(d * 90) * (0.2 - d) * 40 : 0;
+  const dim = interpolate(d, [-0.04, 0.05, 0.45, 0.7], [0, 0.55, 0.55, 0], clamp);
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <AbsoluteFill style={{background: `radial-gradient(circle at 50% 48%, rgba(40,25,5,${dim * 0.6}), rgba(0,0,0,${dim}) 75%)`}} />
+      <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{fontFamily: HP, fontSize: 1150, lineHeight: 1, color: GOLD, opacity: interpolate(slam, [0, 0.3], [0, 1], clamp) * (1 - fly * 0.6),
+          transform: `translate(${shake}px, ${y}px) scale(${scale})`,
+          textShadow: `0 0 40px ${GOLD}, 0 0 120px rgba(255,170,60,.85), 0 0 220px rgba(255,140,30,.5), 0 20px 60px rgba(0,0,0,.8)`}}>{p.n}</div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
 // Opening hook: "Merry Christmas" struck out (top), "Happy Christmas?" bursting in (bottom) — frames the face
 const Hook: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   const {fps} = useVideoConfig();
@@ -305,7 +331,14 @@ const EndCard: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
       <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 50, color: '#fff', marginTop: 4, opacity: pop(0.9)}}>{c.qKo}</div>
       <div style={{marginTop: 46, fontFamily: PRE, fontWeight: 900, fontSize: 52, color: INK, background: GOLD, padding: '18px 48px', borderRadius: 999,
         boxShadow: `0 0 34px rgba(255,200,90,.7)`, transform: `scale(${(0.5 + 0.5 * pop(1.5)) * (1 + 0.03 * Math.sin(t * 6))})`}}>{c.follow}</div>
-      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 30, color: 'rgba(255,255,255,.75)', marginTop: 22, opacity: pop(1.7)}}>{c.small}</div>
+      {c.comment ? (
+        <div style={{marginTop: 34, padding: '14px 30px', borderRadius: 24, border: `2px solid ${GOLD}`, background: 'rgba(18,12,6,.6)',
+          transform: `scale(${0.6 + 0.4 * pop(2.2)})`, opacity: pop(2.2)}}>
+          <div style={{fontFamily: `${PRE}, 'Noto Color Emoji'`, fontWeight: 800, fontSize: 44, color: '#fff', wordBreak: 'keep-all'}}>{c.comment}</div>
+          <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 30, color: GOLD_LIGHT, marginTop: 4}}>{c.commentEn}</div>
+        </div>
+      ) : null}
+      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 28, color: 'rgba(255,255,255,.7)', marginTop: 22, opacity: pop(2.6)}}>{c.small}</div>
     </AbsoluteFill>
   );
 };
@@ -327,6 +360,7 @@ export const Day29Magic: React.FC<{plan: Day29Plan}> = ({plan}) => {
       <Hook plan={plan} t={t} />
       {film ? null : <Flags plan={plan} t={t} />}
       {film ? null : <><Title plan={plan} t={t} /><PhraseCard plan={plan} t={t} /><Captions plan={plan} t={t} /></>}
+      {film ? null : <BigNumber plan={plan} t={t} />}
       <EndCard plan={plan} t={t} />
       <Flash plan={plan} t={t} />
     </AbsoluteFill>

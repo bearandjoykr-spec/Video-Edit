@@ -1,8 +1,8 @@
 {
  "name": "day29-main",
  "fps": 30,
- "duration": 65.193,
- "frames": 1956,
+ "duration": 65.493,
+ "frames": 1965,
  "day": 29,
  "background": "day29/great-hall.jpg",
  "props": [
@@ -18,8 +18,8 @@
    "dir": "day29/props-end",
    "srcFrom": 53.9,
    "frames": 168,
-   "s": 56.893,
-   "e": 61.893,
+   "s": 55.993,
+   "e": 60.992999999999995,
    "poofIn": true
   }
  ],
@@ -39,7 +39,9 @@
   "q": "Is your English ready?",
   "qKo": "영어 준비됐나요?",
   "follow": "팔로우하고 함께 준비해요",
-  "small": "The new Harry Potter series · 25 December"
+  "small": "The new Harry Potter series · 25 December",
+  "comment": "가장 좋아하는 해리 포터 표현은? 댓글로 알려 주세요 👇",
+  "commentEn": "Comment your favourite Harry Potter phrase!"
  },
  "title": {
   "s": 11.254,
@@ -105,6 +107,7 @@
    "src": "day29/clips/christmas.mp4",
    "clipIn": 15.3,
    "clipOut": 16.6,
+   "silent": false,
    "s": 6.754,
    "e": 8.494,
    "lineS": 6.974,
@@ -197,6 +200,7 @@
    "src": "day29/clips/christmas.mp4",
    "clipIn": 16.6,
    "clipOut": 17.65,
+   "silent": false,
    "s": 22.479,
    "e": 23.969,
    "lineS": 22.699,
@@ -249,6 +253,7 @@
    "src": "day29/clips/brilliant.mp4",
    "clipIn": 15.0,
    "clipOut": 16.5,
+   "silent": false,
    "s": 28.272,
    "e": 30.212,
    "lineS": 28.492,
@@ -301,6 +306,7 @@
    "src": "day29/clips/blimey.mp4",
    "clipIn": 20.0,
    "clipOut": 21.15,
+   "silent": false,
    "s": 36.099,
    "e": 37.689,
    "lineS": 36.319,
@@ -371,13 +377,14 @@
    "kind": "film",
    "clip": "platform",
    "src": "day29/clips/platform.mp4",
-   "clipIn": 86.8,
-   "clipOut": 89.1,
+   "clipIn": 92.3,
+   "clipOut": 94.6,
+   "silent": true,
    "s": 42.827,
-   "e": 46.467,
+   "e": 45.567,
    "lineS": 43.047,
-   "en": "All right, Percy. You first.",
-   "ko": "자, 퍼시. 너부터 가렴."
+   "en": "Off you go!",
+   "ko": "자, 출발!"
   },
   {
    "kind": "mark",
@@ -386,8 +393,8 @@
    "file": "day29/subject.webm",
    "fileFrom": 0.0,
    "zoom": 1.0,
-   "s": 46.467,
-   "e": 47.644
+   "s": 45.567,
+   "e": 46.744
   },
   {
    "kind": "mark",
@@ -396,8 +403,8 @@
    "file": "day29/subject.webm",
    "fileFrom": 0.0,
    "zoom": 1.06,
-   "s": 47.644,
-   "e": 51.244
+   "s": 46.744,
+   "e": 50.344
   },
   {
    "kind": "mark",
@@ -406,8 +413,8 @@
    "file": "day29/subject.webm",
    "fileFrom": 0.0,
    "zoom": 1.0,
-   "s": 51.244,
-   "e": 52.072
+   "s": 50.344,
+   "e": 51.172
   },
   {
    "kind": "mark",
@@ -416,8 +423,8 @@
    "file": "day29/subject.webm",
    "fileFrom": 0.0,
    "zoom": 1.06,
-   "s": 52.072,
-   "e": 53.115
+   "s": 51.172,
+   "e": 52.215
   },
   {
    "kind": "mark",
@@ -426,8 +433,8 @@
    "file": "day29/subject.webm",
    "fileFrom": 0.0,
    "zoom": 1.0,
-   "s": 53.115,
-   "e": 54.243
+   "s": 52.215,
+   "e": 53.343
   },
   {
    "kind": "film",
@@ -435,9 +442,10 @@
    "src": "day29/clips/map.mp4",
    "clipIn": 117.9,
    "clipOut": 119.6,
-   "s": 54.243,
-   "e": 56.383,
-   "lineS": 54.463,
+   "silent": false,
+   "s": 53.343,
+   "e": 55.483,
+   "lineS": 53.563,
    "en": "Mischief managed.",
    "ko": "장난 완료."
   },
@@ -448,8 +456,8 @@
    "file": "day29/subject.webm",
    "fileFrom": 0.0,
    "zoom": 1.0,
-   "s": 56.383,
-   "e": 61.593
+   "s": 55.483,
+   "e": 60.693
   }
  ],
  "captions": [
@@ -758,60 +766,60 @@
    ]
   },
   {
-   "s": 46.467,
-   "e": 51.244,
+   "s": 45.567,
+   "e": 50.344,
    "en": "And number one, for when the toys are finally tidied away…",
    "ko": "그리고 1번, 장난감을 다 정리했을 때…",
    "words": [
     {
      "w": "And",
-     "t": 46.571
+     "t": 45.671
     },
     {
      "w": "number",
-     "t": 46.838
+     "t": 45.938
     },
     {
      "w": "one,",
-     "t": 47.372
+     "t": 46.472
     },
     {
      "w": "for",
-     "t": 47.818
+     "t": 46.918
     },
     {
      "w": "when",
-     "t": 48.085
+     "t": 47.185
     },
     {
      "w": "the",
-     "t": 48.541
+     "t": 47.641
     },
     {
      "w": "toys",
-     "t": 48.808
+     "t": 47.908
     },
     {
      "w": "are",
-     "t": 49.264
+     "t": 48.364
     },
     {
      "w": "finally",
-     "t": 49.531
+     "t": 48.631
     },
     {
      "w": "tidied",
-     "t": 50.264
+     "t": 49.364
     },
     {
      "w": "away…",
-     "t": 50.798
+     "t": 49.898
     }
    ]
   },
   {
-   "s": 51.244,
-   "e": 54.243,
+   "s": 50.344,
+   "e": 53.343,
    "en": "(whisper) Mischief managed.",
    "ko": "(속삭이며) “장난 완료.”",
    "words": [
@@ -821,59 +829,59 @@
     },
     {
      "w": "Mischief",
-     "t": 51.334
+     "t": 50.434
     },
     {
      "w": "managed.",
-     "t": 52.739
+     "t": 51.839
     }
    ]
   },
   {
-   "s": 56.383,
-   "e": 61.403,
+   "s": 55.483,
+   "e": 60.503,
    "en": "Save this and try one tonight. Happy Christmas from Oxford.",
    "ko": "저장해 두고 오늘 밤 하나 써 보세요. 옥스퍼드에서, 해피 크리스마스!",
    "words": [
     {
      "w": "Save",
-     "t": 56.488
+     "t": 55.588
     },
     {
      "w": "this",
-     "t": 56.828
+     "t": 55.928
     },
     {
      "w": "and",
-     "t": 57.168
+     "t": 56.268
     },
     {
      "w": "try",
-     "t": 57.552
+     "t": 56.652
     },
     {
      "w": "one",
-     "t": 57.807
+     "t": 56.907
     },
     {
      "w": "tonight.",
-     "t": 58.062
+     "t": 57.162
     },
     {
      "w": "Happy",
-     "t": 58.657
+     "t": 57.757
     },
     {
      "w": "Christmas",
-     "t": 59.516
+     "t": 58.616
     },
     {
      "w": "from",
-     "t": 60.44
+     "t": 59.54
     },
     {
      "w": "Oxford.",
-     "t": 60.78
+     "t": 59.88
     }
    ]
   }
@@ -888,38 +896,43 @@
  "phrases": [
   {
    "s": 16.854,
+   "num": 17.709,
    "n": 5,
    "en": "Happy Christmas",
    "ko": "해피 크리스마스"
   },
   {
    "s": 23.969,
+   "num": 24.069,
    "n": 4,
    "en": "Brilliant",
    "ko": "최고야!"
   },
   {
    "s": 30.212,
+   "num": 30.894,
    "n": 3,
    "en": "Blimey",
    "ko": "세상에!"
   },
   {
    "s": 37.689,
+   "num": 37.792,
    "n": 2,
    "en": "Off you go",
    "ko": "자, 출발!"
   },
   {
-   "s": 46.467,
+   "s": 45.567,
+   "num": 46.472,
    "n": 1,
    "en": "Mischief managed",
    "ko": "장난 완료"
   }
  ],
  "endCard": {
-  "s": 61.593,
-  "e": 65.193
+  "s": 60.693,
+  "e": 65.493
  },
  "sfx": [
   {
@@ -991,39 +1004,59 @@
    "k": "ding"
   },
   {
-   "t": 46.317,
+   "t": 45.417,
    "k": "whoosh_out"
   },
   {
-   "t": 54.063,
+   "t": 53.163,
    "k": "whoosh"
   },
   {
-   "t": 54.243,
+   "t": 53.343,
    "k": "ding"
   },
   {
-   "t": 56.233,
+   "t": 55.333,
    "k": "whoosh_out"
   },
   {
-   "t": 16.854,
+   "t": 17.689,
+   "k": "boom"
+  },
+  {
+   "t": 24.049,
+   "k": "boom"
+  },
+  {
+   "t": 30.874,
+   "k": "boom"
+  },
+  {
+   "t": 37.772,
+   "k": "boom"
+  },
+  {
+   "t": 46.452,
+   "k": "boom"
+  },
+  {
+   "t": 18.209,
    "k": "chime"
   },
   {
-   "t": 23.969,
+   "t": 24.569,
    "k": "chime"
   },
   {
-   "t": 30.212,
+   "t": 31.394,
    "k": "chime"
   },
   {
-   "t": 37.689,
+   "t": 38.292,
    "k": "chime"
   },
   {
-   "t": 46.467,
+   "t": 46.972,
    "k": "chime"
   },
   {
@@ -1031,20 +1064,24 @@
    "k": "ding"
   },
   {
-   "t": 56.893,
+   "t": 55.993,
    "k": "sparkle"
   },
   {
-   "t": 61.093,
+   "t": 60.193,
    "k": "whoosh"
   },
   {
-   "t": 61.943,
+   "t": 61.043,
    "k": "chime"
   },
   {
-   "t": 63.193,
+   "t": 62.293,
    "k": "ding"
+  },
+  {
+   "t": 62.993,
+   "k": "sparkle"
   }
  ]
 }
