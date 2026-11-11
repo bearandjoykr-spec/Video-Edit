@@ -14,7 +14,10 @@ type Cap = {s: number; e: number; en: string; ko: string};
 type Phrase = {s: number; n: number; en: string; ko: string};
 export type Day29Plan = {
   name: string; fps: number; duration: number; frames: number; day: number;
-  subject: string; background: string; props: string; propsFrom: number; propsUntil: number;
+  subject: string; background: string;
+  props: {dir: string; srcFrom: number; frames: number; s: number; e: number; poofIn: boolean}[];
+  hook: {s: number; e: number; strike: number; happy: number; top: string; no: string; yes: string; ko: string};
+  cta: {en1: string; en2: string; q: string; ko: string; follow: string; followKo: string};
   title: {s: number; e: number; en: string; sub: string; ko: string};
   segments: Seg[]; captions: Cap[]; phrases: Phrase[]; endCard: {s: number; e: number};
 };
@@ -64,9 +67,12 @@ const Mark: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI);
   const line = 2.2 + pulse * 0.8 + flare * 1.6, halo = 22 + pulse * 8 + flare * 26;
   const glow = `drop-shadow(0 0 ${line}px ${GOLD_LIGHT}) drop-shadow(0 0 ${line}px ${GOLD_LIGHT}) drop-shadow(0 0 ${halo}px ${GOLD}) drop-shadow(0 0 ${halo * 1.8}px rgba(255,170,60,${0.35 + flare * 0.3}))`;
-  const propsFrame = Math.min(104, Math.round((t + plan.propsFrom) * fps));
+  // source time under the playhead (for the face-tracked glasses + scar)
+  const seg = plan.segments.find((s) => s.kind === 'mark' && t >= s.s && t < s.e);
+  const srcT = seg ? (seg.src as number) + (t - seg.s) : null;
+  const punch = interpolate(t, [0, 0.7], [1.12, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   return (
-    <AbsoluteFill style={{filter: glow}}>
+    <AbsoluteFill style={{filter: glow, transform: `scale(${punch})`, transformOrigin: '50% 40%'}}>
       {plan.segments.filter((s) => s.kind === 'mark').map((s, i) => (
         <Sequence key={i} from={Math.round(s.s * fps)} durationInFrames={Math.max(1, Math.round((s.e - s.s) * fps))} layout="none">
           <AbsoluteFill>
@@ -74,10 +80,12 @@ const Mark: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
           </AbsoluteFill>
         </Sequence>
       ))}
-      {t < plan.propsUntil ? (
-        <Img src={staticFile(`${plan.props}/${String(propsFrame).padStart(4, '0')}.png`)}
-          style={{position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: fade(t, 0, plan.propsUntil, 0.2, 0.35)}} />
-      ) : null}
+      {srcT === null ? null : plan.props.filter((b) => t >= b.s && t < b.e).map((b, i) => {
+        const idx = Math.max(0, Math.min(b.frames - 1, Math.round((srcT - b.srcFrom) * fps)));
+        const o = b.poofIn ? fade(t, b.s, b.e, 0.25, 0.3) : interpolate(t, [b.e - 0.3, b.e], [1, 0], clamp);
+        return <Img key={i} src={staticFile(`${b.dir}/${String(idx).padStart(4, '0')}.png`)}
+          style={{position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: o}} />;
+      })}
     </AbsoluteFill>
   );
 };
@@ -120,7 +128,7 @@ const FilmCut: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
 
 // gold flash at each magic cut (in and out)
 const Flash: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
-  const a = films(plan).reduce((m, s) => Math.max(m,
+  const a = films(plan).reduce((m, s) => Math.max(m, interpolate(t, [0, 0.3], [0.5, 0], clamp),
     interpolate(t, [s.s - 0.12, s.s, s.s + 0.22], [0, 0.85, 0], clamp),
     interpolate(t, [s.e - 0.12, s.e, s.e + 0.22], [0, 0.75, 0], clamp)), 0);
   if (a <= 0) return null;
@@ -144,11 +152,12 @@ const Sparkles: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
     const x = 540 + side * (170 + random(`x${i}-${cyc}`) * 330), y = 1750 - random(`y${i}-${cyc}`) * 1150 - ph * 220;
     stars.push(<Star key={`d${i}`} x={x + Math.sin(ph * 6 + i) * 12} y={y} r={4 + random(`r${i}`) * 9} o={Math.sin(ph * Math.PI) * 0.9 * dust} rot={ph * 90} />);
   }
-  const bursts = [0.02, plan.propsUntil - 0.3, ...films(plan).flatMap((s) => [s.s - 0.05, s.e - 0.05])];
-  bursts.forEach((b, k) => {
+  const bursts: [number, number][] = [[0.0, 700], [plan.hook.happy - 0.05, 1480], ...plan.props.filter((b) => b.poofIn).map((b): [number, number] => [b.s - 0.05, 700]),
+    ...films(plan).flatMap((s): [number, number][] => [[s.s - 0.05, 860], [s.e - 0.05, 860]])];
+  bursts.forEach(([b, cy], k) => {
     const p = (t - b) / 1.0;
     if (p < 0 || p > 1) return;
-    const cx = 540, cy = k < 2 ? 640 : 860;
+    const cx = 540;
     for (let i = 0; i < 30; i++) {
       const a = random(`ba${k}-${i}`) * Math.PI * 2, d = (180 + random(`bd${k}-${i}`) * 380) * Easing.out(Easing.cubic)(p);
       stars.push(<Star key={`b${k}-${i}`} x={cx + Math.cos(a) * d} y={cy + Math.sin(a) * d * 0.9} r={6 + random(`br${k}-${i}`) * 12} o={(1 - p) * 0.95} rot={p * 180} />);
@@ -204,17 +213,52 @@ const Captions: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
     </div>
   );
 };
+// Opening hook: "Merry Christmas" struck out (top), "Happy Christmas?" bursting in (bottom) — frames the face
+const Hook: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
+  const {fps} = useVideoConfig();
+  const h = plan.hook;
+  if (t > h.e) return null;
+  const o = interpolate(t, [h.e - 0.3, h.e], [1, 0], clamp);
+  const strike = interpolate(t, [h.strike, h.strike + 0.35], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const sp = spring({frame: Math.max(0, Math.round((t - h.happy) * fps)), fps, config: {damping: 9, stiffness: 150}});
+  const wob = 1 + 0.025 * Math.sin((t - h.happy) * 4);
+  return (
+    <AbsoluteFill style={{opacity: o}}>
+      <div style={{position: 'absolute', top: 160, left: 30, right: 30, textAlign: 'center'}}>
+        <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 60, color: '#fff', textShadow: '0 4px 18px rgba(0,0,0,.9)'}}>{h.top}</div>
+        <div style={{position: 'relative', display: 'inline-block', marginTop: 4}}>
+          <div style={{fontFamily: HP, fontSize: 132, color: `rgba(255,255,255,${1 - strike * 0.45})`, textShadow: '0 6px 22px rgba(0,0,0,.85)'}}>{h.no}</div>
+          <div style={{position: 'absolute', left: '-3%', top: '52%', height: 12, width: `${106 * strike}%`, borderRadius: 6, background: GOLD,
+            boxShadow: `0 0 18px ${GOLD}, 0 0 40px rgba(255,170,60,.8)`, transform: 'rotate(-4deg)'}} />
+        </div>
+      </div>
+      {t >= h.happy ? (
+        <div style={{position: 'absolute', top: 1330, left: 20, right: 20, textAlign: 'center', transform: `scale(${(0.4 + 0.6 * sp) * wob})`}}>
+          <div style={{fontFamily: HP, fontSize: 182, lineHeight: 0.95, color: GOLD, textShadow: glowText()}}>{h.yes}</div>
+          <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 52, color: '#fff', marginTop: 16, textShadow: '0 4px 18px rgba(0,0,0,.95)', wordBreak: 'keep-all'}}>{h.ko}</div>
+        </div>
+      ) : null}
+    </AbsoluteFill>
+  );
+};
 const EndCard: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
-  const {s} = plan.endCard;
+  const {fps} = useVideoConfig();
+  const {s} = plan.endCard, c = plan.cta;
   if (t < s - 0.6) return null;
   const o = interpolate(t, [s - 0.6, s], [0, 1], clamp);
+  const pop = (d: number) => spring({frame: Math.max(0, Math.round((t - s - d) * fps)), fps, config: {damping: 11, stiffness: 140}});
   return (
-    <AbsoluteFill style={{background: `rgba(10,7,4,${0.7 * o})`, justifyContent: 'center', alignItems: 'center', opacity: o}}>
-      <div style={{background: '#F5F0E6', borderRadius: 48, padding: '40px 60px', boxShadow: `0 0 60px rgba(255,200,90,.5)`, border: `3px solid ${GOLD}`}}>
-        <Img src={staticFile('day29/logo.png')} style={{width: 520}} />
+    <AbsoluteFill style={{background: `rgba(10,7,4,${0.78 * o})`, justifyContent: 'center', alignItems: 'center', opacity: o, textAlign: 'center'}}>
+      <div style={{background: '#F5F0E6', borderRadius: 40, padding: '26px 44px', boxShadow: `0 0 60px rgba(255,200,90,.5)`, border: `3px solid ${GOLD}`}}>
+        <Img src={staticFile('day29/logo.png')} style={{width: 360}} />
       </div>
-      <div style={{fontFamily: HP, fontSize: 112, color: GOLD, textShadow: glowText(), marginTop: 50, textAlign: 'center'}}>Happy Christmas</div>
-      <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 48, color: GOLD_LIGHT, marginTop: 6}}>옥스퍼드에서, 해피 크리스마스!</div>
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 50, color: '#fff', marginTop: 54, opacity: pop(0.2)}}>{c.en1}</div>
+      <div style={{fontFamily: HP, fontSize: 112, lineHeight: 1, color: GOLD, textShadow: glowText(), transform: `scale(${0.6 + 0.4 * pop(0.35)})`}}>{c.en2}</div>
+      <div style={{fontFamily: HP, fontSize: 96, color: GOLD_LIGHT, textShadow: glowText(), marginTop: 18, transform: `scale(${0.6 + 0.4 * pop(0.9)})`}}>{c.q}</div>
+      <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 44, color: GOLD_LIGHT, marginTop: 10, padding: '0 70px', wordBreak: 'keep-all', opacity: pop(1.0)}}>{c.ko}</div>
+      <div style={{marginTop: 44, fontFamily: PRE, fontWeight: 900, fontSize: 52, color: INK, background: GOLD, padding: '16px 46px', borderRadius: 999,
+        boxShadow: `0 0 34px rgba(255,200,90,.7)`, transform: `scale(${(0.5 + 0.5 * pop(1.6)) * (1 + 0.03 * Math.sin(t * 6))})`}}>{c.follow}</div>
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 38, color: '#fff', marginTop: 14, opacity: pop(1.7)}}>{c.followKo}</div>
     </AbsoluteFill>
   );
 };
@@ -233,6 +277,7 @@ export const Day29Magic: React.FC<{plan: Day29Plan}> = ({plan}) => {
       <FilmCut plan={plan} t={t} />
       <Sparkles plan={plan} t={t} />
       <DayChip />
+      <Hook plan={plan} t={t} />
       {film ? null : <><Title plan={plan} t={t} /><PhraseCard plan={plan} t={t} /><Captions plan={plan} t={t} /></>}
       <EndCard plan={plan} t={t} />
       <Flash plan={plan} t={t} />

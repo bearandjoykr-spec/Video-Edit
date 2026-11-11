@@ -1,14 +1,47 @@
 {
  "name": "day29-main",
  "fps": 30,
- "duration": 75.56,
- "frames": 2267,
+ "duration": 77.36,
+ "frames": 2321,
  "day": 29,
  "subject": "day29/subject.webm",
  "background": "day29/great-hall.jpg",
- "props": "day29/props",
- "propsFrom": 0.55,
- "propsUntil": 2.95,
+ "props": [
+  {
+   "dir": "day29/props-start",
+   "srcFrom": 0.0,
+   "frames": 237,
+   "s": 0.0,
+   "e": 7.23,
+   "poofIn": false
+  },
+  {
+   "dir": "day29/props-end",
+   "srcFrom": 53.9,
+   "frames": 168,
+   "s": 68.4,
+   "e": 73.46,
+   "poofIn": true
+  }
+ ],
+ "hook": {
+  "s": 0.0,
+  "e": 7.23,
+  "strike": 1.05,
+  "happy": 1.75,
+  "top": "Why does Ron say…",
+  "no": "Merry Christmas",
+  "yes": "Happy Christmas?",
+  "ko": "왜 ‘메리’가 아니라 ‘해피’ 크리스마스일까?"
+ },
+ "cta": {
+  "en1": "The new Harry Potter series",
+  "en2": "arrives 25 December",
+  "q": "Is your English ready?",
+  "ko": "새 해리 포터 시리즈가 12월 25일에 찾아와요. 영어 준비됐나요?",
+  "follow": "Follow for more",
+  "followKo": "팔로우하고 함께 준비해요"
+ },
  "title": {
   "s": 12.89,
   "e": 18.59,
@@ -141,12 +174,6 @@
  ],
  "captions": [
   {
-   "s": 0.0,
-   "e": 7.23,
-   "en": "Why does Ron say Happy Christmas, not Merry Christmas?",
-   "ko": "론은 왜 '메리 크리스마스'가 아니라 '해피 크리스마스'라고 할까요?"
-  },
-  {
    "s": 9.67,
    "e": 12.49,
    "en": "Because that's how we say it in Britain.",
@@ -259,6 +286,6 @@
  ],
  "endCard": {
   "s": 73.16,
-  "e": 75.56
+  "e": 77.36
  }
 }

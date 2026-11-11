@@ -51,7 +51,7 @@ for stop, resume, clip, cs, ce, en, ko in FILMS:
                  "s": t, "e": t + d, "lineS": t + PAD, "en": en, "ko": ko}); t += d
     src = resume
 segs.append({"kind": "mark", "src": src, "srcEnd": MARK_END, "s": t, "e": t + MARK_END - src}); t += MARK_END - src
-END_CARD = 2.4
+END_CARD = 4.2  # logo + "new Harry Potter series 25 Dec — is your English ready? Follow for more"
 total = t + END_CARD
 
 def out(x):
@@ -63,12 +63,18 @@ def out(x):
 r = lambda v: round(v, 3)
 plan = {
     "name": f"day29-{V}", "fps": FPS, "duration": r(total), "frames": int(round(total * FPS)), "day": 29,
-    "subject": "day29/subject.webm", "background": "day29/great-hall.jpg", "props": "day29/props",
-    "propsFrom": MARK_START, "propsUntil": 3.5 - MARK_START,
+    "subject": "day29/subject.webm", "background": "day29/great-hall.jpg",
+    # glasses + scar (owner: on from the very first frame through the hook question, and again for the sign-off)
+    "props": [{"dir": "day29/props-start", "srcFrom": 0.0, "frames": 237, "s": 0.0, "e": r(out(7.78)), "poofIn": False},
+              {"dir": "day29/props-end", "srcFrom": 53.9, "frames": 168, "s": r(out(54.6)), "e": r(out(MARK_END)) + 0.3, "poofIn": True}],
+    "hook": {"s": 0.0, "e": r(out(7.78)), "strike": r(out(1.6)), "happy": r(out(2.3)),
+             "top": "Why does Ron say…", "no": "Merry Christmas", "yes": "Happy Christmas?", "ko": "왜 ‘메리’가 아니라 ‘해피’ 크리스마스일까?"},
+    "cta": {"en1": "The new Harry Potter series", "en2": "arrives 25 December", "q": "Is your English ready?",
+            "ko": "새 해리 포터 시리즈가 12월 25일에 찾아와요. 영어 준비됐나요?", "follow": "Follow for more", "followKo": "팔로우하고 함께 준비해요"},
     "title": {"s": r(out(12.0)), "e": r(out(17.7)), "en": "5 Harry Potter Phrases",
               "sub": "to teach your child before Christmas", "ko": "크리스마스 전에 알려 줄 해리 포터 표현 5가지"},
     "segments": [{k: (r(v) if isinstance(v, float) else v) for k, v in s.items()} for s in segs],
-    "captions": [{"s": r(out(a)), "e": r(out(b)), "en": en, "ko": ko} for a, b, en, ko in LINES],
+    "captions": [{"s": r(out(a)), "e": r(out(b)), "en": en, "ko": ko} for a, b, en, ko in LINES[1:]],  # hook text replaces line 1
     "phrases": [{"s": r(out(a)), "n": n, "en": en, "ko": ko} for a, n, en, ko in PHRASES],
     "endCard": {"s": r(t), "e": r(total)},
 }
