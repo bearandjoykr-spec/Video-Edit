@@ -1,0 +1,349 @@
+{
+ "name": "day29-test",
+ "fps": 30,
+ "duration": 77.86,
+ "frames": 2336,
+ "day": 29,
+ "subject": "day29/subject.webm",
+ "background": "day29/great-hall.jpg",
+ "props": "day29/props",
+ "propsUntil": 3.5,
+ "title": {
+  "s": 14.16,
+  "e": 19.86,
+  "en": "5 Harry Potter Phrases",
+  "sub": "to teach your child before Christmas",
+  "ko": "크리스마스 전에 알려 줄 해리 포터 표현 5가지"
+ },
+ "segments": [
+  {
+   "kind": "mark",
+   "src": 0.0,
+   "srcEnd": 7.4,
+   "s": 0.0,
+   "e": 7.4
+  },
+  {
+   "kind": "film",
+   "clip": "christmas",
+   "clipIn": 10.25,
+   "clipOut": 12.05,
+   "freeze": 7.4,
+   "s": 7.4,
+   "e": 9.56,
+   "lineS": 7.58,
+   "en": "Happy Christmas, Harry!",
+   "ko": "해피 크리스마스, 해리!"
+  },
+  {
+   "kind": "mark",
+   "src": 7.4,
+   "srcEnd": 21.0,
+   "s": 9.56,
+   "e": 23.16
+  },
+  {
+   "kind": "film",
+   "clip": "christmas",
+   "clipIn": 12.05,
+   "clipOut": 14.05,
+   "freeze": 21.0,
+   "s": 23.16,
+   "e": 25.52,
+   "lineS": 23.34,
+   "en": "Happy Christmas, Ron.",
+   "ko": "해피 크리스마스, 론."
+  },
+  {
+   "kind": "mark",
+   "src": 21.0,
+   "srcEnd": 26.3,
+   "s": 25.52,
+   "e": 30.82
+  },
+  {
+   "kind": "film",
+   "clip": "brilliant",
+   "clipIn": 15.0,
+   "clipOut": 18.1,
+   "freeze": 26.3,
+   "s": 30.82,
+   "e": 34.28,
+   "lineS": 31.0,
+   "en": "Brilliant, but scary.",
+   "ko": "최고야, 근데 좀 무서워."
+  },
+  {
+   "kind": "mark",
+   "src": 26.3,
+   "srcEnd": 32.6,
+   "s": 34.28,
+   "e": 40.58
+  },
+  {
+   "kind": "film",
+   "clip": "blimey",
+   "clipIn": 14.95,
+   "clipOut": 15.85,
+   "freeze": 32.6,
+   "s": 40.58,
+   "e": 41.84,
+   "lineS": 40.76,
+   "en": "Blimey.",
+   "ko": "세상에."
+  },
+  {
+   "kind": "mark",
+   "src": 32.6,
+   "srcEnd": 39.95,
+   "s": 41.84,
+   "e": 49.19
+  },
+  {
+   "kind": "film",
+   "clip": "platform",
+   "clipIn": 138.6,
+   "clipOut": 141.0,
+   "freeze": 39.95,
+   "s": 49.19,
+   "e": 51.95,
+   "lineS": 49.37,
+   "en": "Best do it at a bit of a run if you're nervous.",
+   "ko": "긴장되면 살짝 뛰어서 가렴."
+  },
+  {
+   "kind": "mark",
+   "src": 39.95,
+   "srcEnd": 50.7,
+   "s": 51.95,
+   "e": 62.7
+  },
+  {
+   "kind": "film",
+   "clip": "map",
+   "clipIn": 116.3,
+   "clipOut": 119.6,
+   "freeze": 50.7,
+   "s": 62.7,
+   "e": 66.36,
+   "lineS": 62.88,
+   "en": "Just give it a tap and say… “Mischief managed.”",
+   "ko": "톡 치고 말하렴… “장난 완료.”"
+  },
+  {
+   "kind": "mark",
+   "src": 50.7,
+   "srcEnd": 59.6,
+   "s": 66.36,
+   "e": 75.26
+  }
+ ],
+ "clips": [
+  {
+   "clip": "christmas",
+   "src": "day29/clips/christmas.mp4",
+   "s": 7.4,
+   "e": 10.96,
+   "clipIn": 10.07
+  },
+  {
+   "clip": "christmas",
+   "src": "day29/clips/christmas.mp4",
+   "s": 23.16,
+   "e": 26.92,
+   "clipIn": 11.87
+  },
+  {
+   "clip": "brilliant",
+   "src": "day29/clips/brilliant.mp4",
+   "s": 30.82,
+   "e": 35.68,
+   "clipIn": 14.82
+  },
+  {
+   "clip": "blimey",
+   "src": "day29/clips/blimey.mp4",
+   "s": 40.58,
+   "e": 43.24,
+   "clipIn": 14.77
+  },
+  {
+   "clip": "platform",
+   "src": "day29/clips/platform.mp4",
+   "s": 49.19,
+   "e": 53.35,
+   "clipIn": 138.42
+  },
+  {
+   "clip": "map",
+   "src": "day29/clips/map.mp4",
+   "s": 62.7,
+   "e": 67.76,
+   "clipIn": 116.12
+  }
+ ],
+ "captions": [
+  {
+   "s": 0.74,
+   "e": 7.28,
+   "en": "Why does Ron say Happy Christmas, not Merry Christmas?",
+   "ko": "론은 왜 '메리 크리스마스'가 아니라 '해피 크리스마스'라고 할까요?"
+  },
+  {
+   "s": 7.58,
+   "e": 9.47,
+   "en": "Happy Christmas, Harry!",
+   "ko": "해피 크리스마스, 해리!",
+   "film": true
+  },
+  {
+   "s": 10.54,
+   "e": 13.5,
+   "en": "Because that's how we say it in Britain.",
+   "ko": "영국에서는 그렇게 말하거든요."
+  },
+  {
+   "s": 14.16,
+   "e": 19.86,
+   "en": "Five Harry Potter phrases to teach your child before Christmas Day.",
+   "ko": "크리스마스 전에 아이에게 알려 줄 해리 포터 표현 5가지!"
+  },
+  {
+   "s": 20.44,
+   "e": 23.16,
+   "en": "Number five, Happy Christmas.",
+   "ko": "5. 해피 크리스마스"
+  },
+  {
+   "s": 23.16,
+   "e": 28.3,
+   "en": "Same meaning, more British.",
+   "ko": "뜻은 같아요, 더 영국식일 뿐!"
+  },
+  {
+   "s": 23.34,
+   "e": 25.43,
+   "en": "Happy Christmas, Ron.",
+   "ko": "해피 크리스마스, 론.",
+   "film": true
+  },
+  {
+   "s": 28.82,
+   "e": 30.82,
+   "en": "Four, Brilliant.",
+   "ko": "4. 브릴리언트"
+  },
+  {
+   "s": 30.82,
+   "e": 37.46,
+   "en": "Not “good job” — brilliant.",
+   "ko": "“잘했어” 말고, “최고야!”"
+  },
+  {
+   "s": 31.0,
+   "e": 34.19,
+   "en": "Brilliant, but scary.",
+   "ko": "최고야, 근데 좀 무서워.",
+   "film": true
+  },
+  {
+   "s": 38.36,
+   "e": 40.58,
+   "en": "Number three, Blimey.",
+   "ko": "3. 블라이미"
+  },
+  {
+   "s": 40.58,
+   "e": 46.66,
+   "en": "For when the snow is this deep… Blimey.",
+   "ko": "눈이 이만큼 쌓였을 때, “세상에!”"
+  },
+  {
+   "s": 40.76,
+   "e": 41.75,
+   "en": "Blimey.",
+   "ko": "세상에.",
+   "film": true
+  },
+  {
+   "s": 47.26,
+   "e": 49.19,
+   "en": "Two, Off you go.",
+   "ko": "2. 오프 유 고"
+  },
+  {
+   "s": 49.19,
+   "e": 56.18,
+   "en": "Shoes on, coat on, off you go.",
+   "ko": "신발 신고, 코트 입고, “자, 출발!”"
+  },
+  {
+   "s": 49.37,
+   "e": 51.86,
+   "en": "Best do it at a bit of a run if you're nervous.",
+   "ko": "긴장되면 살짝 뛰어서 가렴.",
+   "film": true
+  },
+  {
+   "s": 56.18,
+   "e": 62.7,
+   "en": "And number one, for when the toys are finally tidied away…",
+   "ko": "그리고 1번, 장난감을 다 정리했을 때…"
+  },
+  {
+   "s": 62.7,
+   "e": 69.28,
+   "en": "(whisper) Mischief managed.",
+   "ko": "(속삭이며) “장난 완료.”"
+  },
+  {
+   "s": 62.88,
+   "e": 66.27,
+   "en": "Just give it a tap and say… “Mischief managed.”",
+   "ko": "톡 치고 말하렴… “장난 완료.”",
+   "film": true
+  },
+  {
+   "s": 69.78,
+   "e": 74.42,
+   "en": "Save this and try one tonight. Happy Christmas from Oxford.",
+   "ko": "저장해 두고 오늘 밤 하나 써 보세요. 옥스퍼드에서, 해피 크리스마스!"
+  }
+ ],
+ "phrases": [
+  {
+   "s": 20.44,
+   "n": 5,
+   "en": "Happy Christmas",
+   "ko": "해피 크리스마스"
+  },
+  {
+   "s": 28.82,
+   "n": 4,
+   "en": "Brilliant",
+   "ko": "최고야!"
+  },
+  {
+   "s": 38.36,
+   "n": 3,
+   "en": "Blimey",
+   "ko": "세상에!"
+  },
+  {
+   "s": 47.26,
+   "n": 2,
+   "en": "Off you go",
+   "ko": "자, 출발!"
+  },
+  {
+   "s": 57.2,
+   "n": 1,
+   "en": "Mischief managed",
+   "ko": "장난 완료"
+  }
+ ],
+ "endCard": {
+  "s": 75.26,
+  "e": 77.86
+ }
+}

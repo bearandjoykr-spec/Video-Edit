@@ -18,6 +18,8 @@ import {BearJoyClass as BearJoyClassDay1, ClassPlan as ClassPlanDay1} from './Be
 import day1 from '../../projects/2026-11-day1-class/versions/main/timeline.json';
 
 import {BearJoyWelcome, WelcomePlan} from './BearJoyWelcome';
+import {Day29Magic, Day29Plan} from './Day29Magic';
+import day29test from '../../projects/2026-11-day29-christmas-phrases/versions/test/plan.json';
 import day0 from '../../projects/2026-11-day0-welcome/versions/main/timeline.json';
 
 import {BearJoyWelcomeReel, WelcomeReelPlan} from './BearJoyWelcomeReel';
@@ -89,5 +91,7 @@ export const Root: React.FC = () => (
       defaultProps={{plan: day1 as unknown as ClassPlanDay1}} />
     <Composition id="Day0Welcome" component={BearJoyWelcome} durationInFrames={(day0 as unknown as WelcomePlan).frames} fps={30} width={1920} height={1080}
       defaultProps={{plan: day0 as unknown as WelcomePlan}} />
+    <Composition id="Day29Test" component={Day29Magic} durationInFrames={(day29test as unknown as Day29Plan).frames} fps={30} width={1080} height={1920}
+      defaultProps={{plan: day29test as unknown as Day29Plan}} />
   </>
 );
