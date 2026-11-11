@@ -1,0 +1,17 @@
+DAY 29 — Five Harry Potter phrases to teach your child before Christmas (Whisper large-v3-turbo, English, 60 s)
+Source: raw-footage/day29/day29.mov (Drive id 1t486oB9ljRrZeFs8kMjxclk7N4_mNMnk), 1080x1920 30 fps
+
+00.74–07.28  Why does Ron say Happy Christmas, not Merry Christmas?
+08.38–11.34  Because that's how we say it in Britain.
+12.00–17.70  This is five Harry Potter phrases to teach your child before Christmas Day.
+18.28–23.78  Number five, Happy Christmas. Same meaning, more British.
+24.30–29.48  Four, Brilliant. Not good job, brilliant.
+30.38–37.42  Number three, Blimey. For when the snow is this deep, Blimey.
+38.02–44.18  Two, Off you go. Shoes on, coat on, off you go.
+44.18–53.62  And number one, for when the toys are finally tidied away, (whisper) Mischief managed.
+54.12–58.76  Save this and try one tonight. Happy Christmas from Oxford.
+
+Open questions for the owner (11 Nov 2026): Korean translations; Harry Potter assets
+(film clips, score, logo font, Great Hall image are Warner Bros. — proposed original "magical"
+look instead); one-off font/colour exception for Day 29. Owner asked for round glasses and a
+lightning scar on Mark for the first ~3 s (face-tracked overlay).
