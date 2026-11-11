@@ -10,7 +10,7 @@ import {
 
 type Seg = {kind: 'mark' | 'film'; s: number; e: number; src: number | string; srcEnd?: number; file?: string; fileFrom?: number; zoom?: number;
   clip?: string; clipIn?: number; clipOut?: number; lineS?: number; en?: string; ko?: string};
-type Cap = {s: number; e: number; en: string; ko: string};
+type Cap = {s: number; e: number; en: string; ko: string; words?: {w: string; t: number | null}[]};
 type Phrase = {s: number; n: number; en: string; ko: string};
 export type Day29Plan = {
   name: string; fps: number; duration: number; frames: number; day: number;
@@ -19,6 +19,7 @@ export type Day29Plan = {
   hook: {s: number; e: number; strike: number; happy: number; top: string; no: string; yes: string; ko: string};
   cta: {ko1: string; ko2: string; q: string; qKo: string; follow: string; small: string};
   title: {s: number; e: number; en: string; sub: string; ko: string};
+  flags?: {s: number; e: number; emoji: string}[];
   segments: Seg[]; captions: Cap[]; phrases: Phrase[]; endCard: {s: number; e: number};
 };
 
@@ -32,6 +33,7 @@ const FONTS: [string, string, string][] = [
   ['Pretendard', '800', 'Pretendard-ExtraBold.woff2'],
   ['Pretendard', '900', 'Pretendard-Black.woff2'],
   ['Gowun Batang', '700', 'ijwNs5nhRMIjYsdSgcMa3wRZ4J7awg.ttf'],
+  ['Noto Color Emoji', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
 ];
 const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
@@ -153,7 +155,7 @@ const Sparkles: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
     const x = 540 + side * (170 + random(`x${i}-${cyc}`) * 330), y = 1750 - random(`y${i}-${cyc}`) * 1150 - ph * 220;
     stars.push(<Star key={`d${i}`} x={x + Math.sin(ph * 6 + i) * 12} y={y} r={4 + random(`r${i}`) * 9} o={Math.sin(ph * Math.PI) * 0.9 * dust} rot={ph * 90} />);
   }
-  const bursts: [number, number][] = [[0.0, 700], [plan.hook.happy - 0.05, 1480], ...plan.props.filter((b) => b.poofIn).map((b): [number, number] => [b.s - 0.05, 700]),
+  const bursts: [number, number][] = [[0.0, 700], ...(plan.flags ?? []).map((f): [number, number] => [f.s, 540]), [plan.hook.happy - 0.05, 1480], ...plan.props.filter((b) => b.poofIn).map((b): [number, number] => [b.s - 0.05, 700]),
     ...films(plan).flatMap((s): [number, number][] => [[s.s - 0.05, 860], [s.e - 0.05, 860]])];
   bursts.forEach(([b, cy], k) => {
     const p = (t - b) / 1.0;
@@ -202,17 +204,61 @@ const PhraseCard: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
     </div>
   );
 };
+// Captions: words light up gold as Mark says them; a little golden snitch hops onto each word as it is spoken.
+const CAP_FONT = 46, CAP_W = 900;
+const Snitch: React.FC<{t: number; k: number}> = ({t, k}) => {
+  const flap = Math.sin(t * 38) * 28;
+  const bob = Math.sin(t * 5) * 4;
+  // k: 0→1 over the hop; arrives from the left on an arc
+  const dx = (1 - k) * -70, dy = -Math.sin(k * Math.PI) * 26 + bob;
+  return (
+    <svg style={{position: 'absolute', left: '50%', top: -40, width: 110, height: 56, marginLeft: -55, overflow: 'visible', pointerEvents: 'none',
+      transform: `translate(${dx}px, ${dy}px)`, filter: `drop-shadow(0 0 10px ${GOLD}) drop-shadow(0 0 22px rgba(255,190,80,.7))`}} viewBox="-55 -28 110 56">
+      <g transform={`rotate(${-12 + flap} -9 0)`}><path d="M-9 -2 C-28 -24 -52 -20 -54 -11 C-41 -11 -26 -6 -9 2 Z" fill="rgba(255,250,235,.92)" stroke="#d9c9a0" strokeWidth="1" /></g>
+      <g transform={`rotate(${12 - flap} 9 0)`}><path d="M9 -2 C28 -24 52 -20 54 -11 C41 -11 26 -6 9 2 Z" fill="rgba(255,250,235,.92)" stroke="#d9c9a0" strokeWidth="1" /></g>
+      <circle r="10.5" fill="url(#sg)" />
+      <path d="M-7.5 -6 Q0 0 -7.5 6 M7.5 -6 Q0 0 7.5 6" stroke="#a87a10" strokeWidth="1.2" fill="none" />
+      <defs><radialGradient id="sg" cx="35%" cy="35%" r="70%"><stop offset="0" stopColor="#fff6c8" /><stop offset=".45" stopColor="#ffd34a" /><stop offset="1" stopColor="#b8860b" /></radialGradient></defs>
+    </svg>
+  );
+};
 const Captions: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   const c = plan.captions.filter((c) => t >= c.s && t < c.e).pop();
   if (!c) return null;
+  const words = c.words ?? c.en.split(' ').map((w) => ({w, t: null}));
+  let cur = -1;
+  words.forEach((w, i) => { if (w.t !== null && t >= w.t) cur = i; });
+  const o = fade(t, c.s, c.e, 0.12, 0.15);
   return (
-    <div style={{position: 'absolute', bottom: 210, left: 60, right: 60, textAlign: 'center', opacity: fade(t, c.s, c.e, 0.12, 0.15)}}>
-      <div style={{display: 'inline-block', padding: '14px 26px', borderRadius: 22, background: 'rgba(18,12,6,.62)', border: '1px solid rgba(255,217,112,.35)'}}>
-        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 46, lineHeight: 1.2, color: '#fff'}}>{c.en}</div>
-        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, lineHeight: 1.25, color: GOLD_LIGHT, marginTop: 6, wordBreak: 'keep-all'}}>{c.ko}</div>
+    <div style={{position: 'absolute', bottom: 200, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: o}}>
+      <div style={{padding: '40px 30px 16px', borderRadius: 26, background: 'rgba(18,12,6,.62)', border: '1px solid rgba(255,217,112,.4)',
+        boxShadow: '0 0 30px rgba(255,190,80,.18)', maxWidth: CAP_W + 60}}>
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', columnGap: '0.28em', rowGap: 6, fontFamily: PRE, fontWeight: 800, fontSize: CAP_FONT, lineHeight: 1.22}}>
+          {words.map((w, i) => {
+            const on = cur === i, done = w.t !== null && i < cur;
+            const pop = on ? interpolate(t, [w.t!, w.t! + 0.12, w.t! + 0.3], [1, 1.16, 1.08], clamp) : 1;
+            const k = on ? interpolate(t, [w.t!, w.t! + 0.18], [i === 0 ? 1 : 0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)}) : 0;
+            return <span key={i} style={{position: 'relative', display: 'inline-block', whiteSpace: 'pre',
+              color: on ? GOLD : '#fff', opacity: w.t === null || on || done ? 1 : 0.72,
+              textShadow: on ? glowText() : '0 3px 12px rgba(0,0,0,.8)', transform: `scale(${pop})`, transformOrigin: '50% 70%'}}>
+              {w.w}{on ? <Snitch t={t} k={k} /> : null}
+            </span>;
+          })}
+        </div>
+        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, lineHeight: 1.25, color: GOLD_LIGHT, marginTop: 8, textAlign: 'center', wordBreak: 'keep-all'}}>{c.ko}</div>
       </div>
     </div>
   );
+};
+// Little UK flag popping out beside Mark's head on "Britain"
+const Flags: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
+  const {fps} = useVideoConfig();
+  return <>{(plan.flags ?? []).filter((f) => t >= f.s && t < f.e).map((f, i) => {
+    const sp = spring({frame: Math.round((t - f.s) * fps), fps, config: {damping: 8, stiffness: 160}});
+    const out = interpolate(t, [f.e - 0.3, f.e], [1, 0], clamp);
+    return <div key={i} style={{position: 'absolute', left: 760, top: 470, fontFamily: "'Noto Color Emoji'", fontSize: 150, lineHeight: 1,
+      transform: `scale(${sp * out}) rotate(${Math.sin(t * 9) * 8}deg)`, filter: `drop-shadow(0 0 18px ${GOLD}) drop-shadow(0 8px 16px rgba(0,0,0,.6))`}}>{f.emoji}</div>;
+  })}</>;
 };
 // Opening hook: "Merry Christmas" struck out (top), "Happy Christmas?" bursting in (bottom) — frames the face
 const Hook: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
@@ -279,6 +325,7 @@ export const Day29Magic: React.FC<{plan: Day29Plan}> = ({plan}) => {
       <Sparkles plan={plan} t={t} />
       <DayChip />
       <Hook plan={plan} t={t} />
+      {film ? null : <Flags plan={plan} t={t} />}
       {film ? null : <><Title plan={plan} t={t} /><PhraseCard plan={plan} t={t} /><Captions plan={plan} t={t} /></>}
       <EndCard plan={plan} t={t} />
       <Flash plan={plan} t={t} />

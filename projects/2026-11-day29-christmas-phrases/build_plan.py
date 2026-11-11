@@ -23,7 +23,7 @@ FILMS = [
     (7.78, 8.78,  "christmas", 15.30, 16.60, 0.0, "Happy Christmas, Harry!", "해피 크리스마스, 해리!"),
     (24.31, 24.56, "christmas", 16.60, 17.65, 0.0, "Happy Christmas, Ron.", "해피 크리스마스, 론."),
     (29.97, 30.36, "brilliant", 15.00, 16.50, 0.0, "Brilliant!", "최고야!"),
-    (37.58, 38.23, "blimey",    14.95, 15.85, 0.0, "Blimey.", "세상에."),
+    (37.58, 38.23, "blimey",    20.00, 21.15, 0.0, "Blimey, Hermione.", "세상에, 헤르미온느."),  # v5: Ron + Harry (14.95 was a troll)
     (44.43, 44.93, "platform",  86.80, 89.10, 0.9, "All right, Percy. You first.", "자, 퍼시. 너부터 가렴."),
     (53.89, 54.09, "map",      117.90, 119.60, 0.0, "Mischief managed.", "장난 완료."),
 ]
@@ -103,6 +103,35 @@ def out(x, end=False):
         return max(s["e"] for s in marks if s["srcEnd"] <= x)
     return min(s["s"] for s in marks if s["src"] >= x)
 
+# v5: per-word timing for the golden-snitch captions. Whisper word times drift, so spread each caption's words over
+# the voiced audio inside its source range (silencedetect at a finer -35 dB / 0.08 s), weighted by word length.
+log2 = subprocess.run(["ffmpeg", "-v", "info", "-i", f"{R}/raw-footage/day29/audio16k.wav", "-af", "silencedetect=noise=-35dB:d=0.08",
+                       "-f", "null", "-"], capture_output=True, text=True).stderr
+s2 = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", log2)]; e2 = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log2)]
+voiced = []; last = 0.0
+for a_, b_ in zip(s2, e2):
+    if a_ > last: voiced.append((last, a_))
+    last = b_
+voiced.append((last, 60.0))
+def word_times(a, b, text):
+    words = text.split()
+    spoken = [w for w in words if not w.startswith("(")]
+    iv = [(max(a, x), min(b, y)) for x, y in voiced if y > a and x < b]
+    total = sum(y - x for x, y in iv) or (b - a)
+    wts = [max(2, len(w.strip(".,!?…“”—"))) for w in spoken]; W_ = sum(wts)
+    res, acc = [], 0.0
+    for w, wt in zip(spoken, wts):
+        tgt = acc / W_ * total; t0 = iv[0][0] if iv else a
+        for x, y in iv:  # walk voiced intervals to the target offset
+            if tgt <= y - x: t0 = x + tgt; break
+            tgt -= y - x
+        res.append(t0); acc += wt
+    out_w, k = [], 0
+    for w in words:
+        if w.startswith("("): out_w.append({"w": w, "t": None})
+        else: out_w.append({"w": w, "t": res[k]}); k += 1
+    return out_w
+
 r = lambda v: round(v, 3)
 films = [s for s in segs if s["kind"] == "film"]
 phr = [{"s": r(out(a)), "n": n, "en": en, "ko": ko} for a, n, en, ko in PHRASES]
@@ -111,11 +140,13 @@ hook = {"s": 0.0, "e": r(out(7.78, True)), "strike": 0.85, "happy": 1.45,
 props = [{"dir": "day29/props-start", "srcFrom": 0.0, "frames": 237, "s": 0.0, "e": hook["e"], "poofIn": False},
          {"dir": "day29/props-end", "srcFrom": 53.9, "frames": 168, "s": r(out(54.6)), "e": r(out(MARK_END, True)) + 0.3, "poofIn": True}]
 end_s = r(t)
+britain = next(x["t"] for x in word_times(8.78, 11.60, LINES[0][2]) if x["w"].startswith("Britain"))
 # SFX cues for mix.py: whoosh into/out of every magic cut, chime on pops, sparkle on poofs, ding on the follow button
 sfx = [{"t": 0.0, "k": "sparkle"}, {"t": hook["strike"], "k": "swish"}, {"t": hook["happy"], "k": "chime"}]
 for s in films:
     sfx += [{"t": r(s["s"] - 0.18), "k": "whoosh"}, {"t": r(s["s"]), "k": "ding"}, {"t": r(s["e"] - 0.15), "k": "whoosh_out"}]
 sfx += [{"t": p["s"], "k": "chime"} for p in phr]
+sfx += [{"t": r(out(britain)), "k": "ding"}]
 sfx += [{"t": props[1]["s"], "k": "sparkle"}, {"t": r(end_s - 0.5), "k": "whoosh"}, {"t": r(end_s + 0.35), "k": "chime"},
         {"t": r(end_s + 1.6), "k": "ding"}]
 
@@ -127,7 +158,10 @@ plan = {
     "title": {"s": r(out(12.0)), "e": r(out(17.7, True)), "en": "5 Harry Potter Phrases",
               "sub": "to teach your child before Christmas", "ko": "크리스마스 전에 알려 줄 해리 포터 표현 5가지"},
     "segments": [{k: (r(v) if isinstance(v, float) else v) for k, v in s.items()} for s in segs],
-    "captions": [{"s": r(out(a)), "e": r(out(b, True)), "en": en, "ko": ko} for a, b, en, ko in LINES],
+    "captions": [{"s": r(out(a)), "e": r(out(b, True)), "en": en, "ko": ko,
+                  "words": [{"w": x["w"], "t": (r(out(x["t"])) if x["t"] is not None else None)} for x in word_times(a, b, en)]}
+                 for a, b, en, ko in LINES],
+    "flags": [{"s": r(out(britain)), "e": r(out(britain) + 1.9), "emoji": "🇬🇧"}],
     "phrases": phr, "endCard": {"s": end_s, "e": r(total)}, "sfx": sfx,
 }
 os.makedirs(f"{P}/versions/{V}", exist_ok=True)
