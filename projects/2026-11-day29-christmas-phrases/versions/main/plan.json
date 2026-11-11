@@ -1,10 +1,9 @@
 {
  "name": "day29-main",
  "fps": 30,
- "duration": 77.36,
- "frames": 2321,
+ "duration": 64.943,
+ "frames": 1948,
  "day": 29,
- "subject": "day29/subject.webm",
  "background": "day29/great-hall.jpg",
  "props": [
   {
@@ -12,39 +11,39 @@
    "srcFrom": 0.0,
    "frames": 237,
    "s": 0.0,
-   "e": 7.23,
+   "e": 6.754,
    "poofIn": false
   },
   {
    "dir": "day29/props-end",
    "srcFrom": 53.9,
    "frames": 168,
-   "s": 68.4,
-   "e": 73.46,
+   "s": 56.643,
+   "e": 61.643,
    "poofIn": true
   }
  ],
  "hook": {
   "s": 0.0,
-  "e": 7.23,
-  "strike": 1.05,
-  "happy": 1.75,
+  "e": 6.754,
+  "strike": 0.85,
+  "happy": 1.45,
   "top": "Why does Ron say…",
   "no": "Merry Christmas",
   "yes": "Happy Christmas?",
   "ko": "왜 ‘메리’가 아니라 ‘해피’ 크리스마스일까?"
  },
  "cta": {
-  "en1": "The new Harry Potter series",
-  "en2": "arrives 25 December",
+  "ko1": "새 해리 포터 시리즈",
+  "ko2": "12월 25일 공개!",
   "q": "Is your English ready?",
-  "ko": "새 해리 포터 시리즈가 12월 25일에 찾아와요. 영어 준비됐나요?",
-  "follow": "Follow for more",
-  "followKo": "팔로우하고 함께 준비해요"
+  "qKo": "영어 준비됐나요?",
+  "follow": "팔로우하고 함께 준비해요",
+  "small": "The new Harry Potter series · 25 December"
  },
  "title": {
-  "s": 12.89,
-  "e": 18.59,
+  "s": 11.254,
+  "e": 16.762,
   "en": "5 Harry Potter Phrases",
   "sub": "to teach your child before Christmas",
   "ko": "크리스마스 전에 알려 줄 해리 포터 표현 5가지"
@@ -52,67 +51,249 @@
  "segments": [
   {
    "kind": "mark",
-   "src": 0.55,
-   "srcEnd": 7.78,
+   "src": 0.62,
+   "srcEnd": 1.323,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
    "s": 0.0,
-   "e": 7.23
+   "e": 0.703
+  },
+  {
+   "kind": "mark",
+   "src": 1.398,
+   "srcEnd": 3.608,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 0.703,
+   "e": 2.913
+  },
+  {
+   "kind": "mark",
+   "src": 3.665,
+   "srcEnd": 5.265,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 2.913,
+   "e": 4.513
+  },
+  {
+   "kind": "mark",
+   "src": 5.391,
+   "srcEnd": 6.08,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 4.513,
+   "e": 5.201
+  },
+  {
+   "kind": "mark",
+   "src": 6.227,
+   "srcEnd": 7.78,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 5.201,
+   "e": 6.754
   },
   {
    "kind": "film",
    "clip": "christmas",
    "src": "day29/clips/christmas.mp4",
-   "clipIn": 10.25,
-   "clipOut": 12.05,
-   "s": 7.23,
-   "e": 9.67,
-   "lineS": 7.55,
+   "clipIn": 15.3,
+   "clipOut": 16.6,
+   "s": 6.754,
+   "e": 8.494,
+   "lineS": 6.974,
    "en": "Happy Christmas, Harry!",
    "ko": "해피 크리스마스, 해리!"
   },
   {
    "kind": "mark",
    "src": 8.78,
+   "srcEnd": 11.424,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 8.494,
+   "e": 11.139
+  },
+  {
+   "kind": "mark",
+   "src": 11.885,
+   "srcEnd": 16.052,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 11.139,
+   "e": 15.306
+  },
+  {
+   "kind": "mark",
+   "src": 16.244,
+   "srcEnd": 17.792,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 15.306,
+   "e": 16.854
+  },
+  {
+   "kind": "mark",
+   "src": 18.011,
+   "srcEnd": 19.518,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 16.854,
+   "e": 18.362
+  },
+  {
+   "kind": "mark",
+   "src": 19.892,
+   "srcEnd": 21.257,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 18.362,
+   "e": 19.727
+  },
+  {
+   "kind": "mark",
+   "src": 21.422,
+   "srcEnd": 22.589,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 19.727,
+   "e": 20.894
+  },
+  {
+   "kind": "mark",
+   "src": 22.665,
+   "srcEnd": 23.35,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 20.894,
+   "e": 21.58
+  },
+  {
+   "kind": "mark",
+   "src": 23.41,
    "srcEnd": 24.31,
-   "s": 9.67,
-   "e": 25.2
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 21.58,
+   "e": 22.479
   },
   {
    "kind": "film",
    "clip": "christmas",
    "src": "day29/clips/christmas.mp4",
-   "clipIn": 12.05,
-   "clipOut": 14.05,
-   "s": 25.2,
-   "e": 27.84,
-   "lineS": 25.52,
+   "clipIn": 16.6,
+   "clipOut": 17.65,
+   "s": 22.479,
+   "e": 23.969,
+   "lineS": 22.699,
    "en": "Happy Christmas, Ron.",
    "ko": "해피 크리스마스, 론."
   },
   {
    "kind": "mark",
    "src": 24.56,
+   "srcEnd": 25.338,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 23.969,
+   "e": 24.747
+  },
+  {
+   "kind": "mark",
+   "src": 25.757,
+   "srcEnd": 26.899,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 24.747,
+   "e": 25.889
+  },
+  {
+   "kind": "mark",
+   "src": 27.208,
+   "srcEnd": 28.454,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 25.889,
+   "e": 27.134
+  },
+  {
+   "kind": "mark",
+   "src": 28.832,
    "srcEnd": 29.97,
-   "s": 27.84,
-   "e": 33.25
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 27.134,
+   "e": 28.272
   },
   {
    "kind": "film",
    "clip": "brilliant",
    "src": "day29/clips/brilliant.mp4",
    "clipIn": 15.0,
-   "clipOut": 18.1,
-   "s": 33.25,
-   "e": 36.99,
-   "lineS": 33.57,
-   "en": "Brilliant, but scary.",
-   "ko": "최고야, 근데 좀 무서워."
+   "clipOut": 16.5,
+   "s": 28.272,
+   "e": 30.212,
+   "lineS": 28.492,
+   "en": "Brilliant!",
+   "ko": "최고야!"
   },
   {
    "kind": "mark",
    "src": 30.36,
+   "srcEnd": 31.401,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.0,
+   "s": 30.212,
+   "e": 31.254
+  },
+  {
+   "kind": "mark",
+   "src": 31.876,
+   "srcEnd": 32.843,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.06,
+   "s": 31.254,
+   "e": 32.221
+  },
+  {
+   "kind": "mark",
+   "src": 33.545,
+   "srcEnd": 36.178,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.0,
+   "s": 32.221,
+   "e": 34.853
+  },
+  {
+   "kind": "mark",
+   "src": 36.334,
    "srcEnd": 37.58,
-   "s": 36.99,
-   "e": 44.21
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.06,
+   "s": 34.853,
+   "e": 36.099
   },
   {
    "kind": "film",
@@ -120,172 +301,393 @@
    "src": "day29/clips/blimey.mp4",
    "clipIn": 14.95,
    "clipOut": 15.85,
-   "s": 44.21,
-   "e": 45.75,
-   "lineS": 44.53,
+   "s": 36.099,
+   "e": 37.439,
+   "lineS": 36.319,
    "en": "Blimey.",
    "ko": "세상에."
   },
   {
    "kind": "mark",
    "src": 38.23,
+   "srcEnd": 38.5,
+   "file": "day29/subject-fix-blimey.webm",
+   "fileFrom": 30.0,
+   "zoom": 1.0,
+   "s": 37.439,
+   "e": 37.709
+  },
+  {
+   "kind": "mark",
+   "src": 38.5,
+   "srcEnd": 38.929,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 37.709,
+   "e": 38.138
+  },
+  {
+   "kind": "mark",
+   "src": 39.175,
+   "srcEnd": 40.514,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 38.138,
+   "e": 39.477
+  },
+  {
+   "kind": "mark",
+   "src": 40.795,
+   "srcEnd": 41.761,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 39.477,
+   "e": 40.442
+  },
+  {
+   "kind": "mark",
+   "src": 42.018,
+   "srcEnd": 42.922,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 40.442,
+   "e": 41.346
+  },
+  {
+   "kind": "mark",
+   "src": 43.199,
    "srcEnd": 44.43,
-   "s": 45.75,
-   "e": 51.95
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 41.346,
+   "e": 42.577
   },
   {
    "kind": "film",
    "clip": "platform",
    "src": "day29/clips/platform.mp4",
-   "clipIn": 138.6,
-   "clipOut": 141.0,
-   "s": 51.95,
-   "e": 54.99,
-   "lineS": 52.27,
-   "en": "Best do it at a bit of a run if you're nervous.",
-   "ko": "긴장되면 살짝 뛰어서 가렴."
+   "clipIn": 86.8,
+   "clipOut": 89.1,
+   "s": 42.577,
+   "e": 46.217,
+   "lineS": 42.797,
+   "en": "All right, Percy. You first.",
+   "ko": "자, 퍼시. 너부터 가렴."
   },
   {
    "kind": "mark",
    "src": 44.93,
+   "srcEnd": 46.107,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 46.217,
+   "e": 47.394
+  },
+  {
+   "kind": "mark",
+   "src": 46.642,
+   "srcEnd": 50.243,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 47.394,
+   "e": 50.994
+  },
+  {
+   "kind": "mark",
+   "src": 50.439,
+   "srcEnd": 51.267,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 50.994,
+   "e": 51.822
+  },
+  {
+   "kind": "mark",
+   "src": 51.581,
+   "srcEnd": 52.624,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.06,
+   "s": 51.822,
+   "e": 52.865
+  },
+  {
+   "kind": "mark",
+   "src": 52.762,
    "srcEnd": 53.89,
-   "s": 54.99,
-   "e": 63.95
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 52.865,
+   "e": 53.993
   },
   {
    "kind": "film",
    "clip": "map",
    "src": "day29/clips/map.mp4",
-   "clipIn": 116.3,
+   "clipIn": 117.9,
    "clipOut": 119.6,
-   "s": 63.95,
-   "e": 67.89,
-   "lineS": 64.27,
-   "en": "Just give it a tap and say… Mischief managed.",
-   "ko": "톡 치고 말하렴… 장난 완료."
+   "s": 53.993,
+   "e": 56.133,
+   "lineS": 54.213,
+   "en": "Mischief managed.",
+   "ko": "장난 완료."
   },
   {
    "kind": "mark",
    "src": 54.09,
-   "srcEnd": 59.36,
-   "s": 67.89,
-   "e": 73.16
+   "srcEnd": 59.3,
+   "file": "day29/subject.webm",
+   "fileFrom": 0.0,
+   "zoom": 1.0,
+   "s": 56.133,
+   "e": 61.343
   }
  ],
  "captions": [
   {
-   "s": 9.67,
-   "e": 12.49,
+   "s": 8.494,
+   "e": 11.139,
    "en": "Because that's how we say it in Britain.",
    "ko": "영국에서는 그렇게 말하거든요."
   },
   {
-   "s": 12.49,
-   "e": 18.79,
+   "s": 11.139,
+   "e": 16.854,
    "en": "Five Harry Potter phrases to teach your child before Christmas Day.",
    "ko": "크리스마스 전에 아이에게 알려 줄 해리 포터 표현 5가지!"
   },
   {
-   "s": 18.79,
-   "e": 22.23,
+   "s": 16.854,
+   "e": 19.727,
    "en": "Number five, Happy Christmas.",
    "ko": "5번, 해피 크리스마스."
   },
   {
-   "s": 22.23,
-   "e": 25.2,
+   "s": 19.727,
+   "e": 22.479,
    "en": "Same meaning, more British.",
    "ko": "뜻은 같아요, 더 영국식일 뿐!"
   },
   {
-   "s": 27.84,
-   "e": 30.33,
+   "s": 23.969,
+   "e": 25.889,
    "en": "Four, Brilliant.",
    "ko": "4번, 브릴리언트."
   },
   {
-   "s": 30.33,
-   "e": 33.25,
+   "s": 25.889,
+   "e": 28.272,
    "en": "Not “good job” — brilliant.",
    "ko": "“잘했어” 말고, “최고야!”"
   },
   {
-   "s": 36.99,
-   "e": 39.83,
+   "s": 30.212,
+   "e": 32.221,
    "en": "Number three, Blimey.",
    "ko": "3번, 블라이미."
   },
   {
-   "s": 39.83,
-   "e": 44.21,
+   "s": 32.221,
+   "e": 36.099,
    "en": "For when the snow is this deep… Blimey.",
    "ko": "눈이 이만큼 쌓였을 때, “세상에!”"
   },
   {
-   "s": 45.75,
-   "e": 48.17,
+   "s": 37.439,
+   "e": 39.477,
    "en": "Two, Off you go.",
    "ko": "2번, 오프 유 고."
   },
   {
-   "s": 48.17,
-   "e": 51.95,
+   "s": 39.477,
+   "e": 42.577,
    "en": "Shoes on, coat on, off you go.",
    "ko": "신발 신고, 코트 입고, “자, 출발!”"
   },
   {
-   "s": 54.99,
-   "e": 60.4,
+   "s": 46.217,
+   "e": 50.994,
    "en": "And number one, for when the toys are finally tidied away…",
    "ko": "그리고 1번, 장난감을 다 정리했을 때…"
   },
   {
-   "s": 60.4,
-   "e": 63.95,
+   "s": 50.994,
+   "e": 53.993,
    "en": "(whisper) Mischief managed.",
    "ko": "(속삭이며) “장난 완료.”"
   },
   {
-   "s": 67.89,
-   "e": 72.91,
+   "s": 56.133,
+   "e": 61.153,
    "en": "Save this and try one tonight. Happy Christmas from Oxford.",
    "ko": "저장해 두고 오늘 밤 하나 써 보세요. 옥스퍼드에서, 해피 크리스마스!"
   }
  ],
  "phrases": [
   {
-   "s": 18.79,
+   "s": 16.854,
    "n": 5,
    "en": "Happy Christmas",
    "ko": "해피 크리스마스"
   },
   {
-   "s": 27.84,
+   "s": 23.969,
    "n": 4,
    "en": "Brilliant",
    "ko": "최고야!"
   },
   {
-   "s": 36.99,
+   "s": 30.212,
    "n": 3,
    "en": "Blimey",
    "ko": "세상에!"
   },
   {
-   "s": 45.75,
+   "s": 37.439,
    "n": 2,
    "en": "Off you go",
    "ko": "자, 출발!"
   },
   {
-   "s": 54.99,
+   "s": 46.217,
    "n": 1,
    "en": "Mischief managed",
    "ko": "장난 완료"
   }
  ],
  "endCard": {
-  "s": 73.16,
-  "e": 77.36
- }
+  "s": 61.343,
+  "e": 64.943
+ },
+ "sfx": [
+  {
+   "t": 0.0,
+   "k": "sparkle"
+  },
+  {
+   "t": 0.85,
+   "k": "swish"
+  },
+  {
+   "t": 1.45,
+   "k": "chime"
+  },
+  {
+   "t": 6.574,
+   "k": "whoosh"
+  },
+  {
+   "t": 6.754,
+   "k": "ding"
+  },
+  {
+   "t": 8.344,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 22.299,
+   "k": "whoosh"
+  },
+  {
+   "t": 22.479,
+   "k": "ding"
+  },
+  {
+   "t": 23.819,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 28.092,
+   "k": "whoosh"
+  },
+  {
+   "t": 28.272,
+   "k": "ding"
+  },
+  {
+   "t": 30.062,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 35.919,
+   "k": "whoosh"
+  },
+  {
+   "t": 36.099,
+   "k": "ding"
+  },
+  {
+   "t": 37.289,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 42.397,
+   "k": "whoosh"
+  },
+  {
+   "t": 42.577,
+   "k": "ding"
+  },
+  {
+   "t": 46.067,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 53.813,
+   "k": "whoosh"
+  },
+  {
+   "t": 53.993,
+   "k": "ding"
+  },
+  {
+   "t": 55.983,
+   "k": "whoosh_out"
+  },
+  {
+   "t": 16.854,
+   "k": "chime"
+  },
+  {
+   "t": 23.969,
+   "k": "chime"
+  },
+  {
+   "t": 30.212,
+   "k": "chime"
+  },
+  {
+   "t": 37.439,
+   "k": "chime"
+  },
+  {
+   "t": 46.217,
+   "k": "chime"
+  },
+  {
+   "t": 56.643,
+   "k": "sparkle"
+  },
+  {
+   "t": 60.843,
+   "k": "whoosh"
+  },
+  {
+   "t": 61.693,
+   "k": "chime"
+  },
+  {
+   "t": 62.943,
+   "k": "ding"
+  }
+ ]
 }

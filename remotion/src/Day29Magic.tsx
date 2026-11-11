@@ -8,16 +8,16 @@ import {
   staticFile, useCurrentFrame, useVideoConfig, Easing, random,
 } from 'remotion';
 
-type Seg = {kind: 'mark' | 'film'; s: number; e: number; src: number | string; srcEnd?: number;
+type Seg = {kind: 'mark' | 'film'; s: number; e: number; src: number | string; srcEnd?: number; file?: string; fileFrom?: number; zoom?: number;
   clip?: string; clipIn?: number; clipOut?: number; lineS?: number; en?: string; ko?: string};
 type Cap = {s: number; e: number; en: string; ko: string};
 type Phrase = {s: number; n: number; en: string; ko: string};
 export type Day29Plan = {
   name: string; fps: number; duration: number; frames: number; day: number;
-  subject: string; background: string;
+  background: string;
   props: {dir: string; srcFrom: number; frames: number; s: number; e: number; poofIn: boolean}[];
   hook: {s: number; e: number; strike: number; happy: number; top: string; no: string; yes: string; ko: string};
-  cta: {en1: string; en2: string; q: string; ko: string; follow: string; followKo: string};
+  cta: {ko1: string; ko2: string; q: string; qKo: string; follow: string; small: string};
   title: {s: number; e: number; en: string; sub: string; ko: string};
   segments: Seg[]; captions: Cap[]; phrases: Phrase[]; endCard: {s: number; e: number};
 };
@@ -71,12 +71,13 @@ const Mark: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
   const seg = plan.segments.find((s) => s.kind === 'mark' && t >= s.s && t < s.e);
   const srcT = seg ? (seg.src as number) + (t - seg.s) : null;
   const punch = interpolate(t, [0, 0.7], [1.12, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const zoom = seg?.zoom ?? 1; // jump cuts alternate framing so the cut reads as intentional
   return (
-    <AbsoluteFill style={{filter: glow, transform: `scale(${punch})`, transformOrigin: '50% 40%'}}>
+    <AbsoluteFill style={{filter: glow, transform: `scale(${punch * zoom})`, transformOrigin: '50% 38%'}}>
       {plan.segments.filter((s) => s.kind === 'mark').map((s, i) => (
         <Sequence key={i} from={Math.round(s.s * fps)} durationInFrames={Math.max(1, Math.round((s.e - s.s) * fps))} layout="none">
           <AbsoluteFill>
-            <OffthreadVideo src={staticFile(plan.subject)} transparent muted startFrom={Math.round((s.src as number) * fps)} style={{width: '100%', height: '100%'}} />
+            <OffthreadVideo src={staticFile(s.file!)} transparent muted startFrom={Math.round(((s.src as number) - (s.fileFrom ?? 0)) * fps)} style={{width: '100%', height: '100%'}} />
           </AbsoluteFill>
         </Sequence>
       ))}
@@ -252,13 +253,13 @@ const EndCard: React.FC<{plan: Day29Plan; t: number}> = ({plan, t}) => {
       <div style={{background: '#F5F0E6', borderRadius: 40, padding: '26px 44px', boxShadow: `0 0 60px rgba(255,200,90,.5)`, border: `3px solid ${GOLD}`}}>
         <Img src={staticFile('day29/logo.png')} style={{width: 360}} />
       </div>
-      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 50, color: '#fff', marginTop: 54, opacity: pop(0.2)}}>{c.en1}</div>
-      <div style={{fontFamily: HP, fontSize: 112, lineHeight: 1, color: GOLD, textShadow: glowText(), transform: `scale(${0.6 + 0.4 * pop(0.35)})`}}>{c.en2}</div>
-      <div style={{fontFamily: HP, fontSize: 96, color: GOLD_LIGHT, textShadow: glowText(), marginTop: 18, transform: `scale(${0.6 + 0.4 * pop(0.9)})`}}>{c.q}</div>
-      <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 44, color: GOLD_LIGHT, marginTop: 10, padding: '0 70px', wordBreak: 'keep-all', opacity: pop(1.0)}}>{c.ko}</div>
-      <div style={{marginTop: 44, fontFamily: PRE, fontWeight: 900, fontSize: 52, color: INK, background: GOLD, padding: '16px 46px', borderRadius: 999,
-        boxShadow: `0 0 34px rgba(255,200,90,.7)`, transform: `scale(${(0.5 + 0.5 * pop(1.6)) * (1 + 0.03 * Math.sin(t * 6))})`}}>{c.follow}</div>
-      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 38, color: '#fff', marginTop: 14, opacity: pop(1.7)}}>{c.followKo}</div>
+      <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 60, color: '#fff', marginTop: 50, opacity: pop(0.15), textShadow: '0 4px 18px rgba(0,0,0,.9)'}}>{c.ko1}</div>
+      <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 96, lineHeight: 1.15, color: GOLD, textShadow: glowText(), transform: `scale(${0.6 + 0.4 * pop(0.3)})`}}>{c.ko2}</div>
+      <div style={{fontFamily: HP, fontSize: 104, color: GOLD_LIGHT, textShadow: glowText(), marginTop: 26, transform: `scale(${0.6 + 0.4 * pop(0.8)})`}}>{c.q}</div>
+      <div style={{fontFamily: KO_SERIF, fontWeight: 700, fontSize: 50, color: '#fff', marginTop: 4, opacity: pop(0.9)}}>{c.qKo}</div>
+      <div style={{marginTop: 46, fontFamily: PRE, fontWeight: 900, fontSize: 52, color: INK, background: GOLD, padding: '18px 48px', borderRadius: 999,
+        boxShadow: `0 0 34px rgba(255,200,90,.7)`, transform: `scale(${(0.5 + 0.5 * pop(1.5)) * (1 + 0.03 * Math.sin(t * 6))})`}}>{c.follow}</div>
+      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 30, color: 'rgba(255,255,255,.75)', marginTop: 22, opacity: pop(1.7)}}>{c.small}</div>
     </AbsoluteFill>
   );
 };

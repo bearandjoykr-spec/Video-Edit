@@ -54,7 +54,58 @@ m[end:] *= 10 ** (6 / 20)  # music up on the end card
 tail = int(plan["duration"] * SR); fo = int(SR * 1.8)
 m[tail - fo:tail] *= np.linspace(1, 0, fo)[:, None]; m[tail:] = 0
 
-mix = (voice + film + m)[:tail]
+# ── magic SFX (synthesised; cue list from build_plan.py) ──
+rng = np.random.default_rng(29)
+def bp_noise(dur, f0, f1, q=3.0):
+    n = int(dur * SR); x = rng.standard_normal(n)
+    X = np.fft.rfft(x); fr = np.fft.rfftfreq(n, 1 / SR); out = np.zeros(n)
+    # sweep by summing short windows with moving band centres
+    hop = int(0.02 * SR); win = np.hanning(hop * 2)
+    for i in range(0, n - 2 * hop, hop):
+        c = f0 * (f1 / f0) ** (i / n); seg = x[i:i + 2 * hop] * win
+        S = np.fft.rfft(seg); ff = np.fft.rfftfreq(len(seg), 1 / SR)
+        S *= np.exp(-0.5 * ((ff - c) / (c / q)) ** 2)
+        out[i:i + 2 * hop] += np.fft.irfft(S, len(seg))
+    return out
+def env_ad(n, a, d):
+    t_ = np.arange(n) / SR; return np.minimum(t_ / a, 1) * np.exp(-np.maximum(t_ - a, 0) / d)
+def bell(f, dur=1.4, amp=1.0):
+    n = int(dur * SR); t_ = np.arange(n) / SR; y = np.zeros(n)
+    for ratio, g, dec in ((1, 1, 0.9), (2.76, 0.45, 0.45), (5.4, 0.25, 0.25), (8.93, 0.12, 0.15)):
+        y += g * np.sin(2 * np.pi * f * ratio * t_) * np.exp(-t_ / dec)
+    return amp * y * np.minimum(t_ / 0.003, 1)
+def place(buf, y, at, gain):
+    i = int(at * SR)
+    if i < 0: y, i = y[-i:], 0
+    j = min(len(buf), i + len(y)); buf[i:j] += (y[: j - i] * gain)[:, None]
+def make(kind):
+    if kind == "whoosh":
+        y = bp_noise(0.5, 400, 4500); n = len(y); y *= np.sin(np.linspace(0, np.pi, n)) ** 2; return y / np.abs(y).max()
+    if kind == "whoosh_out":
+        y = bp_noise(0.45, 4000, 500); n = len(y); y *= np.sin(np.linspace(0, np.pi, n)) ** 2; return y / np.abs(y).max()
+    if kind == "swish":
+        y = bp_noise(0.28, 1800, 6000, 2.0); n = len(y); y *= np.sin(np.linspace(0, np.pi, n)) ** 3; return y / np.abs(y).max()
+    if kind == "ding":
+        y = bell(1568, 1.6) + 0.5 * bell(2349, 1.6); return y / np.abs(y).max()
+    if kind == "chime":  # quick rising pentatonic glissando
+        y = np.zeros(int(1.8 * SR))
+        for k, f in enumerate((1047, 1175, 1397, 1568, 1760, 2093)):
+            b = bell(f, 1.3, 0.7 + 0.06 * k); i = int(k * 0.055 * SR); y[i:i + len(b)] += b[: len(y) - i]
+        return y / np.abs(y).max()
+    if kind == "sparkle":
+        y = np.zeros(int(1.0 * SR))
+        for k in range(16):
+            f = rng.uniform(2500, 6500); b = bell(f, 0.35, rng.uniform(0.3, 1)); i = int(rng.uniform(0, 0.6) * SR)
+            y[i:i + len(b)] += b[: len(y) - i]
+        return y / np.abs(y).max()
+    raise ValueError(kind)
+GAIN = {"whoosh": 0.16, "whoosh_out": 0.12, "swish": 0.14, "ding": 0.10, "chime": 0.09, "sparkle": 0.08}
+sfx = np.zeros_like(voice); cache = {}
+for c in plan.get("sfx", []):
+    y = cache.setdefault(c["k"], make(c["k"]))
+    place(sfx, y, c["t"], GAIN[c["k"]])
+
+mix = (voice + film + m + sfx)[:tail]
 mix *= 10 ** ((-14 - meter.integrated_loudness(mix)) / 20)
 out = f"{P}/versions/{V}/mix.wav"
 sf.write(out + ".pre.wav", mix, SR, subtype="FLOAT")
