@@ -11,8 +11,8 @@ export type AdPlan = {fps: number; duration: number; frames: number; speechEnd: 
 const FF = "'Pretendard', 'Noto Color Emoji', sans-serif";
 // Page themes. Mark (11 Nov 2026): not white, use our cream. Joy also asked to see Oxford blue.
 const THEMES = {
-  cream: {page: '#F5F0E6', glow: '#FAEEDF', ink: '#1E2D4D', sub: '#55607A', step: '#3A6EA5', mark: '#FFE14D', chip: '#EAE1D0', dot: '#D8CFBE', btn: '#1E2D4D', btnOn: '#2C3E66', btnText: '#FFFFFF', logo: 'full'},
-  oxford: {page: '#002147', glow: '#0B3166', ink: '#F5F0E6', sub: '#C3CEE0', step: '#AECCE6', mark: '#C9A84C', chip: 'rgba(255,255,255,.12)', dot: '#2A4470', btn: '#F5F0E6', btnOn: '#FFFFFF', btnText: '#002147', logo: 'cream'},
+  cream: {page: '#F5F0E6', glow: '#FAEEDF', ink: '#1E2D4D', sub: '#55607A', step: '#3A6EA5', mark: '#FFE14D', chip: '#EAE1D0', dot: '#D8CFBE', btn: '#1E2D4D', btnOn: '#2C3E66', btnText: '#FFFFFF', logo: 'full', thin: false},
+  oxford: {page: '#002147', glow: '#0B3166', ink: '#F5F0E6', sub: '#C3CEE0', step: '#AECCE6', mark: '#FFD84D', chip: 'rgba(255,255,255,.12)', dot: '#2A4470', btn: '#F5F0E6', btnOn: '#FFFFFF', btnText: '#002147', logo: 'cream', thin: true},
 };
 let T = THEMES.cream;
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
@@ -51,9 +51,9 @@ const Header: React.FC<{sh: Shot; t: number; fps: number; first: boolean}> = ({s
           const lit = at === undefined ? (h.words.length ? 0 : 1) : interpolate(t, [at - .02, at + .12], [0, 1], clamp);
           return (
             <span key={i} style={{position: 'relative', display: 'inline-block', marginRight: i < words.length - 1 ? '.24em' : 0}}>
-              <span style={{position: 'absolute', left: '-.06em', right: '-.06em', bottom: '.06em', height: '.42em', background: T.mark, borderRadius: 8,
+              <span style={{position: 'absolute', left: '-.02em', right: '-.02em', bottom: T.thin ? '-.04em' : '.06em', height: T.thin ? '.11em' : '.42em', background: T.mark, borderRadius: 8,
                 transform: `scaleX(${lit})`, transformOrigin: 'left', zIndex: 0}} />
-              <span style={{position: 'relative', zIndex: 1}}>{w}</span>
+              <span style={{position: 'relative', zIndex: 1, color: T.thin && lit > .5 ? T.mark : undefined}}>{w}</span>
             </span>
           );
         })}
@@ -89,7 +89,7 @@ const EndCard: React.FC<{t: number; s: number; fps: number}> = ({t, s, fps}) => 
           <Img src={staticFile('brand/bear-butterfly.png')} style={{width: 300}} /><Img src={staticFile('brand/wordmark-cream.png')} style={{width: 420, marginTop: 10}} /></div>}
       <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 64, color: T.ink, marginTop: 40, opacity: k(.15)}}>Little Steps to Big Adventures</div>
       <div style={{fontWeight: 900, fontSize: 92, color: T.ink, marginTop: 50, letterSpacing: '-.03em', textAlign: 'center', lineHeight: 1.15, transform: `scale(${.85 + .15 * k(.3)})`, opacity: k(.3)}}>
-        하루 <span style={{background: `linear-gradient(transparent 58%, ${T.mark} 58%)`}}>영어 3문장</span>,<br />놀면서 익혀요
+        하루 <span style={{...(T.thin ? {color: T.mark} : {background: `linear-gradient(transparent 58%, ${T.mark} 58%)`})}}>영어 3문장</span>,<br />놀면서 익혀요
       </div>
       <div style={{display: 'flex', gap: 20, marginTop: 50, opacity: k(.5)}}>
         {[['brand/mark-avatar.png', 'Mark T 🇬🇧'], ['brand/joy-avatar.png', 'Joy 🇰🇷']].map(([img, n]) => (

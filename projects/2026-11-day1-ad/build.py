@@ -61,7 +61,7 @@ def main():
     sfx += [{"t": done["out_s"] + 0.05, "sound": "sparkle", "gain": -10}, {"t": speech, "sound": "chime", "gain": -9},
             {"t": speech + 1.6, "sound": "pop", "gain": -8}]
     plan = {"fps": FPS, "duration": total, "frames": math.ceil(total * FPS), "speechEnd": speech, "shots": shots, "caps": caps,
-            "sfx": sorted(sfx, key=lambda x: x["t"]), "media": "day1ad/main", "theme": "cream"}  # Mark: our cream, not white
+            "sfx": sorted(sfx, key=lambda x: x["t"]), "media": "day1ad/main", "theme": "oxford"}  # Mark: not white; Joy chose Oxford blue (11 Nov 2026)
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)
     json.dump(plan, open(f"{HERE}/versions/main/timeline.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"{total:.1f}s ({speech:.1f}s speech), {len(shots)} shots")
