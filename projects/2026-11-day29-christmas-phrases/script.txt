@@ -22,3 +22,7 @@ Decisions (owner, 11 Nov 2026):
 - Clip moments: christmas 0:15-0:18 "Happy Christmas, Harry/Ron"; brilliant 0:15.7; blimey supercut 0:15.1 (alt 0:03.8);
   platform barrier run ~2:18; map "Mischief managed" 1:56-2:01.
 - Waiting on: 720p/1080p re-downloads of christmas, brilliant, platform, map (have 144p only); clip-audio choice.
+
+Owner feedback on test v1 (11 Nov 2026): no clips behind Mark (unless he is much smaller); instead a full-screen
+"magic cut" to the scene with Harry Potter-font captions in English and Korean. Pauses felt unnatural → v2 cuts only
+in real silences after a finished sentence, and Mark no longer freezes. (Whisper word ends ran ~0.35 s early.)
