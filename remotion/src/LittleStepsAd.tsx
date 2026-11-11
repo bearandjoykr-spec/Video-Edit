@@ -91,8 +91,10 @@ const EndCard: React.FC<{t: number; s: number; fps: number}> = ({t, s, fps}) => 
           </div>
         ))}
       </div>
-      <div style={{marginTop: 70, background: on ? '#EDEDED' : INK, color: on ? INK : '#fff', fontWeight: 900, fontSize: 52, borderRadius: 999, padding: '30px 70px',
-        transform: `scale(${tap * (.8 + .2 * k(.7))})`, opacity: k(.7)}}>{on ? '팔로잉 ✓' : '＋ 팔로우하고 DAY 2 함께'}</div>
+      {/* Joy (11 Nov 2026): the ad sends people to the free Day 1 trial; sign-up is on the profile link */}
+      <div style={{marginTop: 60, fontWeight: 800, fontSize: 40, color: '#E2556B', opacity: k(.6)}}>🎁 DAY 1 무료 체험</div>
+      <div style={{marginTop: 18, background: on ? '#2B2B2B' : INK, color: '#fff', fontWeight: 900, fontSize: 48, borderRadius: 999, padding: '30px 60px', whiteSpace: 'nowrap',
+        boxShadow: on ? `0 0 0 10px ${MARK}` : 'none', transform: `scale(${tap * (.8 + .2 * k(.7))})`, opacity: k(.7)}}>무료 체험 신청은 프로필 링크에서 👆</div>
       <div style={{position: 'absolute', top: 1460 + interpolate(t, [s + 1.1, s + 1.5], [80, 0], clamp), left: 640, fontSize: 90, opacity: interpolate(t, [s + 1.1, s + 1.3, s + 2.2, s + 2.4], [0, 1, 1, 0], clamp)}}>👆</div>
     </AbsoluteFill>
   );
