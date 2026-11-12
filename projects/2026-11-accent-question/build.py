@@ -160,7 +160,13 @@ def build(name="main"):
     ev.append({"type": "end", "s": es, "e": total, "share": "💌 발음 걱정하는 엄마 아빠에게 보내주세요"})
     add(es, "impact", -8); add(speech_end, "sparkle", -10)
     add(es + 2.0, "pop", -6); add(es + 2.9, "pop", -6); add(es + 2.95, "chime", -9)   # end-card follow taps
-    music = {"dropouts": [[q - 0.3, q + 0.9]], "drops": [q + 0.9]}
+    # owner, 12 Nov 2026: "use the drop for the big reveal". The beat cuts out on 그게 뭘까요? and the track's drop
+    # (lofi-hip-hop-578608.mp3 at 109.10 s, after its breakdown) hits on the first answer, 😌 안 무서워 ("English is safe").
+    reveal = gifts[0][2]
+    add(reveal, "impact", -6)
+    ev.append({"type": "punch", "s": reveal, "e": reveal + 0.35, "z": 1.08, "shake": 10})
+    music = {"dropouts": [[q - 0.3, reveal]], "drops": [reveal], "track": "music/lofi-hip-hop-578608.mp3", "trackDrop": 109.10,
+             "start": round(109.10 - reveal, 3)}
 
     plan = {"name": f"accentq-{name}", "media": f"accentq/{name}", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
             "day": DAY, "segments": segs, "captions": C, "events": ev, "zooms": zooms, "music": music,
