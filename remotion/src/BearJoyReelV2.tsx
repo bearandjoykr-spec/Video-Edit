@@ -303,6 +303,41 @@ const Scatter: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => (
   </>
 );
 
+
+// Falling autumn leaves (Joy, DAY 32): emoji leaves drift down with a sway over the shot.
+const Leaves: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+  const d = t - ev.s, n = ev.n ?? 16, dur = ev.e - ev.s;
+  const fade = interpolate(d, [0, 0.3, dur - 0.4, dur], [0, 1, 1, 0], clamp);
+  return (
+    <>
+      {Array.from({length: n}).map((_, k) => {
+        const x0 = random(`lx${ev.s}${k}`) * 1080, sp = 260 + random(`lv${ev.s}${k}`) * 260, off = random(`lo${ev.s}${k}`) * 2200;
+        const y = ((off + sp * d) % 2200) - 200;
+        const x = x0 + Math.sin(d * (1.2 + random(`lf${ev.s}${k}`)) + k) * 70 + (ev.wind ?? 0) * d;
+        const size = 46 + random(`ls${ev.s}${k}`) * 50;
+        return <div key={k} style={{position: 'absolute', left: ((x % 1180) + 1180) % 1180 - 50, top: y, fontFamily: EMOJI, fontSize: size, lineHeight: 1, opacity: fade * 0.95,
+          transform: `rotate(${Math.sin(d * 2 + k) * 60 + k * 37}deg)`, filter: 'drop-shadow(0 6px 8px rgba(0,0,0,.25))'}}>{ev.emoji[k % ev.emoji.length]}</div>;
+      })}
+    </>
+  );
+};
+
+// Breeze streaks (DAY 32 "Can you feel the breeze?"): soft white curves sweep across.
+const Wind: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+  const d = t - ev.s, dur = ev.e - ev.s;
+  const fade = interpolate(d, [0, 0.2, dur - 0.3, dur], [0, 1, 1, 0], clamp);
+  return (
+    <svg width="1080" height="1920" style={{position: 'absolute', inset: 0, opacity: fade}}>
+      {Array.from({length: 7}).map((_, k) => {
+        const y = 300 + k * 190 + Math.sin(k * 7) * 60, ph = ((d * 0.9 + k * 0.37) % 1.4) / 1.4;
+        const x = -700 + ph * 2200;
+        return <path key={k} d={`M ${x} ${y} q 120 -40 240 0 t 240 0 t 200 -10`} stroke="rgba(255,255,255,.85)" strokeWidth={6 + (k % 3) * 2} fill="none"
+          strokeLinecap="round" opacity={Math.sin(ph * Math.PI)} />;
+      })}
+    </svg>
+  );
+};
+
 // A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
 const List: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const out = interpolate(t, [ev.e - 0.15, ev.e], [1, 0], clamp);
@@ -500,6 +535,8 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('list').map((ev, k) => (live(ev) ? <List key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('scatter').map((ev, k) => (live(ev) ? <Scatter key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('burst').map((ev, k) => (t >= ev.s && t <= ev.e ? <Burst key={k} ev={ev} t={t} /> : null))}
+      {E('leaves').map((ev, k) => (t >= ev.s && t <= ev.e ? <Leaves key={k} ev={ev} t={t} /> : null))}
+      {E('wind').map((ev, k) => (t >= ev.s && t <= ev.e ? <Wind key={k} ev={ev} t={t} /> : null))}
       {E('follow').map((ev, k) => (live(ev) ? <FollowNow key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('demo').map((ev, k) => (live(ev, 0.4) ? <Demo key={k} ev={ev} t={t} fps={fps} /> : null))}
       {cap && !cap.demo && !cap.mark && t < end.s ? <CaptionV2 c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
