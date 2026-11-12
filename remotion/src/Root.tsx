@@ -13,6 +13,7 @@ import day5demo from '../../projects/2026-11-firststeps-day5/versions/demo/timel
 import day24tight from '../../projects/2026-11-day24-early-english/versions/tight/timeline_v2.json';
 import day25 from '../../projects/2026-11-day25-kyobo/versions/main/timeline_v2.json';
 import day28 from '../../projects/2026-11-day28-questions/versions/main/timeline_v2.json';
+import accentq from '../../projects/2026-11-accent-question/versions/main/timeline_v2.json';
 import joytop3 from '../../projects/2026-11-joy-top3/versions/main/timeline.json';
 import {JoyTop3Reel, Top3Plan} from './JoyTop3Reel';
 
@@ -83,6 +84,7 @@ export const Root: React.FC = () => (
     {reelV2('Day24Tight', day24tight as unknown as PlanV2)}
     {reelV2('Day25', day25 as unknown as PlanV2)}
     {reelV2('Day28', day28 as unknown as PlanV2)}
+    {reelV2('AccentQ', accentq as unknown as PlanV2)}
     <Composition id="JoyTop3" component={JoyTop3Reel} durationInFrames={(joytop3 as unknown as Top3Plan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: joytop3 as unknown as Top3Plan}} />
     {wReel('ReelUse', reelUse as unknown as WelcomeReelPlan)}
     {wReel('ReelPerfect', reelPerfect as unknown as WelcomeReelPlan)}

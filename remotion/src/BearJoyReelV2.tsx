@@ -9,7 +9,7 @@ import {
 } from 'remotion';
 
 type W = {w: string; t: number | null};
-type Caption = {i: number; s: number; e: number; ko: string; en: string; hi: string; demo: boolean; words: W[]; kwords?: W[]; mark?: boolean};
+type Caption = {i: number; s: number; e: number; ko: string; en: string; hi: string; demo: boolean; words: W[]; kwords?: W[]; mark?: boolean; onCam?: boolean};
 type Ev = {type: string; s: number; e: number; [k: string]: any};
 export type PlanV2 = {
   name: string; fps: number; duration: number; frames: number; speechEnd: number; day: number;
@@ -133,9 +133,10 @@ const MarkCaption: React.FC<{c: Caption; t: number; fps: number; top?: number}> 
   const av = spring({frame: f, fps, config: {damping: 9, stiffness: 200, mass: 0.6}});
   const ws = c.words;
   return (
-    <div style={{position: 'absolute', left: 50, right: 50, top: top - 150, textAlign: 'center', display: 'grid', justifyItems: 'center', gap: 10,
+    <div style={{position: 'absolute', left: 50, right: 50, top: c.onCam ? top : top - 150, textAlign: 'center', display: 'grid', justifyItems: 'center', gap: 10,
       opacity: Math.min(1, inS * 2)}}>
-      <div style={{display: 'flex', alignItems: 'center', gap: 18, transform: `scale(${av}) rotate(${Math.sin((t - c.s) * 4) * 1.5}deg)`}}>
+      {/* onCam: Mark is speaking on camera, so no avatar row (the avatar is for when he appears as a picture) */}
+      <div style={{display: c.onCam ? 'none' : 'flex', alignItems: 'center', gap: 18, transform: `scale(${av}) rotate(${Math.sin((t - c.s) * 4) * 1.5}deg)`}}>
         <div style={{position: 'relative', width: 128, height: 128}}>
           <Img src={staticFile('brand/mark-avatar.png')} style={{width: 128, height: 128, filter: 'drop-shadow(0 8px 18px rgba(0,0,0,.35))'}} />
         </div>
@@ -148,7 +149,7 @@ const MarkCaption: React.FC<{c: Caption; t: number; fps: number; top?: number}> 
           const next = ws[k + 1]?.t ?? c.e;
           const active = w.t !== null && t >= w.t && t < next;
           const said = w.t !== null && t >= w.t;
-          return <React.Fragment key={k}>{k ? ' ' : ''}<span style={{display: 'inline-block', color: said ? C.blue : C.white,
+          return <React.Fragment key={k}>{k ? ' ' : ''}<span style={{display: 'inline-block', padding: c.onCam ? '0 0.07em' : 0, color: said ? C.blue : C.white,
             opacity: said ? 1 : 0.6, transform: `scale(${active ? 1.07 : 1}) translateY(${active ? -4 : 0}px)`}}>{w.w}</span></React.Fragment>;
         })}
       </div>
@@ -272,6 +273,56 @@ const Cover: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   );
 };
 
+// Emoji that burst out from a point and fall (e.g. little UK flags when Mark says "I'm British").
+const Burst: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+  const d = t - ev.s, n = ev.n ?? 14;
+  return (
+    <>
+      {Array.from({length: n}).map((_, k) => {
+        const a = -Math.PI / 2 + (random(`ba${ev.s}${k}`) - 0.5) * 2.6, v = 700 + random(`bv${ev.s}${k}`) * 900;
+        const x = ev.x + Math.cos(a) * v * d, y = ev.y + Math.sin(a) * v * d + 1500 * d * d;
+        const size = (ev.size ?? 90) * (0.6 + random(`bs${ev.s}${k}`) * 0.8);
+        return <div key={k} style={{position: 'absolute', left: x, top: y, fontFamily: EMOJI, fontSize: size, lineHeight: 1,
+          opacity: interpolate(d, [0, 0.05, (ev.e - ev.s) - 0.3, ev.e - ev.s], [0, 1, 1, 0], clamp),
+          transform: `translate(-50%, -50%) rotate(${(random(`br${ev.s}${k}`) - 0.5) * 500 * d}deg)`}}>{ev.emoji[k % ev.emoji.length]}</div>;
+      })}
+    </>
+  );
+};
+
+// Emoji that pop in one by one around the speaker and float (English "from everywhere").
+const Scatter: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => (
+  <>
+    {ev.items.map((it: {e: string; x: number; y: number; t: number; size?: number}, k: number) => {
+      if (t < it.t) return null;
+      const p = usePop(t, it.t, ev.e, fps);
+      const bob = Math.sin((t - it.t) * 3 + k) * 12;
+      return <div key={k} style={{position: 'absolute', left: it.x, top: it.y + bob, fontFamily: EMOJI, fontSize: it.size ?? 120, lineHeight: 1, opacity: p.opacity,
+        filter: 'drop-shadow(0 10px 18px rgba(10,16,30,.35))', transform: `translate(-50%, -50%) scale(${p.scale}) rotate(${Math.sin((t - it.t) * 2.4 + k * 2) * 10}deg)`}}>{it.e}</div>;
+    })}
+  </>
+);
+
+// A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
+const List: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const out = interpolate(t, [ev.e - 0.15, ev.e], [1, 0], clamp);
+  return (
+    <div style={{position: 'absolute', left: 0, right: 0, top: ev.top, display: 'flex', justifyContent: 'center', gap: ev.gap ?? 44, opacity: out}}>
+      {ev.items.map((it: {emoji: string; text: string; t: number}, k: number) => {
+        const f = Math.round((t - it.t) * fps);
+        const s = spring({frame: f, fps, config: {damping: 8, stiffness: 190, mass: 0.6}});
+        return (
+          <div key={k} style={{display: 'grid', justifyItems: 'center', gap: 2, opacity: t >= it.t ? 1 : 0,
+            transform: `scale(${s}) rotate(${[-5, 3, -3][k % 3] + Math.sin((t - it.t) * 5) * 1.5}deg) translateY(${[0, -26, 0][k % 3]}px)`}}>
+            <div style={{fontFamily: EMOJI, fontSize: 150, lineHeight: 1.1, filter: 'drop-shadow(0 10px 18px rgba(10,16,30,.35))'}}>{it.emoji}</div>
+            <div style={{fontFamily: PRE, fontWeight: 900, fontSize: ev.size ?? 88, letterSpacing: '-0.03em', color: PASTEL[k % 2], textShadow: stroke(14), whiteSpace: 'nowrap'}}>{it.text}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 const FollowNow: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const p = usePop(t, ev.s, ev.e, fps);
   const press = (tt: number) => interpolate(t, [tt - 0.06, tt, tt + 0.16], [0, 1, 0], clamp);
@@ -290,13 +341,19 @@ const FollowNow: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => 
   );
 };
 
-const Tag: React.FC<{ev: Ev; t: number; fps: number; pos?: {left: number; top: number}}> = ({ev, t, fps, pos = {left: 50, top: 235}}) => {
+const Tag: React.FC<{ev: Ev; t: number; fps: number; pos?: {left: number; top: number}}> = ({ev, t, fps, pos: planPos = {left: 50, top: 235}}) => {
   const p = usePop(t, ev.s, ev.e, fps);
+  const pos = ev.pos ?? planPos;
   return (
     <div style={{position: 'absolute', left: pos.left, top: pos.top, opacity: p.opacity, transform: `scale(${p.scale}) rotate(-2deg)`, transformOrigin: '0 50%'}}>
       <div style={{background: 'rgba(20,32,58,.62)', borderRadius: 28, padding: '20px 30px', display: 'grid', gap: 8, boxShadow: '0 14px 34px rgba(0,0,0,.25)'}}>
-        <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 62, color: C.yellow, lineHeight: 1, letterSpacing: '-0.02em'}}>{ev.name} <span style={{fontSize: 52}}>{ev.flags}</span></span>
-        <span style={{fontFamily: PRE, fontWeight: 600, fontSize: 32, color: C.white, lineHeight: 1.25}}>{ev.role}</span>
+        {ev.playfair ? (
+          <span style={{display: 'flex', alignItems: 'center', gap: 16, whiteSpace: 'nowrap'}}>
+            <span style={{fontFamily: PLAYFAIR, fontStyle: 'italic', fontWeight: 600, fontSize: 70, color: C.yellow, lineHeight: 1}}>{ev.name}</span>
+            <span style={{fontFamily: EMOJI, fontSize: 78, lineHeight: 1, display: 'inline-block', transform: `rotate(${Math.sin((t - ev.s) * 5) * 6}deg)`}}>{ev.flags}</span>
+          </span>
+        ) : <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 62, color: C.yellow, lineHeight: 1, letterSpacing: '-0.02em'}}>{ev.name} <span style={{fontSize: 52}}>{ev.flags}</span></span>}
+        {ev.role ? <span style={{fontFamily: ev.playfair ? "'Gowun Batang', serif" : PRE, fontWeight: ev.playfair ? 700 : 600, fontSize: ev.playfair ? 38 : 32, color: C.white, lineHeight: 1.25, whiteSpace: 'nowrap'}}>{ev.role}</span> : null}
       </div>
     </div>
   );
@@ -352,9 +409,9 @@ const EndV2: React.FC<{ev: Ev; t: number; fps: number; day: number}> = ({ev, t, 
         <Img src={staticFile('brand/wordmark-cream.png')} style={{width: 560}} />
       </div>
       <div style={{fontWeight: 700, fontSize: 42, color: C.white, opacity: small, marginTop: 30}}>DAY {day} ✅ · 출간까지 매일 업로드 중 📚</div>
-      <div style={{fontWeight: 900, fontSize: 116, lineHeight: 1.06, letterSpacing: '-0.04em', textShadow: stroke(14), wordBreak: 'keep-all'}}>
-        <div style={{color: C.yellow, transform: `scale(${l1})`}}>{ev.short ? `내일 DAY ${day + 1}` : '팔로우하고'}</div>
-        <div style={{color: C.blue, transform: `scale(${l2})`}}>{ev.short ? '또 만나요! 👋' : `DAY ${day + 1} 같이 봐요!`}</div>
+      <div style={{fontWeight: 900, fontSize: ev.bigSize ?? 116, lineHeight: 1.06, letterSpacing: '-0.04em', textShadow: stroke(14), wordBreak: 'keep-all'}}>
+        <div style={{color: C.yellow, transform: `scale(${l1})`}}>{ev.l1 ?? (ev.short ? `내일 DAY ${day + 1}` : '팔로우하고')}</div>
+        <div style={{color: C.blue, transform: `scale(${l2})`}}>{ev.l2 ?? (ev.short ? '또 만나요! 👋' : `DAY ${day + 1} 같이 봐요!`)}</div>
       </div>
       <div style={{position: 'relative', marginTop: 26, transform: `scale(${btn * pulse * (1 - pressed * 0.06)})`}}>
         <div style={{fontWeight: 900, fontSize: 88, lineHeight: 1, padding: '36px 110px', borderRadius: 999, letterSpacing: '-0.02em',
@@ -426,12 +483,17 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('pop').map((ev, k) => (live(ev) ? <Pop key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
       {E('markpill').map((ev, k) => (live(ev) ? <MarkPill key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('avatar').map((ev, k) => (live(ev) ? <Avatar key={k} ev={ev} t={t} fps={fps} slots={plan.slots} /> : null))}
+      {E('list').map((ev, k) => (live(ev) ? <List key={k} ev={ev} t={t} fps={fps} /> : null))}
+      {E('scatter').map((ev, k) => (live(ev) ? <Scatter key={k} ev={ev} t={t} fps={fps} /> : null))}
+      {E('burst').map((ev, k) => (t >= ev.s && t <= ev.e ? <Burst key={k} ev={ev} t={t} /> : null))}
       {E('follow').map((ev, k) => (live(ev) ? <FollowNow key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('demo').map((ev, k) => (live(ev, 0.4) ? <Demo key={k} ev={ev} t={t} fps={fps} /> : null))}
       {cap && !cap.demo && !cap.mark && t < end.s ? <CaptionV2 c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
       {cap && cap.mark && t < end.s ? <MarkCaption c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
       {E('badge').map((ev, k) => (t <= ev.e && (!ev.docked || t >= ev.s) ? <Badge key={k} ev={ev} t={t} fps={fps} /> : null))}
       {t >= end.s ? <EndV2 ev={end} t={t} fps={fps} day={plan.day} /> : null}
+      {E('flash').map((ev, k) => (t >= ev.s - 0.04 && t <= ev.e ? <AbsoluteFill key={k} style={{background: '#fff',
+        opacity: interpolate(t, [ev.s - 0.04, ev.s, ev.e], [0, 0.85, 0], clamp)}} /> : null))}
       <Progress t={t} total={plan.duration} />
     </AbsoluteFill>
   );

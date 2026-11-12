@@ -1,0 +1,855 @@
+{
+ "name": "accentq-main",
+ "media": "accentq/main",
+ "fps": 30,
+ "duration": 34.17,
+ "frames": 1026,
+ "speechEnd": 29.17,
+ "day": 31,
+ "segments": [
+  {
+   "src_s": 13.72,
+   "src_e": 16.45,
+   "out_s": 0.0,
+   "cold": true
+  },
+  {
+   "src_s": 1.78,
+   "src_e": 6.62,
+   "out_s": 2.73
+  },
+  {
+   "src_s": 7.55,
+   "src_e": 29.15,
+   "out_s": 7.57
+  }
+ ],
+ "captions": [
+  {
+   "i": 0,
+   "s": 0.0,
+   "e": 2.73,
+   "ko": "장담하는데, 절대 아니에요.",
+   "en": "And I promise you, it will not.",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "And",
+     "t": 0.06
+    },
+    {
+     "w": "I",
+     "t": 0.2
+    },
+    {
+     "w": "promise",
+     "t": 0.36
+    },
+    {
+     "w": "you,",
+     "t": 0.88
+    },
+    {
+     "w": "it",
+     "t": 1.61
+    },
+    {
+     "w": "will",
+     "t": 1.9
+    },
+    {
+     "w": "not.",
+     "t": 2.28
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 1,
+   "s": 7.57,
+   "e": 8.82,
+   "ko": "좋은 질문이에요.",
+   "en": "Good question.",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "Good",
+     "t": 7.87
+    },
+    {
+     "w": "question.",
+     "t": 8.2
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 2,
+   "s": 8.82,
+   "e": 10.14,
+   "ko": "전 영국인이에요.",
+   "en": "I'm British.",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "I'm",
+     "t": 9.12
+    },
+    {
+     "w": "British.",
+     "t": 9.42
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 3,
+   "s": 10.14,
+   "e": 13.64,
+   "ko": "서울 영어유치원에서 오래 가르쳤는데요,",
+   "en": "I taught English kindergarten in Seoul for many years,",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "I",
+     "t": 10.16
+    },
+    {
+     "w": "taught",
+     "t": 10.34
+    },
+    {
+     "w": "English",
+     "t": 10.72
+    },
+    {
+     "w": "kindergarten",
+     "t": 11.12
+    },
+    {
+     "w": "in",
+     "t": 12.22
+    },
+    {
+     "w": "Seoul",
+     "t": 12.4
+    },
+    {
+     "w": "for",
+     "t": 12.62
+    },
+    {
+     "w": "many",
+     "t": 12.8
+    },
+    {
+     "w": "years,",
+     "t": 13.12
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 4,
+   "s": 13.64,
+   "e": 16.62,
+   "ko": "장담하는데, 절대 아니에요.",
+   "en": "and I promise you, it will not.",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "and",
+     "t": 13.8
+    },
+    {
+     "w": "I",
+     "t": 13.94
+    },
+    {
+     "w": "promise",
+     "t": 14.1
+    },
+    {
+     "w": "you,",
+     "t": 14.62
+    },
+    {
+     "w": "it",
+     "t": 15.35
+    },
+    {
+     "w": "will",
+     "t": 15.64
+    },
+    {
+     "w": "not.",
+     "t": 16.02
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 5,
+   "s": 16.62,
+   "e": 20.57,
+   "ko": "아이는 영어를 사방에서 들어요.",
+   "en": "Your child hears English from everywhere.",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "Your",
+     "t": 16.87
+    },
+    {
+     "w": "child",
+     "t": 17.27
+    },
+    {
+     "w": "hears",
+     "t": 18.3
+    },
+    {
+     "w": "English",
+     "t": 18.77
+    },
+    {
+     "w": "from",
+     "t": 19.42
+    },
+    {
+     "w": "everywhere.",
+     "t": 19.77
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 6,
+   "s": 20.57,
+   "e": 23.07,
+   "ko": "",
+   "en": "Songs, stories, teachers,",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "Songs,",
+     "t": 20.7
+    },
+    {
+     "w": "stories,",
+     "t": 21.57
+    },
+    {
+     "w": "teachers,",
+     "t": 22.42
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 7,
+   "s": 23.07,
+   "e": 25.82,
+   "ko": "발음은 거기서 만들어져요.",
+   "en": "that's where the accent comes from.",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "that's",
+     "t": 23.3
+    },
+    {
+     "w": "where",
+     "t": 23.6
+    },
+    {
+     "w": "the",
+     "t": 23.82
+    },
+    {
+     "w": "accent",
+     "t": 24.07
+    },
+    {
+     "w": "comes",
+     "t": 25.12
+    },
+    {
+     "w": "from.",
+     "t": 25.44
+    }
+   ],
+   "kwords": []
+  },
+  {
+   "i": 8,
+   "s": 25.82,
+   "e": 29.17,
+   "ko": "부모에게서 받는 건 따로 있어요.",
+   "en": "What they get from you is different.",
+   "hi": "",
+   "demo": false,
+   "mark": true,
+   "onCam": true,
+   "words": [
+    {
+     "w": "What",
+     "t": 25.95
+    },
+    {
+     "w": "they",
+     "t": 26.16
+    },
+    {
+     "w": "get",
+     "t": 26.35
+    },
+    {
+     "w": "from",
+     "t": 26.54
+    },
+    {
+     "w": "you",
+     "t": 26.74
+    },
+    {
+     "w": "is",
+     "t": 26.97
+    },
+    {
+     "w": "different.",
+     "t": 27.22
+    }
+   ],
+   "kwords": []
+  }
+ ],
+ "events": [
+  {
+   "type": "pop",
+   "s": -0.6,
+   "e": 7.57,
+   "text": "아이 영어도 문제?",
+   "kicker": "내 영어 발음이 안 좋으면",
+   "slot": "hook",
+   "k": 0,
+   "size": 132,
+   "kickerSize": 80
+  },
+  {
+   "type": "punch",
+   "s": 0.0,
+   "e": 2.68,
+   "z": 1.1,
+   "shake": 0,
+   "hold": true
+  },
+  {
+   "type": "punch",
+   "s": 2.2799999999999994,
+   "e": 2.579999999999999,
+   "z": 1.07,
+   "shake": 8
+  },
+  {
+   "type": "flash",
+   "s": 2.73,
+   "e": 2.95
+  },
+  {
+   "type": "tag",
+   "s": 2.88,
+   "e": 7.57,
+   "name": "오늘의 질문",
+   "flags": "💬",
+   "role": "",
+   "pos": {
+    "left": 60,
+    "top": 1130
+   }
+  },
+  {
+   "type": "punch",
+   "s": 6.2,
+   "e": 7.470000000000001,
+   "z": 1.12,
+   "shake": 4,
+   "hold": true
+  },
+  {
+   "type": "badge",
+   "s": 7.57,
+   "e": 28.970000000000002,
+   "day": 31,
+   "docked": true
+  },
+  {
+   "type": "tag",
+   "s": 8.87,
+   "e": 13.57,
+   "name": "Mark T",
+   "flags": "🇬🇧",
+   "role": "영국인 선생님",
+   "playfair": true,
+   "pos": {
+    "left": 590,
+    "top": 330
+   }
+  },
+  {
+   "type": "burst",
+   "s": 9.42,
+   "e": 10.92,
+   "x": 540,
+   "y": 1000,
+   "emoji": [
+    "🇬🇧"
+   ],
+   "n": 16,
+   "size": 96
+  },
+  {
+   "type": "punch",
+   "s": 9.42,
+   "e": 9.67,
+   "z": 1.05,
+   "shake": 6
+  },
+  {
+   "type": "pop",
+   "s": 11.07,
+   "e": 13.57,
+   "text": "영어유치원 선생님 🏫",
+   "kicker": "🇰🇷 서울에서 여러 해",
+   "slot": "mid",
+   "k": 1
+  },
+  {
+   "type": "punch",
+   "s": 11.07,
+   "e": 11.32,
+   "z": 1.035,
+   "shake": 5
+  },
+  {
+   "type": "behind",
+   "ko": "절대 아니에요!",
+   "en": "발음 걱정?",
+   "size": 170,
+   "top": 215,
+   "s": 14.57,
+   "e": 16.57,
+   "k": 0,
+   "cream": true
+  },
+  {
+   "type": "pull",
+   "s": 14.450000000000001,
+   "e": 16.57,
+   "z": 0.74,
+   "bg": "#F5F0E6"
+  },
+  {
+   "type": "scatter",
+   "s": 18.3,
+   "e": 20.64,
+   "items": [
+    {
+     "e": "🎵",
+     "x": 640,
+     "y": 330,
+     "t": 18.3,
+     "size": 130
+    },
+    {
+     "e": "📺",
+     "x": 960,
+     "y": 660,
+     "t": 18.77,
+     "size": 130
+    },
+    {
+     "e": "🎧",
+     "x": 640,
+     "y": 820,
+     "t": 19.42,
+     "size": 130
+    },
+    {
+     "e": "📖",
+     "x": 950,
+     "y": 1010,
+     "t": 19.77,
+     "size": 130
+    },
+    {
+     "e": "🧸",
+     "x": 140,
+     "y": 1130,
+     "t": 19.97,
+     "size": 130
+    },
+    {
+     "e": "🎬",
+     "x": 800,
+     "y": 440,
+     "t": 20.14,
+     "size": 130
+    }
+   ]
+  },
+  {
+   "type": "list",
+   "s": 20.7,
+   "e": 25.74,
+   "top": 800,
+   "items": [
+    {
+     "emoji": "🎵",
+     "text": "노래",
+     "t": 20.7
+    },
+    {
+     "emoji": "📖",
+     "text": "이야기",
+     "t": 21.57
+    },
+    {
+     "emoji": "🧑‍🏫",
+     "text": "선생님",
+     "t": 22.42
+    }
+   ]
+  },
+  {
+   "type": "punch",
+   "s": 20.7,
+   "e": 20.919999999999998,
+   "z": 1.04,
+   "shake": 5
+  },
+  {
+   "type": "punch",
+   "s": 21.57,
+   "e": 21.79,
+   "z": 1.04,
+   "shake": 5
+  },
+  {
+   "type": "punch",
+   "s": 22.42,
+   "e": 22.64,
+   "z": 1.04,
+   "shake": 5
+  },
+  {
+   "type": "pop",
+   "s": 24.07,
+   "e": 25.74,
+   "text": "👆 아이 발음은 여기서!",
+   "kicker": "",
+   "slot": "low",
+   "k": 0,
+   "size": 84
+  },
+  {
+   "type": "punch",
+   "s": 24.07,
+   "e": 24.32,
+   "z": 1.035,
+   "shake": 5
+  },
+  {
+   "type": "behind",
+   "ko": "따로 있어요!",
+   "en": "부모가 주는 건",
+   "size": 190,
+   "top": 70,
+   "s": 26.22,
+   "e": 27.57,
+   "k": 1,
+   "cream": true
+  },
+  {
+   "type": "pull",
+   "s": 26.099999999999998,
+   "e": 27.57,
+   "z": 0.74,
+   "bg": "#F5F0E6"
+  },
+  {
+   "type": "pop",
+   "s": 27.72,
+   "e": 28.970000000000002,
+   "text": "그게 뭘까요? 🤫",
+   "kicker": "",
+   "slot": "mid",
+   "k": 0,
+   "size": 124
+  },
+  {
+   "type": "punch",
+   "s": 27.72,
+   "e": 28.92,
+   "z": 1.14,
+   "shake": 3,
+   "hold": true
+  },
+  {
+   "type": "end",
+   "s": 28.97,
+   "e": 34.17,
+   "l1": "팔로우하고",
+   "l2": "정답 확인해요! 👀",
+   "share": "💬 뭘까요? 댓글로 맞혀보세요"
+  }
+ ],
+ "zooms": [
+  {
+   "t": 0.0,
+   "z": 1.0
+  },
+  {
+   "t": 7.57,
+   "z": 1.07
+  },
+  {
+   "t": 8.82,
+   "z": 1.0
+  },
+  {
+   "t": 10.14,
+   "z": 1.07
+  },
+  {
+   "t": 13.64,
+   "z": 1.0
+  },
+  {
+   "t": 16.62,
+   "z": 1.07
+  },
+  {
+   "t": 20.57,
+   "z": 1.0
+  },
+  {
+   "t": 23.07,
+   "z": 1.07
+  },
+  {
+   "t": 25.82,
+   "z": 1.0
+  }
+ ],
+ "music": {
+  "dropouts": [
+   [
+    27.669999999999998,
+    28.97
+   ]
+  ],
+  "drops": [
+   28.97
+  ]
+ },
+ "slots": {
+  "mid": {
+   "left": 0,
+   "right": 0,
+   "top": 960,
+   "rot": -2
+  },
+  "hook": {
+   "left": 0,
+   "right": 0,
+   "top": 860,
+   "rot": -3
+  },
+  "low": {
+   "left": 0,
+   "right": 0,
+   "top": 1075,
+   "rot": 2
+  }
+ },
+ "scrim": true,
+ "look": "original",
+ "captionTop": 1250,
+ "sfx": [
+  {
+   "t": 2.28,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 2.43,
+   "sound": "scratch",
+   "gain": -7
+  },
+  {
+   "t": 2.73,
+   "sound": "whoosh",
+   "gain": -10
+  },
+  {
+   "t": 6.2,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 7.57,
+   "sound": "whoosh",
+   "gain": -13
+  },
+  {
+   "t": 9.42,
+   "sound": "sparkle",
+   "gain": -11
+  },
+  {
+   "t": 11.07,
+   "sound": "pop",
+   "gain": -9
+  },
+  {
+   "t": 14.42,
+   "sound": "whoosh",
+   "gain": -9
+  },
+  {
+   "t": 14.57,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 14.62,
+   "sound": "sparkle",
+   "gain": -13
+  },
+  {
+   "t": 18.3,
+   "sound": "pop",
+   "gain": -13
+  },
+  {
+   "t": 18.77,
+   "sound": "pop",
+   "gain": -13
+  },
+  {
+   "t": 19.42,
+   "sound": "pop",
+   "gain": -13
+  },
+  {
+   "t": 19.77,
+   "sound": "pop",
+   "gain": -13
+  },
+  {
+   "t": 19.97,
+   "sound": "pop",
+   "gain": -13
+  },
+  {
+   "t": 20.14,
+   "sound": "pop",
+   "gain": -13
+  },
+  {
+   "t": 20.7,
+   "sound": "pop",
+   "gain": -7
+  },
+  {
+   "t": 21.57,
+   "sound": "pop",
+   "gain": -7
+  },
+  {
+   "t": 22.42,
+   "sound": "pop",
+   "gain": -7
+  },
+  {
+   "t": 24.07,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 26.07,
+   "sound": "whoosh",
+   "gain": -9
+  },
+  {
+   "t": 26.22,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 26.27,
+   "sound": "sparkle",
+   "gain": -13
+  },
+  {
+   "t": 27.47,
+   "sound": "scratch",
+   "gain": -8
+  },
+  {
+   "t": 27.72,
+   "sound": "chime",
+   "gain": -9
+  },
+  {
+   "t": 28.97,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 29.17,
+   "sound": "sparkle",
+   "gain": -10
+  },
+  {
+   "t": 30.97,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 31.87,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 31.92,
+   "sound": "chime",
+   "gain": -9
+  }
+ ]
+}
