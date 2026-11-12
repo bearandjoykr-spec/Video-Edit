@@ -10,8 +10,8 @@ from edl import DAY, END, SPEECH_END, SCRIPT, PROG, PIC, LIVE_LINES  # noqa: E40
 FPS = 30
 TOTAL = round(SPEECH_END + END, 3)
 syl = lambda p: len(re.findall(r"[가-힣0-9]", p)) + 1.5 * len(re.findall(r"[A-Za-z']+", p))
-HI = ["한 번 더!", "딱 3권!", "첫 번째 책부터", "어디로", "My Mum, My Dad.", "짧은 문장", "자랑하는", "우리 엄마는?", "물어봐", "Caterpillar.",
-      "요일, 숫자, 음식", "한 권에", "손가락을 쏙", "읽어", "I Want My Hat Back.", "계속", "Have you seen my hat?", "따라 하는데요,", "직접 확인해",
+HI = ["한 번 더!", "딱 3권!", "어디로", "몇 번?", "숫자만", "My Mum, My Dad.", "짧은 문장", "자랑하는", "우리 엄마는?", "물어봐", "Caterpillar.",
+      "요일, 숫자, 음식이", "한 권에!", "손가락 쏙", "읽어", "I Want My Hat Back.", "계속", "Have you seen my hat?", "직접 확인하세요!",
       "저장해 두고", "친구에게", "보내"]
 # Books, numbered in the order they appear (Joy: no ranking). Info cards are the save-worthy part (age, key sentence, how to read it).
 BOOKS = {
@@ -60,15 +60,15 @@ def main():
     sfx = []
     add = lambda t, s, g: sfx.append({"t": round(max(0, t), 3), "sound": s, "gain": g})
     for k in range(3):  # hook: three mystery books thud in
-        add(0.25 + 0.4 * k, "impact", -9 - k)
-    add(1.6, "sparkle", -12)
+        add(0.25 + 0.35 * k, "impact", -9 - k)
+    add(1.4, "sparkle", -12)
     for t in PROG[1:]:
         add(t - 0.08, "whoosh", -15)
     for r in (3, 2, 1):
         rv = sc[f"reveal{r}"]
-        add(rv["s"], "boing", -10); add(rv["s"] + 0.5, "impact", -6); add(rv["s"] + 0.55, "sparkle", -10)
+        add(rv["s"], "boing", -10); add(rv["s"] + 0.3, "impact", -6); add(rv["s"] + 0.35, "sparkle", -10)
         bk = sc[f"book{r}"]
-        add(bk["e"] - 3.6, "pop", -9)  # info card
+        add(bk["e"] - 3.4, "pop", -9)  # info card
     add(sc["summary"]["s"] + 0.1, "chime", -9)
     add(live[0]["s"] - 0.1, "pop", -12); add(live[1]["s"] - 0.1, "pop", -12)
     add(SCRIPT[-1][0], "boing", -10)  # "다음엔 어디로 갈까요?"

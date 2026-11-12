@@ -80,7 +80,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
   const cap = plan.captions.find((c) => t >= c.s && t < c.e);
   const dark = name === 'hook' ? .55 : name.startsWith('reveal') ? .62 : name === 'summary' ? 0 : 0;
   // a quick punch-in on every scene change
-  const punch = interpolate(local, [0, .3], [1.08, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const punch = interpolate(local, [0, .3], [1.08, 1], {...clamp, easing: Easing.out(Easing.cubic)}) * (1 + .05 * Math.min(1, local / Math.max(1, sc.e - sc.s)));
   const rank = name.startsWith('reveal') || name.startsWith('book') ? Number(name.slice(-1)) : 0;
   const book = rank ? plan.books[String(rank)] : undefined;
   return (
@@ -97,7 +97,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         return (
           <>
             <div style={{position: 'absolute', top: 300, left: 40, right: 40, textAlign: 'center', transform: `scale(${.85 + .15 * hk})`, opacity: hk}}>
-              <div style={{fontWeight: 800, fontSize: 50, color: C.white, textShadow: SHADOW}}>📌 서점 가기 전 저장 필수</div>
+              <div style={{fontWeight: 800, fontSize: 48, color: C.white, textShadow: SHADOW}}>📌 끝에 저장용 정리 카드 있어요</div>
               <div style={{fontWeight: 900, fontSize: 104, lineHeight: 1.12, color: C.white, textShadow: SHADOW, marginTop: 14, letterSpacing: '-.03em'}}>
                 아이가 <span style={{color: C.yellow}}>"한 번 더!"</span><br />외치는 영어 그림책</div>
             </div>
@@ -117,8 +117,8 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         );
       })() : null}
 
-      {/* Joy's intro tag */}
-      {name === 'joy' ? (() => {
+      {/* Joy's tag: on the first book (the entrance shot was cut for pace) */}
+      {name === 'book1' && local < 2.6 ? (() => {
         const p = sp(t, sc.s + .1, fps, 13);
         return (
           <div style={{position: 'absolute', left: 50, top: 1130, display: 'flex', alignItems: 'center', gap: 16, background: 'rgba(30,45,77,.9)', borderRadius: 999,
@@ -133,7 +133,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
       {/* REVEAL: rank slams in, the "?" card flips to the cover */}
       {name.startsWith('reveal') && book ? (() => {
         const r = sp(t, sc.s, fps, 8);
-        const flip = interpolate(local, [.45, .85], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+        const flip = interpolate(local, [.22, .55], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
         return (
           <>
             <div style={{position: 'absolute', top: 330, left: 0, right: 0, textAlign: 'center', fontWeight: 900, fontSize: 280, color: C.yellow, lineHeight: 1,
@@ -148,7 +148,7 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
       {/* BOOK: title strip, then the save card in the last 3.6 s */}
       {name.startsWith('book') && book ? (() => {
         const p = sp(t, sc.s, fps, 12);
-        const cardAt = sc.e - 3.6;
+        const cardAt = sc.e - 3.4;
         const k = sp(t, cardAt, fps, 12);
         return (
           <>
@@ -210,8 +210,11 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
                 );
               })}
             </div>
+            {/* comment bait: lying-down viewers can still type one number */}
+            <div style={{marginTop: 26, fontWeight: 900, fontSize: 50, color: C.navy, opacity: sp(t, sc.s + .9, fps, 12),
+              transform: `scale(${.8 + .2 * sp(t, sc.s + .9, fps, 8)})`}}>💬 우리 아이는 몇 번? <span style={{color: '#C0392B'}}>댓글로 숫자만!</span></div>
             {/* Joy: the bottom looked empty, so the Bear & Joy logo sits at the bottom centre */}
-            <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', bottom: 400, left: '50%', width: 340, transform: `translateX(-50%) scale(${.8 + .2 * sp(t, sc.s + 1, fps, 12)})`, opacity: sp(t, sc.s + 1, fps, 12)}} />
+            <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', bottom: 330, left: '50%', width: 290, transform: `translateX(-50%) scale(${.8 + .2 * sp(t, sc.s + 1, fps, 12)})`, opacity: sp(t, sc.s + 1, fps, 12)}} />
           </AbsoluteFill>
         );
       })() : null}
@@ -225,9 +228,9 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
       {cap && !['hook', 'summary', 'end'].includes(name) && t < plan.next.s ? <Caption c={cap} t={t} /> : null}
 
       {/* live lines: Mark's question at the start, Joy's answer at the end (their own voices) */}
-      {plan.live.map((l, i) => (t >= l.s - .1 && t < l.e + .3 ? (() => {
+      {plan.live.map((l, i) => (t >= l.s - .1 && t < l.e ? (() => {
         const p = sp(t, l.s - .1, fps, 12);
-        const o = interpolate(t, [l.e, l.e + .3], [1, 0], clamp);
+        const o = interpolate(t, [l.e - .2, l.e], [1, 0], clamp); // gone before the next caption
         const mark = l.who === 'mark';
         return (
           <div key={i} style={{position: 'absolute', left: 60, right: 60, top: 1180, textAlign: 'center', opacity: Math.min(1, p * 2) * o, transform: `translateY(${(1 - p) * 30}px)`}}>
@@ -246,6 +249,19 @@ export const JoyTop3Reel: React.FC<{plan: Top3Plan}> = ({plan}) => {
         const p = sp(t, plan.next.s, fps, 8);
         return <div style={{position: 'absolute', top: 1250, left: 40, right: 40, textAlign: 'center', fontWeight: 900, fontSize: 84, whiteSpace: 'nowrap', color: C.yellow, textShadow: SHADOW,
           transform: `scale(${.6 + .4 * p}) rotate(${(1 - p) * -6}deg)`, opacity: Math.min(1, p * 2)}}>{plan.next.text}</div>;
+      })() : null}
+
+      {/* progress bar: the bear walks along the top so viewers see the end is near */}
+      {t < plan.speechEnd ? (() => {
+        const p = Math.min(1, t / plan.speechEnd);
+        const hop = Math.abs(Math.sin(t * 9)) * 6;
+        return (
+          <>
+            <div style={{position: 'absolute', top: 64, left: 40, right: 40, height: 10, borderRadius: 5, background: 'rgba(255,255,255,.3)'}} />
+            <div style={{position: 'absolute', top: 64, left: 40, width: 1000 * p, height: 10, borderRadius: 5, background: C.yellow}} />
+            <Img src={staticFile('brand/bear-butterfly.png')} style={{position: 'absolute', top: 14 - hop, left: 40 + 1000 * p - 30, width: 64, filter: 'drop-shadow(0 3px 6px rgba(0,0,0,.35))'}} />
+          </>
+        );
       })() : null}
 
       {/* END: follow card */}
