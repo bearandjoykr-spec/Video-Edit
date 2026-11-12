@@ -13,7 +13,7 @@ All times below are SOURCE seconds in work/src.mov unless they say "out".
 import json, math, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-FPS, DAY, END = 30, 31, 5.0   # DAY: waiting for the owner to confirm the number
+FPS, DAY, END = 30, 29, 5.0   # owner, 12 Nov 2026: "29", posted 13 Nov
 
 COLD = (13.72, 16.45)                       # "And I promise you, it will not."
 BODY = [(1.78, 6.62), (7.55, 29.15)]        # "Mark Teacher! ...문제가 될까요?" | (pause cut) | the answer to the end of the take

@@ -5,7 +5,7 @@
  "duration": 34.17,
  "frames": 1026,
  "speechEnd": 29.17,
- "day": 31,
+ "day": 29,
  "segments": [
   {
    "src_s": 13.72,
@@ -404,7 +404,7 @@
    "type": "badge",
    "s": 7.57,
    "e": 28.970000000000002,
-   "day": 31,
+   "day": 29,
    "docked": true
   },
   {
