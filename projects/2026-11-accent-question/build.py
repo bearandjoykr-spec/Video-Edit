@@ -32,7 +32,7 @@ for ln in open(f"{HERE}/words-en.txt", encoding="utf8"):
 # Korean drafted by Claude (the owner has not supplied translations); Mark's British "mummy" kept as 엄마.
 LINES = [
     (5.95, 7.30, "전 영국인이에요."),
-    (7.30, 9.85, "서울 영어유치원에서 가르쳤어요."),
+    (7.30, 9.85, "서울 영어 유아학원에서 가르쳤어요."),  # owner, 12 Nov: in Korea it is called 영어 유아학원
     (9.85, 12.75, "장담하는데, 절대 아니에요."),
     (12.85, 15.90, "아이는 영어를 사방에서 들어요."),
     (15.90, 18.55, "노래, 이야기, 선생님."),
@@ -117,7 +117,7 @@ def build(name="main"):
     ev.append({"type": "tag", "s": o(6.30), "e": o(9.80), "name": "Mark T", "flags": "🇬🇧", "role": "영국인 선생님", "playfair": True, "pos": {"left": 590, "top": 330}})
     ev.append({"type": "burst", "s": br, "e": br + 1.5, "x": 540, "y": 1000, "emoji": ["🇬🇧"], "n": 16, "size": 96})
     add(br, "sparkle", -11); ev.append({"type": "punch", "s": br, "e": br + 0.25, "z": 1.05, "shake": 6})
-    pop(wt("kindergarten"), o(9.80), "영어유치원 선생님 🏫", "🇰🇷 서울에서", k=1)
+    pop(wt("kindergarten"), o(9.80), "영어 유아학원 선생님 🏫", "🇰🇷 서울에서", k=1)
     behind(wt("promise", 10), o(12.75), "발음 걱정?", "절대 아니에요!", 170, 215, 0)
 
     # "hears English from everywhere": emoji pop up around him (clear of his face), then the three sources land as a list
@@ -157,9 +157,14 @@ def build(name="main"):
         add(g["out_s"] - 0.05, "whoosh", -15)   # jump cuts
     total = round(speech_end + END, 3)
     es = round(speech_end - 0.2, 3)
-    ev.append({"type": "end", "s": es, "e": total, "share": "💌 발음 걱정하는 엄마 아빠에게 보내주세요"})
+    # owner, 12 Nov: a powerful CTA that gets the follow and sends people to the link in the bio.
+    # Follow is tapped early (1.2 s / 1.8 s), then the link card bounces in at 2.4 s with a hand pointing up to the profile.
+    ev.append({"type": "end", "s": es, "e": total, "l1": "팔로우하고", "l2": "DAY 30도 같이! 🔥", "tap1": 1.2, "tap2": 1.8,
+               "link": "🔗 프로필 링크 확인!", "linkSub": "🎁 무료 체험 신청은 프로필 링크에서", "linkAt": 2.4,
+               "share": "💌 발음 걱정하는 엄마 아빠에게 보내주세요"})
     add(es, "impact", -8); add(speech_end, "sparkle", -10)
-    add(es + 2.0, "pop", -6); add(es + 2.9, "pop", -6); add(es + 2.95, "chime", -9)   # end-card follow taps
+    add(es + 1.2, "pop", -6); add(es + 1.8, "pop", -6); add(es + 1.85, "chime", -9)   # end-card follow taps
+    add(es + 2.35, "whoosh", -10); add(es + 2.4, "boing", -8)                         # link card
     # owner, 12 Nov 2026: "use the drop for the big reveal". The beat cuts out on 그게 뭘까요? and the track's drop
     # (lofi-hip-hop-578608.mp3 at 109.10 s, after its breakdown) hits on the first answer, 😌 안 무서워 ("English is safe").
     reveal = gifts[0][2]
@@ -171,7 +176,8 @@ def build(name="main"):
     plan = {"name": f"accentq-{name}", "media": f"accentq/{name}", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
             "day": DAY, "segments": segs, "captions": C, "events": ev, "zooms": zooms, "music": music,
             "slots": SLOTS, "scrim": True, "look": "original",  # the DJI picture is already vivid; the v2 grade turned skin orange
-            "captionTop": CAPTION_TOP, "sfx": sorted(sfx, key=lambda x: x["t"])}
+            "captionTop": CAPTION_TOP, "joyRanges": [[segs[1]["out_s"], q_end]],  # Joy's question, softened in voice.py (owner, 12 Nov)
+            "sfx": sorted(sfx, key=lambda x: x["t"])}
     os.makedirs(f"{HERE}/versions/{name}", exist_ok=True)
     json.dump(plan, open(f"{HERE}/versions/{name}/timeline_v2.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"{name}: {total:.1f}s ({speech_end:.1f}s speech), {len(C)} captions, {sum(e['type'] == 'pop' for e in ev)} pops, {len(sfx)} sfx")

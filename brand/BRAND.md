@@ -132,3 +132,9 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Series label (owner, 11 Nov 2026):** these Harry Potter/Christmas reels are a new series, "Christmas Countdown · 크리스마스 카운트다운 · D-n", where n = days from the posting date to 25 Dec (Day 29 posts 12 Nov → D-43). It replaces "DAY N · 출간까지 매일 업로드" on these videos.
 - **Caption type for this series:** IM Fell English (storybook serif) for English captions and subtitles, Gowun Batang 700 for Korean; words light up gold with a golden snitch hopping on the spoken word. Harry P font for titles, countdown numbers and film lines.
 - **Engagement:** end card asks parents to comment their favourite Harry Potter phrase; "Is your English ready?" stays in English.
+
+## Day 29 reel feedback (owner, 12 Nov 2026) — Mark answers "내 영어 발음이 안 좋으면 아이 영어도 문제?"
+- **Korean wording:** when Mark says "English kindergarten", the Korean caption says **영어 유아학원** (the name used in Korea), not 영어유치원.
+- **Joy's off-camera question:** her mic was very close, so the voice was piercing. Soften it (cut 2–6 kHz and the top end, de-ess) and set it about 1.5 dB under Mark (`projects/2026-11-accent-question/voice.py`).
+- **Music:** the owner supplies the track and asked to "use the drop for the big reveal": mute the beat on the question beat (그게 뭘까요?) and line the track's drop up with the answer. Find the drop with librosa (bass returning after a breakdown) and offset the track to it.
+- **CTA:** the end card must push hard for the follow and send people to the link in the bio: "팔로우하고 / DAY N+1도 같이! 🔥", the follow button tapped early (1.2 s / 1.8 s), then a big butter-yellow card "🔗 프로필 링크 확인!" + "🎁 무료 체험 신청은 프로필 링크에서" with a ☝️ pointing up to the profile, then the share line. It replaces the Kakao pill on these reels. Put the link line near the top of the post caption too.

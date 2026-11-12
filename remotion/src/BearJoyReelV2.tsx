@@ -394,11 +394,14 @@ const EndV2: React.FC<{ev: Ev; t: number; fps: number; day: number}> = ({ev, t, 
   const sp = (d: number, damping = 11) => spring({frame: Math.round((t - ev.s - d) * fps), fps, config: {damping, stiffness: 170}});
   const top = sp(0.15), small = sp(0.4), l1 = sp(0.6, 9), l2 = sp(0.8, 9), btn = sp(1.1, 8), kakao = sp(1.5);
   // the hand taps the follow button twice; on the second tap it flips to "following"
-  const tap1 = ev.short ? 1e9 : ev.s + 2.0, tap2 = ev.short ? 1e9 : ev.s + 2.9;
+  const tap1 = ev.short ? 1e9 : ev.s + (ev.tap1 ?? 2.0), tap2 = ev.short ? 1e9 : ev.s + (ev.tap2 ?? 2.9);
   const press = (tt: number) => interpolate(t, [tt - 0.06, tt, tt + 0.16], [0, 1, 0], clamp);
   const pressed = Math.max(press(tap1), press(tap2));
   const following = t >= tap2;
-  const handIn = ev.short ? 0 : interpolate(t, [ev.s + 1.5, ev.s + 1.85], [0, 1], {...clamp, easing: Easing.out(Easing.back(1.6))});
+  const handIn = ev.short ? 0 : interpolate(t, [tap1 - 0.5, tap1 - 0.15], [0, 1], {...clamp, easing: Easing.out(Easing.back(1.6))});
+  // link-in-bio card (owner, DAY 29): bounces in after the follow tap, with a hand pointing up to the profile
+  const link = ev.link ? sp(ev.linkAt ?? 2.4, 8) : 0;
+  const linkPulse = 1 + 0.04 * Math.sin((t - ev.s) * 8);
   const handY = (1 - handIn) * 160 + pressed * 18;
   const pulse = following ? 1 : 1 + 0.035 * Math.sin((t - ev.s) * 7);
   return (
@@ -418,10 +421,21 @@ const EndV2: React.FC<{ev: Ev; t: number; fps: number; day: number}> = ({ev, t, 
           background: following ? C.white : C.blue, color: C.ink, boxShadow: '0 16px 40px rgba(0,0,0,.35)'}}>{following ? '팔로잉 ✓' : '＋ 팔로우'}</div>
         <div style={{position: 'absolute', right: -40, top: 60, fontSize: 120, opacity: handIn, transform: `translateY(${handY}px) rotate(-12deg)`}}>👆</div>
       </div>
-      {ev.share ? <div style={{fontWeight: 800, fontSize: 46, color: C.white, marginTop: 34, opacity: kakao, textShadow: stroke(8),
+      {ev.share && !ev.link ? <div style={{fontWeight: 800, fontSize: 46, color: C.white, marginTop: 34, opacity: kakao, textShadow: stroke(8),
         transform: `translateY(${(1 - kakao) * 16}px)`}}>{ev.share}</div> : null}
       <div style={{fontWeight: 700, fontSize: 34, background: C.kakao, color: '#191600', padding: '18px 38px', borderRadius: 999, marginTop: 40,
-        opacity: kakao, transform: `scale(${0.9 + 0.1 * kakao})`}}>카카오톡 채널 추가하기</div>
+        opacity: kakao, transform: `scale(${0.9 + 0.1 * kakao})`, display: ev.link ? 'none' : undefined}}>카카오톡 채널 추가하기</div>
+      {ev.link ? (
+        <div style={{position: 'relative', marginTop: 40, opacity: Math.min(1, link * 2), transform: `scale(${link * linkPulse}) rotate(-1.5deg)`}}>
+          <div style={{background: C.yellow, color: C.ink, borderRadius: 40, padding: '30px 56px 28px', boxShadow: '0 18px 44px rgba(0,0,0,.4)', display: 'grid', gap: 8}}>
+            <div style={{fontWeight: 900, fontSize: 88, lineHeight: 1, letterSpacing: '-0.03em', whiteSpace: 'nowrap'}}>{ev.link}</div>
+            {ev.linkSub ? <div style={{fontWeight: 800, fontSize: 44, lineHeight: 1.2, whiteSpace: 'nowrap'}}>{ev.linkSub}</div> : null}
+          </div>
+          <div style={{position: 'absolute', left: -78, top: -30, fontSize: 104, fontFamily: EMOJI,
+            transform: `translateY(${-Math.abs(Math.sin((t - ev.s) * 6)) * 26}px) rotate(-14deg)`}}>☝️</div>
+        </div>
+      ) : null}
+      {ev.share && ev.link ? <div style={{fontWeight: 800, fontSize: 42, color: C.white, marginTop: 34, opacity: link, textShadow: stroke(8)}}>{ev.share}</div> : null}
     </AbsoluteFill>
   );
 };
