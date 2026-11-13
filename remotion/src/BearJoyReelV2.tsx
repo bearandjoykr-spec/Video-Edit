@@ -18,7 +18,8 @@ export type PlanV2 = {
   media?: string;
   scrim?: boolean; // dark gradient behind the lower half, for light clothing or bright backgrounds
   slots?: Record<string, {left?: number; right?: number; top: number; rot: number}>; tagPos?: {left: number; top: number}; captionTop?: number;
-  look?: 'original'; // Joy, Day 28: keep the camera's own colours (no grade, grain or vignette)
+  look?: 'original';
+  camOrigin?: string; // where the camera zooms in (a wide shot of a seated speaker sits lower in the frame) // Joy, Day 28: keep the camera's own colours (no grade, grain or vignette)
 };
 
 const C = {navy: '#1E2D4D', ink: '#14203A', yellow: '#F6F0BA', blue: '#AECCE6', gold: '#C9A84C', cream: '#F5F0E6', white: '#FFFFFF', kakao: '#FEE500'};
@@ -89,7 +90,11 @@ const cameraAt = (plan: PlanV2, t: number) => {
 const Hi: React.FC<{text: string; hi: string; pop: number}> = ({text, hi, pop}) => {
   const i = hi ? text.indexOf(hi) : -1;
   if (i < 0) return <>{text}</>;
-  return <>{text.slice(0, i)}<span style={{color: C.yellow, display: 'inline-block', transform: `scale(${pop})`}}>{hi}</span>{text.slice(i + hi.length)}</>;
+  // keep the spaces around the highlighted word (an inline-block next to a plain space can swallow it)
+  const pre = text.slice(0, i), post = text.slice(i + hi.length);
+  return <>{pre.replace(/ $/, '')}<span style={{color: C.yellow, display: 'inline-block', transform: `scale(${pop})`,
+    // the pop scales the word from its centre, so the gap grows with it
+    marginLeft: pre.endsWith(' ') ? `${0.28 + (pop - 1) * hi.length * 0.5}em` : 0, marginRight: post.startsWith(' ') ? `${0.28 + (pop - 1) * hi.length * 0.5}em` : 0}}>{hi}</span>{post.replace(/^ /, '')}</>;
 };
 
 const CaptionV2: React.FC<{c: Caption; t: number; fps: number; top?: number}> = ({c, t, fps, top = 1170}) => {
@@ -338,6 +343,40 @@ const Wind: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   );
 };
 
+
+// A report card (Mark, "no grade below a B"): it slides in with a red C, then a B stamp slams over it.
+const Grades: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const p = usePop(t, ev.s, ev.e, fps);
+  const st = spring({frame: Math.round((t - ev.stampAt) * fps), fps, config: {damping: 9, stiffness: 220, mass: 0.6}});
+  const stamped = t >= ev.stampAt;
+  const row = (label: string, g: string, k: number) => (
+    <div key={k} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 0', borderTop: k ? '2px dashed rgba(30,45,77,.18)' : 'none'}}>
+      <span style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, color: C.navy}}>{label}</span>
+      <span style={{position: 'relative', fontFamily: PRE, fontWeight: 900, fontSize: 64, color: '#C0392B', width: 90, textAlign: 'center'}}>
+        <span style={{opacity: stamped ? 0.35 : 1, textDecoration: stamped ? 'line-through' : 'none'}}>{g}</span>
+        {stamped ? <span style={{position: 'absolute', left: 0, right: 0, top: -6, color: '#1F7A4D', transform: `scale(${2.2 - 1.2 * st}) rotate(-12deg)`, opacity: Math.min(1, st * 2)}}>B</span> : null}
+      </span>
+    </div>
+  );
+  return (
+    <div style={{position: 'absolute', left: 170, right: 170, top: 330, background: '#FFFDF6', borderRadius: 28, padding: '26px 40px 18px',
+      boxShadow: '0 24px 60px rgba(0,0,0,.35)', opacity: p.opacity, transform: `translateY(${(1 - p.scale) * 120}px) rotate(-3deg) scale(${0.9 + 0.1 * p.scale})`}}>
+      <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 40, color: C.navy, textAlign: 'center', marginBottom: 6}}>📋 성적표 REPORT CARD</div>
+      {[['Speaking', 'C'], ['Reading', 'C'], ['Writing', 'D']].map(([l, g], k) => row(l, g, k))}
+      {stamped ? <div style={{position: 'absolute', right: -30, bottom: -40, fontFamily: PRE, fontWeight: 900, fontSize: 46, color: '#fff', background: '#C0392B',
+        borderRadius: 16, padding: '8px 22px', transform: `rotate(8deg) scale(${st})`}}>B 아래는 없어요?!</div> : null}
+    </div>
+  );
+};
+
+// A small standing note (e.g. "※ 개인 경험담") under the badge.
+const Note: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+  const o = interpolate(t, [ev.s, ev.s + 0.3, ev.e - 0.3, ev.e], [0, 1, 1, 0], clamp);
+  return <div style={{position: 'absolute', top: 1235, left: 0, right: 0, textAlign: 'center', opacity: o}}>
+    <span style={{fontFamily: PRE, fontWeight: 700, fontSize: 30, color: C.white, background: 'rgba(20,32,58,.6)', borderRadius: 999, padding: '8px 22px'}}>{ev.text}</span>
+  </div>;
+};
+
 // A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
 const List: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const out = interpolate(t, [ev.e - 0.15, ev.e], [1, 0], clamp);
@@ -493,7 +532,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
   const end = E('end')[0];
   const live = (e: Ev, pad = 0.2) => t >= e.s - 0.05 && t <= e.e + pad;
   const cap = plan.captions.find((c) => t >= c.s && t < c.e);
-  const camStyle: React.CSSProperties = {position: 'absolute', inset: 0, transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})`, transformOrigin: '50% 36%'};
+  const camStyle: React.CSSProperties = {position: 'absolute', inset: 0, transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})`, transformOrigin: plan.camOrigin ?? '50% 36%'};
   const orig = plan.look === 'original';
   const grade = orig ? 'none' : GRADE;
   const vid: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: grade};
@@ -535,6 +574,8 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('list').map((ev, k) => (live(ev) ? <List key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('scatter').map((ev, k) => (live(ev) ? <Scatter key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('burst').map((ev, k) => (t >= ev.s && t <= ev.e ? <Burst key={k} ev={ev} t={t} /> : null))}
+      {E('grades').map((ev, k) => (live(ev) ? <Grades key={k} ev={ev} t={t} fps={fps} /> : null))}
+      {E('note').map((ev, k) => (t >= ev.s && t <= ev.e ? <Note key={k} ev={ev} t={t} /> : null))}
       {E('leaves').map((ev, k) => (t >= ev.s && t <= ev.e ? <Leaves key={k} ev={ev} t={t} /> : null))}
       {E('wind').map((ev, k) => (t >= ev.s && t <= ev.e ? <Wind key={k} ev={ev} t={t} /> : null))}
       {E('follow').map((ev, k) => (live(ev) ? <FollowNow key={k} ev={ev} t={t} fps={fps} /> : null))}
