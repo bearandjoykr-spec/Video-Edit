@@ -138,3 +138,10 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Joy's off-camera question:** her mic was very close, so the voice was piercing. Soften it (cut 2–6 kHz and the top end, de-ess) and set it about 1.5 dB under Mark (`projects/2026-11-accent-question/voice.py`).
 - **Music:** the owner supplies the track and asked to "use the drop for the big reveal": mute the beat on the question beat (그게 뭘까요?) and line the track's drop up with the answer. Find the drop with librosa (bass returning after a breakdown) and offset the track to it.
 - **CTA:** the end card must push hard for the follow and send people to the link in the bio: "팔로우하고 / DAY N+1도 같이! 🔥", the follow button tapped early (1.2 s / 1.8 s), then a big butter-yellow card "🔗 프로필 링크 확인!" + "🎁 무료 체험 신청은 프로필 링크에서" with a ☝️ pointing up to the profile, then the share line. It replaces the Kakao pill on these reels. Put the link line near the top of the post caption too.
+
+## Sensitive topics: Mark's 영유 interview (Joy, 13 Nov 2026)
+- Goal is empathy, not accusation: the message is "test scores are not everything; English should be learned happily, without pressure".
+- Say "영유" on screen; first caption mention "유아 영어학원(영유)" (they are hagwons, not kindergartens). Hashtags #영유 #영어유치원.
+- Keep the speaker's own disclaimer and a standing "※ 개인 경험담" note on sharp claims. Lead with a shared feeling ("영유 성적표, 그게 전부일까요?"), not the sharpest accusation.
+- Tone in two steps: calm white pops without playful emoji while the problem is named; warm brand colours from the positive turn; end on a cream message card and an empathy question for comments.
+- Mark's tag for this kind of video: "20년 이상 교육 경력 · 한국·일본 등 여러 나라".

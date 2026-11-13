@@ -210,7 +210,7 @@ const Pop: React.FC<{ev: Ev; t: number; fps: number; slots?: PlanV2['slots']}> =
     <div style={{position: 'absolute', ...pos, display: 'flex', justifyContent: centered ? 'center' : undefined, opacity: p.opacity}}>
       <div style={{transform: `scale(${p.scale}) rotate(${(rot + wobble) * 0.3}deg)`, textAlign: 'center', display: 'grid', justifyItems: 'center', gap: 4}}>
         {ev.kicker ? <div style={{fontFamily: PRE, fontWeight: 700, fontSize: ev.kickerSize ?? (ev.size ? 62 : 50), color: C.white, textShadow: stroke(10)}}>{ev.kicker}</div> : null}
-        <div style={{color: PASTEL[ev.k % 2], fontFamily: PRE, fontWeight: 900, fontSize: ev.size ?? (ev.text.length > 12 ? 80 : 92),
+        <div style={{color: ev.color ?? PASTEL[ev.k % 2], fontFamily: PRE, fontWeight: 900, fontSize: ev.size ?? (ev.text.length > 12 ? 80 : 92),
           lineHeight: 1.05, letterSpacing: '-0.03em', textShadow: stroke(14), whiteSpace: 'nowrap'}}>{ev.text}</div>
       </div>
     </div>
@@ -375,6 +375,24 @@ const Note: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   return <div style={{position: 'absolute', top: 1235, left: 0, right: 0, textAlign: 'center', opacity: o}}>
     <span style={{fontFamily: PRE, fontWeight: 700, fontSize: 30, color: C.white, background: 'rgba(20,32,58,.6)', borderRadius: 999, padding: '8px 22px'}}>{ev.text}</span>
   </div>;
+};
+
+
+// A closing message card (Mark interview, Joy: "what really matters"): cream page, the brand bear, one line to remember.
+const MessageCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const k = (d: number) => spring({frame: Math.round((t - ev.s - d) * fps), fps, config: {damping: 13, stiffness: 160}});
+  const o = interpolate(t, [ev.s, ev.s + 0.3, ev.e - 0.25, ev.e], [0, 1, 1, 0], clamp);
+  return (
+    <AbsoluteFill style={{background: C.cream, opacity: o, alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
+      <Img src={staticFile('brand/bear-butterfly.png')} style={{width: 300, transform: `scale(${k(0)})`}} />
+      <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 96, lineHeight: 1.18, color: '#173B5C', marginTop: 40, letterSpacing: '-0.03em',
+        transform: `translateY(${(1 - k(0.2)) * 30}px)`, opacity: k(0.2)}}>
+        {ev.line1}<br /><span style={{background: `linear-gradient(transparent 60%, ${C.yellow} 60%)`}}>{ev.line2}</span></div>
+      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 46, color: '#55607A', marginTop: 36, opacity: k(0.6)}}>{ev.small}</div>
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 48, color: '#173B5C', marginTop: 80, background: '#fff', borderRadius: 999, padding: '20px 44px',
+        boxShadow: '0 10px 26px rgba(30,45,77,.12)', transform: `scale(${0.8 + 0.2 * k(1.1)})`, opacity: k(1.1)}}>{ev.ask}</div>
+    </AbsoluteFill>
+  );
 };
 
 // A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
@@ -583,6 +601,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {cap && !cap.demo && !cap.mark && t < end.s ? <CaptionV2 c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
       {cap && cap.mark && t < end.s ? <MarkCaption c={cap} t={t} fps={fps} top={plan.captionTop} /> : null}
       {E('badge').map((ev, k) => (t <= ev.e && (!ev.docked || t >= ev.s) ? <Badge key={k} ev={ev} t={t} fps={fps} /> : null))}
+      {E('message').map((ev, k) => (t >= ev.s && t <= ev.e ? <MessageCard key={k} ev={ev} t={t} fps={fps} /> : null))}
       {t >= end.s ? <EndV2 ev={end} t={t} fps={fps} day={plan.day} /> : null}
       {E('flash').map((ev, k) => (t >= ev.s - 0.04 && t <= ev.e ? <AbsoluteFill key={k} style={{background: '#fff',
         opacity: interpolate(t, [ev.s - 0.04, ev.s, ev.e], [0, 0.85, 0], clamp)}} /> : null))}

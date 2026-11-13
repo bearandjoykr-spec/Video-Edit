@@ -12,13 +12,15 @@ sys.path.insert(0, os.path.join(HERE, "..", "2026-11-confidence"))
 from build_timeline import load_db, snap  # noqa: E402
 
 FPS, DAY, END = 30, 33, 5.0  # DAY: confirm with Joy
+MSG = 3.6  # closing message card before the follow end card
+# v2 (Joy, 13 Nov 2026): the goal is empathy, not accusation. Message: test scores are not everything; English should be
+# learned happily, without pressure. Hook on "tests and tests and tests", "영유" wording, calm first half, warm turn.
 # (src_s, src_e, role)
 CUTS = [
-    (115.20, 121.40, "cold"),   # ...kindergartens will falsify the test results in order to keep your business.
+    (34.05, 40.60, "cold"),     # In the kindergartens that I've worked in, tests and tests and tests.
     (5.45, 8.20, "q"),          # Q (off camera): What's the biggest problem of 영유?
     (16.30, 18.70, "a"),        # And in my 20 years as a teacher,
     (22.90, 28.20, "a"),        # I would have to say the biggest problem is pressure.
-    (34.05, 40.60, "a"),        # In the kindergartens that I've worked in, tests and tests and tests.
     (52.95, 63.10, "a"),        # The top universities in the world do not want a child that has been tested all their child life.
     (72.45, 89.40, "a"),        # My kindergarten refused to give a child anything below a B... pull their child out
     (104.60, 112.70, "a"),      # But the results are faked... In the end, this is a business.
@@ -27,32 +29,32 @@ CUTS = [
     (196.00, 204.70, "a"),      # Again, I must state that this is just my experience. This is not all kindergartens.
     (224.55, 235.10, "a"),      # Please look to yourself, look to your child, make an honest decision, keep it fun, keep it happy.
 ]
-# Korean captions in SOURCE time (s, e, text). " / " = page break.
+# Korean captions in SOURCE time (s, e, text). " / " = page break. "유아 영어학원(영유)" on first mention, then "영유".
 LINES = [
-    (115.20, 121.40, "유치원이 원생을 놓치지 않으려고 / 시험 결과를 조작하기도 한다는 걸 / 아셔야 해요."),
+    (34.05, 40.60, "제가 일했던 유아 영어학원(영유)은 / 시험, 시험, 또 시험이었어요."),
     (5.45, 8.20, "Q. 영유의 가장 큰 문제는 뭔가요?"),
     (16.30, 18.70, "20년 동안 교사로 일하면서"),
     (22.90, 28.20, "가장 큰 문제는 / '압박'이라고 생각해요."),
-    (34.05, 40.60, "제가 일했던 유치원들은 / 시험, 시험, 또 시험이었어요."),
     (52.95, 63.10, "세계 최고의 대학들은 / 어릴 때부터 시험만 보며 자란 아이를 / 원하지 않아요."),
-    (72.45, 89.40, "예를 들어, 제가 있던 유치원은 / 아이에게 B 아래 점수를 / 절대 주지 않았어요. / 부모님이 아이를 / 다른 곳으로 옮길까 봐서요."),
-    (104.60, 112.70, "결과를 꾸며서라도 / 아이를 붙잡아 두는 거죠. / 결국 이건 비즈니스예요."),
+    (72.45, 89.40, "예를 들어, 제가 있던 영유는 / 아이에게 B 아래 점수를 / 절대 주지 않았어요. / 부모님이 아이를 / 다른 곳으로 옮길까 봐서요."),
+    (104.60, 112.70, "결과가 실제보다 좋게 나오는 거죠. / 아이를 계속 다니게 하려고요. / 결국 이건 비즈니스예요."),
     (121.45, 126.10, "그럼 누가 손해일까요? / 여러분의 아이, 그리고 여러분이에요."),
     (138.10, 142.30, "그래서 저희는 / 실수해도 괜찮다고 말해요."),
-    (196.00, 204.70, "다시 말씀드리지만 이건 제 경험이에요. / 모든 유치원이 그렇다는 건 아니에요."),
+    (196.00, 204.70, "다시 말씀드리지만 이건 제 경험이에요. / 모든 영유가 그렇다는 건 아니에요."),
     (224.55, 235.10, "아이를 잘 보시고 / 솔직하게 결정하세요. / 재미있게, 행복하게요."),
 ]
-HI = ["조작하기도", "가장 큰 문제는", "20년", "'압박'", "또 시험", "원하지 않아요.", "B 아래", "절대", "옮길까", "꾸며서라도", "비즈니스",
-      "누가 손해", "여러분의 아이,", "실수해도", "제 경험", "모든 유치원이", "솔직하게", "행복하게요.", "영유의", "붙잡아"]
-# pops in SOURCE time: (s, e, small, big, slot, sound, punch, size)
+HI = ["또 시험", "가장 큰 문제는", "20년", "'압박'", "원하지 않아요.", "B 아래", "절대", "옮길까", "실제보다", "비즈니스",
+      "누가 손해", "여러분의 아이,", "실수해도", "제 경험", "모든 영유가", "솔직하게", "행복하게요.", "영유의", "계속"]
+WHITE = "#FFFFFF"
+# pops in SOURCE time: (s, e, small, big, slot, sound, punch, size, colour). Calm and white while he names the problem,
+# warm brand colours from "it's good to make mistakes" on.
 POPS = [
-    (24.50, 28.10, "가장 큰 문제", "PRESSURE 😰", "top", "impact", True, None),
-    (36.00, 40.50, "", "TEST · TEST · TEST 📝", "top", "boing", True, 92),
-    (55.00, 62.90, "세계 최고 대학이 원하는 건", "🎓 시험 기계 ❌", "top", "pop", False, None),
-    (110.70, 112.60, "", "BUSINESS 💼", "top", "impact", True, None),
-    (121.50, 126.00, "누가 손해?", "👉 우리 아이", "top", "boing", True, None),
-    (138.20, 142.20, "", "실수 = 성장 🌱", "top", "sparkle", True, None),
-    (229.00, 235.00, "", "FUN 🎈 · HAPPY 😊", "top", "sparkle", True, None),
+    (24.50, 28.10, "가장 큰 문제", "PRESSURE", "top", "impact", True, None, WHITE),
+    (55.00, 62.90, "세계 최고 대학이 원하는 건", "시험 기계가 아니에요", "top", "pop", False, 84, WHITE),
+    (110.70, 112.60, "", "BUSINESS", "top", "impact", True, None, WHITE),
+    (121.50, 126.00, "누가 손해?", "우리 아이", "top", "impact", True, None, WHITE),
+    (138.20, 142.20, "", "실수 = 성장 🌱", "top", "sparkle", True, None, None),
+    (229.00, 235.00, "", "FUN 🎈 · HAPPY 😊", "top", "sparkle", True, None, None),
 ]
 
 
@@ -75,7 +77,7 @@ def main():
         for ps, pe in pieces:
             if pe - ps > 0.2:
                 segs.append({"src_s": ps, "src_e": pe, "out_s": round(t, 3), "role": role}); t += pe - ps
-    speech_end = round(t, 3); total = round(speech_end + END, 3)
+    speech_end = round(t, 3); total = round(speech_end + MSG + END, 3)
 
     def to_out(x, role=None):
         cands = [g for g in segs if (role == "cold") == (g["role"] == "cold")]
@@ -110,12 +112,14 @@ def main():
     add = lambda tt, s, g: sfx.append({"t": round(max(0, tt), 3), "sound": s, "gain": g})
     cold = sum(g["src_e"] - g["src_s"] for g in segs if g["role"] == "cold")
     # the hook: title over the sharpest line, and the fairness note from the first frame
-    ev.append({"type": "pop", "s": -0.3, "e": round(cold, 3), "kicker": "20년 차 원어민 교사가 말하는", "text": "영유의 진짜 문제", "slot": "hook", "k": 90, "size": 132, "kickerSize": 62})
-    add(0.0, "impact", -6); add(0.05, "sparkle", -12)
-    for k, (s, e, kick, text, slot, snd, punch, size) in enumerate(POPS):
+    ev.append({"type": "pop", "s": -0.3, "e": round(cold, 3), "kicker": "영유 성적표,", "text": "그게 전부일까요?", "slot": "hook", "k": 90, "size": 124, "kickerSize": 76, "color": WHITE})
+    add(0.0, "impact", -8)
+    for k, (s, e, kick, text, slot, snd, punch, size, colour) in enumerate(POPS):
         p = {"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k}
         if size:
             p["size"] = size
+        if colour:
+            p["color"] = colour
         ev.append(p); add(to_out(s), snd, {"pop": -9, "impact": -7}.get(snd, -11))
         if punch:
             ev.append({"type": "punch", "s": to_out(s), "e": to_out(s) + 0.3, "z": 1.08, "shake": 6})
@@ -123,17 +127,22 @@ def main():
     g_s = to_out(78.6); ev.append({"type": "grades", "s": g_s, "e": to_out(89.3), "stampAt": round(to_out(80.9), 3)})
     add(g_s, "whoosh", -10); add(to_out(80.9), "impact", -5)
     # fairness note on the sharp claims (cold open, the story, faked results, who loses) and his own disclaimer
-    for a, b in ((0, cold), (to_out(72.5), to_out(126.0))):
+    for a, b in ((to_out(72.5), to_out(126.0)),):
         ev.append({"type": "note", "s": round(a, 3), "e": round(b, 3), "text": "※ Mark T의 개인 경험담이에요"})
-    ev.append({"type": "pop", "s": to_out(197.5), "e": to_out(204.6), "kicker": "Mark T", "text": "모든 유치원이 그런 건 아니에요 🙏", "slot": "top", "k": 30, "size": 64})
-    ev.append({"type": "tag", "s": to_out(16.4), "e": to_out(27.0), "name": "Mark T", "flags": "🇬🇧", "role": "20년 차 영어 교사 · 한국·일본", "playfair": True})
+    ev.append({"type": "pop", "s": to_out(197.5), "e": to_out(204.6), "kicker": "Mark T", "text": "모든 영유가 그런 건 아니에요", "slot": "top", "k": 30, "size": 66, "color": WHITE})
+    ev.append({"type": "tag", "s": to_out(16.4), "e": to_out(27.0), "name": "Mark T", "flags": "🇬🇧", "role": "20년 이상 교육 경력 · 한국·일본 등 여러 나라", "playfair": True})
     add(to_out(16.4), "whoosh", -12)
     for g in segs[1:]:
         add(g["out_s"] - 0.06, "whoosh", -15)
-    ev.append({"type": "end", "s": round(speech_end - 0.1, 3), "e": total, "short": False, "share": "💬 여러분 생각은? 영유 꼭 필요하다 vs 아니다"})
+    # the one line to remember, then the follow card
+    ev.append({"type": "message", "s": round(speech_end - 0.1, 3), "e": round(speech_end + MSG, 3), "line1": "시험 점수보다,", "line2": "즐거운 영어",
+               "small": "유치원 시기의 성적이 전부는 아니에요.", "ask": "💬 우리 아이 영어, 지금 즐거운가요?"})
+    add(speech_end - 0.1, "chime", -8); add(speech_end + 0.3, "sparkle", -11)
+    ev.append({"type": "end", "s": round(speech_end + MSG, 3), "e": total, "short": False, "share": "💬 우리 아이 영어, 지금 즐거운가요?"})
     ev.append({"type": "badge", "s": round(cold, 3), "e": speech_end - 0.1, "day": DAY, "docked": True})
-    add(speech_end - 0.1, "impact", -8); add(speech_end + 0.05, "sparkle", -10)
-    add(speech_end + 1.9, "pop", -6); add(speech_end + 2.8, "pop", -6); add(speech_end + 2.85, "chime", -9)
+    es = speech_end + MSG
+    add(es, "impact", -8); add(es + 0.05, "sparkle", -10)
+    add(es + 1.9, "pop", -6); add(es + 2.8, "pop", -6); add(es + 2.85, "chime", -9)
     # camera: Mark sits small in a wide shot, so the frame lives at a medium close-up and punches closer on every new page
     zooms = [{"t": c["s"], "z": 1.75 if k % 2 else 1.5} for k, c in enumerate(C)]
     plan = {"name": "spicy-main", "media": "spicy/main", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
