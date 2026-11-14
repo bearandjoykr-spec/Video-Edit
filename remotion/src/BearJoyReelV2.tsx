@@ -92,9 +92,9 @@ const Hi: React.FC<{text: string; hi: string; pop: number}> = ({text, hi, pop}) 
   if (i < 0) return <>{text}</>;
   // keep the spaces around the highlighted word (an inline-block next to a plain space can swallow it)
   const pre = text.slice(0, i), post = text.slice(i + hi.length);
-  return <>{pre.replace(/ $/, '')}<span style={{color: C.yellow, display: 'inline-block', transform: `scale(${pop})`,
-    // the pop scales the word from its centre, so the gap grows with it
-    marginLeft: pre.endsWith(' ') ? `${0.28 + (pop - 1) * hi.length * 0.5}em` : 0, marginRight: post.startsWith(' ') ? `${0.28 + (pop - 1) * hi.length * 0.5}em` : 0}}>{hi}</span>{post.replace(/^ /, '')}</>;
+  // the highlight hops up instead of growing, so the line never re-wraps (Joy, DAY 30: captions looked like they repeated)
+  return <>{pre.replace(/ $/, '')}<span style={{color: C.yellow, display: 'inline-block', transform: `translateY(${-(pop - 1) * 45}px)`,
+    marginLeft: pre.endsWith(' ') ? '0.28em' : 0, marginRight: post.startsWith(' ') ? '0.28em' : 0}}>{hi}</span>{post.replace(/^ /, '')}</>;
 };
 
 const CaptionV2: React.FC<{c: Caption; t: number; fps: number; top?: number}> = ({c, t, fps, top = 1170}) => {
