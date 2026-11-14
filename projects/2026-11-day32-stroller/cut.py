@@ -25,8 +25,8 @@ for k, g in enumerate(segs):
     else:
         b = add_in("-ss", str(g["b_s"]), "-t", str(d), "-i", BROLL[g["broll"]])
         fc.append(f"[{b}:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[bg{k}]")
-        if g["kind"] == "cold":
-            fc.append(f"[bg{k}]null[v{k}]")
+        if False:  # (Joy, DAY 30: her small round face also on the first scene, the thumbnail)
+            pass
         else:
             # Joy's face, round, with a cream ring
             fc.append(f"[{j}:v]crop=640:640:220:230,scale={PIP}:{PIP},fps=30,format=rgba,"

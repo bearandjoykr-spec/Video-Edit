@@ -72,6 +72,8 @@ def main():
     cold = segs[0]["src_e"] - segs[0]["src_s"]
     # cold open: stroller POV, leaves, the title, Joy's "Here we go!"
     ev.append({"type": "pop", "s": -0.3, "e": round(cold, 3), "kicker": "말 못 하는 아기에게도 OK 👶", "text": "유모차 산책 영어 🍂", "slot": "hook", "k": 90, "size": 116, "kickerSize": 60})
+    # Joy (DAY 30): the first frame is the thumbnail, so it also says what viewers get
+    ev.append({"type": "pop", "s": -0.25, "e": round(cold, 3), "kicker": "", "text": "📩 산책 영어 표현 20가지 공유해요", "slot": "hook2", "k": 92, "size": 56, "color": "#FFFFFF"})
     ev.append({"type": "leaves", "s": 0.0, "e": round(cold, 3), "emoji": ["🍂", "🍁", "🍂"], "n": 18})
     add(0.0, "impact", -7); add(0.05, "sparkle", -12)
     ev.append({"type": "pop", "s": round(cold - 1.9, 3), "e": round(cold, 3), "kicker": "", "text": "Here we go! 🚼", "slot": "low", "k": 91, "size": 120})
@@ -91,6 +93,9 @@ def main():
     for x, wind in ((tree, 0), (breeze, 140)):
         ev.append({"type": "leaves", "s": x["out_s"], "e": round(x["out_s"] + x["src_e"] - x["src_s"], 3), "emoji": ["🍂", "🍁", "🍃"], "n": 14, "wind": wind})
     ev.append({"type": "wind", "s": breeze["out_s"], "e": round(breeze["out_s"] + breeze["src_e"] - breeze["src_s"], 3)})
+    ev.append({"type": "sticker", "s": to_out(58.9), "e": to_out(68.15), "img": "day32/main/walk-20-phrases.png", "x": 755, "y": 470, "w": 300, "rot": 6,
+               "label": "📩 20가지 무료!"})
+    add(to_out(58.9) + 0.05, "whoosh", -10)
     ev.append({"type": "burst", "s": to_out(58.95), "e": to_out(58.95) + 1.4, "x": 540, "y": 1000, "emoji": ["💬", "🍂", "💛"], "n": 14, "size": 80})
     for x in segs[1:]:
         add(x["out_s"] - 0.06, "whoosh", -14)
@@ -103,7 +108,7 @@ def main():
     zooms = [{"t": c["s"], "z": 1.05 if k % 2 else 1.0} for k, c in enumerate(C)]
     plan = {"name": "day32-main", "media": "day32/main", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
             "day": DAY, "segments": segs, "captions": C, "events": ev, "zooms": zooms, "music": {"dropouts": [], "drops": []},
-            "slots": {"hook": {"left": 0, "right": 0, "top": 700, "rot": -3}, "mid": {"left": 0, "right": 0, "top": 900, "rot": -2},
+            "slots": {"hook": {"left": 0, "right": 0, "top": 700, "rot": -3}, "hook2": {"left": 0, "right": 0, "top": 960, "rot": -2}, "mid": {"left": 0, "right": 0, "top": 900, "rot": -2},
                       "low": {"left": 0, "right": 0, "top": 1150, "rot": 2}},
             "tagPos": {"left": 50, "top": 1140}, "scrim": True, "look": "original", "captionTop": CAPTION_TOP, "sfx": sorted(sfx, key=lambda x: x["t"])}
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)

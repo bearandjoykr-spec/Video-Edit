@@ -395,6 +395,22 @@ const MessageCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) =
   );
 };
 
+
+// A small picture pinned on screen (e.g. Joy's free "20 walk phrases" sheet while she offers it, DAY 30).
+const Sticker: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const p = usePop(t, ev.s, ev.e, fps);
+  const bob = Math.sin((t - ev.s) * 2.2) * 6;
+  return (
+    <div style={{position: 'absolute', left: ev.x, top: ev.y + bob, width: ev.w, opacity: p.opacity,
+      transform: `scale(${p.scale}) rotate(${ev.rot ?? 4}deg)`, transformOrigin: '50% 30%'}}>
+      <Img src={staticFile(ev.img)} style={{width: '100%', borderRadius: 18, boxShadow: '0 22px 50px rgba(10,16,30,.5), 0 0 0 8px rgba(255,255,255,.95)'}} />
+      {ev.label ? <div style={{position: 'absolute', left: '50%', bottom: -34, transform: 'translateX(-50%) rotate(-3deg)', whiteSpace: 'nowrap',
+        fontFamily: PRE, fontWeight: 900, fontSize: 34, color: C.navy, background: C.yellow, borderRadius: 999, padding: '8px 22px',
+        boxShadow: '0 8px 18px rgba(0,0,0,.25)'}}>{ev.label}</div> : null}
+    </div>
+  );
+};
+
 // A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
 const List: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const out = interpolate(t, [ev.e - 0.15, ev.e], [1, 0], clamp);
@@ -592,6 +608,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('list').map((ev, k) => (live(ev) ? <List key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('scatter').map((ev, k) => (live(ev) ? <Scatter key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('burst').map((ev, k) => (t >= ev.s && t <= ev.e ? <Burst key={k} ev={ev} t={t} /> : null))}
+      {E('sticker').map((ev, k) => (live(ev) ? <Sticker key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('grades').map((ev, k) => (live(ev) ? <Grades key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('note').map((ev, k) => (t >= ev.s && t <= ev.e ? <Note key={k} ev={ev} t={t} /> : null))}
       {E('leaves').map((ev, k) => (t >= ev.s && t <= ev.e ? <Leaves key={k} ev={ev} t={t} /> : null))}

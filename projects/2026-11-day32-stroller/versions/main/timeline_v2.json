@@ -5,7 +5,7 @@
  "duration": 71.06,
  "frames": 2132,
  "speechEnd": 66.06,
- "day": 32,
+ "day": 30,
  "segments": [
   {
    "kind": "cold",
@@ -397,6 +397,17 @@
    "kickerSize": 60
   },
   {
+   "type": "pop",
+   "s": -0.25,
+   "e": 2.47,
+   "kicker": "",
+   "text": "📩 산책 영어 표현 20가지 공유해요",
+   "slot": "hook2",
+   "k": 92,
+   "size": 56,
+   "color": "#FFFFFF"
+  },
+  {
    "type": "leaves",
    "s": 0.0,
    "e": 2.47,
@@ -663,6 +674,17 @@
    "e": 34.4
   },
   {
+   "type": "sticker",
+   "s": 54.72,
+   "e": 64.21,
+   "img": "day32/main/walk-20-phrases.png",
+   "x": 755,
+   "y": 470,
+   "w": 300,
+   "rot": 6,
+   "label": "📩 20가지 무료!"
+  },
+  {
    "type": "burst",
    "s": 54.77,
    "e": 56.17,
@@ -695,7 +717,7 @@
    "type": "badge",
    "s": 2.47,
    "e": 65.96000000000001,
-   "day": 32,
+   "day": 30,
    "docked": true
   }
  ],
@@ -819,6 +841,12 @@
    "right": 0,
    "top": 700,
    "rot": -3
+  },
+  "hook2": {
+   "left": 0,
+   "right": 0,
+   "top": 960,
+   "rot": -2
   },
   "mid": {
    "left": 0,
@@ -980,6 +1008,11 @@
    "t": 54.72,
    "sound": "impact",
    "gain": -7
+  },
+  {
+   "t": 54.77,
+   "sound": "whoosh",
+   "gain": -10
   },
   {
    "t": 57.62,

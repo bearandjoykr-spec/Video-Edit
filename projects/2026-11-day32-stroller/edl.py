@@ -4,7 +4,7 @@ walk3 sky and road) and one Pexels stroller clip (STOCK.md). Joy's voice runs th
 picture-in-picture. Nothing is sped up. Original colours.
 """
 RAW = "raw-footage/day32"
-DAY = 32
+DAY = 30  # Joy (14 Nov 2026): posted as DAY 30
 END = 5.0
 BROLL = {"stroller": f"{RAW}/stock/stroller1.mp4", "walk1": f"{RAW}/walk1.mov", "walk2": f"{RAW}/walk2.mov", "walk3": f"{RAW}/walk3.mov"}
 # (kind, voice src_s, voice src_e, b-roll name, b-roll start). Times are snapped to quiet points by build/cut.
