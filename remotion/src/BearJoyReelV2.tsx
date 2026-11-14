@@ -411,6 +411,20 @@ const Sticker: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   );
 };
 
+
+// A small speaker chip in the top-left corner while someone speaks (Joy: show Mark's face and the UK flag when he talks).
+const Speaker: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
+  const o = interpolate(t, [ev.s, ev.s + 0.25, ev.e - 0.2, ev.e], [0, 1, 1, 0], clamp);
+  return (
+    <div style={{position: 'absolute', left: 36, top: ev.top ?? 110, display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(20,32,58,.72)',
+      borderRadius: 999, padding: '8px 22px 8px 8px', opacity: o, transform: `translateX(${(1 - o) * -40}px)`, boxShadow: '0 8px 20px rgba(0,0,0,.25)'}}>
+      <Img src={staticFile(ev.img)} style={{width: 78, height: 78}} />
+      <span style={{fontFamily: PLAYFAIR, fontStyle: 'italic', fontWeight: 600, fontSize: 44, color: C.yellow, lineHeight: 1}}>{ev.name}</span>
+      <span style={{fontFamily: EMOJI, fontSize: 50, lineHeight: 1, display: 'inline-block', transform: `rotate(${Math.sin((t - ev.s) * 4) * 5}deg)`}}>{ev.flags}</span>
+    </div>
+  );
+};
+
 // A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
 const List: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const out = interpolate(t, [ev.e - 0.15, ev.e], [1, 0], clamp);
@@ -608,6 +622,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('list').map((ev, k) => (live(ev) ? <List key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('scatter').map((ev, k) => (live(ev) ? <Scatter key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('burst').map((ev, k) => (t >= ev.s && t <= ev.e ? <Burst key={k} ev={ev} t={t} /> : null))}
+      {E('speaker').map((ev, k) => (t >= ev.s && t <= ev.e ? <Speaker key={k} ev={ev} t={t} /> : null))}
       {E('sticker').map((ev, k) => (live(ev) ? <Sticker key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('grades').map((ev, k) => (live(ev) ? <Grades key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('note').map((ev, k) => (t >= ev.s && t <= ev.e ? <Note key={k} ev={ev} t={t} /> : null))}

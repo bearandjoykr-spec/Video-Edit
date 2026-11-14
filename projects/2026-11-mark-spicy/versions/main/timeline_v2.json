@@ -404,6 +404,31 @@
    "color": "#FFFFFF"
   },
   {
+   "type": "markpill",
+   "s": -0.3,
+   "e": 6.28,
+   "img": "brand/mark-avatar.png",
+   "name": "Mark T",
+   "line": "20년 이상 영어를 가르친 영국인 선생님",
+   "top": 1125
+  },
+  {
+   "type": "speaker",
+   "s": 6.28,
+   "e": 6.28,
+   "img": "brand/mark-avatar.png",
+   "name": "Mark T",
+   "flags": "🇬🇧"
+  },
+  {
+   "type": "speaker",
+   "s": 9.11,
+   "e": 78.67,
+   "img": "brand/mark-avatar.png",
+   "name": "Mark T",
+   "flags": "🇬🇧"
+  },
+  {
    "type": "pop",
    "s": 13.01,
    "e": 16.32,
@@ -554,6 +579,10 @@
   }
  ],
  "zooms": [
+  {
+   "t": -1.0,
+   "z": 1.5
+  },
   {
    "t": 0.06999999999999999,
    "z": 1.5

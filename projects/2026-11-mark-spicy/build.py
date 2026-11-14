@@ -114,6 +114,13 @@ def main():
     # the hook: title over the sharpest line, and the fairness note from the first frame
     ev.append({"type": "pop", "s": -0.3, "e": round(cold, 3), "kicker": "영유 성적표,", "text": "그게 전부일까요?", "slot": "hook", "k": 90, "size": 124, "kickerSize": 76, "color": WHITE})
     add(0.0, "impact", -8)
+    # Joy: Mark's photo and the UK flag on the thumbnail (a British native speaker makes people tap)
+    ev.append({"type": "markpill", "s": -0.3, "e": round(cold, 3), "img": "brand/mark-avatar.png", "name": "Mark T", "line": "20년 이상 영어를 가르친 영국인 선생님", "top": 1125})  # under his chin, above the captions
+    # and a small Mark 🇬🇧 chip whenever he speaks (not during the off-camera question)
+    q = next(g for g in segs if g["role"] == "q")
+    qe = round(q["out_s"] + q["src_e"] - q["src_s"], 3)
+    for a_, b_ in ((round(cold, 3), q["out_s"]), (qe, speech_end - 0.1)):
+        ev.append({"type": "speaker", "s": a_, "e": b_, "img": "brand/mark-avatar.png", "name": "Mark T", "flags": "🇬🇧"})
     for k, (s, e, kick, text, slot, snd, punch, size, colour) in enumerate(POPS):
         p = {"type": "pop", "s": to_out(s), "e": to_out(e), "text": text, "kicker": kick, "slot": slot, "k": k}
         if size:
@@ -145,6 +152,7 @@ def main():
     add(es + 1.9, "pop", -6); add(es + 2.8, "pop", -6); add(es + 2.85, "chime", -9)
     # camera: Mark sits small in a wide shot, so the frame lives at a medium close-up and punches closer on every new page
     zooms = [{"t": c["s"], "z": 1.75 if k % 2 else 1.5} for k, c in enumerate(C)]
+    zooms.insert(0, {"t": -1.0, "z": 1.5})  # the first frame (thumbnail) is already framed on Mark
     plan = {"name": "spicy-main", "media": "spicy/main", "fps": FPS, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end,
             "day": DAY, "segments": segs, "captions": C, "events": ev, "zooms": zooms, "music": {"dropouts": [], "drops": []},
             "slots": {"hook": {"left": 0, "right": 0, "top": 330, "rot": -3}, "top": {"left": 0, "right": 0, "top": 300, "rot": -2}},
