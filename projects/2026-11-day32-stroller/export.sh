@@ -4,7 +4,7 @@ set -e; export PATH=/opt/homebrew/bin:$PATH
 P=projects/2026-11-day32-stroller; D=exports/instagram/day30; B=BearJoy_Day30; mkdir -p $D
 ffmpeg -nostdin -v error -y -i renders/day32/day30-final.mp4 -c:v libx264 -preset slow -profile:v high -level 4.1 -b:v 9M -maxrate 12M -bufsize 18M -pix_fmt yuv420p \
   -color_range tv -colorspace bt709 -color_trc bt709 -color_primaries bt709 -c:a aac -b:a 256k -ar 48000 -movflags +faststart "$D/$B.mp4"
-ffmpeg -nostdin -v error -y -ss 0.7 -i renders/day32/day30-final.mp4 -frames:v 1 -q:v 2 "$D/${B}_Cover.jpg"
+(cd remotion && npx remotion still src/index.ts Day32 /tmp/day30-cover.png --frame=2 --log=error </dev/null) && ffmpeg -nostdin -v error -y -i /tmp/day30-cover.png -q:v 2 "$D/${B}_Cover.jpg"  # frame 2: title clean, before the leaves fall
 .venv/bin/python - "$P/versions/main/timeline_v2.json" "$D/${B}_ko.srt" <<'PY'
 import json, sys
 p = json.load(open(sys.argv[1])); f = lambda t: f"{int(t // 3600):02d}:{int(t % 3600 // 60):02d}:{int(t % 60):02d},{int(round(t % 1 * 1000)) % 1000:03d}"
