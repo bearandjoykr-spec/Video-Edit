@@ -83,6 +83,8 @@ def main():
     # Joy (DAY 30): the first frame is the thumbnail, so it also says what viewers get
     ev.append({"type": "pop", "s": -0.25, "e": round(cold, 3), "kicker": "", "text": "📩 산책 영어 표현 20가지 공유해요", "slot": "hook2", "k": 92, "size": 56, "color": "#FFFFFF"})
     ev.append({"type": "leaves", "s": 0.0, "e": round(cold, 3), "emoji": ["🍂", "🍁", "🍂"], "n": 18})
+    ev.append({"type": "speaker", "s": -0.3, "e": round(cold, 3), "img": "brand/mark-avatar.png", "name": "Mark T", "flags": "🇬🇧",
+               "note": "원어민 발음", "right": 40, "top": 400, "scale": 1.45})
     add(0.0, "impact", -7); add(0.05, "sparkle", -12)
 
     for k, (s, e, kick, text, slot, snd, size) in enumerate(POPS):
@@ -92,6 +94,9 @@ def main():
         ev.append(p); add(to_out(s), snd, {"pop": -9, "impact": -7}.get(snd, -11))
         ev.append({"type": "punch", "s": to_out(s), "e": to_out(s) + 0.25, "z": 1.05, "shake": 5})
     for k, (s, e, en, emo) in enumerate(PHRASES):
+        # Joy: the three English phrases are Mark's voice, so his face and the UK flag sit right above each one
+        ev.append({"type": "speaker", "s": to_out(s) - 0.1, "e": to_out(e), "img": "brand/mark-avatar.png", "name": "Mark T", "flags": "🇬🇧",
+                   "note": "원어민 발음", "center": True, "top": 760, "scale": 1.2})
         ev.append({"type": "pop", "s": to_out(s), "e": to_out(e), "kicker": "", "text": f"{en} {emo}", "slot": "mid", "k": 40 + k, "size": 104 if len(en) < 20 else 74})
         add(to_out(s), "impact", -8); add(to_out(s) + 0.05, "sparkle", -12)
         ev.append({"type": "punch", "s": to_out(s), "e": to_out(s) + 0.35, "z": 1.1, "shake": 7})

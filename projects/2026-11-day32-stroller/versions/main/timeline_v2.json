@@ -325,6 +325,18 @@
    "n": 18
   },
   {
+   "type": "speaker",
+   "s": -0.3,
+   "e": 3.63,
+   "img": "brand/mark-avatar.png",
+   "name": "Mark T",
+   "flags": "🇬🇧",
+   "note": "원어민 발음",
+   "right": 40,
+   "top": 400,
+   "scale": 1.45
+  },
+  {
    "type": "pop",
    "s": 7.46,
    "e": 11.16,
@@ -442,6 +454,18 @@
    "shake": 5
   },
   {
+   "type": "speaker",
+   "s": 13.07,
+   "e": 15.34,
+   "img": "brand/mark-avatar.png",
+   "name": "Mark T",
+   "flags": "🇬🇧",
+   "note": "원어민 발음",
+   "center": true,
+   "top": 760,
+   "scale": 1.2
+  },
+  {
    "type": "pop",
    "s": 13.17,
    "e": 15.34,
@@ -459,6 +483,18 @@
    "shake": 7
   },
   {
+   "type": "speaker",
+   "s": 17.81,
+   "e": 20.81,
+   "img": "brand/mark-avatar.png",
+   "name": "Mark T",
+   "flags": "🇬🇧",
+   "note": "원어민 발음",
+   "center": true,
+   "top": 760,
+   "scale": 1.2
+  },
+  {
    "type": "pop",
    "s": 17.91,
    "e": 20.81,
@@ -474,6 +510,18 @@
    "e": 18.26,
    "z": 1.1,
    "shake": 7
+  },
+  {
+   "type": "speaker",
+   "s": 23.13,
+   "e": 25.78,
+   "img": "brand/mark-avatar.png",
+   "name": "Mark T",
+   "flags": "🇬🇧",
+   "note": "원어민 발음",
+   "center": true,
+   "top": 760,
+   "scale": 1.2
   },
   {
    "type": "pop",

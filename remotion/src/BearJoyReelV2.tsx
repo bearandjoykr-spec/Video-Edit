@@ -416,11 +416,14 @@ const Sticker: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
 const Speaker: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const o = interpolate(t, [ev.s, ev.s + 0.25, ev.e - 0.2, ev.e], [0, 1, 1, 0], clamp);
   return (
-    <div style={{position: 'absolute', left: 36, top: ev.top ?? 110, display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(20,32,58,.72)',
-      borderRadius: 999, padding: '8px 22px 8px 8px', opacity: o, transform: `translateX(${(1 - o) * -40}px)`, boxShadow: '0 8px 20px rgba(0,0,0,.25)'}}>
+    <div style={{position: 'absolute', ...(ev.center ? {left: '50%'} : ev.right !== undefined ? {right: ev.right} : {left: 36}), top: ev.top ?? 110,
+      display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(20,32,58,.72)', borderRadius: 999, padding: '8px 22px 8px 8px', opacity: o,
+      transform: ev.center ? `translateX(-50%) scale(${(0.85 + 0.15 * o) * (ev.scale ?? 1)})` : `translateX(${(1 - o) * -40}px) scale(${ev.scale ?? 1})`,
+      transformOrigin: ev.right !== undefined ? '100% 50%' : ev.center ? '50% 50%' : '0 50%', boxShadow: '0 8px 20px rgba(0,0,0,.25)'}}>
       <Img src={staticFile(ev.img)} style={{width: 78, height: 78}} />
       <span style={{fontFamily: PLAYFAIR, fontStyle: 'italic', fontWeight: 600, fontSize: 44, color: C.yellow, lineHeight: 1}}>{ev.name}</span>
       <span style={{fontFamily: EMOJI, fontSize: 50, lineHeight: 1, display: 'inline-block', transform: `rotate(${Math.sin((t - ev.s) * 4) * 5}deg)`}}>{ev.flags}</span>
+      {ev.note ? <span style={{fontFamily: PRE, fontWeight: 700, fontSize: 30, color: C.white, whiteSpace: 'nowrap'}}>{ev.note}</span> : null}
     </div>
   );
 };
