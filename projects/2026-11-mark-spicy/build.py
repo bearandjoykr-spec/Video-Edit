@@ -168,9 +168,9 @@ def main():
             add(g["out_s"] - 0.06, "whoosh", -18)
     # the question to leave with (Joy), then the follow card
     ev.append({"type": "message", "s": round(speech_end - 0.1, 3), "e": round(speech_end + MSG, 3), "line1": "이건 과연", "line2": "누구를 위한 걸까요?",
-               "small": "압박 속 성적표보다, 즐겁게 배우는 영어가 오래 가요.", "ask": "💬 동의 👍 / 비동의 👎 댓글로 알려주세요"})
+               "small": "\"언어를 배우는 시기엔 성적표보다 아이의 즐거움이 먼저다\"", "ask": "💬 동의하면 👍, 아니면 👎 댓글로 자유롭게 의견을 남겨 주세요"})
     add(speech_end - 0.1, "chime", -8); add(speech_end + 0.3, "sparkle", -11)
-    ev.append({"type": "end", "s": round(speech_end + MSG, 3), "e": total, "short": False, "share": "💬 동의 👍 / 비동의 👎 댓글로 알려주세요"})
+    ev.append({"type": "end", "s": round(speech_end + MSG, 3), "e": total, "short": False, "share": "💬 동의하면 👍, 아니면 👎 댓글로 의견을 남겨 주세요"})
     ev.append({"type": "badge", "s": round(cold, 3), "e": speech_end - 0.1, "day": DAY, "docked": True})
     es = speech_end + MSG
     add(es, "impact", -8); add(es + 0.05, "sparkle", -10)

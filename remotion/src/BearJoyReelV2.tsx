@@ -388,8 +388,9 @@ const MessageCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) =
       <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 96, lineHeight: 1.18, color: '#173B5C', marginTop: 40, letterSpacing: '-0.03em',
         transform: `translateY(${(1 - k(0.2)) * 30}px)`, opacity: k(0.2)}}>
         {ev.line1}<br /><span style={{background: `linear-gradient(transparent 60%, ${C.yellow} 60%)`}}>{ev.line2}</span></div>
-      <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 46, color: '#55607A', marginTop: 36, opacity: k(0.6)}}>{ev.small}</div>
-      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 48, color: '#173B5C', marginTop: 80, background: '#fff', borderRadius: 999, padding: '20px 44px',
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 48, lineHeight: 1.35, color: '#55607A', marginTop: 36, padding: '0 80px', wordBreak: 'keep-all', opacity: k(0.6)}}>{ev.small}</div>
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 42, lineHeight: 1.35, color: '#173B5C', marginTop: 70, background: '#fff', borderRadius: 40, padding: '22px 44px',
+        maxWidth: 900, wordBreak: 'keep-all',
         boxShadow: '0 10px 26px rgba(30,45,77,.12)', transform: `scale(${0.8 + 0.2 * k(1.1)})`, opacity: k(1.1)}}>{ev.ask}</div>
     </AbsoluteFill>
   );
