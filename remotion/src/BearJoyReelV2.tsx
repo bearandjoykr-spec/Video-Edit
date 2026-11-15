@@ -454,6 +454,50 @@ const HookCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   );
 };
 
+
+// A test paper gets a red "A+" and a stamp, then is crumpled and thrown in the bin (Joy, DAY 31: "a score that isn't real").
+const PaperScene: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const d = t - ev.s;
+  const inS = spring({frame: Math.round(d * fps), fps, config: {damping: 13, stiffness: 150}});
+  const pen = interpolate(d, [0.6, 1.5], [0, 1], clamp);
+  const st = spring({frame: Math.round((d - 1.8) * fps), fps, config: {damping: 8, stiffness: 220, mass: 0.6}});
+  const cr = interpolate(d, [ev.crumpleAt, ev.crumpleAt + 0.7], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+  const drop = interpolate(d, [ev.crumpleAt + 0.7, ev.crumpleAt + 1.3], [0, 1], {...clamp, easing: Easing.in(Easing.quad)});
+  const bin = spring({frame: Math.round((d - ev.crumpleAt + 0.4) * fps), fps, config: {damping: 12, stiffness: 160}});
+  const w = 640, h = 820;
+  return (
+    <AbsoluteFill>
+      <div style={{position: 'absolute', left: 540 - w / 2, top: 360, width: w, height: h, opacity: Math.min(1, inS * 2) * (1 - interpolate(drop, [0.85, 1], [0, 1], clamp)),
+        transform: `translateY(${(1 - inS) * 200 + drop * 820}px) scale(${1 - 0.78 * cr}) rotate(${-4 + cr * 260 + drop * 120}deg)`}}>
+        <div style={{width: '100%', height: '100%', background: '#FFFEF8', borderRadius: `${18 + cr * 300}px`, boxShadow: '0 30px 70px rgba(0,0,0,.35)',
+          padding: '44px 48px', boxSizing: 'border-box', filter: cr > 0 ? `contrast(${1 + cr * 0.4})` : undefined,
+          backgroundImage: cr > 0 ? `repeating-linear-gradient(${35}deg, rgba(0,0,0,${0.08 * cr}) 0 6px, transparent 6px 28px), repeating-linear-gradient(-50deg, rgba(0,0,0,${0.07 * cr}) 0 5px, transparent 5px 34px)` : undefined}}>
+          <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 52, color: C.navy}}>English Test</div>
+          <div style={{fontFamily: PRE, fontWeight: 700, fontSize: 32, color: '#6B7A90', marginTop: 8}}>Name: ________ · Class: Bear</div>
+          {[1, 2, 3, 4, 5].map((k) => (
+            <div key={k} style={{display: 'flex', gap: 18, alignItems: 'center', marginTop: 30}}>
+              <span style={{fontFamily: PRE, fontWeight: 800, fontSize: 32, color: C.navy}}>{k}.</span>
+              <div style={{flex: 1, height: 14, borderRadius: 7, background: 'rgba(30,45,77,.12)'}} />
+              <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 40, color: k === 2 || k === 4 ? '#D7263D' : '#1F7A4D'}}>{k === 2 || k === 4 ? '✗' : '✓'}</span>
+            </div>
+          ))}
+          <svg width="300" height="200" viewBox="0 0 300 200" style={{position: 'absolute', right: 30, top: 24}}>
+            <path d="M 30 170 L 90 30 L 150 170 M 55 115 L 125 115" stroke="#D7263D" strokeWidth="16" fill="none" strokeLinecap="round" strokeLinejoin="round"
+              pathLength={1} strokeDasharray="1" strokeDashoffset={1 - Math.min(1, pen * 1.4)} />
+            <path d="M 205 70 L 205 150 M 165 110 L 245 110" stroke="#D7263D" strokeWidth="16" fill="none" strokeLinecap="round"
+              pathLength={1} strokeDasharray="1" strokeDashoffset={1 - Math.min(1, Math.max(0, (pen * 1.4 - 0.4) / 0.6))} />
+          </svg>
+          {d >= 1.8 ? <div style={{position: 'absolute', left: 60, bottom: 60, fontFamily: PRE, fontWeight: 900, fontSize: 54, color: '#D7263D', border: '7px solid #D7263D',
+            borderRadius: '50%', width: 220, height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', lineHeight: 1.1,
+            transform: `rotate(-14deg) scale(${2.2 - 1.2 * st})`, opacity: Math.min(1, st * 2)}}>참<br />잘했어요</div> : null}
+        </div>
+      </div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1050, textAlign: 'center', fontFamily: EMOJI, fontSize: 260, lineHeight: 1,
+        opacity: Math.min(1, bin * 2), transform: `scale(${0.6 + 0.4 * bin})`}}>🗑️</div>
+    </AbsoluteFill>
+  );
+};
+
 // A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
 const List: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const out = interpolate(t, [ev.e - 0.15, ev.e], [1, 0], clamp);
@@ -614,7 +658,8 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
   const grade = orig ? 'none' : GRADE;
   const vid: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: grade};
   // a cream pull-back (Joy, Day 28) keeps the cream clean: fade the vignette and caption scrim while it shows
-  const cream = Math.max(0, ...E('pull').filter((e) => e.bg).map((e) => pullAmount(e, t)));
+  const cream = Math.max(0, ...E('pull').filter((e) => e.bg).map((e) => pullAmount(e, t)),
+    ...E('paper').map((e) => interpolate(t, [e.s - 0.2, e.s, e.e - 0.1, e.e + 0.15], [0, 1, 1, 0], clamp)));  // the test paper sits on a clean cream page
   return (
     <AbsoluteFill style={{background: C.navy}}>
       {E('pull').map((ev, k) => {
@@ -652,6 +697,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('scatter').map((ev, k) => (live(ev) ? <Scatter key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('burst').map((ev, k) => (t >= ev.s && t <= ev.e ? <Burst key={k} ev={ev} t={t} /> : null))}
       {E('speaker').map((ev, k) => (t >= ev.s && t <= ev.e ? <Speaker key={k} ev={ev} t={t} /> : null))}
+      {E('paper').map((ev, k) => (t >= ev.s && t <= ev.e ? <PaperScene key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('hookcard').map((ev, k) => (t <= ev.e ? <HookCard key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('sticker').map((ev, k) => (live(ev) ? <Sticker key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('grades').map((ev, k) => (live(ev) ? <Grades key={k} ev={ev} t={t} fps={fps} /> : null))}

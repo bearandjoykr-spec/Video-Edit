@@ -10,3 +10,7 @@ Music: "Magic Moments" (Day 25 licensed track), see projects/2026-11-day25-kyobo
 - stroller1 (DAY 30 Pexels clip, raw-footage/day32/stock/): https://www.pexels.com/video/autumn-stroll-with-baby-stroller-on-leafy-path-29150067/
 - swing.mp4: https://www.pexels.com/video/a-girl-sitting-on-a-swing-7940895/
 - Joy's own autumn walks: raw-footage/day32/walk1.mov, walk2.mov. Joy's Day 1 window footage is no longer used (Mark: it popped up oddly before the CTA).
+- holdhands.mp4 (Joy: holding a child's hand): https://www.pexels.com/video/close-up-view-of-a-parent-and-child-holding-each-other-s-hands-8576686/
+- raisehands.mp4 (Joy: children from behind raising hands): https://www.pexels.com/video/back-view-of-children-in-classroom-5427173/
+- The A+ test paper that gets crumpled and binned is a Remotion graphic (PaperScene), not stock.
+- No longer used: swing.mp4, walk1 at 31-40 s, stroller at 40-45 s.

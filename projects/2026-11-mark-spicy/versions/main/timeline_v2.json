@@ -52,7 +52,7 @@
    "src_e": 89.6,
    "out_s": 30.91,
    "role": "a",
-   "broll": "walk1",
+   "broll": "paper",
    "b_s": 0.0
   },
   {
@@ -60,7 +60,7 @@
    "src_e": 110.5,
    "out_s": 39.74,
    "role": "a",
-   "broll": "stroller",
+   "broll": "holdhands",
    "b_s": 0.5
   },
   {
@@ -82,8 +82,8 @@
    "src_e": 142.22,
    "out_s": 52.72,
    "role": "a",
-   "broll": "swing",
-   "b_s": 0.8
+   "broll": "raisehands",
+   "b_s": 4.0
   },
   {
    "src_s": 195.97,
@@ -480,6 +480,12 @@
    "k": 7
   },
   {
+   "type": "paper",
+   "s": 30.91,
+   "e": 39.74,
+   "crumpleAt": 6.53
+  },
+  {
    "type": "grades",
    "s": 28.64,
    "e": 30.69,
@@ -672,6 +678,26 @@
    "t": 30.85,
    "sound": "whoosh",
    "gain": -18
+  },
+  {
+   "t": 31.51,
+   "sound": "whoosh",
+   "gain": -14
+  },
+  {
+   "t": 32.71,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 37.44,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 38.64,
+   "sound": "pop",
+   "gain": -9
   },
   {
    "t": 39.68,
