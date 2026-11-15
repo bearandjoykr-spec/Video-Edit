@@ -372,7 +372,7 @@ const Grades: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
 // A small standing note (e.g. "※ 개인 경험담") under the badge.
 const Note: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   const o = interpolate(t, [ev.s, ev.s + 0.3, ev.e - 0.3, ev.e], [0, 1, 1, 0], clamp);
-  return <div style={{position: 'absolute', top: 1235, left: 0, right: 0, textAlign: 'center', opacity: o}}>
+  return <div style={{position: 'absolute', top: ev.top ?? 1235, left: 0, right: 0, textAlign: 'center', opacity: o}}>
     <span style={{fontFamily: PRE, fontWeight: 700, fontSize: 30, color: C.white, background: 'rgba(20,32,58,.6)', borderRadius: 999, padding: '8px 22px'}}>{ev.text}</span>
   </div>;
 };

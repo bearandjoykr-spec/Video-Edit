@@ -1,34 +1,43 @@
-"""Mark spicy interview: cut the source into the edited timeline (hardware H.264 on the Mac), or the subject matte.
-
-Usage: .venv/bin/python cut.py SOURCE video      -> versions/main/cut.mov
-       .venv/bin/python cut.py MATTE.webm matte  -> versions/main/matte.webm (one segment at a time, low memory)
+"""Mark 영유 interview (DAY 31): Mark full frame, or stock B-roll with Mark in a round inset (top left). Mark's voice throughout.
+Run (repo root): .venv/bin/python projects/2026-11-mark-spicy/cut.py   -> versions/main/cut.mov
 """
-import json, os, subprocess, sys, tempfile
+import json, os, subprocess
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC, what = sys.argv[1], sys.argv[2]
-name = "main"
-segs = json.load(open(f"{HERE}/versions/{name}/timeline_v2.json"))["segments"]
-n = len(segs)
-if what == "video":
-    f = "".join(f"[0:v]trim={g['src_s']}:{g['src_e']},setpts=PTS-STARTPTS[v{i}];[0:a]atrim={g['src_s']}:{g['src_e']},asetpts=PTS-STARTPTS,"
-                f"afade=t=in:d=0.02,afade=t=out:st={g['src_e'] - g['src_s'] - 0.03}:d=0.03[a{i}];" for i, g in enumerate(segs))
-    f += "".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[v][a]"
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", SRC, "-filter_complex", f, "-map", "[v]", "-map", "[a]",
-                    "-c:v", "h264_videotoolbox", "-b:v", "20M", "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "pcm_s16le", "-ar", "48000",
-                    f"{HERE}/versions/{name}/cut.mov"], check=True)
-else:
-    tmp = tempfile.mkdtemp(prefix="matte-", dir=f"{HERE}/versions/{name}")
-    parts = []
-    for i, g in enumerate(segs):
-        out = f"{tmp}/p{i:02d}.webm"
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-c:v", "libvpx-vp9", "-ss", str(g["src_s"]), "-i", SRC, "-t", str(round(g["src_e"] - g["src_s"], 3)),
-                        "-an", "-vf", "format=yuva420p", "-c:v", "libvpx-vp9", "-pix_fmt", "yuva420p", "-b:v", "0", "-crf", "22", "-row-mt", "1",
-                        "-deadline", "good", "-cpu-used", "5", "-r", "30", out], check=True)
-        parts.append(out)
-    lst = f"{tmp}/list.txt"
-    open(lst, "w").write("".join(f"file '{x}'\n" for x in parts))
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", f"{HERE}/versions/{name}/matte.webm"], check=True)
-    for x in parts + [lst]:
-        os.remove(x)
-    os.rmdir(tmp)
-print("cut", what, name)
+V = f"{HERE}/versions/main"
+RAW = "raw-footage/new-1113"
+plan = json.load(open(f"{V}/timeline_v2.json"))
+segs = plan["segments"]
+PIP, PX, PY = 330, 48, 300
+# B-roll sources with a pre-crop (Joy, 15 Nov 2026: no faces that read as non-Korean; hands-only stock, and our own footage of Joy)
+BROLL = {
+    "quizhands": (f"{RAW}/stock/quiz.mp4", "crop=1080:1920:300:1920,"),          # pencil on a test sheet, background child cropped out
+    "joywindow": ("raw-footage/day1-promo/promo.mov", "hflip,crop=608:1080:716:0,"), # Joy's Day 1 peekaboo window game (source is mirrored)
+    "booktop3": ("raw-footage/joy-top3/book2.mov", ""),                            # Joy's thumbs-up with a picture book
+}
+ins, fc = [], []
+def add_in(*a):
+    ins.extend(a); return sum(1 for x in ins if x == "-i") - 1
+labels = []
+for k, g in enumerate(segs):
+    d = round(g["src_e"] - g["src_s"], 3)
+    j = add_in("-ss", str(g["src_s"]), "-t", str(d), "-i", f"{RAW}/spicy.mov")
+    fc.append(f"[{j}:a]aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.02,afade=t=out:st={d - 0.03:.3f}:d=0.03,asetpts=PTS-STARTPTS[a{k}]")
+    if not g.get("broll"):
+        fc.append(f"[{j}:v]scale=1080:1920,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v{k}]")
+    else:
+        src, pre = BROLL.get(g["broll"], (f"{RAW}/stock/{g['broll']}.mp4", ""))
+        b = add_in("-ss", str(g["b_s"]), "-t", str(d), "-i", src)
+        fc.append(f"[{b}:v]{pre}scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[bg{k}]")
+        fc.append(f"[{j}:v]crop=420:420:350:570,scale={PIP}:{PIP},fps=30,format=rgba,"
+                  f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='if(lte(hypot(X-{PIP / 2},Y-{PIP / 2}),{PIP / 2 - 2}),255,0)',setpts=PTS-STARTPTS[pip{k}]")
+        R = PIP + 16
+        fc.append(f"color=c=0xF5F0E6:s={R}x{R}:d={d},format=rgba,geq=r='245':g='240':b='230':a='if(lte(hypot(X-{R / 2},Y-{R / 2}),{R / 2 - 1}),255,0)'[ring{k}]")
+        px, py = {"joywindow": (702, 880), "teacherkids": (702, 300)}.get(g["broll"], (PX, PY))  # Joy's face is top-left in her own footage: keep it clear
+        fc.append(f"[bg{k}][ring{k}]overlay={px - 8}:{py - 8}[bgr{k}];[bgr{k}][pip{k}]overlay={px}:{py}:shortest=1,format=yuv420p[v{k}]")
+    labels.append(f"[v{k}][a{k}]")
+fc.append("".join(labels) + f"concat=n={len(segs)}:v=1:a=1[v0][a0]")
+tail = round(plan["duration"] - plan["speechEnd"], 3)
+fc.append(f"[v0]tpad=stop_mode=clone:stop_duration={tail}[v];[a0]apad=whole_dur={plan['duration']}[a]")
+subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-filter_complex", ";".join(fc), "-map", "[v]", "-map", "[a]", "-t", str(plan["duration"]),
+                "-c:v", "h264_videotoolbox", "-b:v", "20M", "-c:a", "pcm_s16le", f"{V}/cut.mov"], check=True)
+print("cut.mov", plan["duration"], "s")
