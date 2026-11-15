@@ -18,35 +18,37 @@ CUTS = [
     (28.30, 33.40, "cold", None, 0),          # The pressure that we put on the students, the pressure that we put on the families.
     # Joy (15 Nov): the message is pressure, not "manipulation"; the hook asks whether the report card can be trusted
     (5.45, 8.20, "q", None, 0),               # Q (off camera): What's the biggest problem of 영유?
-    (16.30, 18.70, "a", None, 0),             # And in my 20 years as a teacher,
+    (16.30, 19.05, "a", None, 0),             # And in my 20 years as a teacher,
     (22.90, 28.20, "a", "quizhands", 0.5),     # ...the biggest problem is pressure.
     (34.05, 40.60, "a", "teacherkids", 0.5),  # Joy: a Western teacher with Asian children         # tests and tests and tests.
     (72.45, 80.60, "a", None, 0),             # As an example, my kindergarten refused to give a child anything below a B
-    (80.60, 89.40, "a", "paper", 0.0),       # Joy (15 Nov): a test paper gets A+, then is crumpled into the bin (graphic)       # ...because they were concerned that the parent would pull their child out
-    (104.60, 110.60, "a", "ph_teach", 0.0),  # Joy (15 Nov): her own teaching photo, kids blurred
+    (80.60, 89.35, "a", "paper", 0.0),       # Joy (15 Nov): a test paper gets A+, then is crumpled into the bin (graphic)       # ...because they were concerned that the parent would pull their child out
+    (105.00, 110.60, "a", "ph_teach", 0.0),  # Joy (15 Nov): her own teaching photo, kids blurred
     (110.60, 112.70, "a", "money", 3.0),      # In the end, this is a business.
-    (121.45, 126.10, "a", None, 0),           # And who loses? Your child loses. You lose.
+    (122.15, 126.10, "a", None, 0),           # And who loses? Your child loses. You lose.
     (138.10, 142.30, "a", "raisehands", 4.0), # Joy: children from behind, raising hands to answer      # And this is why we say that it's good to make mistakes.
-    (196.00, 204.70, "a", None, 0),           # Again, I must state that this is just my experience. This is not all kindergartens.
-    (224.55, 229.00, "a", "ph_look", 0.0),   # Joy: Mark's high five + the train game (kids blurred)
-    (229.00, 235.10, "a", "ph_fun", 0.0),    # Joy: the stream walk + Mark and Joy laughing on stage
+    (197.17, 204.18, "a", None, 0),           # Again, I must state that this is just my experience. This is not all kindergartens.
+    (224.88, 225.62, "a", "ph_look", 0.0),
+    (226.45, 229.00, "a", "ph_look", 1.0),   # Joy: Mark's high five + the train game (kids blurred)
+    (229.30, 231.90, "a", "ph_fun", 0.0),
+    (232.92, 235.10, "a", "ph_fun", 2.6),    # Joy: the stream walk + Mark and Joy laughing on stage
 ]
 # Korean captions in SOURCE time. "유아 영어학원(영유)" at the first mention, then "영유".
 LINES = [
     (28.30, 33.40, "아이들에게 주는 압박, / 그리고 가정에 주는 압박이요."),
     (5.45, 8.20, "Q. 유아 영어학원(영유)의 가장 큰 문제는요?"),
-    (16.30, 18.70, "20년 동안 교사로 일하면서"),
+    (16.30, 19.05, "20년 동안 교사로 일하면서"),
     (22.90, 28.20, "가장 큰 문제는 / '압박'이라고 생각해요."),
     (34.05, 40.60, "제가 일했던 영유들은 / 시험, 시험, 또 시험이었어요."),
     (72.45, 80.60, "예를 들어, 제가 있던 영유는 / 아이에게 B 아래 점수를 / 절대 주지 않았어요."),
     (80.60, 89.40, "부모님이 아이를 / 다른 곳으로 옮길까 봐서요."),
-    (104.60, 110.60, "실제보다 좋은 점수로 / 아이를 계속 다니게 하는 거죠."),
+    (105.00, 110.60, "실제보다 좋은 점수로 / 아이를 계속 다니게 하는 거죠."),
     (110.60, 112.70, "결국 이건 비즈니스예요."),
-    (121.45, 126.10, "그럼 누가 손해일까요? / 여러분의 아이, 그리고 여러분이에요."),
+    (122.15, 126.10, "그럼 누가 손해일까요? / 여러분의 아이, 그리고 여러분이에요."),
     (138.10, 142.30, "그래서 저희는 / 실수해도 괜찮다고 말해요."),
-    (196.00, 204.70, "다시 말씀드리지만 이건 제 경험이에요. / 모든 영유가 그렇다는 건 아니에요."),
-    (224.55, 229.00, "아이를 잘 보시고"),
-    (229.00, 235.10, "솔직하게 결정하세요. / 재미있게, 행복하게요."),
+    (197.17, 204.70, "말씀드리지만 이건 제 경험이에요. / 모든 영유가 그렇다는 건 아니에요."),
+    (224.88, 229.00, "아이를 잘 보시고"),
+    (229.30, 235.10, "솔직하게 결정하세요. / 재미있게, 행복하게요."),
 ]
 HI = ["압박,", "압박이요.", "가장 큰 문제는", "20년", "'압박'", "또 시험", "B 아래", "절대", "옮길까", "실제보다", "비즈니스",
       "누가 손해", "여러분의 아이,", "실수해도", "제 경험", "모든 영유가", "솔직하게", "행복하게요.", "아이를 잘", "계속"]
@@ -64,11 +66,16 @@ POPS = [
 ]
 
 
+EXACT = {105.00, 122.15, 197.17, 224.88, 226.45, 229.30, 232.92}
+EXACT_END = {89.35, 204.18, 229.00, 231.90}
+
+
 def main():
     db = load_db(sys.argv[1] if len(sys.argv) > 1 else "raw-footage/new-1113/audio16k.wav")
     segs, t = [], 0.0
     for s, e, role, br, bs in CUTS:
-        s2 = snap(s, db, 0.15, 0.1); e2 = snap(e, db, 0.1, 0.2)
+        # starts placed by hand to drop Mark's repeated words ("who, who", "I must, I must", "make, make") are kept exactly
+        s2 = s if s in EXACT else snap(s, db, 0.15, 0.1); e2 = e if e in EXACT_END else snap(e, db, 0.1, 0.2)
         if segs and segs[-1]["src_s"] < s2 < segs[-1]["src_e"]:
             s2 = segs[-1]["src_e"]  # never replay audio already used (repeated syllables)
         # brand pacing: cut pauses longer than 0.45 s inside a take, keeping 0.15 s of breath on each side
