@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "2026-11-confidence"))
 from build_timeline import load_db, snap  # noqa: E402
 
 FPS, DAY, END, MSG = 30, 31, 5.0, 4.2
-STOCK_LEN = {"redpen": 21.9, "money": 27.6, "quizhands": 13.3, "joywindow": 358.0, "booktop3": 11.4, "teacherkids": 11.0, "paper": 99.0, "holdhands": 7.9, "raisehands": 22.8, "swing": 10.0, "walk1": 16.1, "walk2": 8.5}
+STOCK_LEN = {"redpen": 21.9, "money": 27.6, "quizhands": 13.3, "joywindow": 358.0, "booktop3": 11.4, "teacherkids": 11.0, "paper": 99.0, "ph_teach": 6.8, "ph_look": 5.5, "ph_fun": 6.7, "holdhands": 7.9, "raisehands": 22.8, "swing": 10.0, "walk1": 16.1, "walk2": 8.5}
 # (src_s, src_e, role, b-roll or None, b-roll start)
 CUTS = [
     (28.30, 33.40, "cold", None, 0),          # The pressure that we put on the students, the pressure that we put on the families.
@@ -23,13 +23,13 @@ CUTS = [
     (34.05, 40.60, "a", "teacherkids", 0.5),  # Joy: a Western teacher with Asian children         # tests and tests and tests.
     (72.45, 80.60, "a", None, 0),             # As an example, my kindergarten refused to give a child anything below a B
     (80.60, 89.40, "a", "paper", 0.0),       # Joy (15 Nov): a test paper gets A+, then is crumpled into the bin (graphic)       # ...because they were concerned that the parent would pull their child out
-    (104.60, 110.60, "a", "holdhands", 0.5), # Joy: holding a child's hand tight ("keep the child there")    # But the results are faked in order so that they keep their child there.
+    (104.60, 110.60, "a", "ph_teach", 0.0),  # Joy (15 Nov): her own teaching photo, kids blurred
     (110.60, 112.70, "a", "money", 3.0),      # In the end, this is a business.
     (121.45, 126.10, "a", None, 0),           # And who loses? Your child loses. You lose.
     (138.10, 142.30, "a", "raisehands", 4.0), # Joy: children from behind, raising hands to answer      # And this is why we say that it's good to make mistakes.
     (196.00, 204.70, "a", None, 0),           # Again, I must state that this is just my experience. This is not all kindergartens.
-    (224.55, 229.00, "a", "booktop3", 5.0),    # Please look to yourself, look to your child,
-    (229.00, 235.10, "a", "walk2", 1.0),     # Korean autumn: ginkgo street (Joy's own footage)   # make an honest decision, keep it fun, keep it happy.
+    (224.55, 229.00, "a", "ph_look", 0.0),   # Joy: Mark's high five + the train game (kids blurred)
+    (229.00, 235.10, "a", "ph_fun", 0.0),    # Joy: the stream walk + Mark and Joy laughing on stage
 ]
 # Korean captions in SOURCE time. "유아 영어학원(영유)" at the first mention, then "영유".
 LINES = [

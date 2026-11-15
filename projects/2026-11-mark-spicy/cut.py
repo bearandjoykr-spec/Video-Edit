@@ -41,7 +41,7 @@ for k, g in enumerate(segs):
                   f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='if(lte(hypot(X-{PIP / 2},Y-{PIP / 2}),{PIP / 2 - 2}),255,0)',setpts=PTS-STARTPTS[pip{k}]")
         R = PIP + 16
         fc.append(f"color=c=0xF5F0E6:s={R}x{R}:d={vd},format=rgba,geq=r='245':g='240':b='230':a='if(lte(hypot(X-{R / 2},Y-{R / 2}),{R / 2 - 1}),255,0)'[ring{k}]")
-        px, py = {"joywindow": (702, 880), "teacherkids": (702, 470), "paper": (48, 60)}.get(g["broll"], (PX, PY))  # Joy's face is top-left in her own footage: keep it clear
+        px, py = {"joywindow": (702, 880), "teacherkids": (702, 470), "paper": (48, 60), "ph_teach": (48, 100), "ph_look": (48, 100), "ph_fun": (48, 1470)}.get(g["broll"], (PX, PY))  # Joy's face is top-left in her own footage: keep it clear
         fc.append(f"[bg{k}][ring{k}]overlay={px - 8}:{py - 8}[bgr{k}];[bgr{k}][pip{k}]overlay={px}:{py}:eof_action=repeat,trim=0:{vd},format=yuv420p,setpts=PTS-STARTPTS[v{k}]")
     labels.append(f"[a{k}]")
 fc.append("".join(labels) + f"concat=n={len(segs)}:v=0:a=1[a0]")

@@ -14,3 +14,4 @@ Music: "Magic Moments" (Day 25 licensed track), see projects/2026-11-day25-kyobo
 - raisehands.mp4 (Joy: children from behind raising hands): https://www.pexels.com/video/back-view-of-children-in-classroom-5427173/
 - The A+ test paper that gets crumpled and binned is a Remotion graphic (PaperScene), not stock.
 - No longer used: swing.mp4, walk1 at 31-40 s, stroller at 40-45 s.
+- ph_teach / ph_look / ph_fun: Joy's own class photos (photos/, made by photos.py, children's faces blurred). Replace holdhands, the bookshop shot and the ginkgo street.
