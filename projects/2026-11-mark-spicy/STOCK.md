@@ -7,3 +7,6 @@ Pexels License (free commercial use, no attribution), downloaded 15 Nov 2026 int
 Own footage: raw-footage/day1-promo/promo.mov (Joy's Day 1 peekaboo window game, flipped back), raw-footage/joy-top3/book2.mov (Joy with The Very Hungry Caterpillar).
 Music: "Magic Moments" (Day 25 licensed track), see projects/2026-11-day25-kyobo/music/SOURCE.md.
 - teacherkids.mp4 (Western teacher with Asian pupils, Joy approved the idea): https://www.pexels.com/video/teacher-and-student-in-a-class-5904785/
+- stroller1 (DAY 30 Pexels clip, raw-footage/day32/stock/): https://www.pexels.com/video/autumn-stroll-with-baby-stroller-on-leafy-path-29150067/
+- swing.mp4: https://www.pexels.com/video/a-girl-sitting-on-a-swing-7940895/
+- Joy's own autumn walks: raw-footage/day32/walk1.mov, walk2.mov. Joy's Day 1 window footage is no longer used (Mark: it popped up oddly before the CTA).

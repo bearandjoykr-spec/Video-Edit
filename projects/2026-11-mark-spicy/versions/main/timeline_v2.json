@@ -52,16 +52,16 @@
    "src_e": 89.6,
    "out_s": 30.91,
    "role": "a",
-   "broll": "redpen",
-   "b_s": 2.0
+   "broll": "walk1",
+   "b_s": 0.0
   },
   {
    "src_s": 104.62,
    "src_e": 110.5,
    "out_s": 39.74,
    "role": "a",
-   "broll": "redpen",
-   "b_s": 12.0
+   "broll": "stroller",
+   "b_s": 0.5
   },
   {
    "src_s": 110.5,
@@ -82,8 +82,8 @@
    "src_e": 142.22,
    "out_s": 52.72,
    "role": "a",
-   "broll": "joywindow",
-   "b_s": 203.4
+   "broll": "swing",
+   "b_s": 0.8
   },
   {
    "src_s": 195.97,
@@ -104,8 +104,8 @@
    "src_e": 235.0,
    "out_s": 70.03,
    "role": "a",
-   "broll": "joywindow",
-   "b_s": 210.6
+   "broll": "walk2",
+   "b_s": 1.0
   }
  ],
  "captions": [
@@ -670,6 +670,11 @@
   },
   {
    "t": 30.85,
+   "sound": "whoosh",
+   "gain": -18
+  },
+  {
+   "t": 39.68,
    "sound": "whoosh",
    "gain": -18
   },

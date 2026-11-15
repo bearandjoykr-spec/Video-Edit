@@ -7,12 +7,15 @@ V = f"{HERE}/versions/main"
 RAW = "raw-footage/new-1113"
 plan = json.load(open(f"{V}/timeline_v2.json"))
 segs = plan["segments"]
-PIP, PX, PY = 330, 48, 300
+PIP, PX, PY = 330, 48, 470  # below the top pops
 # B-roll sources with a pre-crop (Joy, 15 Nov 2026: no faces that read as non-Korean; hands-only stock, and our own footage of Joy)
 BROLL = {
     "quizhands": (f"{RAW}/stock/quiz.mp4", "crop=1080:1920:300:1920,"),          # pencil on a test sheet, background child cropped out
     "joywindow": ("raw-footage/day1-promo/promo.mov", "hflip,crop=608:1080:716:0,"), # Joy's Day 1 peekaboo window game (source is mirrored)
     "booktop3": ("raw-footage/joy-top3/book2.mov", ""),                            # Joy's thumbs-up with a picture book
+    "stroller": ("raw-footage/day32/stock/stroller1.mp4", ""),                    # autumn stroller walk (Pexels, no faces)
+    "walk1": ("raw-footage/day32/walk1.mov", ""),                                  # Joy's autumn walk: red trees
+    "walk2": ("raw-footage/day32/walk2.mov", ""),                                  # Joy's autumn walk: ginkgo street
 }
 ins, fc = [], []
 def add_in(*a):
@@ -35,7 +38,7 @@ for k, g in enumerate(segs):
                   f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='if(lte(hypot(X-{PIP / 2},Y-{PIP / 2}),{PIP / 2 - 2}),255,0)',setpts=PTS-STARTPTS[pip{k}]")
         R = PIP + 16
         fc.append(f"color=c=0xF5F0E6:s={R}x{R}:d={vd},format=rgba,geq=r='245':g='240':b='230':a='if(lte(hypot(X-{R / 2},Y-{R / 2}),{R / 2 - 1}),255,0)'[ring{k}]")
-        px, py = {"joywindow": (702, 880), "teacherkids": (702, 300)}.get(g["broll"], (PX, PY))  # Joy's face is top-left in her own footage: keep it clear
+        px, py = {"joywindow": (702, 880), "teacherkids": (702, 470)}.get(g["broll"], (PX, PY))  # Joy's face is top-left in her own footage: keep it clear
         fc.append(f"[bg{k}][ring{k}]overlay={px - 8}:{py - 8}[bgr{k}];[bgr{k}][pip{k}]overlay={px}:{py}:eof_action=repeat,trim=0:{vd},format=yuv420p,setpts=PTS-STARTPTS[v{k}]")
     labels.append(f"[a{k}]")
 fc.append("".join(labels) + f"concat=n={len(segs)}:v=0:a=1[a0]")
