@@ -19,9 +19,9 @@ CUTS = [
     # Joy (15 Nov): the message is pressure, not "manipulation"; the hook asks whether the report card can be trusted
     (5.45, 8.20, "q", None, 0),               # Q (off camera): What's the biggest problem of 영유?
     (16.30, 19.05, "a", None, 0),             # And in my 20 years as a teacher,
-    (22.90, 28.20, "a", "quizhands", 0.5),     # ...the biggest problem is pressure.
-    (34.05, 40.60, "a", "teacherkids", 0.5),  # Joy: a Western teacher with Asian children         # tests and tests and tests.
-    (72.45, 80.60, "a", None, 0),             # As an example, my kindergarten refused to give a child anything below a B
+    (22.90, 27.55, "a", "quizhands", 0.5),     # ...the biggest problem is pressure.
+    (34.33, 40.60, "a", "teacherkids", 0.5),  # Joy: a Western teacher with Asian children         # tests and tests and tests.
+    (73.10, 80.60, "a", None, 0),             # As an example, my kindergarten refused to give a child anything below a B
     (80.60, 89.35, "a", "paper", 0.0),       # Joy (15 Nov): a test paper gets A+, then is crumpled into the bin (graphic)       # ...because they were concerned that the parent would pull their child out
     (105.00, 110.60, "a", "ph_teach", 0.0),  # Joy (15 Nov): her own teaching photo, kids blurred
     (110.60, 112.70, "a", "money", 3.0),      # In the end, this is a business.
@@ -66,8 +66,8 @@ POPS = [
 ]
 
 
-EXACT = {105.00, 122.15, 197.17, 224.88, 226.45, 229.30, 232.92}
-EXACT_END = {89.35, 204.18, 229.00, 231.90}
+EXACT = {34.33, 73.10, 105.00, 122.15, 197.17, 224.88, 226.45, 229.30, 232.92}
+EXACT_END = {27.55, 89.35, 204.18, 229.00, 231.90}
 
 
 def main():
@@ -168,7 +168,7 @@ def main():
             add(g["out_s"] - 0.06, "whoosh", -18)
     # the question to leave with (Joy), then the follow card
     ev.append({"type": "message", "s": round(speech_end - 0.1, 3), "e": round(speech_end + MSG, 3), "line1": "이건 과연", "line2": "누구를 위한 걸까요?",
-               "small": "\"언어를 배우는 시기엔 성적표보다 아이의 즐거움이 먼저다\"", "ask": "💬 동의하면 👍, 아니면 👎 댓글로 자유롭게 의견을 남겨 주세요"})
+               "small": "\"언어를 배우는 시기엔 성적표보다\n아이의 즐거움이 먼저다\"", "ask": "💬 동의하면 👍, 아니면 👎\n댓글로 자유롭게 의견을 남겨 주세요."})
     add(speech_end - 0.1, "chime", -8); add(speech_end + 0.3, "sparkle", -11)
     ev.append({"type": "end", "s": round(speech_end + MSG, 3), "e": total, "short": False, "share": "💬 동의하면 👍, 아니면 👎 댓글로 의견을 남겨 주세요"})
     ev.append({"type": "badge", "s": round(cold, 3), "e": speech_end - 0.1, "day": DAY, "docked": True})
