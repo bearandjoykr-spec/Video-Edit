@@ -9,6 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 picture, out, music = sys.argv[1:4]
 music_db = float(sys.argv[4]) if len(sys.argv) > 4 else -12
 m0 = float(sys.argv[5]) if len(sys.argv) > 5 else 0.0
+CTA_GAIN = 2.8  # about +9 dB once Mark stops talking
 V = f"{HERE}/versions/main"
 plan = json.load(open(f"{V}/timeline_v2.json"))
 dur = plan["duration"]
@@ -21,7 +22,9 @@ fc = [
     f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,highpass=f=80,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=3,apad=whole_dur={dur},asplit=2[voice][key]",
     f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={music_db}dB,atrim=0:{dur},afade=t=in:d=0.4,"
     f"afade=t=out:st={dur - 2.5}:d=2.5[mus0]",
-    "[mus0][key]sidechaincompress=threshold=0.05:ratio=2:attack=30:release=500[mus]",
+    "[mus0][key]sidechaincompress=threshold=0.05:ratio=2:attack=30:release=500[musd]",
+    # Mark (15 Nov): turn the music up for the end CTA (message card + follow card), with a short ramp
+    f"[musd]volume='1+{CTA_GAIN - 1}*min(max((t-{plan['speechEnd']})/0.6,0),1)':eval=frame[mus]",
 ]
 labels = ["[voice]", "[mus]"]
 for k, cue in enumerate(plan["sfx"]):

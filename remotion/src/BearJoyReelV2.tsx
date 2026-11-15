@@ -428,6 +428,32 @@ const Speaker: React.FC<{ev: Ev; t: number}> = ({ev, t}) => {
   );
 };
 
+
+// Thumbnail hook (Mark T DAY 31): a perfect A+ report card with a red "정말?" stamp and a magnifying glass looking closer.
+// Report-card / test-paper visuals are what parenting-education reels in Korea lead with; the stamp asks the video's question.
+const HookCard: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
+  const out = interpolate(t, [ev.e - 0.35, ev.e], [1, 0], clamp);
+  const st = spring({frame: Math.round((t - ev.stampAt) * fps), fps, config: {damping: 8, stiffness: 220, mass: 0.6}});
+  const lx = Math.sin(t * 2.4) * 70, ly = Math.cos(t * 1.9) * 40;
+  return (
+    <div style={{position: 'absolute', left: ev.x, top: ev.y, width: ev.w, opacity: out, transform: `rotate(-6deg) translateX(${(1 - out) * -200}px)`}}>
+      <div style={{background: '#FFFDF6', borderRadius: 22, padding: '20px 28px 14px', boxShadow: '0 22px 50px rgba(0,0,0,.45)'}}>
+        <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 34, color: C.navy, textAlign: 'center', marginBottom: 4}}>📋 영유 성적표</div>
+        {['Speaking', 'Reading', 'Writing'].map((l, k) => (
+          <div key={k} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderTop: k ? '2px dashed rgba(30,45,77,.18)' : 'none'}}>
+            <span style={{fontFamily: PRE, fontWeight: 800, fontSize: 32, color: C.navy}}>{l}</span>
+            <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 48, color: '#1F7A4D'}}>A+</span>
+          </div>
+        ))}
+      </div>
+      <div style={{position: 'absolute', right: -26, top: 60, fontFamily: PRE, fontWeight: 900, fontSize: 64, color: '#D7263D', border: '7px solid #D7263D',
+        borderRadius: 16, padding: '0 16px', background: 'rgba(255,253,246,.85)', transform: `rotate(14deg) scale(${t < ev.stampAt ? 0 : 2.4 - 1.4 * st})`,
+        opacity: t < ev.stampAt ? 0 : Math.min(1, st * 2)}}>정말?</div>
+      <div style={{position: 'absolute', left: 120 + lx, top: 120 + ly, fontFamily: EMOJI, fontSize: 130, lineHeight: 1, filter: 'drop-shadow(0 10px 14px rgba(0,0,0,.35))'}}>🔍</div>
+    </div>
+  );
+};
+
 // A row of key words that bounce in one at a time as they are spoken ("Songs, stories, teachers").
 const List: React.FC<{ev: Ev; t: number; fps: number}> = ({ev, t, fps}) => {
   const out = interpolate(t, [ev.e - 0.15, ev.e], [1, 0], clamp);
@@ -626,6 +652,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
       {E('scatter').map((ev, k) => (live(ev) ? <Scatter key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('burst').map((ev, k) => (t >= ev.s && t <= ev.e ? <Burst key={k} ev={ev} t={t} /> : null))}
       {E('speaker').map((ev, k) => (t >= ev.s && t <= ev.e ? <Speaker key={k} ev={ev} t={t} /> : null))}
+      {E('hookcard').map((ev, k) => (t <= ev.e ? <HookCard key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('sticker').map((ev, k) => (live(ev) ? <Sticker key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('grades').map((ev, k) => (live(ev) ? <Grades key={k} ev={ev} t={t} fps={fps} /> : null))}
       {E('note').map((ev, k) => (t >= ev.s && t <= ev.e ? <Note key={k} ev={ev} t={t} /> : null))}

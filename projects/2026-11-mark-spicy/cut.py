@@ -18,24 +18,32 @@ ins, fc = [], []
 def add_in(*a):
     ins.extend(a); return sum(1 for x in ins if x == "-i") - 1
 labels = []
+T = 0.25  # Mark (15 Nov): soft dissolves instead of hard jump cuts. Each picture runs T longer so the sound stays in sync.
 for k, g in enumerate(segs):
     d = round(g["src_e"] - g["src_s"], 3)
-    j = add_in("-ss", str(g["src_s"]), "-t", str(d), "-i", f"{RAW}/spicy.mov")
-    fc.append(f"[{j}:a]aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.02,afade=t=out:st={d - 0.03:.3f}:d=0.03,asetpts=PTS-STARTPTS[a{k}]")
+    vd = d + (T if k < len(segs) - 1 else 0)
+    j = add_in("-ss", str(g["src_s"]), "-t", str(vd), "-i", f"{RAW}/spicy.mov")
+    fc.append(f"[{j}:a]atrim=0:{d},aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.03,afade=t=out:st={d - 0.04:.3f}:d=0.04,asetpts=PTS-STARTPTS[a{k}]")
     if not g.get("broll"):
-        fc.append(f"[{j}:v]scale=1080:1920,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v{k}]")
+        fc.append(f"[{j}:v]scale=1080:1920,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration=1,trim=0:{vd}[v{k}]")
     else:
         src, pre = BROLL.get(g["broll"], (f"{RAW}/stock/{g['broll']}.mp4", ""))
-        b = add_in("-ss", str(g["b_s"]), "-t", str(d), "-i", src)
-        fc.append(f"[{b}:v]{pre}scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[bg{k}]")
+        b = add_in("-ss", str(g["b_s"]), "-t", str(vd), "-i", src)
+        fc.append(f"[{b}:v]{pre}scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS,"
+                  f"tpad=stop_mode=clone:stop_duration=1,trim=0:{vd}[bg{k}]")
         fc.append(f"[{j}:v]crop=420:420:350:570,scale={PIP}:{PIP},fps=30,format=rgba,"
                   f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='if(lte(hypot(X-{PIP / 2},Y-{PIP / 2}),{PIP / 2 - 2}),255,0)',setpts=PTS-STARTPTS[pip{k}]")
         R = PIP + 16
-        fc.append(f"color=c=0xF5F0E6:s={R}x{R}:d={d},format=rgba,geq=r='245':g='240':b='230':a='if(lte(hypot(X-{R / 2},Y-{R / 2}),{R / 2 - 1}),255,0)'[ring{k}]")
+        fc.append(f"color=c=0xF5F0E6:s={R}x{R}:d={vd},format=rgba,geq=r='245':g='240':b='230':a='if(lte(hypot(X-{R / 2},Y-{R / 2}),{R / 2 - 1}),255,0)'[ring{k}]")
         px, py = {"joywindow": (702, 880), "teacherkids": (702, 300)}.get(g["broll"], (PX, PY))  # Joy's face is top-left in her own footage: keep it clear
-        fc.append(f"[bg{k}][ring{k}]overlay={px - 8}:{py - 8}[bgr{k}];[bgr{k}][pip{k}]overlay={px}:{py}:shortest=1,format=yuv420p[v{k}]")
-    labels.append(f"[v{k}][a{k}]")
-fc.append("".join(labels) + f"concat=n={len(segs)}:v=1:a=1[v0][a0]")
+        fc.append(f"[bg{k}][ring{k}]overlay={px - 8}:{py - 8}[bgr{k}];[bgr{k}][pip{k}]overlay={px}:{py}:eof_action=repeat,trim=0:{vd},format=yuv420p,setpts=PTS-STARTPTS[v{k}]")
+    labels.append(f"[a{k}]")
+fc.append("".join(labels) + f"concat=n={len(segs)}:v=0:a=1[a0]")
+prev = "v0"
+fc.append("[v0]null[x0]"); prev = "x0"
+for k in range(1, len(segs)):
+    fc.append(f"[{prev}][v{k}]xfade=transition=fade:duration={T}:offset={segs[k]['out_s']:.3f}[x{k}]"); prev = f"x{k}"
+fc.append(f"[{prev}]null[v0]")
 tail = round(plan["duration"] - plan["speechEnd"], 3)
 fc.append(f"[v0]tpad=stop_mode=clone:stop_duration={tail}[v];[a0]apad=whole_dur={plan['duration']}[a]")
 subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-filter_complex", ";".join(fc), "-map", "[v]", "-map", "[a]", "-t", str(plan["duration"]),
