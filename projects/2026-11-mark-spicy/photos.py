@@ -7,16 +7,14 @@ from PIL import Image, ImageDraw, ImageFilter
 HERE = os.path.dirname(os.path.abspath(__file__))
 P = f"{HERE}/photos"; OUT = "raw-footage/new-1113/stock"; TMP = f"{P}/blurred"; os.makedirs(TMP, exist_ok=True)
 # children's heads to blur, (x0, y0, x1, y1) in each photo's own pixels (checked by eye on the contact sheet)
+# Joy (15 Nov): don't overdo it, backs of heads need no blur. Only faces turned toward the camera (the stream walk) get a light blur.
 KIDS = {
-    "p2": [(105, 235, 400, 525)],
-    "p3": [(0, 0, 240, 270), (60, 470, 500, 1000)],
-    "p4": [(430, 245, 540, 345), (495, 290, 610, 395), (550, 345, 660, 455), (580, 420, 705, 525), (515, 220, 580, 285), (430, 50, 510, 130)],
-    "p6": [(880, 300, 1170, 610), (440, 520, 720, 821)],
-    "p7": [(0, 1130, 300, 1391)],
+    "p2": [], "p3": [], "p6": [], "p7": [],
+    "p4": [(505, 300, 590, 385), (560, 355, 645, 440), (590, 430, 680, 515)],
 }
 for name, boxes in KIDS.items():
     im = Image.open(f"{P}/{name}.png").convert("RGB")
-    blur = im.filter(ImageFilter.GaussianBlur(28))
+    blur = im.filter(ImageFilter.GaussianBlur(14))
     mask = Image.new("L", im.size, 0); d = ImageDraw.Draw(mask)
     for b in boxes:
         d.ellipse(b, fill=255)
@@ -28,7 +26,7 @@ def clip(names, dur, out):
     ins, fc = [], []
     for k, n in enumerate(names):
         ins += ["-loop", "1", "-t", str(dur + 0.3), "-i", f"{TMP}/{n}.png"]
-        fc.append(f"[{k}:v]split[a{k}][b{k}];[a{k}]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,gblur=sigma=40,eq=brightness=-0.08[bg{k}];"
+        fc.append(f"[{k}:v]split[a{k}][b{k}];[a{k}]scale=8:8,scale=1080:1920,geq=r='245':g='240':b='230'[bg{k}];"
                   f"[b{k}]scale=1000:-2,zoompan=z='1+0.0015*on':d=1:s=1000x{{H}}:fps=30[fg{k}];"
                   f"[bg{k}][fg{k}]overlay=(W-w)/2:(H-h)/2-80,fps=30,format=yuv420p,trim=0:{dur + 0.3},setpts=PTS-STARTPTS[c{k}]")
     # zoompan needs the photo's scaled height

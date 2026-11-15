@@ -659,7 +659,7 @@ export const BearJoyReelV2: React.FC<{plan: PlanV2}> = ({plan}) => {
   const vid: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: grade};
   // a cream pull-back (Joy, Day 28) keeps the cream clean: fade the vignette and caption scrim while it shows
   const cream = Math.max(0, ...E('pull').filter((e) => e.bg).map((e) => pullAmount(e, t)),
-    ...E('paper').map((e) => interpolate(t, [e.s - 0.2, e.s, e.e - 0.1, e.e + 0.15], [0, 1, 1, 0], clamp)));  // the test paper sits on a clean cream page
+    ...E('paper').concat(E('creampage')).map((e) => interpolate(t, [e.s - 0.2, e.s, e.e - 0.1, e.e + 0.15], [0, 1, 1, 0], clamp)));  // the test paper sits on a clean cream page
   return (
     <AbsoluteFill style={{background: C.navy}}>
       {E('pull').map((ev, k) => {

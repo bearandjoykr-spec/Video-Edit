@@ -140,6 +140,10 @@ def main():
         ev.append(p); add(to_out(s), snd, {"pop": -9, "impact": -7}.get(snd, -11))
         # Mark (15 Nov): no punch-ins, they made it feel jumpy
     # report card: C turns into a B stamp
+    # photo clips sit on the cream page: no dark caption scrim or vignette over them
+    for g in segs:
+        if str(g.get("broll", "")).startswith("ph_"):
+            ev.append({"type": "creampage", "s": g["out_s"], "e": round(g["out_s"] + g["src_e"] - g["src_s"], 3)})
     pg = next(g for g in segs if g.get("broll") == "paper")
     pe = round(pg["out_s"] + pg["src_e"] - pg["src_s"], 3)
     ev.append({"type": "paper", "s": pg["out_s"], "e": pe, "crumpleAt": round((pe - pg["out_s"]) - 2.3, 2)})
