@@ -123,7 +123,8 @@ export const OutdoorEnglish: React.FC<{plan: OutdoorPlan}> = ({plan}) => {
   const phrase = seg && seg.phrase ? plan.phrases.find((p) => p.k === seg.phrase) : undefined;
   const cap = plan.captions.find((c) => t >= c.s && t < c.e);
   const boardOn = ['board', 'boardb', 'replay'].includes(lay);
-  const hookEnd = plan.segments[4].out_s;
+  const hookEnd = plan.segments.find((g) => g.layout === 'full')!.out_s;
+  const hookA = seg?.note === 'hookA' ? seg : undefined;
   const segStart = seg ? seg.out_s : 0;
   const flash = interpolate(t - segStart, [0, .12], [.5, 0], clamp);
   return (
@@ -132,9 +133,24 @@ export const OutdoorEnglish: React.FC<{plan: OutdoorPlan}> = ({plan}) => {
       {lay === 'montage' ? <AbsoluteFill style={{background: '#fff', opacity: flash}} /> : null}
       {lay === 'full' || lay === 'montage' ? <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,.25) 0%, rgba(10,16,30,0) 25%, rgba(10,16,30,0) 55%, rgba(10,16,30,.55) 85%)'}} /> : null}
       {boardOn && phrase ? <Board p={phrase} t={t} fps={fps} /> : null}
+      {/* Hook A: the result first. The board writes "Look, it's a car!" while Mark says it and a real car drives by */}
+      {hookA ? (() => {
+        const p0 = plan.phrases[0];
+        const hp = {...p0, s: hookA.out_s - .9, chips: [{...p0.chips[0], t: hookA.out_s + .85}, {...p0.chips[1], t: 1e9}, {...p0.chips[2], t: 1e9}]};
+        const k = sp(t, -.4, fps, 9);
+        return (
+          <>
+            <Board p={hp} t={t} fps={fps} />
+            <div style={{position: 'absolute', left: 30, right: 30, top: 1250, textAlign: 'center', transform: `scale(${.85 + .15 * k}) rotate(-2deg)`}}>
+              <div style={{display: 'inline-block', fontWeight: 900, fontSize: 92, lineHeight: 1.1, color: '#fff', textShadow: SHADOW, letterSpacing: '-.03em'}}>
+                밖에서는 <span style={{color: C.yellow}}>이 한 문장</span>이면<br />끝! 👆</div>
+            </div>
+          </>
+        );
+      })() : null}
 
       {/* HOOK: the first frame is the thumbnail */}
-      {t < hookEnd ? (() => {
+      {t < hookEnd && !hookA ? (() => {
         const k = sp(t, -.4, fps, 12);
         return (
           <>

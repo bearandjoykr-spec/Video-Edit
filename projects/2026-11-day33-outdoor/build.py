@@ -12,6 +12,8 @@ SUMMARY, END = 5.5, 4.0
 # layouts: montage (full B-roll, cut fast), full (Mark full frame), board (board top + Mark bottom), boardb (board top + B-roll bottom),
 #          replay (board top + Mark bottom, slowed)
 S = [
+    # Hook A (17 Nov, Claude's call with Joy's go-ahead): show the result first. Mark says "Look, it's a car!" over the board and a car.
+    (19.75, 21.22, "boardb", "b2", 4.0, 1, 0, "hookA"),
     (0.15, 1.00, "montage", "kidrun", 1.0, 1, 0, "hook"),
     (1.00, 1.85, "montage", "b1_sdr", 6.0, 1, 0, "hook"),
     (1.85, 2.75, "montage", "koi", 2.0, 1, 0, "hook"),
@@ -68,7 +70,7 @@ def main():
 
     def first_out(x):
         for g in segs:
-            if g["note"] not in ("slow", "again") and g["src_s"] - 1e-6 <= x <= g["src_e"] + 1e-6:
+            if g["note"] not in ("slow", "again", "hookA") and g["src_s"] - 1e-6 <= x <= g["src_e"] + 1e-6:
                 return round(g["out_s"] + (x - g["src_s"]) / g["speed"], 3)
         raise ValueError(x)
 
@@ -81,10 +83,11 @@ def main():
                         "slow": None, "again": None})
     sfx = []
     add = lambda tt, s_, gn: sfx.append({"t": round(max(0, tt), 3), "sound": s_, "gain": gn})
-    for g in segs[:4]:
+    add(0.0, "chime", -8); add(segs[0]["out_s"] + 0.95, "pop", -8)   # the car word lands
+    for g in segs[1:5]:
         add(g["out_s"], "whoosh", -10)
-    add(0.0, "impact", -6)
-    add(segs[4]["out_s"], "impact", -8)
+    add(segs[1]["out_s"], "impact", -6)
+    add(segs[5]["out_s"], "impact", -8)
     for p in phrases:
         add(p["s"], "chime", -8)
         for c in p["chips"]:

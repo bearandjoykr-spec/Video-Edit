@@ -4,7 +4,7 @@ set -e; export PATH=/opt/homebrew/bin:$PATH
 P=projects/2026-11-day33-outdoor; D=exports/instagram/day33; B=BearJoy_Day33; mkdir -p $D
 ffmpeg -nostdin -v error -y -i renders/day33/day33-final.mp4 -c:v libx264 -preset slow -profile:v high -level 4.1 -b:v 9M -maxrate 12M -bufsize 18M -pix_fmt yuv420p \
   -color_range tv -colorspace bt709 -color_trc bt709 -color_primaries bt709 -c:a aac -b:a 256k -ar 48000 -movflags +faststart "$D/$B.mp4"
-(cd remotion && npx remotion still src/index.ts Day33 /tmp/day33-cover.png --frame=0 --log=error </dev/null) && ffmpeg -nostdin -v error -y -i /tmp/day33-cover.png -q:v 2 "$D/${B}_Cover.jpg"
+(cd remotion && npx remotion still src/index.ts Day33 /tmp/day33-cover.png --frame=52 --log=error </dev/null) && ffmpeg -nostdin -v error -y -i /tmp/day33-cover.png -q:v 2 "$D/${B}_Cover.jpg"
 F=$(.venv/bin/python -c "import json;p=json.load(open('$P/versions/main/timeline.json'));p['cardOnly']=True;json.dump({'plan':p},open('/tmp/day33-card.json','w'));print(int((p['speechEnd']+3.5)*30))")
 (cd remotion && npx remotion still src/index.ts Day33 ../$D/${B}_바깥놀이영어3문장.png --frame=$F --props=/tmp/day33-card.json --log=error </dev/null)
 .venv/bin/python - "$P/versions/main/timeline.json" "$D/${B}_ko.srt" <<'PY'
