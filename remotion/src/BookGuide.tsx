@@ -144,6 +144,13 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
       {sec.kind === 'page' && b ? <PageCard b={b} t={t} s={sec.s} fps={fps} /> : null}
       {(sec.kind === 'read' || sec.kind === 'ask') && b ? <TipCard b={b} kind={sec.kind} t={t} s={sec.s} fps={fps} /> : null}
       {sec.book && sec.kind !== 'cover' ? <Tabs book={sec.book} /> : null}
+      {/* Joy: the book's cover sits small at the top right while its sentence, reading tip and question are on screen */}
+      {b && ['page', 'read', 'ask'].includes(sec.kind) ? (() => {
+        const first = plan.sections.find((x) => x.book === sec.book && x.kind === 'page')!.s;
+        const k = sp(t, first, fps, 11);
+        return <Img src={staticFile(`${plan.media}/covers/${b.cover}`)} style={{position: 'absolute', right: 56, top: 300, width: 170, height: 215, objectFit: 'cover', borderRadius: 12,
+          border: '6px solid #fff', boxShadow: '0 14px 30px rgba(0,0,0,.45)', transform: `rotate(6deg) scale(${.6 + .4 * k})`, opacity: Math.min(1, k * 2), zIndex: 5}} />;
+      })() : null}
       {sec.book && sec.kind !== 'cover' && b ? (
         <div style={{position: 'absolute', top: 210, left: 0, right: 0, textAlign: 'center', fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 44, color: '#fff', textShadow: SHADOW}}>{b.title}</div>
       ) : null}
@@ -151,7 +158,7 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
       {/* the planned voice-over line (draft only, so Joy can follow the timing while recording) */}
       {plan.showVo && sec.vo ? (
         <div style={{position: 'absolute', left: 50, right: 50, bottom: 260, textAlign: 'center', fontWeight: 800, fontSize: 46, lineHeight: 1.35, color: '#fff', textShadow: SHADOW,
-          wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>🎙 {sec.vo.replace(/([,.?!]) /g, '$1\n')}</div>
+          wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>🎙 {sec.vo.replace(/([,.?!]) (?=[가-힣])/g, '$1\n')}</div>
       ) : null}
 
       {/* SAVE CARD (Joy: a clean page, not a chalkboard) */}
