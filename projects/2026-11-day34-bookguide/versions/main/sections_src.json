@@ -6,7 +6,7 @@
   "e": 1.0,
   "clip": "raw-footage/joy-top3/book3.mov",
   "cs": 1.0,
-  "vo": "아이가 '한 번 더!' 외치는 영어 그림책 3권,"
+  "vo": "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"
  },
  {
   "kind": "hook",
@@ -33,7 +33,7 @@
   "e": 4.6,
   "clip": "raw-footage/day32-books/b4.mov",
   "cs": 2.0,
-  "vo": "책 속 문장이랑 읽어주는 법까지 알려드릴게요!"
+  "vo": "책 속 문장이랑 읽어주는 법까지\n알려드릴게요!"
  },
  {
   "kind": "cover",
@@ -42,7 +42,7 @@
   "e": 6.8,
   "clip": "raw-footage/joy-top3/book3.mov",
   "cs": 0.5,
-  "vo": "첫 번째, 앤서니 브라운의 My Mum, My Dad."
+  "vo": "첫 번째, 앤서니 브라운의\nMy Mum, My Dad."
  },
  {
   "kind": "page",
@@ -51,7 +51,7 @@
   "e": 11.0,
   "clip": "raw-footage/day32-books/b2.mov",
   "cs": 0.3,
-  "vo": "책 속에는 이런 문장이 나와요. She's nice, my mum. He's all right, my dad."
+  "vo": "책 속에는 이런 문장이 나와요.\nShe's nice, my mum.\nHe's all right, my dad."
  },
  {
   "kind": "read",
@@ -60,7 +60,7 @@
   "e": 15.0,
   "clip": "raw-footage/joy-top3/book3.mov",
   "cs": 8.5,
-  "vo": "읽을 때는 my mum, my dad에서 아이를 꼭 안아주세요."
+  "vo": "읽을 때는 my mum, my dad에서\n아이를 꼭 안아주세요."
  },
  {
   "kind": "ask",
@@ -69,7 +69,7 @@
   "e": 19.4,
   "clip": "raw-footage/day32-books/b1.mov",
   "cs": 0.3,
-  "vo": "다 읽고 What can mummy do? 하고 물어보면, 아이가 엄마 자랑을 시작해요."
+  "vo": "다 읽고 What can mummy do?\n하고 물어보면,\n아이가 엄마 자랑을 시작해요."
  },
  {
   "kind": "cover",
@@ -78,7 +78,7 @@
   "e": 21.6,
   "clip": "raw-footage/joy-top3/book2.mov",
   "cs": 2.5,
-  "vo": "두 번째, The Very Hungry Caterpillar."
+  "vo": "두 번째,\nThe Very Hungry Caterpillar."
  },
  {
   "kind": "page",
@@ -87,7 +87,7 @@
   "e": 26.0,
   "clip": "raw-footage/day32-books/b2.mov",
   "cs": 2.3,
-  "vo": "On Monday he ate through one apple. But he was still hungry."
+  "vo": "On Monday he ate through one apple.\nBut he was still hungry."
  },
  {
   "kind": "read",
@@ -96,7 +96,7 @@
   "e": 30.0,
   "clip": "raw-footage/joy-top3/book2.mov",
   "cs": 7.0,
-  "vo": "요일이 나올 때마다 아이와 함께 Monday, Tuesday! 리듬 타듯 읽어 주세요."
+  "vo": "요일이 나올 때마다 아이와 함께\nMonday, Tuesday! 리듬 타듯 읽어 주세요!"
  },
  {
   "kind": "ask",
@@ -105,7 +105,7 @@
   "e": 34.2,
   "clip": "raw-footage/day32-books/b6.mov",
   "cs": 0.3,
-  "vo": "What did he eat? How many? 하고 물으면 영어 숫자가 저절로 나와요."
+  "vo": "What did he eat? How many?\n하고 물으면\n영어 숫자가 저절로 나와요."
  },
  {
   "kind": "cover",
@@ -114,7 +114,7 @@
   "e": 36.4,
   "clip": "raw-footage/joy-top3/book1.mov",
   "cs": 0.0,
-  "vo": "세 번째, I Want My Hat Back."
+  "vo": "세 번째,\nI Want My Hat Back."
  },
  {
   "kind": "page",
@@ -123,7 +123,7 @@
   "e": 40.4,
   "clip": "raw-footage/day32-books/b2.mov",
   "cs": 1.5,
-  "vo": "모자를 잃어버린 곰이 묻고 또 물어요. Have you seen my hat? 동물들은 No."
+  "vo": "모자를 잃어버린 곰이 묻고 또 물어요.\nHave you seen my hat?\n동물들은 No."
  },
  {
   "kind": "read",
@@ -132,7 +132,7 @@
   "e": 44.4,
   "clip": "raw-footage/joy-top3/book1.mov",
   "cs": 4.5,
-  "vo": "동물마다 목소리를 바꿔 주세요. 아이가 No!를 맡으면 더 재밌어요."
+  "vo": "동물마다 목소리를 바꿔 주세요.\n아이가 No!를 맡으면 더 재밌어요."
  },
  {
   "kind": "ask",
@@ -141,7 +141,7 @@
   "e": 49.0,
   "clip": "raw-footage/joy-top3/clip4.mov",
   "cs": 2.5,
-  "vo": "Where is the hat? 하고 물어보세요. 아이가 먼저 모자를 찾아요. 결말은… 직접 확인!"
+  "vo": "Where is the hat?\n하고 물어보세요."
  },
  {
   "kind": "bonus",
@@ -150,7 +150,7 @@
   "e": 51.6,
   "clip": "raw-footage/day34/n1_sdr.mov",
   "cs": 1.5,
-  "vo": "그리고 보너스! 저희가 만든 그림책, Bear & Joy예요."
+  "vo": "그리고 보너스!\n저희가 만든 그림책, Bear & Joy예요."
  },
  {
   "kind": "bonus1",
@@ -159,7 +159,7 @@
   "e": 55.2,
   "clip": "raw-footage/day34/n4.mov",
   "cs": 1.4,
-  "vo": "영어를 읽기 두려운 부모님도, 한글 발음 가이드로 바로 읽어줄 수 있어요."
+  "vo": "영어를 읽기 두려운 부모님도,\n한글 발음 가이드로 바로 읽어줄 수 있어요."
  },
  {
   "kind": "bonus2",
@@ -168,7 +168,7 @@
   "e": 58.8,
   "clip": "raw-footage/day34/n5.mov",
   "cs": 0.0,
-  "vo": "페이지마다 어울리는 질문이 있어서, 아이의 생각과 상상력이 쑥쑥 자라요."
+  "vo": "페이지마다 어울리는 질문이 있어서,\n아이의 생각과 상상력이 쑥쑥 자라요."
  },
  {
   "kind": "bonus3",
@@ -177,7 +177,7 @@
   "e": 62.2,
   "clip": "raw-footage/day34/n2_sdr.mov",
   "cs": 2.0,
-  "vo": "그림책을 넘어, 일상에서도 바로 쓰는 영어가 돼요."
+  "vo": "그림책을 넘어,\n일상에서도 바로 쓰는 영어가 돼요."
  },
  {
   "kind": "summary",
@@ -186,7 +186,7 @@
   "e": 67.6,
   "clip": null,
   "cs": 0,
-  "vo": "저장해 두고 읽어줄 때 꺼내 보세요. 댓글에 그림책 남기면 정리 카드 보내드려요."
+  "vo": "저장해 두고 읽어줄 때 꺼내 보세요."
  },
  {
   "kind": "end",

@@ -155,10 +155,10 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
         <div style={{position: 'absolute', top: 210, left: 0, right: 0, textAlign: 'center', fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 44, color: '#fff', textShadow: SHADOW}}>{b.title}</div>
       ) : null}
 
-      {/* the planned voice-over line (draft only, so Joy can follow the timing while recording) */}
-      {plan.showVo && sec.vo ? (
+      {/* captions (Joy, 17 Nov: posted as captions with music; line breaks set by hand in build.py) */}
+      {plan.showVo && sec.vo && sec.kind !== 'summary' ? (
         <div style={{position: 'absolute', left: 50, right: 50, bottom: 260, textAlign: 'center', fontWeight: 800, fontSize: 46, lineHeight: 1.35, color: '#fff', textShadow: SHADOW,
-          wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>🎙 {sec.vo.replace(/([,.?!]) (?=[가-힣])/g, '$1\n').replace(/([가-힣][,.?!]) (?=[A-Za-z])/g, '$1\n')}</div>
+          wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>{sec.vo}</div>
       ) : null}
 
       {/* SAVE CARD (Joy: a clean page, not a chalkboard) */}
