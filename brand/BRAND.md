@@ -145,3 +145,9 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Keep the speaker's own disclaimer and a standing "※ 개인 경험담" note on sharp claims. Lead with a shared feeling ("영유 성적표, 그게 전부일까요?"), not the sharpest accusation.
 - Tone in two steps: calm white pops without playful emoji while the problem is named; warm brand colours from the positive turn; end on a cream message card and an empathy question for comments.
 - Mark's tag for this kind of video: "20년 이상 교육 경력 · 한국·일본 등 여러 나라".
+
+## DAY 33 chalkboard format (Joy, 17 Nov 2026)
+- **Fonts going forward (Joy: "use this font feel in future videos"):** Gaegu 700 (Korean handwriting) and Patrick Hand (English chalk handwriting) for boards, titles' sub-lines and phrase cards; Pretendard stays for captions and big hook titles. Files: remotion/public/fonts/Gaegu-Bold.ttf, PatrickHand.ttf (fetch-fonts.sh).
+- Phrase lessons: chalkboard on top, speaker below; swap-in words change exactly when the word is heard (probe the audio; whisper word times can run ~0.5 s early). No slow/repeat replays (Joy: they cut words and looked messy).
+- Captions break into clean two-line phrases at natural pauses.
+- Thumbnail: the speaker cut out (upper body, white sticker edge) on a torn-paper panel.

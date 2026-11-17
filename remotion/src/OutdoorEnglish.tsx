@@ -7,9 +7,9 @@ import {AbsoluteFill, Img, OffthreadVideo, continueRender, delayRender, interpol
 type Seg = {out_s: number; out_e: number; layout: string; note: string; phrase: number};
 type Chip = {w: string; emoji: string; t: number};
 type Phrase = {k: number; s: number; e: number; n: string; en: string; ko: string; say: string; fill: string; chips: Chip[];
-  slow: {s: number; e: number}; again: {s: number; e: number}};
+  slow: {s: number; e: number} | null; again: {s: number; e: number} | null};
 export type OutdoorPlan = {fps: number; day: number; duration: number; frames: number; speechEnd: number; summaryEnd: number; media: string;
-  segments: Seg[]; captions: {s: number; e: number; ko: string}[]; phrases: Phrase[]; joke: {s: number; e: number}};
+  segments: Seg[]; captions: {s: number; e: number; ko: string; en?: string}[]; phrases: Phrase[]; joke: {s: number; e: number}};
 
 const C = {navy: '#1E2D4D', cream: '#F5F0E6', yellow: '#F6E27A', butter: '#F6F0BA', sky: '#AECCE6', board: '#23402F', chalk: '#F4F1E6', pink: '#F7B2B7'};
 const PRE = "'Pretendard', 'Noto Color Emoji', sans-serif";
@@ -47,9 +47,9 @@ const Smudges: React.FC = () => (
 const Board: React.FC<{p: Phrase; t: number; fps: number}> = ({p, t, fps}) => {
   const inS = sp(t, p.s, fps, 14);
   const chip = [...p.chips].reverse().find((c) => t >= c.t);
-  const slow = t >= p.slow.s && t < p.slow.e, again = t >= p.again.s && t < p.again.e;
+  const slow = !!p.slow && t >= p.slow.s && t < p.slow.e, again = !!p.again && t >= p.again.s && t < p.again.e;
   // the replays repeat the first example ("Look, it's a car"), so the board shows that word again
-  const word = slow || again ? p.fill : chip && p.fill ? chip.w : p.fill;
+  const word = slow || again ? p.fill : chip && p.fill ? chip.w : '';  // blank until Mark says the first word
   const parts = p.en.split('___');
   // chalk write-on: the sentence appears letter by letter in the first 0.9 s of the phrase
   const shown = Math.floor(interpolate(t, [p.s + .1, p.s + 1.0], [0, p.en.length], clamp));
@@ -106,10 +106,11 @@ const Board: React.FC<{p: Phrase; t: number; fps: number}> = ({p, t, fps}) => {
   );
 };
 
-const Caption: React.FC<{c: {s: number; e: number; ko: string}; t: number; top: number}> = ({c, t, top}) => {
+const Caption: React.FC<{c: {s: number; e: number; ko: string; en?: string}; t: number; top: number}> = ({c, t, top}) => {
   const o = interpolate(t, [c.s, c.s + .08, c.e - .06, c.e], [0, 1, 1, 0], clamp);
   return <div style={{position: 'absolute', left: 60, right: 60, top, textAlign: 'center', fontFamily: PRE, fontWeight: 800, fontSize: 60, lineHeight: 1.3,
-    color: '#fff', textShadow: SHADOW, wordBreak: 'keep-all', opacity: o, transform: `translateY(${(1 - o) * 10}px)`}}>{c.ko}</div>;
+    color: '#fff', textShadow: SHADOW, wordBreak: 'keep-all', whiteSpace: 'pre-line', opacity: o, transform: `translateY(${(1 - o) * 10}px)`}}>{c.ko}
+    {c.en ? <div style={{fontFamily: CHALK_KO, fontWeight: 700, fontSize: 78, color: C.yellow, marginTop: 8}}>{c.en}</div> : null}</div>;
 };
 
 export const OutdoorEnglish: React.FC<{plan: OutdoorPlan}> = ({plan}) => {
