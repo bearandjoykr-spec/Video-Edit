@@ -48,10 +48,46 @@ BOOKS = {
 }
 
 
+# Joy + Mark's voice-over (raw-footage/day34/vo.m4a, 17 Nov 2026). Takes picked by ear-probing the recording: the interrupted
+# "What did he eat?" (46-50 s) and the mixed-up first "동물마다…" take (73-78 s) are dropped for their retakes; "아이가 먼저 모자를
+# 찾아요" is left out (Joy removed that caption). Per section: list of (src_s, src_e) pieces placed back to back.
+VO = {
+    0: [(1.60, 4.95)], 3: [(5.30, 8.20)],
+    4: [(8.55, 12.55)], 5: [(13.15, 19.35)], 6: [(19.75, 24.08)], 7: [(24.08, 29.55)],
+    8: [(29.82, 33.50)], 9: [(34.35, 40.15)], 10: [(40.38, 46.00)], 11: [(57.22, 62.80)],
+    12: [(63.18, 66.30)], 13: [(66.82, 73.30)], 14: [(80.38, 84.90)], 15: [(85.48, 88.32)],
+    16: [(90.40, 93.98)], 17: [(94.04, 98.60)], 18: [(99.06, 104.55)], 19: [(104.76, 108.16)],
+    20: [(108.70, 110.70), (111.22, 114.10)], 21: [(114.52, 116.25)],
+}
+GAP = 0.35   # breath after each line
+HOOK_SPLIT = (0, 3)  # the hook's four quick cuts share the two hook lines
+
+
 def main():
-    t, secs = 0.0, []
-    for kind, book, d, clip, cs, vo in SECTIONS:
+    # section lengths follow the voice: each voiced section = its audio + a short breath
+    durs = [x[2] for x in SECTIONS]
+    for i, pcs in VO.items():
+        a = sum(e - s for s, e in pcs) + GAP
+        if i == 0:     # line 1 spans hook cuts 0-2
+            for j in range(3):
+                durs[j] = round(a / 3, 3)
+        elif i == 3:
+            durs[3] = round(a, 3)
+        elif SECTIONS[i][0] == "end":
+            durs[i] = max(4.0, a)
+        else:
+            durs[i] = round(max(a, 2.0), 3)
+    t, secs, vo_place = 0.0, [], []
+    for k, (kind, book, d, clip, cs, vo) in enumerate(SECTIONS):
+        d = durs[k]
         secs.append({"kind": kind, "book": book, "s": round(t, 3), "e": round(t + d, 3), "clip": clip, "cs": cs, "vo": vo}); t += d
+    for i, pcs in VO.items():
+        at = secs[i]["s"] + (0.1 if SECTIONS[i][0] != "hook" else 0)
+        for s_, e_ in pcs:
+            vo_place.append({"src_s": s_, "src_e": e_, "at": round(at, 3)}); at += e_ - s_ + 0.15
+    # captions: the hook's first line runs across cuts 0-2
+    for x in secs[:3]:
+        x["vo"] = SECTIONS[0][5]
     total = round(t, 3)
     sfx = []
     add = lambda tt, s_, g: sfx.append({"t": round(tt, 3), "sound": s_, "gain": g})
@@ -71,7 +107,7 @@ def main():
         if x["kind"] == "end":
             add(x["s"], "whoosh", -10); add(x["s"] + 1.9, "pop", -6); add(x["s"] + 2.8, "pop", -6); add(x["s"] + 2.85, "chime", -9)
     plan = {"fps": FPS, "day": DAY, "duration": total, "frames": int(math.ceil(total * FPS)), "media": "day34/main",
-            "sections": [{k: v for k, v in x.items() if k not in ("clip", "cs")} for x in secs], "books": {str(k): v for k, v in BOOKS.items()},
+            "sections": [{k: v for k, v in x.items() if k not in ("clip", "cs")} for x in secs], "vo": vo_place, "books": {str(k): v for k, v in BOOKS.items()},
             "sfx": sfx}
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)
     json.dump(plan, open(f"{HERE}/versions/main/timeline.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
