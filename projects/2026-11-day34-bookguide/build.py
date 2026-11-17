@@ -30,7 +30,7 @@ SECTIONS = [
     # BONUS (Joy, 17 Nov): our own book, Bear & Joy, filmed in Oxford
     ("bonus", 4, 2.6, "raw-footage/day34/n1_sdr.mov", 1.5, "그리고 보너스! 저희가 만든 그림책, Bear & Joy예요."),
     ("bonus1", 4, 3.6, "raw-footage/day34/n4.mov", 1.4, "영어를 읽기 두려운 부모님도, 한글 발음 가이드로 바로 읽어줄 수 있어요."),
-    ("bonus2", 4, 3.6, "raw-footage/day34/n4.mov", 5.0, "페이지마다 어울리는 질문이 있어서, 아이의 생각과 상상력이 쑥쑥 자라요."),
+    ("bonus2", 4, 3.6, "raw-footage/day34/n5.mov", 0.0, "페이지마다 어울리는 질문이 있어서, 아이의 생각과 상상력이 쑥쑥 자라요."),
     ("bonus3", 4, 3.4, "raw-footage/day34/n2_sdr.mov", 2.0, "그림책을 넘어, 일상에서도 바로 쓰는 영어가 돼요."),
     ("summary", 0, 5.4, None, 0, "저장해 두고 읽어줄 때 꺼내 보세요. 댓글에 그림책 남기면 정리 카드 보내드려요."),
     ("end", 0, 4.0, None, 0, ""),

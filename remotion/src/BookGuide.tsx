@@ -158,7 +158,7 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
       {/* the planned voice-over line (draft only, so Joy can follow the timing while recording) */}
       {plan.showVo && sec.vo ? (
         <div style={{position: 'absolute', left: 50, right: 50, bottom: 260, textAlign: 'center', fontWeight: 800, fontSize: 46, lineHeight: 1.35, color: '#fff', textShadow: SHADOW,
-          wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>🎙 {sec.vo.replace(/([,.?!]) (?=[가-힣])/g, '$1\n')}</div>
+          wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>🎙 {sec.vo.replace(/([,.?!]) (?=[가-힣])/g, '$1\n').replace(/([가-힣][,.?!]) (?=[A-Za-z])/g, '$1\n')}</div>
       ) : null}
 
       {/* SAVE CARD (Joy: a clean page, not a chalkboard) */}
@@ -205,17 +205,23 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
         return (
           <>
             <div style={{position: 'absolute', top: 150, left: 0, right: 0, textAlign: 'center', transform: `scale(${.7 + .3 * k0})`, opacity: Math.min(1, k0 * 2)}}>
-              <div style={{display: 'inline-block', fontWeight: 900, fontSize: 46, color: C.navy, background: C.yellow, borderRadius: 999, padding: '8px 30px', transform: 'rotate(-3deg)'}}>🎁 BONUS</div>
-              <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 92, color: '#fff', textShadow: SHADOW, marginTop: 14}}>Bear &amp; Joy</div>
+              <div style={{display: 'inline-block', fontWeight: 900, fontSize: 58, color: C.navy, background: C.yellow, borderRadius: 999, padding: '10px 38px', transform: `rotate(-4deg) scale(${1 + .06 * Math.sin(t * 6)})`,
+                boxShadow: '0 0 0 8px rgba(246,226,122,.35), 0 12px 26px rgba(0,0,0,.35)'}}>🎁 BONUS · 베어앤조이 추천</div>
+              <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 120, color: '#fff', textShadow: SHADOW, marginTop: 14, lineHeight: 1}}>Bear &amp; Joy</div>
               <div style={{fontFamily: KO, fontWeight: 700, fontSize: 54, color: C.butter, textShadow: SHADOW}}>베어앤조이가 직접 만든 영어 그림책</div>
             </div>
-            <div style={{position: 'absolute', left: 60, right: 60, top: 640, display: 'grid', gap: 22}}>
+            <div style={{position: 'absolute', left: 60, right: 60, top: 560, display: 'grid', gap: 16}}>
               {pts.map(([ic, h, sub], i) => {
                 const at = bonus[i + 1]?.s ?? 1e9; const k = sp(t, at, fps, 11);
                 if (t < at) return null;
                 const now = sec === bonus[i + 1];
+                if (!now) return (
+                  <div key={i} style={{display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(30,45,77,.75)', borderRadius: 999, padding: '10px 24px', alignSelf: 'start',
+                    fontWeight: 800, fontSize: 34, color: '#fff', width: 'fit-content'}}>✅ {h}</div>
+                );
                 return (
-                  <div key={i} style={{display: 'flex', alignItems: 'center', gap: 22, background: now ? C.cream : 'rgba(245,240,230,.82)', borderRadius: 26, padding: '22px 28px',
+                  <div key={i} style={{display: 'flex', alignItems: 'center', gap: 22, background: C.yellow, borderRadius: 26, padding: '22px 28px',
+                    outline: '6px solid rgba(255,255,255,.9)',
                     boxShadow: '0 14px 30px rgba(0,0,0,.3)', transform: `translateX(${(1 - k) * 80}px) scale(${now ? 1 : .96})`, opacity: k}}>
                     <div style={{fontSize: 70}}>{ic}</div>
                     <div><div style={{fontWeight: 900, fontSize: 46, color: C.navy}}>{h}</div>
@@ -224,6 +230,11 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
                 );
               })}
             </div>
+            {Array.from({length: 10}).map((_, i) => {
+              const ph = (t * .8 + i / 10) % 1;
+              return <div key={i} style={{position: 'absolute', left: 80 + random(`bx${i}`) * 900, top: 600 + random(`by${i}`) * 700 - ph * 120, fontSize: 40 + random(`bz${i}`) * 30,
+                opacity: Math.sin(ph * Math.PI), fontFamily: PRE}}>✨</div>;
+            })}
             <Img src={staticFile(`${plan.media}/covers/bearjoy.png`)} style={{position: 'absolute', right: 50, top: 1290, width: 250, borderRadius: 10, boxShadow: '0 18px 40px rgba(0,0,0,.45)',
               transform: `rotate(6deg) scale(${sp(t, b0 + .3, fps, 10)})`}} />
           </>
