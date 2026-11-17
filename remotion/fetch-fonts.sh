@@ -19,3 +19,6 @@ for u in https://fonts.gstatic.com/s/cinzel/v26/8vIU7ww63mVu7gtR-kwKxNvkNOjw-jHg
 # Japanese version (Day 29 JA): Shippori Mincho B1 800 (serif, replaces Gowun Batang) and M PLUS Rounded 1c 800 (replaces Pretendard)
 for u in https://fonts.gstatic.com/s/shipporiminchob1/v24/wXK1E2wCr44tulPdnn-xbIpJ9RgT9-nKLoxP3g.ttf \
   https://fonts.gstatic.com/s/mplusrounded1c/v22/VdGBAYIAV6gnpUpoWwNkYvrugw9RuM0m4psK.ttf; do curl -sS -o "$(basename "$u")" "$u"; done
+# Day 33 chalkboard (outdoor English): Gaegu 700 (Korean handwriting) and Patrick Hand (English chalk handwriting)
+curl -sS -o Gaegu-Bold.ttf https://fonts.gstatic.com/s/gaegu/v23/TuGSUVB6Up9NU573jvw7.ttf
+curl -sS -o PatrickHand.ttf https://fonts.gstatic.com/s/patrickhand/v25/LDI1apSQOAYtSuYWp8ZhfYeMWQ.ttf

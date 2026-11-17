@@ -1,0 +1,634 @@
+{
+ "fps": 30,
+ "day": 33,
+ "duration": 78.157,
+ "frames": 2345,
+ "speechEnd": 68.657,
+ "summaryEnd": 74.157,
+ "media": "day33/main",
+ "segments": [
+  {
+   "src_s": 0.15,
+   "src_e": 1.0,
+   "out_s": 0.0,
+   "out_e": 0.85,
+   "layout": "montage",
+   "broll": "kidrun",
+   "b_s": 1.0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "hook"
+  },
+  {
+   "src_s": 1.0,
+   "src_e": 1.85,
+   "out_s": 0.85,
+   "out_e": 1.7,
+   "layout": "montage",
+   "broll": "b1_sdr",
+   "b_s": 6.0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "hook"
+  },
+  {
+   "src_s": 1.85,
+   "src_e": 2.75,
+   "out_s": 1.7,
+   "out_e": 2.6,
+   "layout": "montage",
+   "broll": "koi",
+   "b_s": 2.0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "hook"
+  },
+  {
+   "src_s": 2.75,
+   "src_e": 3.7,
+   "out_s": 2.6,
+   "out_e": 3.55,
+   "layout": "montage",
+   "broll": "familywalk",
+   "b_s": 3.0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "hook"
+  },
+  {
+   "src_s": 4.1,
+   "src_e": 12.3,
+   "out_s": 3.55,
+   "out_e": 11.75,
+   "layout": "full",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "intro"
+  },
+  {
+   "src_s": 12.4,
+   "src_e": 15.45,
+   "out_s": 11.75,
+   "out_e": 14.8,
+   "layout": "full",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "intro2"
+  },
+  {
+   "src_s": 15.45,
+   "src_e": 18.5,
+   "out_s": 14.8,
+   "out_e": 17.85,
+   "layout": "board",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 1,
+   "note": ""
+  },
+  {
+   "src_s": 18.5,
+   "src_e": 20.38,
+   "out_s": 17.85,
+   "out_e": 19.73,
+   "layout": "boardb",
+   "broll": "b2",
+   "b_s": 4.0,
+   "speed": 1,
+   "phrase": 1,
+   "note": "car"
+  },
+  {
+   "src_s": 20.38,
+   "src_e": 23.3,
+   "out_s": 19.73,
+   "out_e": 22.65,
+   "layout": "boardb",
+   "broll": "b3_sdr",
+   "b_s": 1.0,
+   "speed": 1,
+   "phrase": 1,
+   "note": "boat"
+  },
+  {
+   "src_s": 23.3,
+   "src_e": 26.75,
+   "out_s": 22.65,
+   "out_e": 26.1,
+   "layout": "boardb",
+   "broll": "koi",
+   "b_s": 6.0,
+   "speed": 1,
+   "phrase": 1,
+   "note": "fish"
+  },
+  {
+   "src_s": 18.5,
+   "src_e": 20.3,
+   "out_s": 26.1,
+   "out_e": 28.671,
+   "layout": "replay",
+   "broll": null,
+   "b_s": 0,
+   "speed": 0.7,
+   "phrase": 1,
+   "note": "slow"
+  },
+  {
+   "src_s": 18.5,
+   "src_e": 20.3,
+   "out_s": 28.671,
+   "out_e": 30.471,
+   "layout": "board",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 1,
+   "note": "again"
+  },
+  {
+   "src_s": 27.3,
+   "src_e": 30.1,
+   "out_s": 30.471,
+   "out_e": 33.271,
+   "layout": "board",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 2,
+   "note": ""
+  },
+  {
+   "src_s": 30.1,
+   "src_e": 32.9,
+   "out_s": 33.271,
+   "out_e": 36.071,
+   "layout": "boardb",
+   "broll": "grassfeet",
+   "b_s": 0.3,
+   "speed": 1,
+   "phrase": 2,
+   "note": "grass"
+  },
+  {
+   "src_s": 32.9,
+   "src_e": 34.9,
+   "out_s": 36.071,
+   "out_e": 38.071,
+   "layout": "boardb",
+   "broll": "b1_sdr",
+   "b_s": 12.0,
+   "speed": 1,
+   "phrase": 2,
+   "note": "trees"
+  },
+  {
+   "src_s": 34.9,
+   "src_e": 38.0,
+   "out_s": 38.071,
+   "out_e": 41.171,
+   "layout": "board",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 2,
+   "note": "whatever"
+  },
+  {
+   "src_s": 30.1,
+   "src_e": 32.7,
+   "out_s": 41.171,
+   "out_e": 44.886,
+   "layout": "replay",
+   "broll": null,
+   "b_s": 0,
+   "speed": 0.7,
+   "phrase": 2,
+   "note": "slow"
+  },
+  {
+   "src_s": 30.1,
+   "src_e": 32.7,
+   "out_s": 44.886,
+   "out_e": 47.486,
+   "layout": "board",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 2,
+   "note": "again"
+  },
+  {
+   "src_s": 38.0,
+   "src_e": 43.0,
+   "out_s": 47.486,
+   "out_e": 52.486,
+   "layout": "board",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 3,
+   "note": ""
+  },
+  {
+   "src_s": 43.0,
+   "src_e": 46.85,
+   "out_s": 52.486,
+   "out_e": 56.336,
+   "layout": "boardb",
+   "broll": "picnic",
+   "b_s": 1.0,
+   "speed": 1,
+   "phrase": 3,
+   "note": "hungry"
+  },
+  {
+   "src_s": 43.0,
+   "src_e": 44.8,
+   "out_s": 56.336,
+   "out_e": 58.907,
+   "layout": "replay",
+   "broll": null,
+   "b_s": 0,
+   "speed": 0.7,
+   "phrase": 3,
+   "note": "slow"
+  },
+  {
+   "src_s": 43.0,
+   "src_e": 44.8,
+   "out_s": 58.907,
+   "out_e": 60.707,
+   "layout": "board",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 3,
+   "note": "again"
+  },
+  {
+   "src_s": 47.0,
+   "src_e": 51.05,
+   "out_s": 60.707,
+   "out_e": 64.757,
+   "layout": "full",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "joke"
+  },
+  {
+   "src_s": 51.05,
+   "src_e": 54.95,
+   "out_s": 64.757,
+   "out_e": 68.657,
+   "layout": "full",
+   "broll": null,
+   "b_s": 0,
+   "speed": 1,
+   "phrase": 0,
+   "note": "bye"
+  }
+ ],
+ "captions": [
+  {
+   "s": 3.55,
+   "e": 7.55,
+   "ko": "아이와 밖에 있을 때는"
+  },
+  {
+   "s": 7.55,
+   "e": 11.75,
+   "ko": "함께 영어를 써볼 정말 좋은 기회예요."
+  },
+  {
+   "s": 11.75,
+   "e": 14.8,
+   "ko": "아이와 함께 쓸 수 있는 말을 알려드릴게요."
+  },
+  {
+   "s": 14.8,
+   "e": 17.85,
+   "ko": "첫 번째, 보이는 것에 따라 이렇게 말해요."
+  },
+  {
+   "s": 17.85,
+   "e": 19.73,
+   "ko": "봐, 자동차야!"
+  },
+  {
+   "s": 19.73,
+   "e": 22.65,
+   "ko": "봐, 배야!"
+  },
+  {
+   "s": 22.65,
+   "e": 26.1,
+   "ko": "봐, 물고기야! (강가에 있다면요)"
+  },
+  {
+   "s": 30.471,
+   "e": 33.271,
+   "ko": "두 번째, 'Do you like ~?'"
+  },
+  {
+   "s": 33.271,
+   "e": 36.071,
+   "ko": "풀 좋아해?"
+  },
+  {
+   "s": 36.071,
+   "e": 38.071,
+   "ko": "나무 좋아해?"
+  },
+  {
+   "s": 38.071,
+   "e": 41.171,
+   "ko": "좋아하는 건 뭐든 넣어서 물어보세요!"
+  },
+  {
+   "s": 41.171,
+   "e": 52.486,
+   "ko": "마지막으로, 여기는 한국이니까 이렇게 물어볼래요."
+  },
+  {
+   "s": 52.486,
+   "e": 56.336,
+   "ko": "배고파? 배고프니?"
+  },
+  {
+   "s": 60.707,
+   "e": 64.757,
+   "ko": "서울에서 저를 보면 물어봐 주세요. 그리고 점심 사주세요! 😂"
+  },
+  {
+   "s": 64.757,
+   "e": 68.657,
+   "ko": "고마워요, 또 만나요! 저는 밥 먹으러 갈게요."
+  }
+ ],
+ "phrases": [
+  {
+   "k": 1,
+   "s": 14.8,
+   "e": 30.471,
+   "n": "①",
+   "en": "Look, it's a ___!",
+   "ko": "봐, ___야!",
+   "say": "룩, 잇츠 어 ___!",
+   "fill": "car",
+   "chips": [
+    {
+     "w": "car",
+     "emoji": "🚗",
+     "t": 17.85
+    },
+    {
+     "w": "boat",
+     "emoji": "⛵",
+     "t": 19.73
+    },
+    {
+     "w": "fish",
+     "emoji": "🐟",
+     "t": 22.65
+    }
+   ],
+   "slow": {
+    "s": 26.1,
+    "e": 28.671
+   },
+   "again": {
+    "s": 28.671,
+    "e": 30.471
+   }
+  },
+  {
+   "k": 2,
+   "s": 30.471,
+   "e": 47.486,
+   "n": "②",
+   "en": "Do you like ___?",
+   "ko": "___ 좋아해?",
+   "say": "두 유 라이크 ___?",
+   "fill": "grass",
+   "chips": [
+    {
+     "w": "grass",
+     "emoji": "🌱",
+     "t": 33.271
+    },
+    {
+     "w": "trees",
+     "emoji": "🌳",
+     "t": 36.071
+    },
+    {
+     "w": "…",
+     "emoji": "✨",
+     "t": 38.071
+    }
+   ],
+   "slow": {
+    "s": 41.171,
+    "e": 44.886
+   },
+   "again": {
+    "s": 44.886,
+    "e": 47.486
+   }
+  },
+  {
+   "k": 3,
+   "s": 47.486,
+   "e": 60.707,
+   "n": "③",
+   "en": "Are you hungry?",
+   "ko": "배고파?",
+   "say": "아 유 헝그리?",
+   "fill": "",
+   "chips": [
+    {
+     "w": "hungry",
+     "emoji": "🍙",
+     "t": 52.486
+    },
+    {
+     "w": "Do you feel hungry?",
+     "emoji": "😋",
+     "t": 54.436
+    }
+   ],
+   "slow": {
+    "s": 56.336,
+    "e": 58.907
+   },
+   "again": {
+    "s": 58.907,
+    "e": 60.707
+   }
+  }
+ ],
+ "joke": {
+  "s": 63.307,
+  "e": 64.757
+ },
+ "sfx": [
+  {
+   "t": 0,
+   "sound": "whoosh",
+   "gain": -10
+  },
+  {
+   "t": 0,
+   "sound": "impact",
+   "gain": -6
+  },
+  {
+   "t": 0.85,
+   "sound": "whoosh",
+   "gain": -10
+  },
+  {
+   "t": 1.7,
+   "sound": "whoosh",
+   "gain": -10
+  },
+  {
+   "t": 2.6,
+   "sound": "whoosh",
+   "gain": -10
+  },
+  {
+   "t": 3.55,
+   "sound": "impact",
+   "gain": -8
+  },
+  {
+   "t": 14.8,
+   "sound": "chime",
+   "gain": -8
+  },
+  {
+   "t": 17.85,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 19.73,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 22.65,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 26.05,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 28.621,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 30.471,
+   "sound": "chime",
+   "gain": -8
+  },
+  {
+   "t": 33.271,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 36.071,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 38.071,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 41.121,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 44.836,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 47.486,
+   "sound": "chime",
+   "gain": -8
+  },
+  {
+   "t": 52.486,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 54.436,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 56.286,
+   "sound": "boing",
+   "gain": -11
+  },
+  {
+   "t": 58.857,
+   "sound": "pop",
+   "gain": -10
+  },
+  {
+   "t": 63.707,
+   "sound": "boing",
+   "gain": -9
+  },
+  {
+   "t": 68.657,
+   "sound": "impact",
+   "gain": -7
+  },
+  {
+   "t": 68.757,
+   "sound": "sparkle",
+   "gain": -10
+  },
+  {
+   "t": 74.157,
+   "sound": "whoosh",
+   "gain": -10
+  },
+  {
+   "t": 76.057,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 76.957,
+   "sound": "pop",
+   "gain": -6
+  },
+  {
+   "t": 77.007,
+   "sound": "chime",
+   "gain": -9
+  }
+ ]
+}
