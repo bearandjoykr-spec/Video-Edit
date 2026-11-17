@@ -102,7 +102,7 @@
   "kind": "ask",
   "book": 2,
   "s": 44.319,
-  "e": 48.519,
+  "e": 50.249,
   "clip": "raw-footage/day32-books/b6.mov",
   "cs": 0.3,
   "vo": "What did he eat? How many?\n하고 물으면\n영어 숫자가 저절로 나와요."
@@ -110,8 +110,8 @@
  {
   "kind": "cover",
   "book": 3,
-  "s": 48.519,
-  "e": 51.989,
+  "s": 50.249,
+  "e": 53.719,
   "clip": "raw-footage/joy-top3/book1.mov",
   "cs": 0.0,
   "vo": "세 번째,\nI Want My Hat Back."
@@ -119,8 +119,8 @@
  {
   "kind": "page",
   "book": 3,
-  "s": 51.989,
-  "e": 58.819,
+  "s": 53.719,
+  "e": 60.549,
   "clip": "raw-footage/day32-books/b2.mov",
   "cs": 1.5,
   "vo": "모자를 잃어버린 곰이 묻고 또 물어요.\nHave you seen my hat?\n동물들은 No."
@@ -128,8 +128,8 @@
  {
   "kind": "read",
   "book": 3,
-  "s": 58.819,
-  "e": 63.689,
+  "s": 60.549,
+  "e": 65.419,
   "clip": "raw-footage/joy-top3/book1.mov",
   "cs": 4.5,
   "vo": "동물마다 목소리를 바꿔 주세요.\n아이가 No!를 맡으면 더 재밌어요."
@@ -137,8 +137,8 @@
  {
   "kind": "ask",
   "book": 3,
-  "s": 63.689,
-  "e": 66.879,
+  "s": 65.419,
+  "e": 68.609,
   "clip": "raw-footage/joy-top3/clip4.mov",
   "cs": 2.5,
   "vo": "Where is the hat?\n하고 물어보세요."
@@ -146,8 +146,8 @@
  {
   "kind": "bonus",
   "book": 4,
-  "s": 66.879,
-  "e": 70.809,
+  "s": 68.609,
+  "e": 72.539,
   "clip": "raw-footage/day34/n1_sdr.mov",
   "cs": 1.5,
   "vo": "그리고 보너스!\n저희가 만든 그림책, Bear & Joy예요."
@@ -155,8 +155,8 @@
  {
   "kind": "bonus1",
   "book": 4,
-  "s": 70.809,
-  "e": 75.719,
+  "s": 72.539,
+  "e": 77.449,
   "clip": "raw-footage/day34/n4.mov",
   "cs": 1.4,
   "vo": "영어를 읽기 두려운 부모님도,\n한글 발음 가이드로 바로 읽어줄 수 있어요."
@@ -164,8 +164,8 @@
  {
   "kind": "bonus2",
   "book": 4,
-  "s": 75.719,
-  "e": 81.559,
+  "s": 77.449,
+  "e": 83.289,
   "clip": "raw-footage/day34/n5.mov",
   "cs": 0.0,
   "vo": "페이지마다 어울리는 질문이 있어서,\n아이의 생각과 상상력이 쑥쑥 자라요."
@@ -173,8 +173,8 @@
  {
   "kind": "bonus3",
   "book": 4,
-  "s": 81.559,
-  "e": 85.309,
+  "s": 83.289,
+  "e": 87.039,
   "clip": "raw-footage/day34/n2_sdr.mov",
   "cs": 2.0,
   "vo": "그림책을 넘어,\n일상에서도 바로 쓰는 영어가 돼요."
@@ -182,8 +182,8 @@
  {
   "kind": "summary",
   "book": 0,
-  "s": 85.309,
-  "e": 90.689,
+  "s": 87.039,
+  "e": 92.419,
   "clip": null,
   "cs": 0,
   "vo": "저장해 두고 읽어줄 때 꺼내 보세요."
@@ -191,8 +191,8 @@
  {
   "kind": "end",
   "book": 0,
-  "s": 90.689,
-  "e": 94.689,
+  "s": 92.419,
+  "e": 96.419,
   "clip": null,
   "cs": 0,
   "vo": ""
