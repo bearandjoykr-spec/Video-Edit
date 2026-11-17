@@ -53,8 +53,8 @@ BOOKS = {
 # 찾아요" is left out (Joy removed that caption). Per section: list of (src_s, src_e) pieces placed back to back.
 VO = {
     0: [(1.60, 4.95)], 3: [(5.30, 8.20)],
-    4: [(8.55, 12.55)], 5: [(13.15, 19.35)], 6: [(19.75, 24.08)], 7: [(24.08, 29.55)],
-    8: [(29.82, 33.50)], 9: [(34.35, 40.15)], 10: [(40.38, 46.00)], 11: [(57.22, 62.80)],
+    4: [(8.55, 12.55)], 5: [(13.15, 19.35)], 6: [(19.75, 24.52)], 7: [(24.78, 29.55)],  # (Joy) 안아주세요 ends at 24.5: keep its last syllable
+    8: [(29.82, 33.50)], 9: [(34.35, 40.15)], 10: [(40.38, 42.56), (42.60, 43.43, 0.02), (43.72, 44.70), (44.74, 46.00)],  # Monday / Tuesday on the beat, with claps 11: [(57.22, 62.80)],
     12: [(63.18, 66.30)], 13: [(66.82, 73.30)], 14: [(80.38, 84.90)], 15: [(85.48, 88.32)],
     16: [(90.40, 93.98)], 17: [(94.04, 98.60)], 18: [(99.06, 104.55)], 19: [(104.76, 108.16)],
     20: [(108.70, 110.70), (111.22, 114.10)], 21: [(114.52, 116.25)],
@@ -67,7 +67,7 @@ def main():
     # section lengths follow the voice: each voiced section = its audio + a short breath
     durs = [x[2] for x in SECTIONS]
     for i, pcs in VO.items():
-        a = sum(e - s for s, e in pcs) + GAP
+        a = sum(pc[1] - pc[0] for pc in pcs) + GAP + 0.15 * (len(pcs) - 1)
         if i == 0:     # line 1 spans hook cuts 0-2
             for j in range(3):
                 durs[j] = round(a / 3, 3)
@@ -77,14 +77,19 @@ def main():
             durs[i] = max(4.0, a)
         else:
             durs[i] = round(max(a, 2.0), 3)
-    t, secs, vo_place = 0.0, [], []
+    t, secs, vo_place, sfx_extra = 0.0, [], [], []
     for k, (kind, book, d, clip, cs, vo) in enumerate(SECTIONS):
         d = durs[k]
         secs.append({"kind": kind, "book": book, "s": round(t, 3), "e": round(t + d, 3), "clip": clip, "cs": cs, "vo": vo}); t += d
     for i, pcs in VO.items():
         at = secs[i]["s"] + (0.1 if SECTIONS[i][0] != "hook" else 0)
-        for s_, e_ in pcs:
-            vo_place.append({"src_s": s_, "src_e": e_, "at": round(at, 3)}); at += e_ - s_ + 0.15
+        for pc in pcs:
+            s_, e_ = pc[0], pc[1]; gap = pc[2] if len(pc) > 2 else 0.15
+            vo_place.append({"src_s": s_, "src_e": e_, "at": round(at, 3)}); at += e_ - s_ + gap
+    # Monday! Tuesday!: a clap on every syllable (MON-day, TUES-day) so the rhythm is heard
+    mon = next(v for v in vo_place if v["src_s"] == 42.60); tue = next(v for v in vo_place if v["src_s"] == 43.72)
+    for at in (mon["at"] + .05, mon["at"] + .40, tue["at"] + .05, tue["at"] + .49):
+        sfx_extra.append({"t": round(at, 3), "sound": "clap", "gain": -6})
     # captions: the hook's first line runs across cuts 0-2
     for x in secs[:3]:
         x["vo"] = SECTIONS[0][5]
@@ -108,7 +113,7 @@ def main():
             add(x["s"], "whoosh", -10); add(x["s"] + 1.9, "pop", -6); add(x["s"] + 2.8, "pop", -6); add(x["s"] + 2.85, "chime", -9)
     plan = {"fps": FPS, "day": DAY, "duration": total, "frames": int(math.ceil(total * FPS)), "media": "day34/main",
             "sections": [{k: v for k, v in x.items() if k not in ("clip", "cs")} for x in secs], "vo": vo_place, "books": {str(k): v for k, v in BOOKS.items()},
-            "sfx": sfx}
+            "sfx": sorted(sfx + sfx_extra, key=lambda x: x["t"])}
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)
     json.dump(plan, open(f"{HERE}/versions/main/timeline.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
     json.dump(secs, open(f"{HERE}/versions/main/sections_src.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
