@@ -136,12 +136,29 @@ export const OutdoorEnglish: React.FC<{plan: OutdoorPlan}> = ({plan}) => {
       {t < hookEnd ? (() => {
         const k = sp(t, -.4, fps, 12);
         return (
-          <div style={{position: 'absolute', left: 30, right: 30, top: 520, textAlign: 'center', transform: `scale(${.9 + .1 * k})`}}>
+          <>
+          {/* Joy: Mark's cut-out on a torn-paper panel, so the thumbnail shows the native-speaker teacher */}
+          <svg width="1080" height="1920" style={{position: 'absolute', inset: 0}}>
+            <defs><filter id="paperShadow"><feDropShadow dx="0" dy="-6" stdDeviation="10" floodOpacity=".35" /></filter></defs>
+            <polygon filter="url(#paperShadow)" fill="#F5F0E6" points={`0,1920 0,${1180} ` + Array.from({length: 28}).map((_, i) => {
+              const x = (i + 1) * 1080 / 28; return `${x},${1150 + (random(`tp${i}`) - .5) * 70 + (i % 2 ? 18 : -18)}`; }).join(' ') + ' 1080,1920'} />
+            <polygon fill="#F6E27A" opacity=".9" points={`0,${1235} ` + Array.from({length: 28}).map((_, i) => {
+              const x = (i + 1) * 1080 / 28; return `${x},${1210 + (random(`tq${i}`) - .5) * 50 + (i % 2 ? 12 : -12)}`; }).join(' ') + ` 1080,1262 1080,1250 0,1262`} />
+          </svg>
+          <Img src={staticFile(`${plan.media}/mark-cut.png`)} style={{position: 'absolute', left: 300, top: 1000, width: 820, transform: `translateY(${(1 - k) * 60}px)`,
+            filter: 'drop-shadow(0 0 0 #fff) drop-shadow(6px 0 0 #fff) drop-shadow(-6px 0 0 #fff) drop-shadow(0 -6px 0 #fff) drop-shadow(0 18px 24px rgba(0,0,0,.35))'}} />
+          <div style={{position: 'absolute', left: 40, top: 1330, transform: `rotate(-5deg) scale(${.8 + .2 * k})`, background: C.navy, borderRadius: 26, padding: '16px 26px',
+            boxShadow: '0 12px 26px rgba(0,0,0,.3)'}}>
+            <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 70, color: C.yellow, lineHeight: 1}}>Mark T <span style={{fontFamily: PRE, fontStyle: 'normal'}}>🇬🇧</span></div>
+            <div style={{fontFamily: CHALK_KO, fontWeight: 700, fontSize: 44, color: '#fff', marginTop: 6}}>원어민 쌤이 알려줘요!</div>
+          </div>
+          <div style={{position: 'absolute', left: 30, right: 30, top: 300, textAlign: 'center', transform: `scale(${.9 + .1 * k})`}}>
             <div style={{display: 'inline-block', fontWeight: 800, fontSize: 40, color: C.navy, background: C.butter, borderRadius: 999, padding: '8px 26px'}}>📌 저장해두고 산책할 때 꺼내 보기</div>
             <div style={{fontWeight: 900, fontSize: 100, lineHeight: 1.12, color: '#fff', textShadow: SHADOW, marginTop: 26, letterSpacing: '-.03em'}}>
               아이랑 밖에 나가면<br /><span style={{color: C.yellow}}>영어로 뭐라고 하지?</span></div>
-            <div style={{fontFamily: CHALK_KO, fontWeight: 700, fontSize: 66, color: '#fff', textShadow: SHADOW, marginTop: 24}}>🇬🇧 원어민 쌤의 바깥놀이 영어 3문장</div>
+            <div style={{fontFamily: CHALK_KO, fontWeight: 700, fontSize: 66, color: '#fff', textShadow: SHADOW, marginTop: 24}}>바깥놀이 영어 3문장 ✨</div>
           </div>
+          </>
         );
       })() : null}
 
