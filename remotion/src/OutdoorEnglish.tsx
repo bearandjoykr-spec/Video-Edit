@@ -9,7 +9,7 @@ type Chip = {w: string; emoji: string; t: number};
 type Phrase = {k: number; s: number; e: number; n: string; en: string; ko: string; say: string; fill: string; chips: Chip[];
   slow: {s: number; e: number} | null; again: {s: number; e: number} | null};
 export type OutdoorPlan = {fps: number; day: number; duration: number; frames: number; speechEnd: number; summaryEnd: number; media: string;
-  segments: Seg[]; captions: {s: number; e: number; ko: string; en?: string}[]; phrases: Phrase[]; joke: {s: number; e: number}};
+  cardOnly?: boolean; segments: Seg[]; captions: {s: number; e: number; ko: string; en?: string}[]; phrases: Phrase[]; joke: {s: number; e: number}};
 
 const C = {navy: '#1E2D4D', cream: '#F5F0E6', yellow: '#F6E27A', butter: '#F6F0BA', sky: '#AECCE6', board: '#23402F', chalk: '#F4F1E6', pink: '#F7B2B7'};
 const PRE = "'Pretendard', 'Noto Color Emoji', sans-serif";
@@ -179,9 +179,9 @@ export const OutdoorEnglish: React.FC<{plan: OutdoorPlan}> = ({plan}) => {
       {cap && t >= hookEnd && t < plan.speechEnd ? <Caption c={cap} t={t} top={boardOn ? 1660 : 1330} /> : null}
 
       {t >= plan.joke.s && t < plan.joke.e ? (() => {
-        const k = sp(t, plan.joke.s, fps, 8);
-        return <div style={{position: 'absolute', left: 0, right: 0, top: 360, textAlign: 'center', fontWeight: 900, fontSize: 92, color: C.yellow, textShadow: SHADOW,
-          transform: `scale(${.6 + .4 * k}) rotate(${(1 - k) * -8}deg)`, opacity: Math.min(1, k * 2)}}>점심 사주실 분? 🍜😂</div>;
+        const k = sp(t, plan.joke.s, fps, 9);
+        return <div style={{position: 'absolute', left: 0, right: 0, top: 230, textAlign: 'center', fontFamily: CHALK_KO, fontWeight: 700, fontSize: 64, color: C.yellow,
+          textShadow: SHADOW, transform: `scale(${.7 + .3 * k}) rotate(${-4 + (1 - k) * -6}deg)`, opacity: Math.min(1, k * 2) * interpolate(t, [plan.joke.e - .25, plan.joke.e], [1, 0], clamp)}}>점심 사주실 분? 🍜</div>;
       })() : null}
 
       {/* SUMMARY: the card people save */}
@@ -208,7 +208,13 @@ export const OutdoorEnglish: React.FC<{plan: OutdoorPlan}> = ({plan}) => {
                 </div>
               );
             })}
-            <div style={{position: 'absolute', bottom: 150, left: 0, right: 0, textAlign: 'center', fontFamily: PRE, fontWeight: 800, fontSize: 40, color: '#fff'}}>💌 아이랑 산책 가는 친구에게 보내주세요</div>
+            {plan.cardOnly ? (
+              <div style={{position: 'absolute', bottom: 120, left: 0, right: 0, textAlign: 'center'}}>
+                <Img src={staticFile('brand/wordmark-cream.png')} style={{width: 380, opacity: .9}} /></div>
+            ) : (
+              <div style={{position: 'absolute', bottom: 130, left: 0, right: 0, textAlign: 'center', fontFamily: PRE, fontWeight: 800, fontSize: 40, color: '#fff', lineHeight: 1.45}}>
+                💬 댓글에 <span style={{color: C.yellow}}>'바깥놀이'</span> 남기면 이 카드를 DM으로 보내드려요<br />💌 아이랑 산책 가는 친구에게 공유해 주세요</div>
+            )}
           </AbsoluteFill>
         );
       })() : null}
@@ -234,7 +240,7 @@ export const OutdoorEnglish: React.FC<{plan: OutdoorPlan}> = ({plan}) => {
       })() : null}
 
       {/* progress bar with the bear walking along it */}
-      {t < plan.summaryEnd ? (() => {
+      {t < plan.summaryEnd && !plan.cardOnly ? (() => {
         const p = Math.min(1, t / plan.summaryEnd);
         return (
           <>

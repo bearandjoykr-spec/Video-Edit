@@ -95,7 +95,7 @@ def main():
     add(speech_end + SUMMARY + 1.9, "pop", -6); add(speech_end + SUMMARY + 2.8, "pop", -6); add(speech_end + SUMMARY + 2.85, "chime", -9)
     plan = {"fps": FPS, "day": DAY, "duration": total, "frames": int(math.ceil(total * FPS)), "speechEnd": speech_end, "summaryEnd": round(speech_end + SUMMARY, 3),
             "media": "day33/main", "segments": segs, "captions": caps, "phrases": phrases,
-            "joke": {"s": 0, "e": 0}, "sfx": sorted(sfx, key=lambda x: x["t"])}
+            "joke": {"s": first_out(49.30), "e": joke["out_e"]}, "sfx": sorted(sfx, key=lambda x: x["t"])}
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)
     json.dump(plan, open(f"{HERE}/versions/main/timeline.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"{total:.1f}s (speech {speech_end:.1f}s)")
