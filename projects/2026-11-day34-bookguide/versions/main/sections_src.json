@@ -96,7 +96,7 @@
   "e": 30.0,
   "clip": "raw-footage/joy-top3/book2.mov",
   "cs": 7.0,
-  "vo": "책 구멍에 손가락을 쏙 넣고, one, two! 같이 세어 보세요."
+  "vo": "요일이 나올 때마다 아이와 함께 Monday, Tuesday! 리듬 타듯 읽어 주세요."
  },
  {
   "kind": "ask",
@@ -144,10 +144,46 @@
   "vo": "Where is the hat? 하고 물어보세요. 아이가 먼저 모자를 찾아요. 결말은… 직접 확인!"
  },
  {
+  "kind": "bonus",
+  "book": 4,
+  "s": 49.0,
+  "e": 51.6,
+  "clip": "raw-footage/day34/n1_sdr.mov",
+  "cs": 1.5,
+  "vo": "그리고 보너스! 저희가 만든 그림책, Bear & Joy예요."
+ },
+ {
+  "kind": "bonus1",
+  "book": 4,
+  "s": 51.6,
+  "e": 55.2,
+  "clip": "raw-footage/day34/n4.mov",
+  "cs": 2.0,
+  "vo": "영어를 읽기 두려운 부모님도, 한글 발음 가이드로 바로 읽어줄 수 있어요."
+ },
+ {
+  "kind": "bonus2",
+  "book": 4,
+  "s": 55.2,
+  "e": 58.8,
+  "clip": "raw-footage/day34/n4.mov",
+  "cs": 9.0,
+  "vo": "페이지마다 어울리는 질문이 있어서, 아이의 생각과 상상력이 쑥쑥 자라요."
+ },
+ {
+  "kind": "bonus3",
+  "book": 4,
+  "s": 58.8,
+  "e": 62.2,
+  "clip": "raw-footage/day34/n2_sdr.mov",
+  "cs": 2.0,
+  "vo": "그림책을 넘어, 일상에서도 바로 쓰는 영어가 돼요."
+ },
+ {
   "kind": "summary",
   "book": 0,
-  "s": 49.0,
-  "e": 54.4,
+  "s": 62.2,
+  "e": 67.6,
   "clip": null,
   "cs": 0,
   "vo": "저장해 두고 읽어줄 때 꺼내 보세요. 댓글에 그림책 남기면 정리 카드 보내드려요."
@@ -155,8 +191,8 @@
  {
   "kind": "end",
   "book": 0,
-  "s": 54.4,
-  "e": 58.4,
+  "s": 67.6,
+  "e": 71.6,
   "clip": null,
   "cs": 0,
   "vo": ""

@@ -21,12 +21,17 @@ SECTIONS = [
     ("ask", 1, 4.4, f"{D32}/b1.mov", 0.3, "다 읽고 What can mummy do? 하고 물어보면, 아이가 엄마 자랑을 시작해요."),
     ("cover", 2, 2.2, f"{T3}/book2.mov", 2.5, "두 번째, The Very Hungry Caterpillar."),
     ("page", 2, 4.4, f"{D32}/b2.mov", 3.0, "On Monday he ate through one apple. But he was still hungry."),
-    ("read", 2, 4.0, f"{T3}/book2.mov", 7.0, "책 구멍에 손가락을 쏙 넣고, one, two! 같이 세어 보세요."),
+    ("read", 2, 4.0, f"{T3}/book2.mov", 7.0, "요일이 나올 때마다 아이와 함께 Monday, Tuesday! 리듬 타듯 읽어 주세요."),
     ("ask", 2, 4.2, f"{D32}/b6.mov", 0.3, "What did he eat? How many? 하고 물으면 영어 숫자가 저절로 나와요."),
     ("cover", 3, 2.2, f"{T3}/book1.mov", 0.0, "세 번째, I Want My Hat Back."),
     ("page", 3, 4.0, f"{D32}/b2.mov", 1.5, "모자를 잃어버린 곰이 묻고 또 물어요. Have you seen my hat? 동물들은 No."),
     ("read", 3, 4.0, f"{T3}/book1.mov", 4.5, "동물마다 목소리를 바꿔 주세요. 아이가 No!를 맡으면 더 재밌어요."),
     ("ask", 3, 4.6, f"{T3}/clip4.mov", 3.5, "Where is the hat? 하고 물어보세요. 아이가 먼저 모자를 찾아요. 결말은… 직접 확인!"),
+    # BONUS (Joy, 17 Nov): our own book, Bear & Joy, filmed in Oxford
+    ("bonus", 4, 2.6, "raw-footage/day34/n1_sdr.mov", 1.5, "그리고 보너스! 저희가 만든 그림책, Bear & Joy예요."),
+    ("bonus1", 4, 3.6, "raw-footage/day34/n4.mov", 2.0, "영어를 읽기 두려운 부모님도, 한글 발음 가이드로 바로 읽어줄 수 있어요."),
+    ("bonus2", 4, 3.6, "raw-footage/day34/n4.mov", 9.0, "페이지마다 어울리는 질문이 있어서, 아이의 생각과 상상력이 쑥쑥 자라요."),
+    ("bonus3", 4, 3.4, "raw-footage/day34/n2_sdr.mov", 2.0, "그림책을 넘어, 일상에서도 바로 쓰는 영어가 돼요."),
     ("summary", 0, 5.4, None, 0, "저장해 두고 읽어줄 때 꺼내 보세요. 댓글에 그림책 남기면 정리 카드 보내드려요."),
     ("end", 0, 4.0, None, 0, ""),
 ]
@@ -36,7 +41,7 @@ BOOKS = {
         "read": ["my mum · my dad 에서", "아이를 꼭 안아주며 읽기 🤗"], "ask": "What can mummy do?", "ask_ko": "엄마는 뭘 잘해?", "answer": "She can cook! 🍳"},
     2: {"title": "The Very Hungry Caterpillar", "author": "Eric Carle", "cover": "caterpillar.jpg", "age": "1세+",
         "lines": ["On Monday he ate through", "one apple."], "lines_ko": ["월요일에 사과 한 개를", "먹었어요."],
-        "read": ["책 구멍에 손가락 쏙 👆", "one, two! 같이 세기"], "ask": "What did he eat?", "ask_ko": "뭘 먹었어?", "answer": "Apple! 🍎"},
+        "read": ["요일마다 리듬 타듯 🎵", "Monday, Tuesday!"], "ask": "What did he eat?", "ask_ko": "뭘 먹었어?", "answer": "Apple! 🍎"},
     3: {"title": "I Want My Hat Back", "author": "Jon Klassen", "cover": "hat.jpg", "age": "4세+",
         "lines": ["Have you seen my hat?", "No."], "lines_ko": ["내 모자 봤니?", "아니."],
         "read": ["동물마다 목소리 바꾸기 🎭", "아이는 'No!' 담당"], "ask": "Where is the hat?", "ask_ko": "모자는 어디 있을까?", "answer": "There! 👀"},
@@ -57,6 +62,10 @@ def main():
             add(x["s"], "impact", -7); add(x["s"] + .05, "sparkle", -12)
         if x["kind"] in ("page", "read", "ask"):
             add(x["s"], "pop", -10)
+        if x["kind"] == "bonus":
+            add(x["s"], "impact", -6); add(x["s"] + .05, "sparkle", -10)
+        if x["kind"].startswith("bonus") and x["kind"] != "bonus":
+            add(x["s"], "pop", -9)
         if x["kind"] == "summary":
             add(x["s"], "chime", -8)
         if x["kind"] == "end":

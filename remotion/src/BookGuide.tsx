@@ -105,7 +105,7 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
   const local = t - sec.s;
   const punch = interpolate(local, [0, .3], [1.07, 1], clamp);
   const hookEnd = plan.sections.find((x) => x.kind !== 'hook')!.s;
-  const dim = sec.kind === 'page' || sec.kind === 'read' || sec.kind === 'ask' ? .45 : sec.kind === 'hook' ? .25 : .1;
+  const dim = sec.kind === 'page' || sec.kind === 'read' || sec.kind === 'ask' ? .45 : sec.kind.startsWith('bonus') ? .4 : sec.kind === 'hook' ? .25 : .1;
   return (
     <AbsoluteFill style={{background: C.navy, fontFamily: PRE}}>
       <AbsoluteFill style={{transform: `scale(${punch})`}}>
@@ -151,36 +151,75 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
       {/* the planned voice-over line (draft only, so Joy can follow the timing while recording) */}
       {plan.showVo && sec.vo ? (
         <div style={{position: 'absolute', left: 50, right: 50, bottom: 260, textAlign: 'center', fontWeight: 800, fontSize: 46, lineHeight: 1.35, color: '#fff', textShadow: SHADOW,
-          wordBreak: 'keep-all'}}>🎙 {sec.vo}</div>
+          wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>🎙 {sec.vo.replace(/([,.?!]) /g, '$1\n')}</div>
       ) : null}
 
-      {/* SAVE CARD */}
+      {/* SAVE CARD (Joy: a clean page, not a chalkboard) */}
       {sec.kind === 'summary' ? (() => {
         const o = interpolate(local, [0, .25], [0, 1], clamp);
+        const all = [1, 2, 3].map((n) => plan.books[String(n)]);
         return (
-          <AbsoluteFill style={{opacity: o, background: `radial-gradient(120% 90% at 50% 40%, #2E5440 0%, ${C.board} 70%, #1A3024 100%)`}}>
-            <AbsoluteFill style={{border: '26px solid #8A5A35', boxShadow: 'inset 0 0 0 5px #6E4426'}} />
-            <div style={{position: 'absolute', top: 150, left: 0, right: 0, textAlign: 'center'}}>
-              <div style={{display: 'inline-block', fontWeight: 800, fontSize: 38, color: C.navy, background: C.butter, borderRadius: 999, padding: '8px 26px'}}>📌 저장하고 읽어줄 때 꺼내 보세요</div>
-              <div style={{fontFamily: KO, fontWeight: 700, fontSize: 86, color: C.yellow, marginTop: 24}}>그림책 3권 읽어주기 카드</div>
+          <AbsoluteFill style={{opacity: o, background: C.cream}}>
+            <div style={{position: 'absolute', top: 130, left: 0, right: 0, textAlign: 'center'}}>
+              <div style={{display: 'inline-block', fontWeight: 800, fontSize: 36, color: C.navy, background: C.yellow, borderRadius: 999, padding: '8px 26px'}}>📌 저장하고 읽어줄 때 꺼내 보세요</div>
+              <div style={{fontFamily: KO, fontWeight: 700, fontSize: 84, color: C.navy, marginTop: 20}}>그림책 3권 읽어주기 카드</div>
             </div>
-            {[1, 2, 3].map((n, i) => {
-              const bk = plan.books[String(n)]; const k = sp(t, sec.s + .3 + .3 * i, fps, 12);
+            {all.map((bk, i) => {
+              const k = sp(t, sec.s + .3 + .3 * i, fps, 12);
               return (
-                <div key={n} style={{position: 'absolute', left: 80, right: 80, top: 460 + i * 380, display: 'flex', gap: 26, opacity: k, transform: `translateX(${(1 - k) * 60}px)`}}>
-                  <Img src={staticFile(`${plan.media}/covers/${bk.cover}`)} style={{width: 150, height: 190, objectFit: 'cover', borderRadius: 12, border: '5px solid #fff'}} />
+                <div key={i} style={{position: 'absolute', left: 60, right: 60, top: 400 + i * 400, display: 'flex', gap: 28, background: '#fff', borderRadius: 28,
+                  padding: 26, boxShadow: '0 12px 30px rgba(30,45,77,.12)', opacity: k, transform: `translateX(${(1 - k) * 60}px)`}}>
+                  <Img src={staticFile(`${plan.media}/covers/${bk.cover}`)} style={{width: 150, height: 190, objectFit: 'cover', borderRadius: 12}} />
                   <div style={{flex: 1}}>
-                    <div style={{fontFamily: EN, fontSize: 54, color: C.yellow, lineHeight: 1}}>{n}. {bk.title}</div>
-                    <div style={{fontFamily: EN, fontSize: 46, color: C.chalk, marginTop: 8}}>📖 "{bk.lines[0]}"</div>
-                    <div style={{fontFamily: KO, fontWeight: 700, fontSize: 40, color: C.pink, marginTop: 4}}>🎙 {bk.read[0]} {bk.read[1]}</div>
-                    <div style={{fontFamily: EN, fontSize: 44, color: C.sky, marginTop: 4}}>💬 {bk.ask}</div>
+                    <div style={{fontFamily: EN, fontSize: 52, color: C.navy, lineHeight: 1}}>{i + 1}. {bk.title}</div>
+                    <div style={{fontFamily: EN, fontSize: 44, color: '#5A6A84', marginTop: 10}}>📖 "{bk.lines[0]}"</div>
+                    <div style={{fontFamily: KO, fontWeight: 700, fontSize: 40, color: '#C0392B', marginTop: 4}}>🎙 {bk.read[0]} {bk.read[1]}</div>
+                    <div style={{fontFamily: EN, fontSize: 44, color: '#2F6DA8', marginTop: 4}}>💬 {bk.ask}</div>
                   </div>
                 </div>
               );
             })}
-            <div style={{position: 'absolute', bottom: 120, left: 0, right: 0, textAlign: 'center', fontWeight: 800, fontSize: 40, color: '#fff', lineHeight: 1.45}}>
-              💬 댓글에 <span style={{color: C.yellow}}>'그림책'</span> 남기면 이 카드를 DM으로 보내드려요</div>
+            <div style={{position: 'absolute', bottom: 120, left: 0, right: 0, textAlign: 'center', fontWeight: 800, fontSize: 40, color: C.navy}}>
+              💬 댓글에 <span style={{color: '#C0392B'}}>'그림책'</span> 남기면 이 카드를 DM으로 보내드려요</div>
           </AbsoluteFill>
+        );
+      })() : null}
+
+      {/* BONUS: Bear & Joy (Joy, 17 Nov) */}
+      {sec.kind.startsWith('bonus') ? (() => {
+        const bonus = plan.sections.filter((x) => x.kind.startsWith('bonus'));
+        const b0 = bonus[0].s;
+        const pts: [string, string, string][] = [
+          ['🔤', '영어 읽기가 두려워도 OK', '한글 발음 가이드로 바로 읽어줘요'],
+          ['💭', '페이지마다 질문 가이드', '사고력 · 상상력이 쑥쑥'],
+          ['🌳', '그림책을 넘어 일상으로', '오늘 바로 쓰는 영어 문장'],
+        ];
+        const k0 = sp(t, b0, fps, 9);
+        return (
+          <>
+            <div style={{position: 'absolute', top: 150, left: 0, right: 0, textAlign: 'center', transform: `scale(${.7 + .3 * k0})`, opacity: Math.min(1, k0 * 2)}}>
+              <div style={{display: 'inline-block', fontWeight: 900, fontSize: 46, color: C.navy, background: C.yellow, borderRadius: 999, padding: '8px 30px', transform: 'rotate(-3deg)'}}>🎁 BONUS</div>
+              <div style={{fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 600, fontSize: 92, color: '#fff', textShadow: SHADOW, marginTop: 14}}>Bear &amp; Joy</div>
+              <div style={{fontFamily: KO, fontWeight: 700, fontSize: 54, color: C.butter, textShadow: SHADOW}}>베어앤조이가 직접 만든 영어 그림책</div>
+            </div>
+            <div style={{position: 'absolute', left: 60, right: 60, top: 640, display: 'grid', gap: 22}}>
+              {pts.map(([ic, h, sub], i) => {
+                const at = bonus[i + 1]?.s ?? 1e9; const k = sp(t, at, fps, 11);
+                if (t < at) return null;
+                const now = sec === bonus[i + 1];
+                return (
+                  <div key={i} style={{display: 'flex', alignItems: 'center', gap: 22, background: now ? C.cream : 'rgba(245,240,230,.82)', borderRadius: 26, padding: '22px 28px',
+                    boxShadow: '0 14px 30px rgba(0,0,0,.3)', transform: `translateX(${(1 - k) * 80}px) scale(${now ? 1 : .96})`, opacity: k}}>
+                    <div style={{fontSize: 70}}>{ic}</div>
+                    <div><div style={{fontWeight: 900, fontSize: 46, color: C.navy}}>{h}</div>
+                      <div style={{fontFamily: KO, fontWeight: 700, fontSize: 40, color: '#5A6A84', marginTop: 2}}>{sub}</div></div>
+                  </div>
+                );
+              })}
+            </div>
+            <Img src={staticFile(`${plan.media}/covers/bearjoy.png`)} style={{position: 'absolute', right: 50, top: 1290, width: 250, borderRadius: 10, boxShadow: '0 18px 40px rgba(0,0,0,.45)',
+              transform: `rotate(6deg) scale(${sp(t, b0 + .3, fps, 10)})`}} />
+          </>
         );
       })() : null}
 
