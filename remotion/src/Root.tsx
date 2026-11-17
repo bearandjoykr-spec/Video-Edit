@@ -19,6 +19,8 @@ import spicy from '../../projects/2026-11-mark-spicy/versions/main/timeline_v2.j
 import day32books from '../../projects/2026-11-day32-books/versions/main/timeline_v2.json';
 import day33 from '../../projects/2026-11-day33-outdoor/versions/main/timeline.json';
 import {OutdoorEnglish, OutdoorPlan} from './OutdoorEnglish';
+import day34 from '../../projects/2026-11-day34-bookguide/versions/main/timeline.json';
+import {BookGuide, GuidePlan} from './BookGuide';
 import joytop3 from '../../projects/2026-11-joy-top3/versions/main/timeline.json';
 import {JoyTop3Reel, Top3Plan} from './JoyTop3Reel';
 
@@ -91,6 +93,7 @@ export const Root: React.FC = () => (
     {reelV2('Day28', day28 as unknown as PlanV2)}
     {reelV2('Day32', day32 as unknown as PlanV2)}
     {reelV2('MarkSpicy', spicy as unknown as PlanV2)}
+    <Composition id="Day34" component={BookGuide} durationInFrames={(day34 as unknown as GuidePlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: {...(day34 as unknown as GuidePlan), showVo: true}}} />
     <Composition id="Day33" component={OutdoorEnglish} durationInFrames={(day33 as unknown as OutdoorPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day33 as unknown as OutdoorPlan}} />
     {reelV2('Day32Books', day32books as unknown as PlanV2)}
     {reelV2('AccentQ', accentq as unknown as PlanV2)}
