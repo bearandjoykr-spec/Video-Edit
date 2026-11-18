@@ -7,8 +7,8 @@ plan = json.load(open(f"{V}/timeline.json")); dur = plan["duration"]
 # Joy + Mark's voice-over (voice.wav, built from the chosen takes) on top; the music ducks under it
 ins = ["-i", f"{V}/voice.wav", "-ss", str(m0), "-i", music]
 fc = [f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,apad=whole_dur={dur},asplit=2[voice][key]",
-      f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=-15dB,atrim=0:{dur},afade=t=in:d=0.2,afade=t=out:st={dur - 2.5}:d=2.5[m0]",
-      "[m0][key]sidechaincompress=threshold=0.05:ratio=2:attack=30:release=450[m]"]; lab = ["[voice]", "[m]"]
+      f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=-10dB,atrim=0:{dur},afade=t=in:d=0.2,afade=t=out:st={dur - 2.5}:d=2.5[m0]",
+      "[m0][key]sidechaincompress=threshold=0.08:ratio=1.6:attack=30:release=450[m]"]; lab = ["[voice]", "[m]"]
 for k, c in enumerate(plan["sfx"]):
     ins += ["-i", f"{V}/audio/sfx_{c['sound']}.wav"]; ms = int(c["t"] * 1000)
     fc.append(f"[{k + 2}:a]volume={c['gain']}dB,adelay={ms}|{ms}[s{k}]"); lab.append(f"[s{k}]")
