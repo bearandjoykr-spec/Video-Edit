@@ -10,12 +10,14 @@ import numpy as np, soundfile as sf, librosa
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(f'{HERE}/../..')
 sys.path.insert(0, HERE)
 from plan import END  # noqa
+import plan as _plan  # noqa
 
 SR = 48000
-MUSIC = f'{HERE}/music/good_b_music-epic-hollywood-trailer-9489.mp3'
-BOOMS = [21.5, 53.5, 94.5, 108.6]                 # biggest hits: colour break, climax, title, end card
-WHOOSH_INTO = [21.5, 30.0, 37.0, 45.0, 49.0, 53.5, 94.5]
-TICKS = [2.0, 5.5, 7.5, 9.5, 12.5, 15.0]          # soft low thumps on the B/W statement cuts
+MUSIC = f"{HERE}/music/{getattr(_plan, 'MUSIC', 'good_b_music-epic-hollywood-trailer-9489.mp3')}"
+TRAILER = 'MUSIC' not in dir(_plan)               # v2 trailer cut used impact SFX; v4 is piano only
+BOOMS = [21.5, 53.5, 94.5, 108.6] if TRAILER else []                 # biggest hits: colour break, climax, title, end card
+WHOOSH_INTO = [21.5, 30.0, 37.0, 45.0, 49.0, 53.5, 94.5] if TRAILER else []
+TICKS = [2.0, 5.5, 7.5, 9.5, 12.5, 15.0] if TRAILER else []          # soft low thumps on the B/W statement cuts
 rng = np.random.default_rng(7)
 
 
@@ -69,7 +71,7 @@ def main():
     n = int(END * SR)
     y, _ = librosa.load(MUSIC, sr=SR, mono=False)
     music = np.zeros((n, 2)); m = y.T[:n]; music[:len(m)] = m
-    fade = int(2.0 * SR); music[n - fade:] *= np.linspace(1, 0, fade)[:, None] ** 1.5
+    fade = int((2.0 if TRAILER else 5.0) * SR); music[n - fade:] *= np.linspace(1, 0, fade)[:, None] ** 1.5
     sfx = np.zeros((n, 2))
     for t in BOOMS:
         place(sfx, boom(), t, -6)
@@ -78,8 +80,11 @@ def main():
         place(sfx, w, t - 0.8, -13, stereo_spread=0.3 * (1 if k % 2 else -1))
     for t in TICKS:
         place(sfx, thump(), t, -14)
-    wd = wind(21.5); wd[-int(1.5 * SR):] *= np.linspace(1, 0, int(1.5 * SR))
-    place(sfx, wd, 0.0, -30)
+    if TRAILER:
+        wd = wind(21.5); wd[-int(1.5 * SR):] *= np.linspace(1, 0, int(1.5 * SR))
+        place(sfx, wd, 0.0, -30)
+    else:   # piano: gentle 1.5 s fade-in
+        fi = int(1.5 * SR); music[:fi] *= np.linspace(0, 1, fi)[:, None]
     mix = music + sfx
     os.makedirs(f'{ROOT}/renders/cinematic-film', exist_ok=True)
     raw = f'{ROOT}/renders/cinematic-film/mix_raw.wav'; out = f'{ROOT}/renders/cinematic-film/mix.wav'

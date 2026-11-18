@@ -108,7 +108,14 @@ def layers(fmt):
         path = f'{d}/line{k:02d}.png'; img.save(path)
         rise = 0 if ln[4] in ('main', 'title') else 16
         meta.append(dict(png=path, s=ln[0], e=ln[1], fin=0.5 if ln[4] == 'main' else 0.35, fout=0.4, rise=rise))
-    # end card: logo + wordmark (108.6 s), tagline (110.5 s), URL (112.2 s); all out by 117.4 s
+    # small hand-drawn Bear & Joy moments (plan.OVERLAYS): soft fade, gentle 12 px float up
+    for k, ov in enumerate(getattr(_plan, 'OVERLAYS', [])):
+        img = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        sb.draw_overlay(img, ov, W, H, v)
+        path = f'{d}/overlay{k:02d}.png'; img.save(path)
+        meta.append(dict(png=path, s=ov[0], e=ov[1], fin=0.7, fout=0.6, rise=12))
+    # end card: logo + wordmark, then tagline, then URL, timed from the end-card shot; all out 0.6 s before END
+    ec = [sh[0] for sh in SHOTS if sh[1] == 'endcard'][0]
     s = min(W, H) / 1080
     logo = Image.open(f'{ROOT}/brand/assets/bear-butterfly.png').convert('RGBA')
     wm = Image.open(f'{ROOT}/brand/assets/wordmark-cream.png').convert('RGBA')
@@ -123,9 +130,9 @@ def layers(fmt):
     c = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(c).text((W / 2, y0 + logo.height + wm.height + int(130 * s)), 'bearandjoy.com',
                            font=ImageFont.truetype(sb.EN, int(28 * s)), fill=sb.GOLD, anchor='ms')
-    for name, img, st in (('end_logo', a, 108.6), ('end_tag', b, 110.5), ('end_url', c, 112.2)):
+    for name, img, st in (('end_logo', a, ec + 0.6), ('end_tag', b, ec + 2.2), ('end_url', c, ec + 3.6)):
         path = f'{d}/{name}.png'; img.save(path)
-        meta.append(dict(png=path, s=st, e=117.4, fin=0.9, fout=0.9, rise=8))
+        meta.append(dict(png=path, s=st, e=END - 0.6, fin=0.9, fout=0.9, rise=8))
     json.dump(meta, open(f'{out_dir(fmt)}/layers.json', 'w'), indent=1)
     print(len(meta), 'layers')
 
