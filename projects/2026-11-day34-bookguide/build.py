@@ -15,7 +15,9 @@ SECTIONS = [
     ("hook", 0, 1.0, "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4", 0.0, "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"),
     ("hook", 0, 1.0, "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4", 1.233, ""),
     ("hook", 0, 1.0, "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4", 2.466, ""),
-    ("hook", 0, 1.6, f"{D32}/b4.mov", 2.0, "책 속 문장이랑 읽어주는 법까지\n알려드릴게요!"),
+    # Joy (18 Nov): after her look-back she says it in English and walks into Youngpoong (her live voice, then the entrance)
+    ("hookgo", 0, 2.6, f"{T3}/clip1.mp4", 5.55, "I know the best place to go!\n제일 좋은 곳을 알아요! 👣"),
+    ("hook", 0, 1.6, f"{T3}/clip2.mov", 2.0, "책 속 문장이랑 읽어주는 법까지\n알려드릴게요!"),
     ("cover", 1, 2.2, f"{T3}/book3.mov", 0.5, "첫 번째, 앤서니 브라운의\nMy Mum, My Dad."),
     ("page", 1, 4.2, f"{D32}/b2.mov", 0.3, "책 속에는 이런 문장이 나와요.\nShe's nice, my mum.\nHe's all right, my dad."),
     ("read", 1, 4.0, f"{T3}/book3.mov", 8.5, "읽을 때는 my mum, my dad에서\n아이를 꼭 안아주세요."),
@@ -53,13 +55,14 @@ BOOKS = {
 # "What did he eat?" (46-50 s) and the mixed-up first "동물마다…" take (73-78 s) are dropped for their retakes; "아이가 먼저 모자를
 # 찾아요" is left out (Joy removed that caption). Per section: list of (src_s, src_e) pieces placed back to back.
 VO = {
-    0: [(1.60, 4.95)], 3: [(5.30, 8.20)],
-    4: [(8.55, 12.55)], 5: [(13.15, 19.35)], 6: [(19.75, 24.52)], 7: [(24.78, 29.55)],  # (Joy) 안아주세요 ends at 24.5: keep its last syllable
-    8: [(29.82, 33.50)], 9: [(34.35, 40.15)], 10: [(40.38, 42.56), (42.60, 43.43, 0.02), (43.72, 44.70), (44.74, 46.00)],  # Monday / Tuesday on the beat, with claps
-    11: [(57.22, 62.80)],
-    12: [(63.18, 66.30)], 13: [(66.82, 73.30)], 14: [(80.38, 84.90)], 15: [(85.48, 88.32)],
-    16: [(90.40, 93.98)], 17: [(94.04, 98.60)], 18: [(99.06, 104.55)], 19: [(104.76, 108.16)],
-    20: [(108.70, 110.70), (111.22, 114.10)], 21: [(114.52, 116.25)],
+    3: [(5.60, 8.05, 0.15, "raw-footage/joy-top3/clip1.mp4")],  # Joy live: "I know the best place to go!"
+    0: [(1.60, 4.95)], 4: [(5.30, 8.20)],
+    5: [(8.55, 12.55)], 6: [(13.15, 19.35)], 7: [(19.75, 24.52)], 8: [(24.78, 29.55)],  # (Joy) 안아주세요 ends at 24.5: keep its last syllable
+    9: [(29.82, 33.50)], 10: [(34.35, 40.15)], 11: [(40.38, 42.56), (42.60, 43.43, 0.02), (43.72, 44.70), (44.74, 46.00)],  # Monday / Tuesday on the beat, with claps
+    12: [(57.22, 62.80)],
+    13: [(63.18, 66.30)], 14: [(66.82, 73.30)], 15: [(80.38, 84.90)], 16: [(85.48, 88.32)],
+    17: [(90.40, 93.98)], 18: [(94.04, 98.60)], 19: [(99.06, 104.55)], 20: [(104.76, 108.16)],
+    21: [(108.70, 110.70), (111.22, 114.10)], 22: [(114.52, 116.25)],
 }
 GAP = 0.35   # breath after each line
 HOOK_SPLIT = (0, 3)  # the hook's four quick cuts share the two hook lines
@@ -74,7 +77,9 @@ def main():
             for j in range(3):
                 durs[j] = round(a / 3, 3)
         elif i == 3:
-            durs[3] = round(a, 3)
+            durs[3] = round(max(a, 2.6), 3)
+        elif i == 4:
+            durs[4] = round(a, 3)
         elif SECTIONS[i][0] == "end":
             durs[i] = max(4.0, a)
         else:
@@ -84,10 +89,10 @@ def main():
         d = durs[k]
         secs.append({"kind": kind, "book": book, "s": round(t, 3), "e": round(t + d, 3), "clip": clip, "cs": cs, "vo": vo}); t += d
     for i, pcs in VO.items():
-        at = secs[i]["s"] + (0.1 if SECTIONS[i][0] != "hook" else 0)
+        at = secs[i]["s"] + (0.1 if SECTIONS[i][0] not in ("hook", "hookgo") else 0)
         for pc in pcs:
             s_, e_ = pc[0], pc[1]; gap = pc[2] if len(pc) > 2 else 0.15
-            vo_place.append({"src_s": s_, "src_e": e_, "at": round(at, 3)}); at += e_ - s_ + gap
+            vo_place.append({"src_s": s_, "src_e": e_, "at": round(at, 3), "src": pc[3] if len(pc) > 3 else "raw-footage/day34/vo.m4a"}); at += e_ - s_ + gap
     # Monday! Tuesday!: a clap on every syllable (MON-day, TUES-day) so the rhythm is heard
     mon = next(v for v in vo_place if v["src_s"] == 42.60); tue = next(v for v in vo_place if v["src_s"] == 43.72)
     for at in (mon["at"] + .05, mon["at"] + .40, tue["at"] + .05, tue["at"] + .49):

@@ -1,8 +1,8 @@
 {
  "fps": 30,
  "day": 34,
- "duration": 96.419,
- "frames": 2893,
+ "duration": 99.219,
+ "frames": 2977,
  "media": "day34/main",
  "sections": [
   {
@@ -27,259 +27,296 @@
    "vo": "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"
   },
   {
-   "kind": "hook",
+   "kind": "hookgo",
    "book": 0,
    "s": 3.699,
-   "e": 6.949,
+   "e": 6.499,
+   "vo": "I know the best place to go!\n제일 좋은 곳을 알아요! 👣"
+  },
+  {
+   "kind": "hook",
+   "book": 0,
+   "s": 6.499,
+   "e": 9.749,
    "vo": "책 속 문장이랑 읽어주는 법까지\n알려드릴게요!"
   },
   {
    "kind": "cover",
    "book": 1,
-   "s": 6.949,
-   "e": 11.299,
+   "s": 9.749,
+   "e": 14.099,
    "vo": "첫 번째, 앤서니 브라운의\nMy Mum, My Dad."
   },
   {
    "kind": "page",
    "book": 1,
-   "s": 11.299,
-   "e": 17.849,
+   "s": 14.099,
+   "e": 20.649,
    "vo": "책 속에는 이런 문장이 나와요.\nShe's nice, my mum.\nHe's all right, my dad."
   },
   {
    "kind": "read",
    "book": 1,
-   "s": 17.849,
-   "e": 22.969,
+   "s": 20.649,
+   "e": 25.769,
    "vo": "읽을 때는 my mum, my dad에서\n아이를 꼭 안아주세요."
   },
   {
    "kind": "ask",
    "book": 1,
-   "s": 22.969,
-   "e": 28.089,
+   "s": 25.769,
+   "e": 30.889,
    "vo": "다 읽고 What can mummy do?\n하고 물어보면,\n아이가 엄마 자랑을 시작해요."
   },
   {
    "kind": "cover",
    "book": 2,
-   "s": 28.089,
-   "e": 32.119,
+   "s": 30.889,
+   "e": 34.919,
    "vo": "두 번째,\nThe Very Hungry Caterpillar."
   },
   {
    "kind": "page",
    "book": 2,
-   "s": 32.119,
-   "e": 38.269,
+   "s": 34.919,
+   "e": 41.069,
    "vo": "On Monday he ate through one apple.\nBut he was still hungry."
   },
   {
    "kind": "read",
    "book": 2,
-   "s": 38.269,
-   "e": 44.319,
+   "s": 41.069,
+   "e": 47.119,
    "vo": "요일이 나올 때마다 아이와 함께\nMonday, Tuesday! 리듬 타듯 읽어 주세요!"
   },
   {
    "kind": "ask",
    "book": 2,
-   "s": 44.319,
-   "e": 50.249,
+   "s": 47.119,
+   "e": 53.049,
    "vo": "What did he eat? How many?\n하고 물으면\n영어 숫자가 저절로 나와요."
   },
   {
    "kind": "cover",
    "book": 3,
-   "s": 50.249,
-   "e": 53.719,
+   "s": 53.049,
+   "e": 56.519,
    "vo": "세 번째,\nI Want My Hat Back."
   },
   {
    "kind": "page",
    "book": 3,
-   "s": 53.719,
-   "e": 60.549,
+   "s": 56.519,
+   "e": 63.349,
    "vo": "모자를 잃어버린 곰이 묻고 또 물어요.\nHave you seen my hat?\n동물들은 No."
   },
   {
    "kind": "read",
    "book": 3,
-   "s": 60.549,
-   "e": 65.419,
+   "s": 63.349,
+   "e": 68.219,
    "vo": "동물마다 목소리를 바꿔 주세요.\n아이가 No!를 맡으면 더 재밌어요."
   },
   {
    "kind": "ask",
    "book": 3,
-   "s": 65.419,
-   "e": 68.609,
+   "s": 68.219,
+   "e": 71.409,
    "vo": "Where is the hat?\n하고 물어보세요."
   },
   {
    "kind": "bonus",
    "book": 4,
-   "s": 68.609,
-   "e": 72.539,
+   "s": 71.409,
+   "e": 75.339,
    "vo": "그리고 보너스!\n저희가 만든 그림책, Bear & Joy예요."
   },
   {
    "kind": "bonus1",
    "book": 4,
-   "s": 72.539,
-   "e": 77.449,
+   "s": 75.339,
+   "e": 80.249,
    "vo": "영어를 읽기 두려운 부모님도,\n한글 발음 가이드로 바로 읽어줄 수 있어요."
   },
   {
    "kind": "bonus2",
    "book": 4,
-   "s": 77.449,
-   "e": 83.289,
+   "s": 80.249,
+   "e": 86.089,
    "vo": "페이지마다 어울리는 질문이 있어서,\n아이의 생각과 상상력이 쑥쑥 자라요."
   },
   {
    "kind": "bonus3",
    "book": 4,
-   "s": 83.289,
-   "e": 87.039,
+   "s": 86.089,
+   "e": 89.839,
    "vo": "그림책을 넘어,\n일상에서도 바로 쓰는 영어가 돼요."
   },
   {
    "kind": "summary",
    "book": 0,
-   "s": 87.039,
-   "e": 92.419,
+   "s": 89.839,
+   "e": 95.219,
    "vo": "저장해 두고 읽어줄 때 꺼내 보세요."
   },
   {
    "kind": "end",
    "book": 0,
-   "s": 92.419,
-   "e": 96.419,
+   "s": 95.219,
+   "e": 99.219,
    "vo": ""
   }
  ],
  "vo": [
   {
+   "src_s": 5.6,
+   "src_e": 8.05,
+   "at": 3.699,
+   "src": "raw-footage/joy-top3/clip1.mp4"
+  },
+  {
    "src_s": 1.6,
    "src_e": 4.95,
-   "at": 0.0
+   "at": 0.0,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 5.3,
    "src_e": 8.2,
-   "at": 3.699
+   "at": 6.499,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 8.55,
    "src_e": 12.55,
-   "at": 7.049
+   "at": 9.849,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 13.15,
    "src_e": 19.35,
-   "at": 11.399
+   "at": 14.199,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 19.75,
    "src_e": 24.52,
-   "at": 17.949
+   "at": 20.749,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 24.78,
    "src_e": 29.55,
-   "at": 23.069
+   "at": 25.869,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 29.82,
    "src_e": 33.5,
-   "at": 28.189
+   "at": 30.989,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 34.35,
    "src_e": 40.15,
-   "at": 32.219
+   "at": 35.019,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 40.38,
    "src_e": 42.56,
-   "at": 38.369
+   "at": 41.169,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 42.6,
    "src_e": 43.43,
-   "at": 40.699
+   "at": 43.499,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 43.72,
    "src_e": 44.7,
-   "at": 41.549
+   "at": 44.349,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 44.74,
    "src_e": 46.0,
-   "at": 42.679
+   "at": 45.479,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 57.22,
    "src_e": 62.8,
-   "at": 44.419
+   "at": 47.219,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 63.18,
    "src_e": 66.3,
-   "at": 50.349
+   "at": 53.149,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 66.82,
    "src_e": 73.3,
-   "at": 53.819
+   "at": 56.619,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 80.38,
    "src_e": 84.9,
-   "at": 60.649
+   "at": 63.449,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 85.48,
    "src_e": 88.32,
-   "at": 65.519
+   "at": 68.319,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 90.4,
    "src_e": 93.98,
-   "at": 68.709
+   "at": 71.509,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 94.04,
    "src_e": 98.6,
-   "at": 72.639
+   "at": 75.439,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 99.06,
    "src_e": 104.55,
-   "at": 77.549
+   "at": 80.349,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 104.76,
    "src_e": 108.16,
-   "at": 83.389
+   "at": 86.189,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 108.7,
    "src_e": 110.7,
-   "at": 87.139
+   "at": 89.939,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 111.22,
    "src_e": 114.1,
-   "at": 89.289
+   "at": 92.089,
+   "src": "raw-footage/day34/vo.m4a"
   },
   {
    "src_s": 114.52,
    "src_e": 116.25,
-   "at": 92.519
+   "at": 95.319,
+   "src": "raw-footage/day34/vo.m4a"
   }
  ],
  "books": {
@@ -364,152 +401,152 @@
    "gain": -10
   },
   {
-   "t": 3.699,
+   "t": 6.499,
    "sound": "whoosh",
    "gain": -10
   },
   {
-   "t": 6.949,
+   "t": 9.749,
    "sound": "impact",
    "gain": -7
   },
   {
-   "t": 6.999,
+   "t": 9.799,
    "sound": "sparkle",
    "gain": -12
   },
   {
-   "t": 11.299,
+   "t": 14.099,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 17.849,
+   "t": 20.649,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 22.969,
+   "t": 25.769,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 28.089,
+   "t": 30.889,
    "sound": "impact",
    "gain": -7
   },
   {
-   "t": 28.139,
+   "t": 30.939,
    "sound": "sparkle",
    "gain": -12
   },
   {
-   "t": 32.119,
+   "t": 34.919,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 38.269,
+   "t": 41.069,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 40.749,
+   "t": 43.549,
    "sound": "clap",
    "gain": -6
   },
   {
-   "t": 41.099,
+   "t": 43.899,
    "sound": "clap",
    "gain": -6
   },
   {
-   "t": 41.599,
+   "t": 44.399,
    "sound": "clap",
    "gain": -6
   },
   {
-   "t": 42.039,
+   "t": 44.839,
    "sound": "clap",
    "gain": -6
   },
   {
-   "t": 44.319,
+   "t": 47.119,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 50.249,
+   "t": 53.049,
    "sound": "impact",
    "gain": -7
   },
   {
-   "t": 50.299,
+   "t": 53.099,
    "sound": "sparkle",
    "gain": -12
   },
   {
-   "t": 53.719,
+   "t": 56.519,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 60.549,
+   "t": 63.349,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 65.419,
+   "t": 68.219,
    "sound": "pop",
    "gain": -10
   },
   {
-   "t": 68.609,
+   "t": 71.409,
    "sound": "impact",
    "gain": -6
   },
   {
-   "t": 68.659,
+   "t": 71.459,
    "sound": "sparkle",
    "gain": -10
   },
   {
-   "t": 72.539,
+   "t": 75.339,
    "sound": "pop",
    "gain": -9
   },
   {
-   "t": 77.449,
+   "t": 80.249,
    "sound": "pop",
    "gain": -9
   },
   {
-   "t": 83.289,
+   "t": 86.089,
    "sound": "pop",
    "gain": -9
   },
   {
-   "t": 87.039,
+   "t": 89.839,
    "sound": "chime",
    "gain": -8
   },
   {
-   "t": 92.419,
+   "t": 95.219,
    "sound": "whoosh",
    "gain": -10
   },
   {
-   "t": 94.319,
+   "t": 97.119,
    "sound": "pop",
    "gain": -6
   },
   {
-   "t": 95.219,
+   "t": 98.019,
    "sound": "pop",
    "gain": -6
   },
   {
-   "t": 95.269,
+   "t": 98.069,
    "sound": "chime",
    "gain": -9
   }
