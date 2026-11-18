@@ -53,10 +53,42 @@ def grab(clip, t, look, fx, fy, zoom, W, H, pic_h):
 
 def shadow_text(img, xy, text, font, fill, anchor, blur=6):
     sh = Image.new('L', img.size, 0)
-    ImageDraw.Draw(sh).text(xy, text, font=font, fill=210, anchor=anchor, stroke_width=3)
+    ImageDraw.Draw(sh).text(xy, text, font=font, fill=210, anchor=anchor, stroke_width=max(1, int(font.size / 16)))
     sh = sh.filter(ImageFilter.GaussianBlur(blur))
-    img.paste((0, 0, 0), (0, 0), sh)
+    if img.mode == 'RGBA':   # transparent title layers for the final render
+        layer = Image.new('RGBA', img.size, (0, 0, 0, 0)); layer.putalpha(sh)
+        img.alpha_composite(layer)
+    else:
+        img.paste((0, 0, 0), (0, 0), sh)
     ImageDraw.Draw(img).text(xy, text, font=font, fill=fill, anchor=anchor)
+
+
+RED = (214, 38, 38)
+
+
+def cond_text(img, xy, text, font, fill, anchor, squeeze=0.78, blur=8):
+    """Tall, condensed type like the reference reel: draw normally, then squeeze horizontally about x."""
+    W, H = img.size; x, y = xy
+    CW = int(W / squeeze) + 2                      # wide canvas so nothing clips before the squeeze
+    layer = Image.new('RGBA', (CW, H), (0, 0, 0, 0))
+    shadow_text(layer, (x / squeeze, y), text, font, fill, anchor, blur)
+    full = layer.resize((W, H), Image.LANCZOS)
+    if img.mode == 'RGBA':
+        img.alpha_composite(full)
+    else:
+        img.paste(full, (0, 0), full)
+
+
+def wrap(text, font, max_w, squeeze):
+    if font.getlength(text) * squeeze <= max_w or ' ' not in text:
+        return [text]
+    words = text.split(' '); best = None
+    for i in range(1, len(words)):
+        a, b = ' '.join(words[:i]), ' '.join(words[i:])
+        w = max(font.getlength(a), font.getlength(b))
+        if best is None or w < best[0]:
+            best = (w, [a, b])
+    return best[1]
 
 
 def draw_line(img, ln, W, H, top, pic_h, vertical):
@@ -67,30 +99,49 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
         shadow_text(img, (W / 2, y), ko, ImageFont.truetype(KO, int(54 * s if not vertical else 60 * s)), CREAM, 'ms')
         shadow_text(img, (W / 2, y + 60 * s), en, ImageFont.truetype(ENI, int(40 * s if not vertical else 46 * s)), CREAM, 'ms')
     elif style == 'tagline':
-        shadow_text(img, (W / 2, top + pic_h / 2 + 30 * s), ko, ImageFont.truetype(ENI, int((84 if not vertical else 72) * s)), CREAM, 'ms', 12)
+        cond_text(img, (W / 2, top + pic_h / 2 + 30 * s), ko, ImageFont.truetype(EN, int((120 if not vertical else 92) * s)), CREAM, 'ms', 0.8, 12)
     elif style == 'big':
-        x = (150 if not vertical else 90) * s
-        y = top + pic_h * (0.52 if not vertical else 0.40)
-        shadow_text(img, (x, y), ko, ImageFont.truetype(KO, int((96 if not vertical else 104) * s)), CREAM, 'ls', 12)
-        shadow_text(img, (x + 4 * s, y + 64 * s), en, ImageFont.truetype(ENI, int(40 * s)), CREAM, 'ls')
+        # reference: huge statement top-left, a small line underneath
+        size = 170 if not vertical else 132
+        x = (150 if not vertical else 80) * s
+        y = top + pic_h * (0.40 if not vertical else 0.30)
+        f = ImageFont.truetype(KO, int(size * s))
+        rows = wrap(ko, f, W - 2 * x, 0.78)
+        for r, t in enumerate(rows):
+            cond_text(img, (x, y + r * size * 1.12 * s), t, f, CREAM, 'ls', 0.78, 12)
+        y2 = y + (len(rows) - 1) * size * 1.12 * s + 78 * s
+        cond_text(img, (x + 6 * s, y2), en, ImageFont.truetype(EN, int(46 * s)), CREAM, 'ls', 0.85, 6)
     elif style == 'place':
         x = (150 if not vertical else 80) * s
-        y = top + pic_h - (150 if not vertical else 700) * s
-        shadow_text(img, (x, y), en, ImageFont.truetype(EN, int(96 * s)), CREAM, 'ls', 10)
-        shadow_text(img, (x + 4 * s, y + 52 * s), ko, ImageFont.truetype(KO, int(36 * s)), CREAM, 'ls')
-    elif style == 'title':
-        shadow_text(img, (W / 2, H / 2 - 10 * s), ko, ImageFont.truetype(KO, int(54 * s)), CREAM, 'ms')
-        shadow_text(img, (W / 2, H / 2 + 50 * s), en, ImageFont.truetype(ENI, int(40 * s)), CREAM, 'ms')
-    elif style == 'main':
-        shadow_text(img, (W / 2, H / 2 - 120 * s), 'THE BEAR & JOY CO.  ·  PRESENTS', ImageFont.truetype(EN, int(24 * s)), GOLD, 'ms')
-        fs = 104 if not vertical else 92
+        y = top + pic_h - (120 if not vertical else 560) * s
+        cond_text(img, (x, y), en, ImageFont.truetype(EN, int((176 if not vertical else 140) * s)), CREAM, 'ls', 0.72, 14)
+        cond_text(img, (x + 8 * s, y + 66 * s), ko, ImageFont.truetype(KO, int(40 * s)), CREAM, 'ls', 0.85, 6)
+    elif style == 'row':
+        # reference: one red row across a B/W shot
         if vertical:
-            shadow_text(img, (W / 2, H / 2 - 10 * s), 'Little Steps', ImageFont.truetype(EN, int(fs * s)), CREAM, 'ms', 12)
-            shadow_text(img, (W / 2, H / 2 + 100 * s), 'to Big Adventures', ImageFont.truetype(EN, int(fs * s)), CREAM, 'ms', 12)
-            shadow_text(img, (W / 2, H / 2 + 190 * s), ko, ImageFont.truetype(KO, int(48 * s)), CREAM, 'ms')
+            y = H * 0.60
+            cond_text(img, (W / 2, y), ko, ImageFont.truetype(KO, int(76 * s)), RED, 'ms', 0.85, 10)
+            cond_text(img, (W / 2, y + 86 * s), en, ImageFont.truetype(EN, int(64 * s)), RED, 'ms', 0.8, 10)
         else:
-            shadow_text(img, (W / 2, H / 2 + 20 * s), en, ImageFont.truetype(EN, int(fs * s)), CREAM, 'ms', 12)
-            shadow_text(img, (W / 2, H / 2 + 100 * s), ko, ImageFont.truetype(KO, int(46 * s)), CREAM, 'ms')
+            y = top + pic_h * 0.66
+            cond_text(img, (W * 0.30, y), ko, ImageFont.truetype(KO, int(66 * s)), RED, 'ms', 0.85, 10)
+            cond_text(img, (W * 0.70, y), en, ImageFont.truetype(EN, int(62 * s)), RED, 'ms', 0.8, 10)
+    elif style == 'title':
+        f = ImageFont.truetype(KO, int((96 if not vertical else 80) * s))
+        rows = wrap(ko, f, W * 0.84, 0.82); y = H / 2 - (len(rows) - 1) * 44 * s
+        for r, t in enumerate(rows):
+            cond_text(img, (W / 2, y + r * 88 * s), t, f, CREAM, 'ms', 0.82, 10)
+        cond_text(img, (W / 2, y + (len(rows) - 1) * 88 * s + 70 * s), en, ImageFont.truetype(EN, int(44 * s)), CREAM, 'ms', 0.85, 6)
+    elif style == 'main':
+        cond_text(img, (W / 2, H / 2 - (130 if not vertical else 150) * s), 'THE BEAR & JOY CO.  PRESENTS', ImageFont.truetype(EN, int(30 * s)), GOLD, 'ms', 0.9, 4)
+        fs = 150 if not vertical else 132
+        if vertical:
+            cond_text(img, (W / 2, H / 2 - 10 * s), 'Little Steps', ImageFont.truetype(EN, int(fs * s)), CREAM, 'ms', 0.78, 14)
+            cond_text(img, (W / 2, H / 2 + 120 * s), 'to Big Adventures', ImageFont.truetype(EN, int(fs * s)), CREAM, 'ms', 0.78, 14)
+            cond_text(img, (W / 2, H / 2 + 210 * s), ko, ImageFont.truetype(KO, int(50 * s)), CREAM, 'ms', 0.85, 6)
+        else:
+            cond_text(img, (W / 2, H / 2 + 20 * s), en, ImageFont.truetype(EN, int(fs * s)), CREAM, 'ms', 0.78, 14)
+            cond_text(img, (W / 2, H / 2 + 100 * s), ko, ImageFont.truetype(KO, int(48 * s)), CREAM, 'ms', 0.85, 6)
 
 
 def endcard(W, H):
