@@ -101,7 +101,7 @@ LINES = [
     (62.6, 67.0, '한 마디는 인사가 되고,',       'One phrase becomes a hello,',             'sub'),
     (67.2, 72.0, '인사는 친구가 되고,',          'a hello becomes a friend,',               'sub'),
     (72.4, 77.4, '친구는 세상이 됩니다.',        'and a friend becomes the world.',         'sub'),
-    (79.1, 84.8, '서울에서 런던까지.',           'From Seoul to London.',                   'sub'),
+    (79.1, 84.8, 'Born in Oxford · Built in Seoul', '', 'tagline'),   # Bear & Joy's own tagline (Joy, 18 Nov 2026)
     (89.8, 94.2, '그 첫 마디는, 그림책에서 시작됩니다.', 'That first phrase begins in a picture book.', 'title'),
     (94.5, 99.0, '작은 걸음. 하나의 큰 모험.',    'Little Steps to Big Adventures',          'main'),
 ]

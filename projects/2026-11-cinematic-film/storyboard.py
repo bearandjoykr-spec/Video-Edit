@@ -66,6 +66,8 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
         y = top + pic_h - (110 if not vertical else 520) * s
         shadow_text(img, (W / 2, y), ko, ImageFont.truetype(KO, int(54 * s if not vertical else 60 * s)), CREAM, 'ms')
         shadow_text(img, (W / 2, y + 60 * s), en, ImageFont.truetype(ENI, int(40 * s if not vertical else 46 * s)), CREAM, 'ms')
+    elif style == 'tagline':
+        shadow_text(img, (W / 2, top + pic_h / 2 + 30 * s), ko, ImageFont.truetype(ENI, int((84 if not vertical else 72) * s)), CREAM, 'ms', 12)
     elif style == 'big':
         x = (150 if not vertical else 90) * s
         y = top + pic_h * (0.52 if not vertical else 0.40)
@@ -102,8 +104,8 @@ def endcard(W, H):
     img.paste(logo, ((W - logo.width) // 2, y0), logo)
     img.paste(wm, ((W - wm.width) // 2, y0 + logo.height + int(20 * s)), wm)
     d = ImageDraw.Draw(img)
-    d.text((W / 2, y0 + logo.height + wm.height + int(80 * s)), '아이의 첫 영어 한 마디, 그림책으로 함께 열어요',
-           font=ImageFont.truetype(KO, int(34 * s)), fill=CREAM, anchor='ms')
+    d.text((W / 2, y0 + logo.height + wm.height + int(80 * s)), 'Born in Oxford · Built in Seoul',
+           font=ImageFont.truetype(ENI, int(38 * s)), fill=CREAM, anchor='ms')
     d.text((W / 2, y0 + logo.height + wm.height + int(130 * s)), 'bearandjoy.com',
            font=ImageFont.truetype(EN, int(28 * s)), fill=GOLD, anchor='ms')
     return img

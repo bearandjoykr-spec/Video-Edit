@@ -157,3 +157,4 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Use only the footage that earns its place; fill gaps with Pexels / Pixabay (Freepik allowed, 3 free a day). Record every stock clip's licence in the project (`STOCK.md`).
 - Do not use the shot of Joy on the Oxford tower; Joy supplied a hanbok clip of herself for that place.
 - Music: Pixabay trailer tracks (licence recorded in `music/SOURCE.md`); Joy chooses by ear.
+- **Tagline (Joy, 18 Nov 2026): "Born in Oxford · Built in Seoul" is ours.** Use it in English as written (big centred line in the film, and on the end card under the wordmark). The line "서울에서 런던까지" was dropped.
