@@ -14,6 +14,15 @@ MUSIC = 'piano-inspiring-moment-611638.mp3'   # gentle solo piano under a voice;
 FLASHES = []
 LETTERBOX = False
 
+# Small hand-drawn Bear and Joy (Joy's own art, overlay/bear.png & butterfly.png), used sparingly (3 moments).
+# (start, end, png, centre-x, bottom-y, height as share of frame: 16:9, 9:16)
+OVERLAYS = [
+    # (start, end, png, (cx, bottom, height) for 16:9, (cx, bottom, height) for 9:16) — shares of the frame
+    (0.6,  5.0,  'bear.png',      (0.20, 0.86, 0.26), (0.26, 0.86, 0.13)),   # the bear sits beside his real book
+    (42.4, 46.6, 'butterfly.png', (0.80, 0.48, 0.36), (0.74, 0.50, 0.17)),   # Joy flutters over the title
+    (71.8, 75.9, 'butterfly.png', (0.62, 0.34, 0.30), (0.46, 0.74, 0.17)),   # Joy comes to rest by the book
+]
+
 SHOTS = [
     # Joy, 18 Nov 2026: no AI-made pictures and no story cards. Real footage and the real printed book only.
     # 1. Are you sitting comfortably? — our real book, on Oxford stone ---------------------------
@@ -38,10 +47,10 @@ SHOTS = [
     (51.0, 'p:14908997',  3.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'Kenya'),
     (53.0, 'p:15785118',  8.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'Hoi An'),
     (55.0, 'c09',         0.5,  'soft', 0.40, 0.55, 1.00, 1.04, 1.0, 'Sydney (Joy)'),
-    # 5. WHY ------------------------------------------------------------------------------------
-    (57.0, 'p:8471666',   2.0,  'soft', 0.55, 0.50, 1.00, 1.05, 0.8, 'two children read together'),
-    (61.0, 'p:7308355',   2.0,  'soft', 0.50, 0.50, 1.00, 1.06, 0.8, 'small hands on a picture book'),
-    (64.5, 'p:10565881',  2.0,  'soft', 0.50, 0.50, 1.00, 1.05, 0.8, 'reading at bedtime'),
+    # 5. WHY — our real book only (Joy: no stock shots that show other publishers' books) -----------
+    (57.0, 'd34n1',       1.0,  'soft', 0.50, 0.55, 1.00, 1.05, 0.8, 'our book carried through Oxford (DAY 34 shoot)'),
+    (61.0, 'p:8441312',   3.0,  'soft', 0.50, 0.45, 1.00, 1.04, 0.9, 'children from many countries, arm in arm'),
+    (64.5, 'd34n3',       0.5,  'soft', 0.50, 0.45, 1.00, 1.06, 0.8, 'our book on an Oxford street post (DAY 34 shoot)'),
     # 6. THE NAME -------------------------------------------------------------------------------
     (68.0, 'j6',          2.0,  'soft', 0.45, 0.30, 1.00, 1.04, 0.7, 'Radcliffe Camera, tilt down to...'),
     (71.5, 'j6',          4.5,  'soft', 0.45, 0.80, 1.00, 1.08, 0.7, '...our book on Oxford stone'),

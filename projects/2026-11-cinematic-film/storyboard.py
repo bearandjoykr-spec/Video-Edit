@@ -129,6 +129,10 @@ def paper_wash(img, y_from):
         img.paste(layer, (0, y_from), grad)
 
 
+def shot_under(ln):
+    return max((sh for sh in SHOTS if sh[0] <= ln[0] + 0.05), key=lambda sh: sh[0])
+
+
 def on_light_art(ln):
     """True when the shot under this line is our light artwork (pages, watercolours; not the navy card grid)."""
     shot = max((sh for sh in SHOTS if sh[0] <= ln[0] + 0.05), key=lambda sh: sh[0])
@@ -149,6 +153,8 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
     s = W / 1920 if not vertical else W / 1080
     # v3 storybook type: small, quiet, our voice (Joy, 18 Nov 2026)
     base = top + pic_h * (0.86 if not vertical else 0.74)
+    if vertical and shot_under(ln)[1] == 'j6':
+        base = top + pic_h * 0.56            # keep clear of the book at the bottom of the vertical frame
     if style == 'line':
         f_ko = ImageFont.truetype(KOB, int((40 if not vertical else 46) * s))
         f_en = ImageFont.truetype(ENI, int((28 if not vertical else 32) * s))
@@ -245,6 +251,25 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
             cond_text(img, (W / 2, H / 2 + 100 * s), ko, ImageFont.truetype(KO, int(48 * s)), CREAM, 'ms', 0.85, 6)
 
 
+def draw_overlay(img, ov, W, H, vertical, alpha=1.0):
+    """Paste the small hand-drawn Bear or Joy art (overlay/*.png) with a soft shadow."""
+    _, _, png, ph, pv = ov
+    cx, by, hs = pv if vertical else ph
+    art = Image.open(f'{HERE}/overlay/{png}').convert('RGBA')
+    h = int(H * hs); w = int(art.width * h / art.height)
+    art = art.resize((w, h), Image.LANCZOS)
+    if alpha < 1:
+        art.putalpha(art.getchannel('A').point(lambda v: int(v * alpha)))
+    x, y = int(W * cx - w / 2), int(H * by - h)
+    sh = Image.new('RGBA', art.size, (0, 0, 0, 0)); sh.putalpha(art.getchannel('A').point(lambda v: int(v * 0.35)))
+    sh = sh.filter(ImageFilter.GaussianBlur(max(2, h // 60)))
+    base = img if img.mode == 'RGBA' else None
+    if base is None:
+        img.paste((0, 0, 0), (x + 3, y + 5), sh.getchannel('A')); img.paste(art, (x, y), art)
+    else:
+        img.alpha_composite(sh, (x + 3, y + 5)); img.alpha_composite(art, (x, y))
+
+
 def endcard(W, H):
     img = Image.new('RGB', (W, H), (30, 45, 77))
     logo = Image.open(f'{ROOT}/brand/assets/bear-butterfly.png').convert('RGBA')
@@ -277,6 +302,9 @@ def frame(i, vertical):
         z = z0 + (z1 - z0) * 0.3
         fyv = fy if not vertical else 0.5
         img.paste(grab(clip, tin + (mid - start) * speed, look, fx, fyv, z, W, H, pic_h), (0, top))
+    for ov in getattr(_plan, 'OVERLAYS', []):
+        if ov[0] <= mid + 0.3 and ov[1] > mid:
+            draw_overlay(img, ov, W, H, vertical)
     for ln in LINES:
         if ln[0] <= mid + 0.3 and ln[1] > mid:
             draw_line(img, ln, W, H, top, pic_h, vertical)
