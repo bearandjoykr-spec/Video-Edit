@@ -15,13 +15,14 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from plan import SHOTS, LINES, END  # noqa
+import plan as _plan  # noqa
 from looks import LOOKS  # noqa
 import storyboard as sb  # noqa
 
 ROOT = sb.ROOT
 FPS = 30
-HITS_FLASH = [21.5, 53.5, 94.5]            # white flash frames on the biggest hits
-FORMATS = {'h': dict(W=1920, H=1080, PW=1920, PH=804), 'v': dict(W=1080, H=1920, PW=1080, PH=1920)}
+HITS_FLASH = getattr(_plan, 'FLASHES', [21.5, 53.5, 94.5])   # white flashes on the biggest hits
+FORMATS = {'h': dict(W=1920, H=1080, PW=1920, PH=804 if getattr(_plan, 'LETTERBOX', True) else 1080), 'v': dict(W=1080, H=1920, PW=1080, PH=1920)}
 
 
 def out_dir(fmt):

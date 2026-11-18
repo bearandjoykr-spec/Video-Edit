@@ -160,3 +160,11 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Type and B/W points (Joy, 18 Nov 2026, reference frames):** key statements sit on black-and-white shots, even after the colour break. Statements are huge, tall condensed serif (Gowun Batang squeezed to ~78%) at the top-left with a small English line under them; place supers are very large condensed Playfair at the lower-left with a small Korean line; montage lines are single red rows (Korean left, English right) over B/W texture. Code: `projects/2026-11-cinematic-film/storyboard.py` (`cond_text`, `draw_line`).
 - Joy trusts Claude's judgement on this film's direction ("너가 하자는 대로 할게").
 - **Tagline (Joy, 18 Nov 2026): "Born in Oxford · Built in Seoul" is ours.** Use it in English as written (big centred line in the film, and on the end card under the wordmark). The line "서울에서 런던까지" was dropped.
+
+## Brand film v3 feedback (Joy, 18 Nov 2026) — overrides the "cinematic trailer" notes above for this film
+- The trailer cut felt tacky and said nothing: website subtitles were far too big, and it doesn't need to look like a film. **Our voice must come through**: more copy is welcome, written as one clear message.
+- No red text. Piano music instead of epic trailer music. Drop the Wales footage.
+- Why the travel: once a child has English, they can talk to people anywhere in the world. Other countries from free stock sites are welcome.
+- Story to follow: the Bear & Joy series journey (24 cards, `projects/2026-11-cinematic-film/bear-journey-cards.webp`): a bear with no name leaves Oxford, travels country by country, meets people and places, finds who he is, and at the end the children give the bear his name ("A Name Made of Everywhere").
+- Type: small and restrained (storybook subtitles), not huge condensed statements.
+- **Core message (Joy, 18 Nov 2026):** "한국과 세계를 잇는 언어, 영어를 뽐내고 싶어." The film shows English itself: a child's own English lines in each country. The 24 cards only gave the route; the Bear with No Name story is a separate video (Mark agreed it may be).

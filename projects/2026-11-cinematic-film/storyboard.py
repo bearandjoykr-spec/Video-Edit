@@ -8,6 +8,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../..'))
 sys.path.insert(0, HERE)
 from plan import SHOTS, LINES, END  # noqa
+import plan as _plan  # noqa
+LETTERBOX = getattr(_plan, 'LETTERBOX', True)
 from looks import LOOKS  # noqa
 
 PREP = f'{ROOT}/raw-footage/cinematic-film/prep'
@@ -91,9 +93,44 @@ def wrap(text, font, max_w, squeeze):
     return best[1]
 
 
+def spaced(img, xy, text, font, fill, tracking, blur=4):
+    """Letter-spaced small caps line, left-anchored at xy (baseline)."""
+    x, y = xy
+    for ch in text:
+        shadow_text(img, (x, y), ch, font, fill, 'ls', blur)
+        x += font.getlength(ch) + tracking
+
+
 def draw_line(img, ln, W, H, top, pic_h, vertical):
     _, _, ko, en, style = ln
     s = W / 1920 if not vertical else W / 1080
+    # v3 storybook type: small, quiet, our voice (Joy, 18 Nov 2026)
+    base = top + pic_h * (0.86 if not vertical else 0.74)
+    if style == 'line':
+        f_ko = ImageFont.truetype(KOB, int((40 if not vertical else 46) * s))
+        f_en = ImageFont.truetype(ENI, int((28 if not vertical else 32) * s))
+        rows = wrap(en, f_en, W * 0.86, 1.0)
+        shadow_text(img, (W / 2, base), ko, f_ko, CREAM, 'ms', 5)
+        for r, t in enumerate(rows):
+            shadow_text(img, (W / 2, base + (46 + r * 36) * s), t, f_en, CREAM, 'ms', 4)
+        return
+    if style == 'phrase':
+        f_en = ImageFont.truetype(ENI, int((44 if not vertical else 50) * s))
+        f_ko = ImageFont.truetype(KO, int((28 if not vertical else 32) * s))
+        shadow_text(img, (W / 2, base), en, f_en, CREAM, 'ms', 5)
+        shadow_text(img, (W / 2, base + 46 * s), ko, f_ko, CREAM, 'ms', 4)
+        return
+    if style == 'place':
+        x = (72 if not vertical else 64) * s
+        y = top + (84 if not vertical else 250) * s
+        spaced(img, (x, y), en, ImageFont.truetype(EN, int((26 if not vertical else 32) * s)), CREAM, 4 * s)
+        d = ImageDraw.Draw(img)
+        d.line([(x, y + 16 * s), (x + 44 * s, y + 16 * s)], fill=GOLD, width=max(1, int(2 * s)))
+        shadow_text(img, (x, y + 54 * s), ko, ImageFont.truetype(KO, int((24 if not vertical else 30) * s)), CREAM, 'ls', 4)
+        return
+    if style == 'tagline':
+        shadow_text(img, (W / 2, base), ko, ImageFont.truetype(ENI, int((56 if not vertical else 54) * s)), CREAM, 'ms', 6)
+        return
     if style == 'sub':
         y = top + pic_h - (110 if not vertical else 520) * s
         shadow_text(img, (W / 2, y), ko, ImageFont.truetype(KO, int(54 * s if not vertical else 60 * s)), CREAM, 'ms')
@@ -167,7 +204,7 @@ def frame(i, vertical):
     nxt = SHOTS[i + 1][0] if i + 1 < len(SHOTS) else END
     mid = start + min(1.2, (nxt - start) / 2)
     W, H = (1080, 1920) if vertical else (1920, 1080)
-    pic_h = H if vertical else 804              # 2.39:1 letterbox in the 16:9 film
+    pic_h = H if (vertical or not LETTERBOX) else 804   # 2.39:1 letterbox only when the plan asks
     top = (H - pic_h) // 2
     if clip == 'endcard':
         return endcard(W, H), mid, note

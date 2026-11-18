@@ -1,113 +1,104 @@
-"""Shot plan v2 — "한 마디의 문" / One phrase opens a door. Bear & Joy cinematic film.
+"""Plan v3 — "한 마디의 문" / English connects Korea to the world. Bear & Joy brand film.
 
-v2 (Joy, 18 Nov 2026): follow the reference reel's grammar more closely (B/W archival cold open with big
-statement type, colour break, place supers, fast world montage, title over the two flags, black end card).
-Joy's own shots of herself are out (also the hanbok close-up j5: "too much of my face"); the film ends on our picture book in Oxford (j6). Use only the
-footage that earns its place; fill with Pexels/Pixabay stock.
+v3 (Joy, 18 Nov 2026): the trailer cut said nothing and its type was too big. The film should carry our voice:
+English is the language that connects Korea and the world. A child in Seoul learns one English sentence and that
+sentence carries them across the world (route = the Bear & Joy series countries, bear-journey-cards.webp). In each
+place the child's own English line appears as a small subtitle, so the English itself tells the story. The Bear with
+No Name story is for a separate video; our book appears at the end. Piano music, small type, no red, no Wales,
+no letterbox, a gentle natural grade.
 
-One edit, two frames: 16:9 website film (2.39:1 letterbox) and 9:16 Instagram cut.
-Timing follows Pixabay "Epic Hollywood Trailer" (Good_B_Music, id 9489): quiet hits 2 / 9.5 s, silence ~19-21 s,
-rising hits 21.5/30/37/45/49/53.5 s, climax 53.5-89 s, drop 89.5 s, slam 94.5 s, hits 99/101 s, outro 108-118 s.
-
-Joy, 18 Nov 2026 (reference frames): key statements sit on B/W shots; huge condensed serif statements top-left
-with a small line under; very large place supers lower-left; red subtitle rows over B/W texture.
+Previous plans (trailer v2) are in git history.
 
 Shot: (start s, clip, in-point s, look, fx, fy, zoom-from, zoom-to, speed, note)
-  clip: 'cNN' Joy's first batch (prep/cNN.mov), 'jN' Joy's second batch (prep/jN.mov),
-        'p:ID' Pexels (pexels/ID.mp4), 's:name' Pixabay (stock/name.mp4), 'black', 'endcard'
-  fx, fy: focus point (0-1) for the crop; speed < 1 = slow motion.
+  clip: 'cNN' / 'jN' Joy's footage (prep/), 'p:ID' Pexels (pexels/ID.mp4), 'black', 'endcard'
 """
-END = 118.0
+END = 113.0
+MUSIC = 'piano-travel-627382.mp3'      # Pixabay "Travel Piano" (recommended; Joy chooses by ear)
+FLASHES = []                           # no white flashes in this cut
+LETTERBOX = False
 
 SHOTS = [
-    # ACT 1 — PAST, black and white ------------------------------------------------------------
-    (0.0,  'black',        0.0,  'past',    0.5, 0.5, 1, 1, 1, 'black, wind'),
-    (2.0,  'p:40352276',   2.0,  'past',    0.62, 0.40, 1.10, 1.25, 0.5, 'palace guard, close (B/W)'),
-    (5.5,  'p:6752415',    6.0,  'past',    0.45, 0.60, 1.05, 1.15, 0.6, 'letter written by candlelight'),
-    (7.5,  'p:2123151',    8.0,  'past',    0.55, 0.50, 1.00, 1.10, 0.7, 'old ship in harbour'),
-    (9.5,  'p:2536815',    30.0, 'past',    0.55, 0.45, 1.00, 1.08, 0.7, 'steam train crosses a bridge'),
-    (12.5, 'p:34162953',   2.0,  'past',    0.50, 0.55, 1.00, 1.10, 0.6, 'crowded street'),
-    (15.0, 'c22',          3.0,  'past',    0.50, 0.55, 1.00, 1.12, 0.5, 'hanbok crowd climbs through the palace gate'),
-    (19.0, 'p:31938875',   10.0, 'past',    0.50, 0.50, 1.00, 1.00, 1.0, 'film burn into colour'),
-    # ACT 2 — PRESENT, colour on the 21.5 s hit -----------------------------------------------
-    (21.5, 'p:29240315',   2.0,  'present', 0.45, 0.55, 1.00, 1.08, 0.8, 'royal guard ceremony, drum (Seoul)'),
-    (24.0, 'c04',          0.5,  'present', 0.48, 0.70, 1.15, 1.02, 0.8, 'red Joseon robe under autumn maples'),
-    (26.5, 'p:29242638',   3.0,  'present', 0.40, 0.45, 1.00, 1.10, 0.6, 'guard and yellow banners, close'),
-    (28.0, 'c13',          8.0,  'night',   0.45, 0.40, 1.00, 1.08, 0.8, 'king in dragon robe, night'),
-    (30.0, 'p:15614364',   12.0, 'present', 0.50, 0.40, 1.00, 1.05, 0.8, 'plane lifts off'),
-    (32.5, 'p:4396425',    12.0, 'present', 0.50, 0.50, 1.00, 1.05, 1.0, 'wing over English fields'),
-    (34.0, 'p:7197886',    4.0,  'present', 0.50, 0.50, 1.00, 1.06, 1.0, 'Tower Bridge'),
-    (36.0, 'c16',          2.0,  'present', 0.50, 0.70, 1.00, 1.06, 0.7, 'Household Cavalry on The Mall'),
-    (37.0, 'p:3150358',    3.0,  'past'   , 0.40, 0.45, 1.00, 1.08, 0.7, 'Union Jack'),
-    (39.0, 'p:12156230',   20.0, 'present', 0.50, 0.45, 1.00, 1.06, 1.0, 'Big Ben'),
-    (41.0, 'c06',          5.0,  'present', 0.55, 0.62, 1.00, 1.08, 1.0, 'Oxford rooftops to the Radcliffe Camera'),
-    (43.5, 'c11',          2.0,  'present', 0.50, 0.45, 1.00, 1.05, 0.8, 'under the Bridge of Sighs'),
-    (45.0, 'p:35081001',   3.0,  'past'   , 0.55, 0.50, 1.00, 1.12, 0.6, 'a door opens onto sunlight'),
-    (49.0, 'j1',           2.0,  'present', 0.50, 0.42, 1.00, 1.08, 0.7, 'Margam Castle under big clouds, Wales'),
-    (51.0, 'p:10981043',   6.0,  'present', 0.50, 0.55, 1.00, 1.06, 0.8, 'a child runs down a path'),
-    # ACT 3 — CLIMAX MONTAGE 53.5-89 s -------------------------------------------------------
-    (53.5, 'p:18662635',   1.0,  'night',   0.50, 0.50, 1.00, 1.06, 1.0, 'Tokyo crossing at night'),
-    (55.0, 'c08',          0.5,  'night',   0.55, 0.30, 1.00, 1.10, 1.0, 'Tokyo Tower'),
-    (56.5, 'c09',          0.5,  'present', 0.40, 0.55, 1.00, 1.05, 1.0, 'Sydney Opera House'),
-    (58.0, 'c09',          11.0, 'present', 0.55, 0.55, 1.00, 1.05, 1.0, 'Harbour Bridge'),
-    (59.5, 'c23',          2.6,  'night',   0.50, 0.50, 1.00, 1.08, 1.0, 'Flinders Street Station, Melbourne'),
-    (61.0, 'j3',           3.5,  'present', 0.50, 0.55, 1.00, 1.06, 1.0, 'Welsh clifftop to the sea'),
-    (62.5, 'p:5084489',    14.0,  'past'   , 0.50, 0.50, 1.00, 1.05, 1.0, 'London buses'),
-    (64.0, 'p:27118848',   5.0,  'present', 0.50, 0.55, 1.00, 1.05, 0.8, 'children race across a field'),
-    (65.5, 'c19',          2.0,  'present', 0.50, 0.65, 1.00, 1.06, 0.8, 'riders in a Cotswold lane'),
-    (67.0, 'j4',           8.0,  'past'   , 0.50, 0.60, 1.00, 1.06, 1.0, 'path down to a Welsh beach'),
-    (68.5, 'c20',          30.0, 'night',   0.50, 0.55, 1.00, 1.06, 0.6, 'drum dance at the palace'),
-    (70.0, 'p:7565156',    2.0,  'present', 0.50, 0.50, 1.00, 1.08, 0.8, 'pages of a picture book turn'),
-    (71.5, 'c21',          1.0,  'past'   , 0.45, 0.62, 1.00, 1.06, 1.0, 'flags over the Randolph, Oxford'),
-    (73.0, 'c28',          1.0,  'present', 0.50, 0.40, 1.00, 1.08, 1.0, 'The Travel Book Co., Notting Hill'),
-    (74.5, 'j2',           2.0,  'present', 0.50, 0.50, 1.00, 1.06, 1.0, 'Welsh coast'),
-    (76.0, 'p:31801691',   4.0,  'present', 0.55, 0.45, 1.00, 1.08, 0.8, 'the great palace drum'),
-    (77.5, 'c29',          30.0, 'night',   0.50, 0.65, 1.00, 1.08, 0.7, 'court dance, blue and white'),
-    (79.0, 'p:38035115',   3.0,  'night',   0.50, 0.50, 1.00, 1.08, 1.0, 'Seoul at night from above'),
-    (80.5, 'p:30975008',   10.0, 'present', 0.50, 0.40, 1.00, 1.06, 1.0, 'N Seoul Tower on Namsan'),
-    (82.0, 'c13',          60.0, 'night',   0.50, 0.65, 1.00, 1.08, 0.7, 'dancers in yellow'),
-    (83.5, 'p:7308355',    2.0,  'present', 0.50, 0.50, 1.00, 1.08, 0.8, 'small hands on a picture book'),
-    (85.0, 'p:17735952',   6.0,  'night',   0.50, 0.45, 1.00, 1.06, 1.0, 'fireworks'),
-    (86.5, 'p:10714335',   2.0,  'present', 0.55, 0.45, 1.00, 1.06, 1.0, 'Taegukgi'),
-    (88.0, 'p:9279682',    2.0,  'present', 0.60, 0.40, 1.00, 1.06, 1.0, 'Union Jack'),
-    # DROP 89 s: black with one line; TITLE slam over the flags at 94.5 s ---------------------
-    (89.0, 'black',        0.0,  'present', 0.5, 0.5, 1, 1, 1, 'black'),
-    (94.5, 'p:13301938',   3.0,  'present', 0.50, 0.50, 1.00, 1.08, 0.5, 'field of Taegukgi in the wind'),
-    (96.8, 'p:3150358',    8.0,  'present', 0.45, 0.45, 1.00, 1.08, 0.5, 'Union Jack in the wind'),
-    (99.0, 'c12',          1.0,  'present', 0.45, 0.45, 1.00, 1.10, 0.8, 'butterfly mural, Oxford'),
-    # Joy, 18 Nov 2026: no close-up of her face here; end on our picture book in Oxford instead.
-    # 16:9: slow tilt from the Radcliffe Camera (fy 0.30) down to the book (fy 0.80); 9:16 shows both.
-    (101.5,'j6',           2.0,  'present', 0.45, 0.30, 1.00, 1.04, 0.7, 'Radcliffe Camera, tilt down to...'),
-    (104.5,'j6',           4.5,  'present', 0.45, 0.80, 1.00, 1.08, 0.7, '...our Bear & Joy picture book against Oxford stone'),
-    (108.0,'endcard',      0.0,  'present', 0.5, 0.5, 1, 1, 1, 'black end card: logo, then URL'),
+    # SEOUL — one sentence ------------------------------------------------------------------
+    (0.0,  'p:29354411',  1.0,  'soft', 0.50, 0.50, 1.00, 1.06, 0.8, 'Seoul street, morning'),
+    (4.0,  'p:8471666',   2.0,  'soft', 0.55, 0.50, 1.00, 1.06, 0.8, 'two children read an English book together'),
+    (8.5,  'p:15614364',  12.0, 'soft', 0.50, 0.40, 1.00, 1.04, 0.8, 'a plane lifts off'),
+    # THE WORLD — the child's English, place by place (route of the Bear & Joy cards) ----------
+    (12.5, 'c06',         5.0,  'soft', 0.55, 0.62, 1.00, 1.06, 1.0, 'Oxford rooftops'),
+    (16.5, 'p:3206652',   2.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'London crossing, red buses'),
+    (20.0, 'p:7197893',   4.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'Paris, Champ de Mars'),
+    (24.0, 'p:4840503',   2.0,  'soft', 0.50, 0.50, 1.00, 1.05, 1.0, 'Rome, a market square'),
+    (27.5, 'p:38884169',  5.0,  'soft', 0.50, 0.50, 1.00, 1.05, 1.0, 'Istanbul, the Bosphorus'),
+    (30.5, 'p:29622798',  3.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'Cairo, camels and the pyramids'),
+    (34.5, 'p:14908997',  3.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'Kenya, giraffes'),
+    (38.0, 'p:9116111',   2.0,  'soft', 0.50, 0.60, 1.00, 1.05, 1.0, 'Cape Town, penguins at sunset'),
+    (41.0, 'p:12851353',  1.0,  'soft', 0.50, 0.45, 1.00, 1.04, 0.8, 'Mumbai, schoolchildren wave hello'),
+    (45.5, 'p:39292014',  4.0,  'soft', 0.50, 0.45, 1.00, 1.05, 1.0, 'Nepal, prayer flags'),
+    (49.0, 'p:39646286',  1.0,  'soft', 0.50, 0.50, 1.00, 1.05, 1.0, 'Chengdu, a panda'),
+    (52.5, 'p:15785118',  8.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'Hoi An, lanterns on the river'),
+    (56.5, 'c09',         0.5,  'soft', 0.40, 0.55, 1.00, 1.04, 1.0, 'Sydney Opera House'),
+    (59.5, 'p:3321014',   2.0,  'soft', 0.50, 0.50, 1.00, 1.05, 1.0, 'New Zealand, lake and mountains'),
+    (62.5, 'p:11279748',  1.0,  'soft', 0.50, 0.50, 1.00, 1.04, 0.9, 'Moorea, whales'),
+    (65.5, 'p:17054489',  4.0,  'soft', 0.50, 0.45, 1.00, 1.04, 0.9, 'Cusco, a festival dance'),
+    (69.0, 'p:37595373',  2.0,  'soft', 0.50, 0.50, 1.00, 1.05, 1.0, 'Rio de Janeiro, the beach'),
+    (72.0, 'p:34118777',  3.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'New York, Central Park'),
+    (75.5, 'p:3888935',   2.0,  'soft', 0.50, 0.50, 1.00, 1.05, 1.0, 'Vancouver, the harbour'),
+    (78.5, 'p:31385031',  6.0,  'soft', 0.50, 0.45, 1.00, 1.05, 0.9, 'Kyoto, a paper umbrella'),
+    # PEOPLE — never alone -------------------------------------------------------------------
+    (81.5, 'p:8441312',   3.0,  'soft', 0.50, 0.45, 1.00, 1.04, 0.9, 'children from many countries, arm in arm'),
+    (85.5, 'p:5085429',   5.0,  'soft', 0.50, 0.45, 1.00, 1.04, 0.9, 'two friends share a secret and laugh'),
+    (88.5, 'p:8342700',   1.0,  'soft', 0.55, 0.45, 1.00, 1.04, 0.9, 'a girl waves hello'),
+    # HOME — it begins with a picture book -------------------------------------------------------
+    (92.0, 'p:10565881',  2.0,  'soft', 0.50, 0.50, 1.00, 1.05, 0.8, 'reading a picture book at bedtime'),
+    (96.0, 'j6',          2.0,  'soft', 0.45, 0.30, 1.00, 1.04, 0.7, 'Radcliffe Camera, tilt down to...'),
+    (99.5, 'j6',          4.5,  'soft', 0.45, 0.80, 1.00, 1.08, 0.7, '...our Bear & Joy book on Oxford stone'),
+    (104.5,'endcard',     0.0,  'soft', 0.5, 0.5, 1, 1, 1, 'end card: logo, tagline, URL'),
 ]
 
-# Subtitles: (start, end, Korean, English, style)
-#   'big'   = large statement (Gowun Batang) left third, small English under it (reference style)
-#   'sub'   = two-line subtitle, Korean above English, low centre
-#   'place' = location super (Playfair, lower-left, small Korean under)
-#   'row'   = reference-style single red row over a B/W shot (Korean left, English right)
-#   'title' = centred line on black;  'main' = main title over the flags
+# (start, end, Korean, English, style)
+#   'line'   = our voice: Korean above, English below, small, low centre
+#   'phrase' = the child's own English (English first, Korean meaning below)
+#   'place'  = small letter-spaced place label, top left (English  ·  Korean)
 LINES = [
-    (2.3,  5.3,  '아주 오래전,',              'Long ago,',                              'big'),
-    (5.7,  9.3,  '한 통의 편지가',             'a single letter',                         'big'),
-    (9.7,  12.3, '바다를 건넜고',              'crossed the sea,',                        'big'),
-    (12.6, 14.8, '낯선 사람이',                'and a stranger',                          'big'),
-    (15.1, 19.0, '친구가 되었습니다.',          'became a friend.',                        'big'),
-    (21.7, 24.0, '서울',                      'Seoul, Korea',                            'place'),
-    (30.2, 33.8, '그리고 오늘,',               'And today,',                              'big'),
-    (34.1, 36.0, '런던',                      'London, England',                         'place'),
-    (37.2, 40.8, '우리 아이의 첫 한 마디가',     "your child's first phrase",               'big'),
-    (41.2, 43.4, '옥스퍼드',                   'Oxford, England',                         'place'),
-    (45.3, 48.8, '한 마디의 문',               'One phrase opens a door.',                'big'),
-    (49.2, 51.0, '웨일스',                    'Wales',                                   'place'),
-    (53.7, 55.0, '도쿄',                      'Tokyo, Japan',                            'place'),
-    (56.7, 58.0, '시드니',                     'Sydney, Australia',                       'place'),
-    (59.6, 61.0, '멜버른',                     'Melbourne, Australia',                    'place'),
-    (62.6, 67.0, '한 마디는 인사가 되고,',       'One phrase becomes a hello,',             'row'),
-    (67.2, 72.0, '인사는 친구가 되고,',          'a hello becomes a friend,',               'row'),
-    (72.4, 77.4, '친구는 세상이 됩니다.',        'and a friend becomes the world.',         'row'),
-    (79.1, 84.8, 'Born in Oxford · Built in Seoul', '', 'tagline'),   # Bear & Joy's own tagline (Joy, 18 Nov 2026)
-    (89.8, 94.2, '그 첫 마디는, 그림책에서 시작됩니다.', 'That first phrase begins in a picture book.', 'title'),
-    (94.5, 99.0, '작은 걸음. 하나의 큰 모험.',    'Little Steps to Big Adventures',          'main'),
+    (0.6,  4.0,  '오늘, 서울의 한 아이가 영어 한 문장을 배웠습니다.', 'Today, a child in Seoul learned one English sentence.', 'line'),
+    (4.3,  8.4,  '안녕! 나는 한국에서 왔어. 만나서 반가워!',          '“Hi! I’m from Korea. Nice to meet you!”',               'phrase'),
+    (8.8,  12.3, '그 한 문장이, 아이를 세상으로 데려갑니다.',         'And that one sentence carries them into the world.',     'line'),
+
+    (12.7, 16.3, '옥스퍼드 · 영국',      'OXFORD · ENGLAND',        'place'),
+    (13.2, 16.3, '실례지만, 도서관이 어디예요?', '“Excuse me, where is the library?”', 'phrase'),
+    (16.7, 19.8, '런던 · 영국',          'LONDON · ENGLAND',        'place'),
+    (20.2, 23.8, '파리 · 프랑스',        'PARIS · FRANCE',          'place'),
+    (20.6, 23.8, '사진 좀 찍어 주시겠어요?',     '“Could you take our picture, please?”', 'phrase'),
+    (24.2, 27.3, '로마 · 이탈리아',      'ROME · ITALY',            'place'),
+    (24.5, 27.3, '냄새가 정말 좋아요!',          '“This smells delicious!”',             'phrase'),
+    (27.7, 30.3, '이스탄불 · 튀르키예',  'ISTANBUL · TÜRKİYE',      'place'),
+    (30.7, 34.3, '카이로 · 이집트',      'CAIRO · EGYPT',           'place'),
+    (31.0, 34.3, '낙타한테 인사해도 돼요?',      '“Can I say hello to your camel?”',     'phrase'),
+    (34.7, 37.8, '나이로비 · 케냐',      'NAIROBI · KENYA',         'place'),
+    (35.0, 37.8, '봐! 기린이 정말 커!',          '“Look! They’re so tall!”',             'phrase'),
+    (38.2, 40.8, '케이프타운 · 남아프리카공화국', 'CAPE TOWN · SOUTH AFRICA', 'place'),
+    (41.2, 45.3, '뭄바이 · 인도',        'MUMBAI · INDIA',          'place'),
+    (41.5, 45.3, '안녕! 너는 이름이 뭐야?',      '“Hi! What’s your name?”',              'phrase'),
+    (45.7, 48.8, '카트만두 · 네팔',      'KATHMANDU · NEPAL',       'place'),
+    (46.0, 48.8, '도와주셔서 고마워요.',          '“Thank you for helping us.”',          'phrase'),
+    (49.2, 52.3, '청두 · 중국',          'CHENGDU · CHINA',         'place'),
+    (49.5, 52.3, '쉿… 자고 있나 봐.',             '“Shh… I think he’s sleeping.”',        'phrase'),
+    (52.7, 56.3, '호이안 · 베트남',      'HOI AN · VIETNAM',        'place'),
+    (53.0, 56.3, '우리 같이 소원 빌래?',          '“Shall we make a wish together?”',     'phrase'),
+    (56.7, 59.3, '시드니 · 호주',        'SYDNEY · AUSTRALIA',      'place'),
+    (59.7, 62.3, '뉴질랜드',             'NEW ZEALAND',             'place'),
+    (62.7, 65.3, '모오레아 · 프랑스령 폴리네시아', 'MOOREA · FRENCH POLYNESIA', 'place'),
+    (63.0, 65.3, '방금 봤어?!',                   '“Did you see that?!”',                 'phrase'),
+    (65.7, 68.8, '쿠스코 · 페루',        'CUSCO · PERU',            'place'),
+    (66.0, 68.8, '이 춤 가르쳐 줄래요?',          '“Can you teach me this dance?”',       'phrase'),
+    (69.2, 71.8, '리우데자네이루 · 브라질', 'RIO DE JANEIRO · BRAZIL', 'place'),
+    (72.2, 75.4, '뉴욕 · 미국',          'NEW YORK · USA',          'place'),
+    (72.5, 75.4, '우리랑 같이 놀래?',             '“Do you want to play with us?”',       'phrase'),
+    (75.7, 78.3, '밴쿠버 · 캐나다',      'VANCOUVER · CANADA',      'place'),
+    (78.7, 81.3, '교토 · 일본',          'KYOTO · JAPAN',           'place'),
+
+    (81.8, 85.6, '어디를 가든, 아이는 혼자가 아닙니다.',     'Wherever they go, they are never alone.',              'line'),
+    (86.0, 91.6, '영어는 한국과 세계를 잇는 언어니까요.',    'Because English is the language that connects Korea to the world.', 'line'),
+    (92.3, 95.8, '그리고 그 모든 대화는,',                   'And every one of those conversations',                 'line'),
+    (96.2, 100.0,'오늘 밤, 그림책 한 권에서 시작됩니다.',   'begins tonight, with one picture book.',               'line'),
+    (100.4,104.2,'Born in Oxford · Built in Seoul',          '',                                                     'tagline'),
 ]

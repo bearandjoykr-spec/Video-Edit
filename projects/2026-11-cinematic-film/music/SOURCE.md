@@ -13,3 +13,12 @@ Files are git-ignored (`projects/*/music/*.mp3`); re-download from the pages bel
 Epic Hollywood Trailer map (librosa): hits 2 / 9.5 s, near-silence 19–21 s, rising hits 21.5/30/37/45/49/53.5 s,
 full climax 53.5–89 s, dip 89.5–94 s, slam 94.5 s, hits 99/101 s, outro 108–120 s.
 Download note: pixabay.com is behind a browser challenge; the cdn.pixabay.com/download/audio/... links work with curl.
+
+## v3 piano candidates (Joy asked for piano, 18 Nov 2026) — Pixabay Content License
+| File | Page |
+|---|---|
+| piano-travel-627382.mp3 — **recommended for v3** (1:56) | https://pixabay.com/music/modern-classical-travel-piano-627382/ |
+| piano-freedom-journey-184142.mp3 (2:16) | https://pixabay.com/music/build-up-scenes-freedom-journey-184142/ |
+| piano-hopeful-main-title-436853.mp3 (2:22) | https://pixabay.com/music/main-title-hopeful-436853/ |
+| piano-inspiring-moment-611638.mp3 (2:08) | https://pixabay.com/music/solo-piano-inspiring-moment-inspiring-piano-611638/ |
+| piano-inspiring-small-drama-602520, piano-lovely-252204, piano-emotional-solo-510218 (also downloaded, not offered) | ids on pixabay.com/music |
