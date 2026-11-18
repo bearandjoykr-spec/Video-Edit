@@ -155,6 +155,6 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 ## Cinematic brand film "한 마디의 문" (Joy, 18 Nov 2026) — `projects/2026-11-cinematic-film/`
 - Joy wants a film-studio, trailer feel (reference: instagram.com/reel/DfMxl9QpHuP): B/W archival cold open with big statement type, colour break on a hit, place supers ("Seoul, Korea"), fast world montage, title over flags, black end card. Clean bilingual subtitles, Korean above English; film grade and grain are welcome.
 - Use only the footage that earns its place; fill gaps with Pexels / Pixabay (Freepik allowed, 3 free a day). Record every stock clip's licence in the project (`STOCK.md`).
-- Do not use the shot of Joy on the Oxford tower; Joy supplied a hanbok clip of herself for that place.
+- No close-ups of Joy's face in this film (Joy: it felt out of place) — neither the Oxford-tower shot nor her hanbok selfie. Show our picture book instead: the film ends on 「Bear & Joy」 leaning on Oxford stone with the Radcliffe Camera behind (her clip IMG_4380).
 - Music: Pixabay trailer tracks (licence recorded in `music/SOURCE.md`); Joy chooses by ear.
 - **Tagline (Joy, 18 Nov 2026): "Born in Oxford · Built in Seoul" is ours.** Use it in English as written (big centred line in the film, and on the end card under the wordmark). The line "서울에서 런던까지" was dropped.

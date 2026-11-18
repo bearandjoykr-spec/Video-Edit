@@ -48,7 +48,8 @@ court-performance MC in Korean); everything else is ambient noise. The film runs
 | j2 | IMG_4809.MOV | Welsh coast, green headland and bay (landscape) | 8 s, 4K |
 | j3 | IMG_4818.MOV | Clifftop walk to the sea, sky pan | 17 s, 4K |
 | j4 | IMG_4845.MOV | Stone-walled path down to a sandy beach | 15 s, 4K |
-| j5 | VID_…pm 2.MP4 | **Joy in a pink hanbok** with a flower hairpin at a night palace event, smiles and waves | 3.4 s |
+| j5 | VID_…pm 2.MP4 | Joy in a pink hanbok at a night palace event, smiles and waves — **not used** (Joy: too much of her face) | 3.4 s |
+| j6 | IMG_4380 4.MOV | **Our picture book 「Bear & Joy — Stop. Look. Listen.」 leaning on Oxford stone, Radcliffe Camera behind**, people pass | 10 s, HLG |
 
 ## Joy's decisions (18 Nov 2026)
 - Do not use the shot of Joy at the top of the Oxford tower (c24, it sat under the title). Plan v2 leaves out every

@@ -2,7 +2,7 @@
 
 v2 (Joy, 18 Nov 2026): follow the reference reel's grammar more closely (B/W archival cold open with big
 statement type, colour break, place supers, fast world montage, title over the two flags, black end card).
-Joy's own shots of herself are out, except the hanbok clip she sent for that purpose (j5). Use only the
+Joy's own shots of herself are out (also the hanbok close-up j5: "too much of my face"); the film ends on our picture book in Oxford (j6). Use only the
 footage that earns its place; fill with Pexels/Pixabay stock.
 
 One edit, two frames: 16:9 website film (2.39:1 letterbox) and 9:16 Instagram cut.
@@ -71,9 +71,11 @@ SHOTS = [
     (89.0, 'black',        0.0,  'present', 0.5, 0.5, 1, 1, 1, 'black'),
     (94.5, 'p:13301938',   3.0,  'present', 0.50, 0.50, 1.00, 1.08, 0.5, 'field of Taegukgi in the wind'),
     (96.8, 'p:3150358',    8.0,  'present', 0.45, 0.45, 1.00, 1.08, 0.5, 'Union Jack in the wind'),
-    (99.0, 'j5',           0.3,  'night',   0.45, 0.32, 1.00, 1.06, 0.7, 'Joy in hanbok at the palace, smiles and waves'),
-    (102.5,'c12',          1.0,  'present', 0.45, 0.45, 1.00, 1.10, 0.8, 'butterfly mural'),
-    (105.0,'s:bookwind',   2.0,  'present', 0.50, 0.55, 1.00, 1.10, 0.6, 'pages blowing in golden light'),
+    (99.0, 'c12',          1.0,  'present', 0.45, 0.45, 1.00, 1.10, 0.8, 'butterfly mural, Oxford'),
+    # Joy, 18 Nov 2026: no close-up of her face here; end on our picture book in Oxford instead.
+    # 16:9: slow tilt from the Radcliffe Camera (fy 0.30) down to the book (fy 0.80); 9:16 shows both.
+    (101.5,'j6',           2.0,  'present', 0.45, 0.30, 1.00, 1.04, 0.7, 'Radcliffe Camera, tilt down to...'),
+    (104.5,'j6',           4.5,  'present', 0.45, 0.80, 1.00, 1.08, 0.7, '...our Bear & Joy picture book against Oxford stone'),
     (108.0,'endcard',      0.0,  'present', 0.5, 0.5, 1, 1, 1, 'black end card: logo, then URL'),
 ]
 
