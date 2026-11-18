@@ -153,6 +153,8 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
     s = W / 1920 if not vertical else W / 1080
     # v3 storybook type: small, quiet, our voice (Joy, 18 Nov 2026)
     base = top + pic_h * (0.86 if not vertical else 0.74)
+    if shot_under(ln)[1] == 'd34n5':
+        base = top + pic_h * (0.12 if not vertical else 0.24)   # the open page fills the lower frame; use the dark bark above
     if vertical and shot_under(ln)[1] == 'j6':
         base = top + pic_h * 0.56            # keep clear of the book at the bottom of the vertical frame
     if style == 'line':

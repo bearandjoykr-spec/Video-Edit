@@ -29,7 +29,7 @@ SHOTS = [
     (0.0,  'j6',          5.0,  'soft', 0.45, 0.80, 1.10, 1.02, 0.6, 'our printed book on Oxford stone, close'),
     # 2. BORN IN OXFORD -------------------------------------------------------------------------
     (5.0,  'c06',         5.0,  'soft', 0.55, 0.62, 1.00, 1.06, 0.8, 'Oxford rooftops (Joy)'),
-    (9.0,  'c07',         1.0,  'soft', 0.50, 0.55, 1.00, 1.05, 0.8, 'Radcliffe Camera, people crossing (Joy)'),
+    (9.0,  'd34n4',       4.0,  'soft', 0.50, 0.55, 1.06, 1.00, 0.7, 'REAL Book One pages turn in the wind: the bear inside (DAY 34)'),
     (13.0, 'c11',         2.0,  'soft', 0.50, 0.45, 1.00, 1.05, 0.8, 'under the Bridge of Sighs (Joy)'),
     (17.0, 'c21',         1.0,  'soft', 0.45, 0.55, 1.00, 1.05, 0.9, 'flags over the Randolph (Joy)'),
     (19.5, 'c12',         1.0,  'soft', 0.45, 0.45, 1.00, 1.08, 0.8, 'butterfly mural (Joy)'),
@@ -48,9 +48,8 @@ SHOTS = [
     (53.0, 'p:15785118',  8.0,  'soft', 0.50, 0.55, 1.00, 1.05, 1.0, 'Hoi An'),
     (55.0, 'c09',         0.5,  'soft', 0.40, 0.55, 1.00, 1.04, 1.0, 'Sydney (Joy)'),
     # 5. WHY — our real book only (Joy: no stock shots that show other publishers' books) -----------
-    (57.0, 'd34n1',       1.0,  'soft', 0.50, 0.55, 1.00, 1.05, 0.8, 'our book carried through Oxford (DAY 34 shoot)'),
-    (61.0, 'p:8441312',   3.0,  'soft', 0.50, 0.45, 1.00, 1.04, 0.9, 'children from many countries, arm in arm'),
-    (64.5, 'd34n3',       0.5,  'soft', 0.50, 0.45, 1.00, 1.06, 0.8, 'our book on an Oxford street post (DAY 34 shoot)'),
+    (57.0, 'd34n1',       0.5,  'soft', 0.50, 0.55, 1.00, 1.05, 0.8, 'our book carried through Oxford (DAY 34 shoot)'),
+    (64.2, 'd34n5',       0.3,  'soft', 0.50, 0.55, 1.00, 1.05, 0.6, 'a hand holds our Walkbook open: A whole world / 하나의 작은 세계 (DAY 34)'),
     # 6. THE NAME -------------------------------------------------------------------------------
     (68.0, 'j6',          2.0,  'soft', 0.45, 0.30, 1.00, 1.04, 0.7, 'Radcliffe Camera, tilt down to...'),
     (71.5, 'j6',          4.5,  'soft', 0.45, 0.80, 1.00, 1.08, 0.7, '...our book on Oxford stone'),
