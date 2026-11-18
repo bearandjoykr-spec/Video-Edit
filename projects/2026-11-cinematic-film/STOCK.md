@@ -26,3 +26,5 @@ Search results with file paths: `raw-footage/cinematic-film/pexels/list3.txt` (c
 37595373 Rio beach · 34118777 Central Park · 3888935 Vancouver harbour · 31385031 Kyoto umbrella ·
 8441312 children arm in arm · 5085429 friends laughing · 8342700 girl waving · 10565881 bedtime reading ·
 15614364 plane takeoff (from v2). Joy's clips: c06 Oxford rooftops, c09 Sydney, j6 our book in Oxford.
+
+31474610 Heunginjimun and city wall, Seoul · 40834925 Gangnam crossing at night (both Pexels License; Joy picked them for the Seoul beat, 18 Nov 2026). 29354411 (Seoul street) dropped.

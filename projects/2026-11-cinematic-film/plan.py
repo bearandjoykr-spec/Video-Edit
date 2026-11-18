@@ -36,7 +36,8 @@ SHOTS = [
     (22.5, 'p:15614364',  12.0, 'soft', 0.50, 0.40, 1.00, 1.04, 0.8, 'a plane lifts off'),
     # 3. BUILT IN SEOUL -------------------------------------------------------------------------
     (26.0, 'p:30975008',  10.0, 'soft', 0.50, 0.40, 1.00, 1.06, 1.0, 'N Seoul Tower on Namsan'),
-    (29.5, 'p:29354411',  1.0,  'soft', 0.50, 0.50, 1.00, 1.05, 0.8, 'a Seoul street'),
+    (29.5, 'p:31474610',  1.0,  'soft', 0.40, 0.50, 1.00, 1.05, 0.9, 'Heunginjimun and the city wall beside downtown Seoul (Joy picked)'),
+    (31.3, 'p:40834925',  1.0,  'soft', 0.50, 0.50, 1.00, 1.05, 0.9, 'Gangnam crossing at night (Joy picked)'),
     (33.0, 'c04',         0.5,  'soft', 0.48, 0.70, 1.08, 1.00, 0.8, 'red Joseon robe under autumn maples (Joy)'),
     (36.0, 'c22',         3.0,  'soft', 0.50, 0.55, 1.00, 1.06, 0.7, 'hanbok crowd through the palace gate (Joy)'),
     (39.0, 'c20',         30.0, 'soft', 0.50, 0.55, 1.00, 1.05, 0.8, 'drum dance at the palace (Joy)'),
