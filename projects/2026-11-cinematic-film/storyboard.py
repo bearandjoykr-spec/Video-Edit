@@ -26,7 +26,12 @@ GOLD = (201, 168, 76)
 PEXELS = f'{ROOT}/raw-footage/cinematic-film/pexels'
 
 
+ART = f'{ROOT}/projects/2026-11-cinematic-film/art'
+
+
 def src(clip):
+    if clip.startswith('a:'):
+        return f'{ART}/{clip[2:]}'
     if clip.startswith('s:'):
         return f'{STOCK}/{clip[2:]}.mp4'
     if clip.startswith('p:'):
@@ -44,11 +49,20 @@ def grab(clip, t, look, fx, fy, zoom, W, H, pic_h):
     if rot and abs(int(rot[0])) % 180 == 90:
         w, h = h, w
     tgt = W / pic_h
-    cw, ch = (w, w / tgt) if w / h < tgt else (h * tgt, h)
-    cw, ch = cw / zoom, ch / zoom
-    x = min(max(fx * w - cw / 2, 0), w - cw); y = min(max(fy * h - ch / 2, 0), h - ch)
-    vf = f'crop={int(cw)}:{int(ch)}:{int(x)}:{int(y)},scale={W}:{pic_h}:flags=lanczos,{LOOKS[look]},format=rgb24'
-    out = subprocess.run(['ffmpeg', '-v', 'error', '-ss', str(t), '-i', p, '-frames:v', '1', '-vf', vf,
+    still = p.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))
+    if look.endswith('+fit'):
+        # whole artwork on a cream page (book cover, single pages)
+        base = look[:-4]
+        sw, sh = (int(W * 0.9 / zoom), int(pic_h * 0.74 / zoom))   # leave the lower band free for subtitles
+        vf = (f'scale={sw}:{sh}:force_original_aspect_ratio=decrease:flags=lanczos,'
+              f'pad={W}:{pic_h}:(ow-iw)/2:(oh-ih)*0.3:color=0xF5F0E6,{LOOKS[base]},format=rgb24')
+    else:
+        cw, ch = (w, w / tgt) if w / h < tgt else (h * tgt, h)
+        cw, ch = cw / zoom, ch / zoom
+        x = min(max(fx * w - cw / 2, 0), w - cw); y = min(max(fy * h - ch / 2, 0), h - ch)
+        vf = f'crop={int(cw)}:{int(ch)}:{int(x)}:{int(y)},scale={W}:{pic_h}:flags=lanczos,{LOOKS[look]},format=rgb24'
+    seek = [] if still else ['-ss', str(t)]   # -ss on a JPEG input yields no frame
+    out = subprocess.run(['ffmpeg', '-v', 'error', *seek, '-i', p, '-frames:v', '1', '-vf', vf,
                           '-f', 'rawvideo', '-'], capture_output=True).stdout
     return Image.frombytes('RGB', (W, pic_h), out)
 
@@ -101,6 +115,35 @@ def spaced(img, xy, text, font, fill, tracking, blur=4):
         x += font.getlength(ch) + tracking
 
 
+NIGHT = (30, 45, 77)
+
+
+def paper_wash(img, y_from):
+    """Soft cream (#F5F0E6) fade from y_from to the bottom, like the bottom of a book page."""
+    W, H = img.size; y_from = int(max(0, y_from))
+    grad = Image.linear_gradient('L').resize((W, H - y_from)).point(lambda v: int(v * 0.86))
+    layer = Image.new('RGB', (W, H - y_from), (245, 240, 230))
+    if img.mode == 'RGBA':
+        l = layer.convert('RGBA'); l.putalpha(grad); img.alpha_composite(l, (0, y_from))
+    else:
+        img.paste(layer, (0, y_from), grad)
+
+
+def on_light_art(ln):
+    """True when the shot under this line is our light artwork (pages, watercolours; not the navy card grid)."""
+    shot = max((sh for sh in SHOTS if sh[0] <= ln[0] + 0.05), key=lambda sh: sh[0])
+    return shot[1].startswith('a:') and 'cards' not in shot[1]
+
+
+def is_bright(img, W, y0, y1):
+    """Mean luma of the subtitle band (centre 70%); True when navy text reads better than cream."""
+    box = img.convert('RGB').crop((int(W * 0.15), int(max(0, y0)), int(W * 0.85), int(min(img.height, y1))))
+    if box.width < 2 or box.height < 2:
+        return False
+    from PIL import ImageStat
+    return ImageStat.Stat(box.convert('L')).mean[0] > 168
+
+
 def draw_line(img, ln, W, H, top, pic_h, vertical):
     _, _, ko, en, style = ln
     s = W / 1920 if not vertical else W / 1080
@@ -120,6 +163,22 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
         shadow_text(img, (W / 2, base), en, f_en, CREAM, 'ms', 5)
         shadow_text(img, (W / 2, base + 46 * s), ko, f_ko, CREAM, 'ms', 4)
         return
+    if style == 'voice':
+        # Mark's narration: English (what you hear) above, Korean below; small storybook subtitle.
+        # On bright art (cream pages, watercolour sky) the text turns Night navy with no shadow.
+        f_en = ImageFont.truetype(ENI, int((40 if not vertical else 46) * s))
+        f_ko = ImageFont.truetype(KO, int((28 if not vertical else 32) * s))
+        rows = wrap(en, f_en, W * 0.84, 1.0)
+        y0 = base - (len(rows) - 1) * 46 * s
+        bright = on_light_art(ln)
+        if bright and '+fit' not in [sh for sh in SHOTS if sh[0] <= ln[0] + 0.05][-1][3]:
+            paper_wash(img, y0 - 110 * s)
+        put = (lambda xy, t, f: ImageDraw.Draw(img).text(xy, t, font=f, fill=NIGHT, anchor='ms')) if bright else \
+              (lambda xy, t, f: shadow_text(img, xy, t, f, CREAM, 'ms', 5))
+        for r, t in enumerate(rows):
+            put((W / 2, y0 + r * 46 * s), t, f_en)
+        put((W / 2, y0 + (len(rows) - 1) * 46 * s + 44 * s), ko, f_ko)
+        return
     if style == 'place':
         x = (72 if not vertical else 64) * s
         y = top + (84 if not vertical else 250) * s
@@ -127,6 +186,11 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
         d = ImageDraw.Draw(img)
         d.line([(x, y + 16 * s), (x + 44 * s, y + 16 * s)], fill=GOLD, width=max(1, int(2 * s)))
         shadow_text(img, (x, y + 54 * s), ko, ImageFont.truetype(KO, int((24 if not vertical else 30) * s)), CREAM, 'ls', 4)
+        return
+    if style == 'tagline' and on_light_art(ln):
+        paper_wash(img, base - 140 * s)
+        ImageDraw.Draw(img).text((W / 2, base), ko, font=ImageFont.truetype(ENI, int((56 if not vertical else 54) * s)),
+                                 fill=NIGHT, anchor='ms')
         return
     if style == 'tagline':
         shadow_text(img, (W / 2, base), ko, ImageFont.truetype(ENI, int((56 if not vertical else 54) * s)), CREAM, 'ms', 6)
