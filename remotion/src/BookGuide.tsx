@@ -105,18 +105,41 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
   const local = t - sec.s;
   const punch = interpolate(local, [0, .3], [1.07, 1], clamp);
   const hookEnd = plan.sections.find((x) => x.kind !== 'hook')!.s;
-  const dim = sec.kind === 'page' || sec.kind === 'read' || sec.kind === 'ask' ? .45 : sec.kind.startsWith('bonus') ? .4 : sec.kind === 'hook' ? .25 : .1;
+  const dim = sec.kind === 'page' || sec.kind === 'read' || sec.kind === 'ask' ? .45 : sec.kind.startsWith('bonus') ? .4 : sec.kind === 'hook' ? (t < plan.sections[3].s ? .08 : .25) : .1;
   return (
     <AbsoluteFill style={{background: C.navy, fontFamily: PRE}}>
       <AbsoluteFill style={{transform: `scale(${punch})`}}>
         <OffthreadVideo src={staticFile(`${plan.media}/cut.mov`)} muted style={{width: '100%', height: '100%'}} />
       </AbsoluteFill>
       <AbsoluteFill style={{background: `rgba(14,22,40,${dim})`}} />
-      {sec.kind === 'hook' ? <AbsoluteFill style={{background: '#fff', opacity: interpolate(local, [0, .12], [.45, 0], clamp)}} /> : null}
+      {/* VISUAL HOOK (Joy, 18 Nov, like DAY 25): a giant "TOP 3" behind Joy's head; her cut-out sits on top of the word */}
+      {t < plan.sections[3].s + .05 ? (() => {
+        const k = sp(t, -.3, fps, 10);
+        return (
+          <>
+            <div style={{position: 'absolute', left: 0, right: 0, top: 360, textAlign: 'center', fontFamily: PRE, fontWeight: 900, fontSize: 330, lineHeight: 1, letterSpacing: '-.04em',
+              color: C.cream, textShadow: '0 10px 40px rgba(0,0,0,.35)', transform: `scale(${.9 + .1 * k})`}}>TOP 3</div>
+            <OffthreadVideo src={staticFile(`${plan.media}/hook-joy.webm`)} transparent muted style={{position: 'absolute', inset: 0, width: '100%', height: '100%'}} />
+          </>
+        );
+      })() : null}
+      {sec.kind === 'hook' && sec.s >= plan.sections[3].s ? <AbsoluteFill style={{background: '#fff', opacity: interpolate(local, [0, .12], [.45, 0], clamp)}} /> : null}
 
       {/* HOOK / thumbnail */}
-      {t < hookEnd ? (() => {
-        const k = sp(t, -.5, fps, 12);
+      {t < plan.sections[3].s ? (() => {
+        const k = sp(t, -.3, fps, 12);
+        return (
+          <>
+            <div style={{position: 'absolute', top: 280, left: 0, right: 0, textAlign: 'center', fontWeight: 800, fontSize: 54, color: '#fff', textShadow: SHADOW, opacity: k}}>
+              영어 선생님이 고른 영어 그림책</div>
+            <div style={{position: 'absolute', top: 1380, left: 30, right: 30, textAlign: 'center', fontWeight: 900, fontSize: 76, lineHeight: 1.2, color: '#fff', textShadow: SHADOW,
+              transform: `scale(${.9 + .1 * k})`}}>아이가 <span style={{color: C.yellow}}>"한 번 더!"</span><br />외치는 책은? 📚</div>
+            <div style={{position: 'absolute', top: 1640, left: 0, right: 0, textAlign: 'center'}}>
+              <span style={{fontWeight: 800, fontSize: 36, color: C.navy, background: C.butter, borderRadius: 999, padding: '8px 24px'}}>📌 책 속 문장 + 읽어주는 법 + 질문까지</span></div>
+          </>
+        );
+      })() : t < hookEnd ? (() => {
+        const k = sp(t, plan.sections[3].s - .3, fps, 12);
         return (
           <div style={{position: 'absolute', left: 30, right: 30, top: 420, textAlign: 'center', transform: `scale(${.92 + .08 * k})`}}>
             <div style={{display: 'inline-block', fontWeight: 800, fontSize: 40, color: C.navy, background: C.butter, borderRadius: 999, padding: '8px 26px'}}>📌 저장하고 읽어줄 때 꺼내 보기</div>
@@ -156,7 +179,7 @@ export const BookGuide: React.FC<{plan: GuidePlan}> = ({plan}) => {
       ) : null}
 
       {/* captions (Joy, 17 Nov: posted as captions with music; line breaks set by hand in build.py) */}
-      {plan.showVo && sec.vo && sec.kind !== 'summary' ? (
+      {plan.showVo && sec.vo && sec.kind !== 'summary' && t >= plan.sections[3].s ? (
         <div style={{position: 'absolute', left: 50, right: 50, bottom: 260, textAlign: 'center', fontWeight: 800, fontSize: 46, lineHeight: 1.35, color: '#fff', textShadow: SHADOW,
           wordBreak: 'keep-all', whiteSpace: 'pre-line'}}>{sec.vo}</div>
       ) : null}

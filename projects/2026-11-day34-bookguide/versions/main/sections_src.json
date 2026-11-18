@@ -4,8 +4,8 @@
   "book": 0,
   "s": 0.0,
   "e": 1.233,
-  "clip": "raw-footage/joy-top3/book3.mov",
-  "cs": 1.0,
+  "clip": "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4",
+  "cs": 0.0,
   "vo": "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"
  },
  {
@@ -13,8 +13,8 @@
   "book": 0,
   "s": 1.233,
   "e": 2.466,
-  "clip": "raw-footage/joy-top3/book2.mov",
-  "cs": 6.0,
+  "clip": "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4",
+  "cs": 1.233,
   "vo": "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"
  },
  {
@@ -22,8 +22,8 @@
   "book": 0,
   "s": 2.466,
   "e": 3.699,
-  "clip": "raw-footage/joy-top3/book1.mov",
-  "cs": 3.0,
+  "clip": "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4",
+  "cs": 2.466,
   "vo": "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"
  },
  {

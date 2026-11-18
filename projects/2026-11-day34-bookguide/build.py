@@ -11,9 +11,10 @@ FPS, DAY = 30, 34
 T3 = "raw-footage/joy-top3"; D32 = "raw-footage/day32-books"
 # sections: (kind, book, seconds, clip, clip start, korean voice-over line)
 SECTIONS = [
-    ("hook", 0, 1.0, f"{T3}/book3.mov", 1.0, "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"),
-    ("hook", 0, 1.0, f"{T3}/book2.mov", 6.0, ""),
-    ("hook", 0, 1.0, f"{T3}/book1.mov", 3.0, ""),
+    # visual hook (Joy, 18 Nov; like DAY 25): Joy turns to camera with a giant "TOP 3" behind her. One continuous shot split in three: Joy turning to camera (clip1 3.25 s on, 1.5x slow motion); her look-back is frame 0, the thumbnail.
+    ("hook", 0, 1.0, "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4", 0.0, "아이가 '한 번 더!' 외치는\n영어 그림책 3권,"),
+    ("hook", 0, 1.0, "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4", 1.233, ""),
+    ("hook", 0, 1.0, "projects/2026-11-day34-bookguide/versions/main/hook-src.mp4", 2.466, ""),
     ("hook", 0, 1.6, f"{D32}/b4.mov", 2.0, "책 속 문장이랑 읽어주는 법까지\n알려드릴게요!"),
     ("cover", 1, 2.2, f"{T3}/book3.mov", 0.5, "첫 번째, 앤서니 브라운의\nMy Mum, My Dad."),
     ("page", 1, 4.2, f"{D32}/b2.mov", 0.3, "책 속에는 이런 문장이 나와요.\nShe's nice, my mum.\nHe's all right, my dad."),
