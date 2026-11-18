@@ -151,3 +151,9 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Phrase lessons: chalkboard on top, speaker below; swap-in words change exactly when the word is heard (probe the audio; whisper word times can run ~0.5 s early). No slow/repeat replays (Joy: they cut words and looked messy).
 - Captions break into clean two-line phrases at natural pauses.
 - Thumbnail: the speaker cut out (upper body, white sticker edge) on a torn-paper panel.
+
+## Cinematic brand film "한 마디의 문" (Joy, 18 Nov 2026) — `projects/2026-11-cinematic-film/`
+- Joy wants a film-studio, trailer feel (reference: instagram.com/reel/DfMxl9QpHuP): B/W archival cold open with big statement type, colour break on a hit, place supers ("Seoul, Korea"), fast world montage, title over flags, black end card. Clean bilingual subtitles, Korean above English; film grade and grain are welcome.
+- Use only the footage that earns its place; fill gaps with Pexels / Pixabay (Freepik allowed, 3 free a day). Record every stock clip's licence in the project (`STOCK.md`).
+- Do not use the shot of Joy on the Oxford tower; Joy supplied a hanbok clip of herself for that place.
+- Music: Pixabay trailer tracks (licence recorded in `music/SOURCE.md`); Joy chooses by ear.
