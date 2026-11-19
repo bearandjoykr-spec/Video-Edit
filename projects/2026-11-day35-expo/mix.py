@@ -6,7 +6,9 @@ pic, out = sys.argv[1:3]; mdb = float(sys.argv[3]) if len(sys.argv) > 3 else -12
 # Joy (v4): "잔잔하지만 신나는" → "A Small Miracle" (Romarecord1973), 77 s, so it ends with the video
 music = sys.argv[4] if len(sys.argv) > 4 else f"{P}/music/a-small-miracle-132333.mp3"; m0 = float(sys.argv[5]) if len(sys.argv) > 5 else 0
 plan = json.load(open(f"{V}/plan.json")); dur = plan["duration"]; intro = plan["intro"]
-ins = ["-i", "remotion/public/day35/intro.wav", "-ss", str(m0), "-i", music]
+# Joy (v5): no background music — she adds her own in another app. Pass a music file as the 4th argument to put one back.
+MUSIC = len(sys.argv) > 4
+ins = ["-i", "remotion/public/day35/intro.wav", "-ss", str(m0), "-i", music] if MUSIC else ["-i", "remotion/public/day35/intro.wav", "-f", "lavfi", "-t", "1", "-i", "anullsrc=r=48000:cl=stereo"]
 fc = []
 vo = f"{V}/vo.wav"
 if os.path.exists(vo):  # Joy's recording starts right after the intro
@@ -16,7 +18,7 @@ if os.path.exists(vo):  # Joy's recording starts right after the intro
 else:
     fc.append(f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,apad=whole_dur={dur},asplit=2[voice][key]")
 fc += [f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={mdb}dB,atrim=0:{dur},afade=t=in:d=0.3,afade=t=out:st={dur - 2.5}:d=2.5[m0]",
-       "[m0][key]sidechaincompress=threshold=0.08:ratio=1.6:attack=30:release=450[m]"]
+       "[m0][key]sidechaincompress=threshold=0.08:ratio=1.6:attack=30:release=450[m]"] if MUSIC else ["[1:a]anull[m]", "[key]anullsink"]
 lab = ["[voice]", "[m]"]; n0 = ins.count("-i")
 for k, c in enumerate(plan["sfx"]):
     ins += ["-i", f"projects/2026-11-day34-bookguide/versions/main/audio/sfx_{c['sound']}.wav"]; ms = int(c["t"] * 1000)

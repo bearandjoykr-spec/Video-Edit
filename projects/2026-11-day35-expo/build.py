@@ -4,7 +4,7 @@ Then Joy's voice-over (recorded later) for 5 tips, a TOP 3 teaser, follow + shar
 Until the VO exists, each VO line gets an estimated length (5 syllables/s + pause); set VO_WAV to re-time from the real recording.
 Run (repo root): .venv/bin/python projects/2026-11-day35-expo/build.py  → writes versions/main/plan.json (+ copy for Remotion)
 """
-import json, math, os, re
+import json, math, os, re, shutil, subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FPS = 30
@@ -34,7 +34,33 @@ TAGS = ["📍 코엑스 A홀", "🗓️ 11.19 ~ 11.22", "📚 영어원서 최�
 # Joy's recording (raw-footage/day35/vo.m4a, 19 Nov 2026): one take. Speech starts at 4.1 s; we use VO_IN..VO_OUT and place it
 # right after the intro. Each caption line carries the time (in vo.m4a) where it starts — word onsets from Whisper on the
 # trimmed audio, checked against the pauses. Caption text = her own words (she said "선착순 혜택", "베어앤조이를 팔로우하고").
-VO_IN, VO_OUT, GAP = 3.95, 66.30, 0.15
+VO_IN, VO_OUT, GAP = 4.02, 66.20, 0.05
+# Joy (v5): no dead air between sentences. Pauses of 0.33 s or more in her recording (level below -34 dB, found by
+# measuring) shrink to KEEP s; "알려드릴게요" goes straight into "선착순 혜택을 원한다면". Shorter pauses inside a sentence stay.
+PAUSES = [(6.70, 7.80), (11.72, 12.38), (15.80, 16.20), (19.58, 19.94), (23.10, 24.10), (27.02, 27.42), (31.72, 32.40),
+          (37.32, 38.10), (41.56, 42.12), (45.12, 45.86), (52.34, 53.02), (58.42, 59.36), (63.64, 64.30)]
+KEEP = 0.20
+CUTS = [(a + KEEP / 2, b - KEEP / 2) for a, b in PAUSES]  # removed spans (vo.m4a time)
+
+
+def vo_map(x):
+    """vo.m4a time -> time in the tightened voice track (a time inside a removed span lands on the cut)."""
+    y = x - VO_IN
+    for a, b in CUTS:
+        if x >= b: y -= b - a
+        elif x > a: y -= x - a
+    return y
+
+
+def make_vo(out):
+    keep, t = [], VO_IN
+    for a, b in CUTS:
+        keep.append((t, a)); t = b
+    keep.append((t, VO_OUT))
+    fc = [f"[0:a]atrim={a:.3f}:{b:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.015,afade=t=out:st={b - a - 0.02:.3f}:d=0.02[p{k}]" for k, (a, b) in enumerate(keep)]
+    fc.append("".join(f"[p{k}]" for k in range(len(keep))) + f"concat=n={len(keep)}:v=0:a=1,aformat=sample_rates=48000:channel_layouts=stereo[o]")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "raw-footage/day35/vo.m4a", "-filter_complex", ";".join(fc), "-map", "[o]", out], check=True)
+
 VO = [
     ("kkul", 0, "직접 다녀온\n꿀팁 대방출 🍯", "", [(4.08, "저희가 오늘 다녀온 꿀팁\n알려드릴게요!")], [(B2, 128), (B2, 145), (B2, 152)]),
     ("tip", 1, "오전 10시 = 선착순 🎁", "무료 체험권은 사전등록자만!",
@@ -69,7 +95,8 @@ def main():
         shots.append({"src": src, "ss": s, "t": round(k * d, 3), "d": round(d, 3), "tag": TAGS[k]})
     caps += [{"s": a, "e": b, "text": x} for a, b, x in INTRO_CAPS]
     secs.append({"kind": "intro", "n": 0, "s": 0, "e": INTRO, "title": "유아교육전\n시작됐다! 🎉", "sub": "📍 코엑스 A홀 · 11.19(목) ~ 11.22(일)"})
-    o = lambda x: round(INTRO + GAP + x - VO_IN, 3)  # vo.m4a time -> video time
+    o = lambda x: round(INTRO + GAP + vo_map(x), 3)  # vo.m4a time -> video time
+    make_vo(f"{HERE}/versions/main/vo.wav"); shutil.copy(f"{HERE}/versions/main/vo.wav", f"{HERE}/../../remotion/public/day35/vo.wav")
     starts = [st for *_, lines, _ in VO for st, _ in lines]
     nxt = dict(zip(starts, starts[1:] + [VO_OUT - .1]))
     for j, (kind, n, title, sub, lines, sh) in enumerate(VO):
