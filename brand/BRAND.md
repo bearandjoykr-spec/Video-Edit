@@ -172,3 +172,15 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Small Bear & Joy art (Joy, 18 Nov 2026):** Joy supplied a sitting-bear-with-butterfly drawing and the logo (`projects/2026-11-cinematic-film/overlay/`). Used small and only three times in the brand film: the bear beside the real book at the start, the butterfly over the title, the butterfly landing on the book at the end. No stock shots in which other publishers' books are visible.
 - **Narration script approved (Joy, 18 Nov 2026):** the 12 lines in `projects/2026-11-cinematic-film/plan.py` LINES (style 'voice') are final; Mark records them as written. Both books must appear: the blue Walkbook and the cream Book One (cover shot still needed from Joy).
 - **v5 (Mark + Joy, 19 Nov 2026):** Mark: "I like it but not love it… the concept is wow." Subtitles change exactly when the scene changes (one subtitle per shot), cuts land on music beats, cute kids playing/reading are in, and Joy asked for a punchier grade and edit (look 'vivid', soft vignette only).
+
+## DAY 35 feedback (Joy, 19–20 Nov 2026) — applies to every reel from DAY 36
+- **Safe zone, stricter than above:** Instagram shows reels cropped (feed and grid show the middle 4:5, and the app UI covers the bottom).
+  Keep every text, badge and emoji between **y 300 and y 1450** on the 1080×1920 frame, and 70 px from the sides.
+  No "DAY N" badge or emoji right at the top; no captions near the bottom edge.
+- No white flashes or punch zooms on cuts; use short dissolves (0.3 s) or straight cuts on the beat.
+- No clearly visible faces of strangers (staff, other parents, children); crowds from behind or far away are fine.
+- Cut-outs of Joy/Mark: fill holes inside the silhouette so scarves, mics and hands never flicker (`projects/2026-11-day35-expo/fill_matte.py`).
+- Voice-over: no dead air; pauses between sentences ≤ 0.2 s.
+- Joy may add music herself in another app: then deliver with voice + light SFX only.
+- DAY 35 (event-logistics tips, 70 s, mostly B-roll) reached ~800 views. Lesson: lead with faces (Joy and Mark), a curiosity hook in the
+  first second, value that works for viewers who are NOT at the event, a countdown that makes people stay to the end, and 35–45 s.
