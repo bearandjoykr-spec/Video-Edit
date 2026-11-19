@@ -8,25 +8,26 @@ import json, math, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FPS = 30
-INTRO = 18.48  # main.mov length (Joy speaks to 18.46)
+I0 = 1.85      # Joy (DAY 35 v2): only the part where she speaks — main.mov 1.85–14.35 s (speech 1.95–14.1 by level)
+INTRO = 12.5
 B1, B2 = "raw-footage/day35/bg1.mov", "raw-footage/day35/bg2.mov"
 
 # Joy's own words in main.mov (Whisper, checked by ear later): two-line captions
-INTRO_CAPS = [(0.00, 4.08, "아이 키우는 부모님들,\n주목하세요! 📢"),
-              (4.08, 8.68, "오늘부터 일요일까지 코엑스에서\n유아교육전이 시작됩니다!"),
-              (8.68, 12.74, "다양한 프로그램과 그림책,\n그리고 체험까지 직접 만나볼 수 있어요"),
-              (12.74, 18.30, "저희와 함께\n가보실까요? 👣")]
+# sentence starts/ends from the audio level (pauses at 4.5, 8.4, 12.6 s in main.mov), minus I0
+INTRO_CAPS = [(0.05, 2.65, "아이 키우는 부모님들,\n주목하세요! 📢"),
+              (2.65, 6.55, "오늘부터 일요일까지 코엑스에서\n유아교육전이 시작됩니다!"),
+              (6.55, 10.75, "다양한 프로그램과 그림책,\n그리고 체험까지 직접 만나볼 수 있어요"),
+              (10.75, 12.5, "저희와 함께\n가보실까요? 👣")]
 # 1-second cuts behind the intro (src, start)
 # Joy: this footage makes TWO videos. This one is the overview (what's at the fair); product demos (Cublo, animal piano
 # poster, the bears' school, blue blocks, gear wall, drawing board, magnetic tiles, wooden puzzles) are kept for the TOP 3 video.
 # (times checked frame by frame: the 4-second contact sheets drift on this variable-frame-rate footage)
-INTRO_SHOTS = [(B1, 0), (B1, 216), (B1, 56), (B1, 18), (B2, 172), (B1, 76), (B1, 28), (B2, 69), (B1, 40),
-               (B2, 184), (B1, 84), (B2, 52), (B1, 32), (B2, 36), (B1, 60), (B1, 8), (B1, 64)]
+INTRO_SHOTS = [(B1, 0), (B1, 216), (B1, 56), (B1, 18), (B2, 172), (B1, 76), (B1, 28), (B2, 69), (B2, 184),
+               (B1, 84), (B2, 52), (B2, 36), (B1, 64)]
 
 # what each intro shot shows (a stamp on the right, so viewers see everything the fair has)
 TAGS = ["📍 코엑스 A홀", "🗓️ 11.19 ~ 11.22", "📚 영어원서 최대 90%", "📖 그림책 가득", "🎭 캐릭터 친구들", "🐴 조랑말 체험", "🧸 교구 & 장난감",
-        "🦖 공룡 존", "📚 책 산더미", "🐥 캐릭터 친구들", "🏷️ 브랜드 대전", "🌸 포토존", "🔢 수학 교구", "🎤 부모 세미나", "👨‍👩‍👧 사람 정말 많아요!",
-        "🗺️ 부스가 엄청 많아요", "🛍️ 쇼핑 천국"]
+        "🦖 공룡 존", "🐥 캐릭터와 인사", "🏷️ 브랜드 대전", "🌸 포토존", "🎤 부모 세미나", "🛍️ 쇼핑 천국"]
 
 # VO sections: (kind, n, card title, card sub, caption lines, shots)
 VO = [
@@ -43,8 +44,8 @@ VO = [
      ["영어책도 행사 특가로 판매하지만\n사람이 많으니", "사고 싶은 책은\n미리 정해 오세요!"], [(B1, 125), (B1, 144), (B1, 148), (B1, 44), (B1, 152), (B1, 184)]),
     ("top3", 0, "직접 고른 교구 & 책\nTOP 3", "COMING SOON 🔜",
      ["저희가 직접 둘러보고 고른\n추천 교구와 책 TOP 3도", "곧 소개할 예정이에요!"], [(B2, 129), (B2, 136), (B2, 150), (B2, 181)]),
-    ("follow", 0, "베어앤조이\n팔로우 💛", "아이 영어교육, 같이 해요",
-     ["아이 영어교육에 관심 있으시다면", "베어앤조이 팔로우하고\n다음 영상도 기대해 주세요!"], [(B2, 146), (B2, 165), (B2, 157)]),
+    ("follow", 0, "@thebearandjoy", "팔로우하고 다음 영상도 기대해 주세요 💛",
+     ["아이 영어교육에 관심 있으시다면", "@thebearandjoy 팔로우하고\n다음 영상도 기대해 주세요!"], [(B2, 146), (B2, 165), (B2, 157)]),
     ("share", 0, "이번 주말 가는\n친구에게 공유! 📤", "", ["이번 주말 방문할\n부모님께 공유해 주세요!"], [(B2, 190), (B1, 217)]),
 ]
 END = 1.6
@@ -78,8 +79,13 @@ def main():
     total = round(t + END, 3)
     for a, b in zip(shots, shots[1:]):  # no gaps between shots (first VO shot starts at INTRO)
         a["d"] = round(b["t"] - a["t"], 3)
+    sfx = []
+    for x in secs[1:]:
+        sfx.append({"t": round(x["s"], 3), "sound": "whoosh", "gain": -16})
+        sfx.append({"t": round(x["s"] + .1, 3), "sound": "pop", "gain": -12})
+    sfx.append({"t": round(secs[0]["s"] + .1, 3), "sound": "sparkle", "gain": -14})
     plan = {"fps": FPS, "day": 35, "media": "day35", "duration": total, "frames": int(math.ceil(total * FPS)), "intro": INTRO,
-            "shots": shots, "captions": caps, "sections": secs, "voEstimated": True}
+            "shots": shots, "captions": caps, "sections": secs, "voEstimated": True, "i0": I0, "sfx": sfx}
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)
     for p in (f"{HERE}/versions/main/plan.json", f"{HERE}/../../remotion/src/day35.json"):
         json.dump(plan, open(p, "w", encoding="utf8"), ensure_ascii=False, indent=1)

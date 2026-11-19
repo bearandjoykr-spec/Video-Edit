@@ -128,8 +128,8 @@ const Follow: React.FC<{t: number; fps: number; sec: Sec}> = ({t, fps, sec}) => 
     <div style={{position: 'absolute', top: 300, left: 70, right: 70, transform: `translateY(${(1 - k) * 300}px)`, opacity: k}}>
       <div style={{background: C.cream, borderRadius: 36, padding: '50px 40px', textAlign: 'center', boxShadow: '0 24px 50px rgba(0,0,0,.5)'}}>
         <Img src={staticFile('brand/logo-full.png')} style={{height: 170, objectFit: 'contain'}} />
-        <Lines text={sec.title} style={{marginTop: 16, fontFamily: KO, fontWeight: 700, fontSize: 92, lineHeight: 1.05, color: C.navy}} />
-        <div style={{marginTop: 8, fontFamily: KO, fontWeight: 700, fontSize: 52, color: '#8A6D3B'}}>{sec.sub}</div>
+        <div style={{marginTop: 18, fontFamily: PRE, fontWeight: 900, fontSize: 84, lineHeight: 1.05, color: C.navy}}>{sec.title}</div>
+        <div style={{marginTop: 14, fontFamily: KO, fontWeight: 700, fontSize: 50, color: '#8A6D3B'}}>{sec.sub}</div>
         <div style={{display: 'inline-block', marginTop: 26, fontFamily: PRE, fontWeight: 900, fontSize: 52, color: '#fff', background: press ? '#2b3f6a' : '#4C6EF5', borderRadius: 18, padding: '14px 70px',
           transform: `scale(${press ? .93 : 1})`}}>{press || tap > .25 && tap < 1.2 ? '✓ 팔로잉' : '+ 팔로우'}</div>
       </div>
@@ -155,9 +155,9 @@ export const ExpoPromo: React.FC<{plan: ExpoPlan}> = ({plan}) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const t = frame / fps;
   const sec = plan.sections.find((x) => t >= x.s && t < x.e) ?? plan.sections[plan.sections.length - 1];
   const shot = [...plan.shots].reverse().find((x) => t >= x.t) ?? plan.shots[0];
-  const dt = t - shot.t;
-  const punch = interpolate(dt, [0, .22], [1.14, 1.02], clamp) + dt * .02;
-  const flash = interpolate(dt, [0, .1], [t < plan.intro ? .4 : .22, 0], clamp);
+  // Joy (v2): no flash or punch on cuts (the dissolves are in bg.mp4); just a slow, continuous drift so the picture breathes
+  const punch = 1.035 + .015 * Math.sin(t * .7);
+  void shot;
   const cap = plan.captions.find((c) => t >= c.s && t < c.e);
   const intro = sec.kind === 'intro';
   const blur = sec.kind === 'top3' ? 16 : sec.kind === 'follow' || sec.kind === 'share' ? 6 : 0;
@@ -168,8 +168,8 @@ export const ExpoPromo: React.FC<{plan: ExpoPlan}> = ({plan}) => {
         <OffthreadVideo src={staticFile(`${plan.media}/bg.mp4`)} muted style={{width: '100%', height: '100%'}} />
       </AbsoluteFill>
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,16,30,.6) 0%, rgba(10,16,30,0) 34%, rgba(10,16,30,0) 58%, rgba(10,16,30,.55) 100%)'}} />
-      <AbsoluteFill style={{background: '#fff', opacity: flash}} />
-      {intro && <JoySticker t={t} fps={fps} media={plan.media} until={15.2} />}
+      {intro && <AbsoluteFill style={{background: 'radial-gradient(ellipse 620px 900px at 260px 1500px, rgba(10,16,30,.62) 0%, rgba(10,16,30,.35) 55%, rgba(10,16,30,0) 100%)'}} />}
+      {intro && <JoySticker t={t} fps={fps} media={plan.media} until={plan.intro} />}
       {intro && <Intro t={t} fps={fps} sec={sec} shots={plan.shots} />}
       {intro && <Live t={t} />}
       {!intro && <Badge day={plan.day} />}
