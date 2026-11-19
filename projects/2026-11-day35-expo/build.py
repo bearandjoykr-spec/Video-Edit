@@ -21,23 +21,24 @@ INTRO_CAPS = [(0.05, 2.65, "아이 키우는 부모님들,\n주목하세요! �
 # 1-second cuts behind the intro (src, start)
 # Joy: this footage makes TWO videos. This one is the overview (what's at the fair); product demos (Cublo, animal piano
 # poster, the bears' school, blue blocks, gear wall, drawing board, magnetic tiles, wooden puzzles) are kept for the TOP 3 video.
+# Joy (v3): no clearly visible stranger faces — staff by the green mascot, a child, the woman at 23 s and phone-users swapped out.
 # (times checked frame by frame: the 4-second contact sheets drift on this variable-frame-rate footage)
-INTRO_SHOTS = [(B1, 0), (B1, 216), (B1, 56), (B1, 18), (B2, 172), (B1, 76), (B1, 28), (B2, 69), (B2, 184),
+INTRO_SHOTS = [(B1, 0), (B1, 216), (B1, 56), (B1, 18), (B1, 36), (B1, 76), (B1, 28), (B2, 69), (B2, 184),
                (B1, 84), (B2, 52), (B2, 36), (B1, 64)]
 
 # what each intro shot shows (a stamp on the right, so viewers see everything the fair has)
-TAGS = ["📍 코엑스 A홀", "🗓️ 11.19 ~ 11.22", "📚 영어원서 최대 90%", "📖 그림책 가득", "🎭 캐릭터 친구들", "🐴 조랑말 체험", "🧸 교구 & 장난감",
+TAGS = ["📍 코엑스 A홀", "🗓️ 11.19 ~ 11.22", "📚 영어원서 최대 90%", "📖 그림책 가득", "📚 원서 코너", "🐴 조랑말 체험", "🧸 교구 & 장난감",
         "🦖 공룡 존", "🐥 캐릭터와 인사", "🏷️ 브랜드 대전", "🌸 포토존", "🎤 부모 세미나", "🛍️ 쇼핑 천국"]
 
 # VO sections: (kind, n, card title, card sub, caption lines, shots)
 VO = [
     ("kkul", 0, "직접 다녀온\n꿀팁 대방출 🍯", "", ["제가 오늘 다녀온 꿀팁\n알려드릴게요!"], [(B2, 128), (B2, 145), (B2, 152)]),
     ("tip", 1, "오전 10시 = 선착순 🎁", "무료 체험권은 사전등록자만!",
-     ["선착순 혜택을 원한다면\n오전 10시에 가세요!", "단, 무료 체험권은\n사전등록자 대상이에요"], [(B1, 218), (B1, 4), (B1, 12), (B1, 124), (B2, 244)]),
+     ["선착순 혜택을 원한다면\n오전 10시에 가세요!", "단, 무료 체험권은\n사전등록자 대상이에요"], [(B1, 218), (B1, 4), (B1, 48), (B1, 124), (B1, 8)]),
     ("tip", 2, "여유롭게? 점심 이후 🕐", "오전엔 준비 중인 부스도 있어요",
      ["그게 목적이 아니라면\n점심 이후도 추천해요", "오늘 오전엔\n준비 중인 부스도 있었거든요"], [(B2, 28), (B1, 80), (B2, 120), (B2, 30)]),
     ("tip", 3, "중앙엔 커피 & 쉴 자리 ☕", "팔로우 이벤트로 큰 가방도! 👜",
-     ["중앙엔 커피와\n쉴 자리도 있고", "일부 부스에서는 팔로우 이벤트로\n큰 가방도 줘요"], [(B1, 116), (B1, 113), (B1, 61), (B1, 180), (B1, 65)]),
+     ["중앙엔 커피와\n쉴 자리도 있고", "일부 부스에서는 팔로우 이벤트로\n큰 가방도 줘요"], [(B1, 116), (B1, 113), (B1, 61), (B1, 52), (B1, 65)]),
     ("tip", 4, "짐은 A홀 물품보관함 🧳", "쇼핑백 하나 꼭 챙기기!",
      ["무거운 짐은 A홀 근처\n물품보관함에 맡기고", "쇼핑백 하나\n챙기세요!"], [(B2, 189), (B1, 120), (B1, 132), (B1, 136)]),
     ("tip", 5, "영어책 행사 특가 📚", "살 책은 미리 정해 오기!",

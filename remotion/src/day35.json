@@ -35,11 +35,11 @@
    "tag": "📖 그림책 가득"
   },
   {
-   "src": "raw-footage/day35/bg2.mov",
-   "ss": 172,
+   "src": "raw-footage/day35/bg1.mov",
+   "ss": 36,
    "t": 3.846,
    "d": 0.962,
-   "tag": "🎭 캐릭터 친구들"
+   "tag": "📚 원서 코너"
   },
   {
    "src": "raw-footage/day35/bg1.mov",
@@ -129,7 +129,7 @@
   },
   {
    "src": "raw-footage/day35/bg1.mov",
-   "ss": 12,
+   "ss": 48,
    "t": 19.51,
    "d": 1.63
   },
@@ -140,8 +140,8 @@
    "d": 1.63
   },
   {
-   "src": "raw-footage/day35/bg2.mov",
-   "ss": 244,
+   "src": "raw-footage/day35/bg1.mov",
+   "ss": 8,
    "t": 22.77,
    "d": 1.63
   },
@@ -189,7 +189,7 @@
   },
   {
    "src": "raw-footage/day35/bg1.mov",
-   "ss": 180,
+   "ss": 52,
    "t": 36.76,
    "d": 1.47
   },
