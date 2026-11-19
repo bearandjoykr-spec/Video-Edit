@@ -35,12 +35,14 @@ const glass: React.CSSProperties = {background: 'rgba(11,17,32,.72)', border: `1
 
 const Hairline: React.FC<{w: number; k: number}> = ({w, k}) => <div style={{height: 2, width: w * k, background: C.gold, margin: '0 auto'}} />;
 
-const Hook: React.FC<{t: number; fps: number; sec: Sec}> = ({t, fps, sec}) => {
+const Hook: React.FC<{t: number; fps: number; sec: Sec; day: number}> = ({t, fps, sec, day}) => {
   const k = sp(t, 0, fps, 14), k2 = sp(t, .25, fps, 12);
   return (
     <>
       <div style={{position: 'absolute', top: 310, left: 70, right: 70, textAlign: 'center', opacity: k}}>
-        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 30, letterSpacing: 8, color: C.goldHi, textShadow: SH}}>{sec.kicker}</div>
+        <div style={{display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 30, letterSpacing: 2, color: C.ink, background: C.goldHi, borderRadius: 999, padding: '6px 22px'}}>
+          DAY {day} · 출간까지 매일 업로드</div>
+        <div style={{marginTop: 14, fontFamily: PRE, fontWeight: 800, fontSize: 30, letterSpacing: 8, color: C.goldHi, textShadow: SH}}>{sec.kicker}</div>
         <Pre text={sec.title!} style={{marginTop: 12, fontFamily: PRE, fontWeight: 900, fontSize: 84, lineHeight: 1.12, color: C.white, textShadow: SH, transform: `translateY(${(1 - k) * 20}px)`}} />
       </div>
       <div style={{position: 'absolute', top: 1110, left: 0, right: 0, textAlign: 'center', transform: `scale(${.85 + .15 * k2})`, opacity: k2}}>
@@ -70,11 +72,12 @@ const Rank: React.FC<{t: number; fps: number; sec: Sec}> = ({t, fps, sec}) => {
 };
 
 // small chip that says which pick we are on
-const Chip: React.FC<{n: number; title: string; t: number; s: number; fps: number}> = ({n, title, t, s, fps}) => {
+const Chip: React.FC<{n: number; title: string; t: number; s: number; fps: number; day: number}> = ({n, title, t, s, fps, day}) => {
   const k = sp(t, s, fps, 18);
   return (
     <div style={{position: 'absolute', top: 310, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: k}}>
       <div style={{...glass, borderRadius: 999, padding: '10px 30px', display: 'flex', alignItems: 'baseline', gap: 16}}>
+        <span style={{fontFamily: PRE, fontWeight: 800, fontSize: 24, color: C.gold, letterSpacing: 2}}>DAY {day}</span>
         <span style={{fontFamily: SERIF, fontStyle: 'italic', fontWeight: 600, fontSize: 40, color: C.goldHi}}>No.{n}</span>
         <span style={{fontFamily: PRE, fontWeight: 800, fontSize: 32, color: C.cream}}>{title}</span>
       </div>
@@ -123,7 +126,8 @@ const End: React.FC<{t: number; fps: number; sec: Sec}> = ({t, fps, sec}) => {
   return (
     <div style={{position: 'absolute', top: 420, left: 90, right: 90, background: C.cream, borderRadius: 30, padding: '40px 40px 36px', textAlign: 'center',
       boxShadow: '0 30px 70px rgba(0,0,0,.5)', border: `2px solid ${C.gold}`, opacity: k, transform: `translateY(${(1 - k) * 40}px)`}}>
-      <Img src={staticFile('brand/logo-full.png')} style={{height: 150, objectFit: 'contain'}} />
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 26, letterSpacing: 3, color: '#8A6A35'}}>DAY 36 · 출간까지 매일 업로드</div>
+      <Img src={staticFile('brand/logo-full.png')} style={{height: 150, objectFit: 'contain', marginTop: 10}} />
       <div style={{marginTop: 18, fontFamily: PRE, fontWeight: 900, fontSize: 54, color: C.navy}}>저장해 두고 아이랑 해 보세요</div>
       <div style={{marginTop: 18, display: 'flex', justifyContent: 'center', gap: 14}}>
         {['📌 저장', '📤 공유', '+ 팔로우'].map((x, i) => <div key={i} style={{fontFamily: PRE, fontWeight: 800, fontSize: 32, color: i === 2 ? C.cream : C.navy,
@@ -152,9 +156,9 @@ export const TopThree: React.FC<{plan: TopPlan}> = ({plan}) => {
       {/* premium grade: soft vignette + darker top/bottom for legibility */}
       <AbsoluteFill style={{background: 'radial-gradient(ellipse 80% 70% at 50% 48%, rgba(0,0,0,0) 55%, rgba(5,8,16,.55) 100%)'}} />
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(8,12,22,.55) 0%, rgba(8,12,22,0) 30%, rgba(8,12,22,0) 58%, rgba(8,12,22,.6) 82%, rgba(8,12,22,.75) 100%)'}} />
-      {sec.kind === 'hook' && <Hook t={t} fps={fps} sec={sec} />}
+      {sec.kind === 'hook' && <Hook t={t} fps={fps} sec={sec} day={plan.day} />}
       {sec.kind === 'rank' && <Rank t={t} fps={fps} sec={sec} />}
-      {showChip && cur && <Chip n={cur.n!} title={cur.title!} t={t} s={cur.e} fps={fps} />}
+      {showChip && cur && <Chip n={cur.n!} title={cur.title!} t={t} s={cur.e} fps={fps} day={plan.day} />}
       {sec.kind === 'vo' && sec.card && plan.captions.filter((c) => c.vo && c.s >= sec.s - .01 && c.s < sec.e)[sec.card.at] &&
         t >= plan.captions.filter((c) => c.vo && c.s >= sec.s - .01 && c.s < sec.e)[sec.card.at].s &&
         <TestCard t={t} s={plan.captions.filter((c) => c.vo && c.s >= sec.s - .01 && c.s < sec.e)[sec.card.at].s} fps={fps} card={sec.card} />}
