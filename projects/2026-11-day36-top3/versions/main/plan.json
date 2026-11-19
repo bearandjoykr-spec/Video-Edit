@@ -1,0 +1,638 @@
+{
+ "fps": 30,
+ "day": 36,
+ "media": "day36",
+ "duration": 51.5,
+ "frames": 1545,
+ "beat": 0.5,
+ "shots": [
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 22.95,
+   "t": 0.0,
+   "d": 1.9
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 10.62,
+   "t": 1.9,
+   "d": 1.4
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 300.5,
+   "t": 3.3,
+   "d": 0.5
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 12.52,
+   "t": 3.8,
+   "d": 0.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 206.0,
+   "t": 3.8,
+   "d": 0.5,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 13.02,
+   "t": 4.3,
+   "d": 0.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4957.MOV",
+   "ss": 1.0,
+   "t": 4.3,
+   "d": 0.5
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 13.52,
+   "t": 4.8,
+   "d": 1.1
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 19.9,
+   "t": 5.9,
+   "d": 1.65
+  },
+  {
+   "src": "raw-footage/day36/IMG_4957.MOV",
+   "ss": 2.0,
+   "t": 7.55,
+   "d": 1.5
+  },
+  {
+   "src": "raw-footage/day35/bg1.mov",
+   "ss": 56.0,
+   "t": 9.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4957.MOV",
+   "ss": 3.0,
+   "t": 10.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4963.MOV",
+   "ss": 1.0,
+   "t": 11.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4964.MOV",
+   "ss": 0.5,
+   "t": 12.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg1.mov",
+   "ss": 124.0,
+   "t": 13.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4961.MOV",
+   "ss": 1.0,
+   "t": 14.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4975.MOV",
+   "ss": 2.0,
+   "t": 15.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4962.MOV",
+   "ss": 1.0,
+   "t": 16.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4967.MOV",
+   "ss": 1.0,
+   "t": 17.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg1.mov",
+   "ss": 148.0,
+   "t": 18.05,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day36/IMG_4966.MOV",
+   "ss": 0.5,
+   "t": 19.05,
+   "d": 0.95
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 203.0,
+   "t": 20.0,
+   "d": 1.5,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 198.6,
+   "t": 21.5,
+   "d": 1.0,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 200.6,
+   "t": 22.5,
+   "d": 1.0,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 203.5,
+   "t": 23.5,
+   "d": 1.0,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 205.5,
+   "t": 24.5,
+   "d": 1.0,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 207.5,
+   "t": 25.5,
+   "d": 1.0,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 209.5,
+   "t": 26.5,
+   "d": 1.0,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 199.6,
+   "t": 27.5,
+   "d": 0.5,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 211.0,
+   "t": 28.0,
+   "d": 1.5,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 212.5,
+   "t": 29.5,
+   "d": 1.5,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 214.0,
+   "t": 31.0,
+   "d": 1.5,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 215.5,
+   "t": 32.5,
+   "d": 1.5,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 204.0,
+   "t": 34.0,
+   "d": 3.8,
+   "rot": 180
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 284.0,
+   "t": 37.8,
+   "d": 1.5
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 282.0,
+   "t": 39.3,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 286.0,
+   "t": 40.3,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 289.0,
+   "t": 41.3,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 293.0,
+   "t": 42.3,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 297.5,
+   "t": 43.3,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 301.0,
+   "t": 44.3,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 305.0,
+   "t": 45.3,
+   "d": 1.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 309.0,
+   "t": 46.3,
+   "d": 0.2
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 316.85,
+   "t": 46.5,
+   "d": 0.8
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 211.5,
+   "t": 47.3,
+   "d": 4.2,
+   "rot": 180
+  }
+ ],
+ "captions": [
+  {
+   "s": 1.95,
+   "e": 5.9,
+   "text": "교구와 그림책 TOP 3,\n함께 소개해드릴게요",
+   "ko": "",
+   "who": "Joy"
+  },
+  {
+   "s": 5.95,
+   "e": 7.55,
+   "text": "Come on! Let's go!",
+   "ko": "",
+   "who": "Mark"
+  },
+  {
+   "s": 9.05,
+   "e": 12.319,
+   "text": "사람이 제일 많았던 곳,\n바로 영어책 코너!",
+   "vo": true
+  },
+  {
+   "s": 12.319,
+   "e": 16.154,
+   "text": "소리책, 팝업북도 좋지만\n고를 땐 꼭 펼쳐 보세요",
+   "vo": true
+  },
+  {
+   "s": 16.154,
+   "e": 19.989,
+   "text": "바로 말해 줄 문장이 있는 책이\n제일 오래 쓰여요",
+   "vo": true
+  },
+  {
+   "s": 21.5,
+   "e": 25.901,
+   "text": "아이들은 앉아서 공부할 때보다\n놀 때 훨씬 빨리 배워요",
+   "vo": true
+  },
+  {
+   "s": 25.901,
+   "e": 28.226,
+   "text": "놀면서 이렇게 말해 주세요",
+   "vo": true
+  },
+  {
+   "s": 28.0,
+   "e": 29.5,
+   "text": "Kick the ball!",
+   "ko": "공을 차!",
+   "phrase": true
+  },
+  {
+   "s": 29.5,
+   "e": 31.0,
+   "text": "Throw it to me!",
+   "ko": "나한테 던져!",
+   "phrase": true
+  },
+  {
+   "s": 31.0,
+   "e": 32.5,
+   "text": "Catch!",
+   "ko": "잡아!",
+   "phrase": true
+  },
+  {
+   "s": 32.5,
+   "e": 34.0,
+   "text": "Your turn!",
+   "ko": "네 차례야!",
+   "phrase": true
+  },
+  {
+   "s": 34.05,
+   "e": 37.8,
+   "text": "They're not just on their fingers,\nthey're actually jumping up and down!",
+   "ko": "손가락만 쓰는 게 아니라, 온몸으로 뛰면서 놀아요!",
+   "who": "Mark"
+  },
+  {
+   "s": 39.3,
+   "e": 43.324,
+   "text": "직접 누르면 소리가 나서\n새 단어를 스스로 익혀요",
+   "vo": true
+  },
+  {
+   "s": 43.324,
+   "e": 46.592,
+   "text": "집이나 어린이집\n환경 구성에 딱이에요",
+   "vo": true
+  },
+  {
+   "s": 46.55,
+   "e": 47.3,
+   "text": "Brilliant! 👏",
+   "ko": "",
+   "who": "Mark"
+  },
+  {
+   "s": 47.3,
+   "e": 50.003,
+   "text": "저장해 두고\n아이랑 꼭 해 보세요!",
+   "vo": true
+  }
+ ],
+ "sections": [
+  {
+   "kind": "hook",
+   "title": "유아교육전 다 돌고\n딱 3개만 골랐어요",
+   "kicker": "COEX 유아교육전",
+   "big": "TOP 3",
+   "s": 0.0,
+   "e": 1.9
+  },
+  {
+   "kind": "bite",
+   "who": "Joy",
+   "cap": "교구와 그림책 TOP 3,\n함께 소개해드릴게요",
+   "s": 1.9,
+   "e": 5.9
+  },
+  {
+   "kind": "bite",
+   "who": "Mark",
+   "cap": "Come on! Let's go!",
+   "s": 5.9,
+   "e": 7.55
+  },
+  {
+   "kind": "rank",
+   "n": 3,
+   "title": "영어책, 이렇게 고르세요",
+   "s": 7.55,
+   "e": 9.05
+  },
+  {
+   "kind": "vo",
+   "n": 3,
+   "lines": [
+    "사람이 제일 많았던 곳,\n바로 영어책 코너!",
+    "소리책, 팝업북도 좋지만\n고를 땐 꼭 펼쳐 보세요",
+    "바로 말해 줄 문장이 있는 책이\n제일 오래 쓰여요"
+   ],
+   "card": {
+    "at": 2,
+    "title": "3초 테스트 ✓",
+    "body": "펼쳤을 때 오늘 바로 말해 줄 문장이 3개 있으면 합격",
+    "en": [
+     "Where's the cat?",
+     "Let's go outside!",
+     "Night night!"
+    ]
+   },
+   "s": 9.05,
+   "e": 20.0
+  },
+  {
+   "kind": "rank",
+   "n": 2,
+   "title": "몸으로 하는 공 게임",
+   "s": 20.0,
+   "e": 21.5
+  },
+  {
+   "kind": "vo",
+   "n": 2,
+   "lines": [
+    "아이들은 앉아서 공부할 때보다\n놀 때 훨씬 빨리 배워요",
+    "놀면서 이렇게 말해 주세요"
+   ],
+   "info": {
+    "name": "스포마루 (SPOMARU)",
+    "lines": [
+     "AI 인터랙티브 바닥 놀이",
+     "바닥에 튕기는 공을 발로 '뻥!'",
+     "원하는 활동을 문장으로 쓰면 AI가 게임으로"
+    ]
+   },
+   "s": 21.5,
+   "e": 28.0
+  },
+  {
+   "kind": "phrases",
+   "n": 2,
+   "phrases": [
+    [
+     "Kick the ball!",
+     "공을 차!"
+    ],
+    [
+     "Throw it to me!",
+     "나한테 던져!"
+    ],
+    [
+     "Catch!",
+     "잡아!"
+    ],
+    [
+     "Your turn!",
+     "네 차례야!"
+    ]
+   ],
+   "s": 28.0,
+   "e": 34.0
+  },
+  {
+   "kind": "bite",
+   "who": "Mark",
+   "cap": "They're not just on their fingers,\nthey're actually jumping up and down!",
+   "ko": "손가락만 쓰는 게 아니라, 온몸으로 뛰면서 놀아요!",
+   "s": 34.0,
+   "e": 37.8
+  },
+  {
+   "kind": "rank",
+   "n": 1,
+   "title": "소리 나는 벽 포스터",
+   "s": 37.8,
+   "e": 39.3
+  },
+  {
+   "kind": "vo",
+   "n": 1,
+   "lines": [
+    "직접 누르면 소리가 나서\n새 단어를 스스로 익혀요",
+    "집이나 어린이집\n환경 구성에 딱이에요"
+   ],
+   "info": {
+    "name": "벽에 붙이는 사운드 포스터",
+    "lines": [
+     "동물 · 알파벳 · 한글",
+     "누르면 단어와 소리가 나와요"
+    ]
+   },
+   "play": [
+    "Where's the tiger? Press it!",
+    "호랑이 어디 있지? 눌러 봐!"
+   ],
+   "s": 39.3,
+   "e": 46.5
+  },
+  {
+   "kind": "bite",
+   "who": "Mark",
+   "cap": "Brilliant! 👏",
+   "s": 46.5,
+   "e": 47.3
+  },
+  {
+   "kind": "end",
+   "lines": [
+    "저장해 두고\n아이랑 꼭 해 보세요!"
+   ],
+   "s": 47.3,
+   "e": 51.5
+  }
+ ],
+ "bites": [
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 22.95,
+   "t": 0.0,
+   "d": 1.9
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 10.62,
+   "t": 1.9,
+   "d": 4.0
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 19.9,
+   "t": 5.9,
+   "d": 1.65
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 251.95,
+   "t": 34.0,
+   "d": 3.8
+  },
+  {
+   "src": "raw-footage/day35/bg2.mov",
+   "ss": 316.85,
+   "t": 46.5,
+   "d": 0.8
+  }
+ ],
+ "sfx": [
+  {
+   "t": 7.55,
+   "sound": "whoosh",
+   "gain": -12
+  },
+  {
+   "t": 7.65,
+   "sound": "impact",
+   "gain": -13
+  },
+  {
+   "t": 20.0,
+   "sound": "whoosh",
+   "gain": -12
+  },
+  {
+   "t": 20.1,
+   "sound": "impact",
+   "gain": -13
+  },
+  {
+   "t": 28.0,
+   "sound": "pop",
+   "gain": -14
+  },
+  {
+   "t": 29.5,
+   "sound": "pop",
+   "gain": -14
+  },
+  {
+   "t": 31.0,
+   "sound": "pop",
+   "gain": -14
+  },
+  {
+   "t": 32.5,
+   "sound": "pop",
+   "gain": -14
+  },
+  {
+   "t": 37.8,
+   "sound": "whoosh",
+   "gain": -12
+  },
+  {
+   "t": 37.9,
+   "sound": "impact",
+   "gain": -13
+  }
+ ],
+ "voEstimated": true
+}

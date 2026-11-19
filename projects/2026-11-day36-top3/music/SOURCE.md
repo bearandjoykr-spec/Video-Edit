@@ -1,0 +1,4 @@
+# Music — DAY 36
+**Fashion Lifestyle** by sub_clair — https://pixabay.com/music/house-fashion-lifestyle-628637/ — 120 BPM, played from its first beat (0.557 s). Joy asked for a premium, not childish feel (20 Nov 2026).
+Other candidates downloaded (Pixabay Content License): Milan Fashion Week (wbmstudio) https://pixabay.com/music/electronic-milan-fashion-week-chic-retail-deep-house-595155/ · Two in the Rain 50 s (Grand_Project) https://pixabay.com/music/upbeat-two-in-the-rain-50sec-198161/ · Luxury Fashion (The_Mountain) https://pixabay.com/music/pop-luxury-fashion-634010/ · Stylish (The_Mountain) https://pixabay.com/music/soft-house-stylish-stylish-muisc-508037/ · Stylish Funk (AtlasAudio) https://pixabay.com/music/funk-stylish-funk-590002/
+Licence: Pixabay Content License. Files git-ignored.

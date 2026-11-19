@@ -45,6 +45,8 @@ import promoC from '../../projects/2026-11-day1-promos/versions/mistakes-ok/time
 
 import {LittleStepsAd, AdPlan} from './LittleStepsAd';
 import {ExpoPromo, ExpoPlan} from './ExpoPromo';
+import {TopThree, TopPlan} from './TopThree';
+import day36 from './day36.json';
 import day35 from './day35.json';
 import day1ad from '../../projects/2026-11-day1-ad/versions/main/timeline.json';
 
@@ -95,6 +97,7 @@ export const Root: React.FC = () => (
     {reelV2('Day28', day28 as unknown as PlanV2)}
     {reelV2('Day32', day32 as unknown as PlanV2)}
     {reelV2('MarkSpicy', spicy as unknown as PlanV2)}
+    <Composition id="Day36" component={TopThree} durationInFrames={(day36 as unknown as TopPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day36 as unknown as TopPlan}} />
     <Composition id="Day35" component={ExpoPromo} durationInFrames={(day35 as unknown as ExpoPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day35 as unknown as ExpoPlan}} />
     <Composition id="Day34" component={BookGuide} durationInFrames={(day34 as unknown as GuidePlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: {...(day34 as unknown as GuidePlan), showVo: true}}} />
     <Composition id="Day33" component={OutdoorEnglish} durationInFrames={(day33 as unknown as OutdoorPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day33 as unknown as OutdoorPlan}} />
