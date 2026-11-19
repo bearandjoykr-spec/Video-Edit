@@ -31,23 +31,28 @@ TAGS = ["📍 코엑스 A홀", "🗓️ 11.19 ~ 11.22", "📚 영어원서 최�
         "🦖 공룡 존", "🐥 캐릭터와 인사", "🏷️ 브랜드 대전", "🌸 포토존", "🎤 부모 세미나", "🛍️ 쇼핑 천국"]
 
 # VO sections: (kind, n, card title, card sub, caption lines, shots)
+# Joy's recording (raw-footage/day35/vo.m4a, 19 Nov 2026): one take. Speech starts at 4.1 s; we use VO_IN..VO_OUT and place it
+# right after the intro. Each caption line carries the time (in vo.m4a) where it starts — word onsets from Whisper on the
+# trimmed audio, checked against the pauses. Caption text = her own words (she said "선착순 혜택", "베어앤조이를 팔로우하고").
+VO_IN, VO_OUT, GAP = 3.95, 66.30, 0.15
 VO = [
-    ("kkul", 0, "직접 다녀온\n꿀팁 대방출 🍯", "", ["제가 오늘 다녀온 꿀팁\n알려드릴게요!"], [(B2, 128), (B2, 145), (B2, 152)]),
+    ("kkul", 0, "직접 다녀온\n꿀팁 대방출 🍯", "", [(4.08, "저희가 오늘 다녀온 꿀팁\n알려드릴게요!")], [(B2, 128), (B2, 145), (B2, 152)]),
     ("tip", 1, "오전 10시 = 선착순 🎁", "무료 체험권은 사전등록자만!",
-     ["선착순 혜택을 원한다면\n오전 10시에 가세요!", "단, 무료 체험권은\n사전등록자 대상이에요"], [(B1, 218), (B1, 4), (B1, 48), (B1, 124), (B1, 8)]),
+     [(7.65, "선착순 혜택을 원한다면\n오전 10시 오픈할 때 가세요!"), (12.30, "단, 무료 체험권은\n사전등록자 대상이에요")], [(B1, 218), (B1, 4), (B1, 48), (B1, 124), (B1, 8)]),
     ("tip", 2, "여유롭게? 점심 이후 🕐", "오전엔 준비 중인 부스도 있어요",
-     ["그게 목적이 아니라면\n점심 이후도 추천해요", "오늘 오전엔\n준비 중인 부스도 있었거든요"], [(B2, 28), (B1, 80), (B2, 120), (B2, 30)]),
-    ("tip", 3, "중앙엔 커피 & 쉴 자리 ☕", "팔로우 이벤트로 큰 가방도! 👜",
-     ["중앙엔 커피와\n쉴 자리도 있고", "일부 부스에서는 팔로우 이벤트로\n큰 가방도 줘요"], [(B1, 116), (B1, 113), (B1, 61), (B1, 52), (B1, 65)]),
+     [(16.15, "그게 목적이 아니라면\n점심 이후로도 추천드려요"), (20.03, "왜냐하면 오늘 오전에\n준비 중인 부스도 있었거든요")], [(B2, 28), (B1, 80), (B2, 120), (B2, 30)]),
+    ("tip", 3, "중앙엔 커피 & 쉴 자리 ☕", "팔로우하면 기념품·가방 선물! 👜",
+     [(24.03, "중앙에는 커피와 쉴 자리도\n정말 많이 있고"), (26.88, "일부 부스에는 팔로우 이벤트로\n작은 기념품과 가방도 선물로 줘요")], [(B1, 116), (B1, 113), (B1, 61), (B1, 52), (B1, 65)]),
     ("tip", 4, "짐은 A홀 물품보관함 🧳", "쇼핑백 하나 꼭 챙기기!",
-     ["무거운 짐은 A홀 근처\n물품보관함에 맡기고", "쇼핑백 하나\n챙기세요!"], [(B2, 189), (B1, 120), (B1, 132), (B1, 136)]),
+     [(32.48, "무거운 짐은 A홀 근처\n물품보관함에 맡기고"), (35.62, "쇼핑백 하나\n챙기세요!")], [(B2, 189), (B1, 120), (B1, 132), (B1, 136)]),
     ("tip", 5, "영어책 행사 특가 📚", "살 책은 미리 정해 오기!",
-     ["영어책도 행사 특가로 판매하지만\n사람이 많으니", "사고 싶은 책은\n미리 정해 오세요!"], [(B1, 125), (B1, 144), (B1, 148), (B1, 44), (B1, 152), (B1, 184)]),
+     [(37.82, "영어책도 행사 특가로 판매하지만\n사람이 정말 많으니"), (41.53, "사고 싶은 책은 미리\n정해 오시는 걸 추천드려요")], [(B1, 125), (B1, 144), (B1, 148), (B1, 44), (B1, 152), (B1, 184)]),
     ("top3", 0, "직접 고른 교구 & 책\nTOP 3", "COMING SOON 🔜",
-     ["저희가 직접 둘러보고 고른\n추천 교구와 책 TOP 3도", "곧 소개할 예정이에요!"], [(B2, 129), (B2, 136), (B2, 150), (B2, 181)]),
+     [(45.75, "저희가 직접 둘러보고 고른\n추천 교구와 책 TOP 3도"), (50.23, "곧 소개할 예정이니\n기다려 주세요!")], [(B2, 129), (B2, 136), (B2, 150), (B2, 181)]),
     ("follow", 0, "@thebearandjoy", "팔로우하고 다음 영상도 기대해 주세요 💛",
-     ["아이 영어교육에 관심 있으시다면", "@thebearandjoy 팔로우하고\n다음 영상도 기대해 주세요!"], [(B2, 146), (B2, 165), (B2, 157)]),
-    ("share", 0, "이번 주말 가는\n친구에게 공유! 📤", "", ["이번 주말 방문할\n부모님께 공유해 주세요!"], [(B2, 190), (B1, 217)]),
+     [(53.00, "아이 영어교육에\n관심 있으시다면"), (54.85, "베어앤조이를 팔로우하고\n다음 영상도 기대해 주세요!")], [(B2, 146), (B2, 165), (B2, 157)]),
+    ("share", 0, "이번 주말 가는\n친구에게 공유! 📤", "",
+     [(59.52, "이번 주말 방문할 친구나 부모님께\n이 영상을 공유해 주세요!"), (64.20, "그럼 내일 만나요, 안녕! 👋")], [(B2, 190), (B1, 217)]),
 ]
 END = 1.6
 
@@ -64,18 +69,19 @@ def main():
         shots.append({"src": src, "ss": s, "t": round(k * d, 3), "d": round(d, 3), "tag": TAGS[k]})
     caps += [{"s": a, "e": b, "text": x} for a, b, x in INTRO_CAPS]
     secs.append({"kind": "intro", "n": 0, "s": 0, "e": INTRO, "title": "유아교육전\n시작됐다! 🎉", "sub": "📍 코엑스 A홀 · 11.19(목) ~ 11.22(일)"})
-    t = INTRO + 0.15
-    for kind, n, title, sub, lines, sh in VO:
-        s0 = t
-        for ln in lines:  # estimated: 5 syllables/s + a breath
-            dur = syl(ln) / 5.0 + 0.35
-            caps.append({"s": round(t, 3), "e": round(t + dur, 3), "text": ln})
-            t += dur
-        t += 0.25
-        secs.append({"kind": kind, "n": n, "s": round(s0, 3), "e": round(t, 3), "title": title, "sub": sub})
-        d = (t - s0) / len(sh)
-        for k, (src, s) in enumerate(sh):
-            shots.append({"src": src, "ss": s, "t": round(s0 + k * d, 3), "d": round(d, 3)})
+    o = lambda x: round(INTRO + GAP + x - VO_IN, 3)  # vo.m4a time -> video time
+    starts = [st for *_, lines, _ in VO for st, _ in lines]
+    nxt = dict(zip(starts, starts[1:] + [VO_OUT - .1]))
+    for j, (kind, n, title, sub, lines, sh) in enumerate(VO):
+        s0 = INTRO if j == 0 else o(lines[0][0] - .12)  # sections change just before her first word
+        e0 = o(VO[j + 1][4][0][0] - .12) if j + 1 < len(VO) else o(VO_OUT)
+        for st, ln in lines:
+            caps.append({"s": o(st - .05), "e": o(nxt[st] - (.3 if nxt[st] - st > 6 else .08)), "text": ln})
+        secs.append({"kind": kind, "n": n, "s": s0, "e": e0, "title": title, "sub": sub})
+        d = (e0 - s0) / len(sh)
+        for k, (src, ss) in enumerate(sh):
+            shots.append({"src": src, "ss": ss, "t": round(s0 + k * d, 3), "d": round(d, 3)})
+    t = o(VO_OUT)
     secs[-1]["e"] = round(t + END, 3); shots[-1]["d"] = round(t + END - shots[-1]["t"], 3)
     total = round(t + END, 3)
     for a, b in zip(shots, shots[1:]):  # no gaps between shots (first VO shot starts at INTRO)
@@ -86,7 +92,7 @@ def main():
         sfx.append({"t": round(x["s"] + .1, 3), "sound": "pop", "gain": -12})
     sfx.append({"t": round(secs[0]["s"] + .1, 3), "sound": "sparkle", "gain": -14})
     plan = {"fps": FPS, "day": 35, "media": "day35", "duration": total, "frames": int(math.ceil(total * FPS)), "intro": INTRO,
-            "shots": shots, "captions": caps, "sections": secs, "voEstimated": True, "i0": I0, "sfx": sfx}
+            "shots": shots, "captions": caps, "sections": secs, "voEstimated": False, "vo": "vo.wav", "i0": I0, "voIn": VO_IN, "voOut": VO_OUT, "voAt": INTRO + GAP, "sfx": sfx}
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)
     for p in (f"{HERE}/versions/main/plan.json", f"{HERE}/../../remotion/src/day35.json"):
         json.dump(plan, open(p, "w", encoding="utf8"), ensure_ascii=False, indent=1)

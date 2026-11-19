@@ -2,16 +2,16 @@
 Usage (repo root): .venv/bin/python projects/2026-11-day35-expo/mix.py PICTURE OUT [MUSIC_DB] [MUSIC] [MUSIC_START]"""
 import json, os, re, subprocess, sys
 P = os.path.dirname(os.path.abspath(__file__)); V = f"{P}/versions/main"
-pic, out = sys.argv[1:3]; mdb = float(sys.argv[3]) if len(sys.argv) > 3 else -8
-# Joy (v3): Magic Moments was not lively enough → "Pop Energy" (studiokolomna), from its full beat at 9.6 s
-music = sys.argv[4] if len(sys.argv) > 4 else f"{P}/music/pop-energy-632664.mp3"; m0 = float(sys.argv[5]) if len(sys.argv) > 5 else 9.6
+pic, out = sys.argv[1:3]; mdb = float(sys.argv[3]) if len(sys.argv) > 3 else -12  # v4: about 9 dB under the voice (was -8: music as loud as Joy)
+# Joy (v4): "잔잔하지만 신나는" → "A Small Miracle" (Romarecord1973), 77 s, so it ends with the video
+music = sys.argv[4] if len(sys.argv) > 4 else f"{P}/music/a-small-miracle-132333.mp3"; m0 = float(sys.argv[5]) if len(sys.argv) > 5 else 0
 plan = json.load(open(f"{V}/plan.json")); dur = plan["duration"]; intro = plan["intro"]
 ins = ["-i", "remotion/public/day35/intro.wav", "-ss", str(m0), "-i", music]
 fc = []
 vo = f"{V}/vo.wav"
 if os.path.exists(vo):  # Joy's recording starts right after the intro
     ins += ["-i", vo]; ms = int((intro + .15) * 1000)
-    fc.append(f"[2:a]aformat=sample_rates=48000:channel_layouts=stereo,adelay={ms}|{ms}[vo]")
+    fc.append(f"[2:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=3.3dB,adelay={ms}|{ms}[vo]")  # recording is 3.3 LU quieter than the intro clip
     fc.append(f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo[in];[in][vo]amix=inputs=2:normalize=0,apad=whole_dur={dur},asplit=2[voice][key]")
 else:
     fc.append(f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,apad=whole_dur={dur},asplit=2[voice][key]")
