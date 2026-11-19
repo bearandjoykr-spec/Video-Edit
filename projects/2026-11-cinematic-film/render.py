@@ -106,8 +106,10 @@ def layers(fmt):
         img = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         sb.draw_line(img, ln, W, H, top, PH, v)
         path = f'{d}/line{k:02d}.png'; img.save(path)
-        rise = 0 if ln[4] in ('main', 'title') else 16
-        meta.append(dict(png=path, s=ln[0], e=ln[1], fin=0.5 if ln[4] == 'main' else 0.35, fout=0.4, rise=rise))
+        fi, fo, rise = getattr(_plan, 'SUB_FADE', (0.35, 0.4, 16))
+        if ln[4] in ('main', 'title'):
+            rise = 0
+        meta.append(dict(png=path, s=ln[0], e=ln[1], fin=0.5 if ln[4] == 'main' else fi, fout=fo, rise=rise))
     # small hand-drawn Bear & Joy moments (plan.OVERLAYS): soft fade, gentle 12 px float up
     for k, ov in enumerate(getattr(_plan, 'OVERLAYS', [])):
         img = Image.new('RGBA', (W, H), (0, 0, 0, 0))

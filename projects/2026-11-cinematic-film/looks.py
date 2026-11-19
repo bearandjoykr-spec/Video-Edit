@@ -4,6 +4,10 @@ present - warm highlights / teal shadows, slightly lower saturation, soft roll-o
 night   - like present but keeps the warm lamps, deeper blacks
 """
 LOOKS = {
+    # v5 (Joy: punchier): more contrast and colour, warm highlights / cool shadows, crisp, light grain
+    'vivid': ("eq=contrast=1.1:saturation=1.16:gamma=0.99,"
+              "colorbalance=rs=-0.02:bs=0.03:rh=0.04:gh=0.012:bh=-0.03,"
+              "curves=all='0/0.02 0.25/0.22 0.75/0.79 1/0.98',unsharp=5:5:0.4,noise=alls=4:allf=t+u,vignette=PI/7"),
     # v3: gentle, natural, warm; light grain, barely-there vignette
     'soft': ("eq=contrast=1.03:saturation=1.0:gamma=1.0,"
              "colorbalance=rs=0.01:bs=-0.01:rh=0.03:gh=0.01:bh=-0.03,"
