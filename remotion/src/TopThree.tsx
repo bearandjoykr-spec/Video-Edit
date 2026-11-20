@@ -53,6 +53,30 @@ const Hook: React.FC<{t: number; fps: number; sec: Sec; day: number}> = ({t, fps
   );
 };
 
+// v2 hook: one question every parent feels, over the most surprising picture (the AI floor ball game)
+const QHook: React.FC<{t: number; fps: number; sec: Sec; day: number}> = ({t, fps, sec, day}) => {
+  const k = sp(t, 0, fps, 13);
+  return (
+    <div style={{position: 'absolute', top: 330, left: 70, right: 70, textAlign: 'center'}}>
+      <div style={{display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 30, letterSpacing: 2, color: C.ink, background: C.goldHi, borderRadius: 999, padding: '6px 22px'}}>
+        DAY {day} · 출간까지 매일 업로드</div>
+      <Pre text={sec.title!} style={{marginTop: 26, fontFamily: PRE, fontWeight: 900, fontSize: 104, lineHeight: 1.12, color: C.white, textShadow: SH,
+        transform: `scale(${.9 + .1 * k})`, opacity: k}} />
+      <div style={{marginTop: 22}}><Hairline w={380} k={k} /></div>
+    </div>
+  );
+};
+
+const Cta: React.FC<{t: number; fps: number; s: number; text: string}> = ({t, fps, s, text}) => {
+  const k = sp(t, s, fps, 12);
+  return (
+    <div style={{position: 'absolute', top: 560, left: 110, right: 110, ...glass, background: 'rgba(244,239,228,.95)', padding: '30px 30px', textAlign: 'center',
+      opacity: k, transform: `scale(${.9 + .1 * k})`}}>
+      <Pre text={text} style={{fontFamily: PRE, fontWeight: 900, fontSize: 56, lineHeight: 1.25, color: C.navy}} />
+    </div>
+  );
+};
+
 const Rank: React.FC<{t: number; fps: number; sec: Sec}> = ({t, fps, sec}) => {
   const k = sp(t, sec.s, fps, 15), k2 = sp(t, sec.s + .22, fps, 14);
   return (
@@ -146,7 +170,7 @@ export const TopThree: React.FC<{plan: TopPlan}> = ({plan}) => {
   const cur = [...secs.slice(0, si + 1)].reverse().find((x) => x.kind === 'rank');  // which pick we are on
   const cap = plan.captions.find((c) => t >= c.s && t < c.e);
   const drift = 1.03 + .012 * Math.sin(t * .6);
-  const showChip = cur && !['rank', 'hook', 'end'].includes(sec.kind) && si > secs.indexOf(cur);
+  const showChip = cur && !['rank', 'hook', 'q', 'end'].includes(sec.kind) && si > secs.indexOf(cur);
   const phrases = plan.captions.filter((c) => c.phrase);
   return (
     <AbsoluteFill style={{background: C.ink, overflow: 'hidden'}}>
@@ -156,6 +180,8 @@ export const TopThree: React.FC<{plan: TopPlan}> = ({plan}) => {
       {/* premium grade: soft vignette + darker top/bottom for legibility */}
       <AbsoluteFill style={{background: 'radial-gradient(ellipse 80% 70% at 50% 48%, rgba(0,0,0,0) 55%, rgba(5,8,16,.55) 100%)'}} />
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(8,12,22,.55) 0%, rgba(8,12,22,0) 30%, rgba(8,12,22,0) 58%, rgba(8,12,22,.6) 82%, rgba(8,12,22,.75) 100%)'}} />
+      {sec.kind === 'q' && <QHook t={t} fps={fps} sec={sec} day={plan.day} />}
+      {(sec as Sec & {cta?: string}).cta && <Cta t={t} fps={fps} s={secs.find((x) => (x as Sec & {cta?: string}).cta)!.s + .2} text={(sec as Sec & {cta?: string}).cta!} />}
       {sec.kind === 'hook' && <Hook t={t} fps={fps} sec={sec} day={plan.day} />}
       {sec.kind === 'rank' && <Rank t={t} fps={fps} sec={sec} />}
       {showChip && cur && <Chip n={cur.n!} title={cur.title!} t={t} s={cur.e} fps={fps} day={plan.day} />}
