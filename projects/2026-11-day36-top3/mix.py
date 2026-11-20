@@ -9,7 +9,9 @@ music, m0 = f"{P}/music/fashion-lifestyle-628637.mp3", 0.557
 ins, fc, vlab = [], [], []
 for k, b in enumerate(plan["bites"]):
     ins += ["-ss", f"{b['ss']:.3f}", "-t", f"{b['d']:.3f}", "-i", b["src"]]; ms = int(b["t"] * 1000)
-    fc.append(f"[{k}:a]aformat=sample_rates=48000:channel_layouts=stereo,highpass=f=90,afftdn=nf=-28,"
+    clean = "highpass=f=80" if b.get("vo") else "highpass=f=90,afftdn=nf=-28"   # the VO recording is clean; fair bites get de-noised
+    gain = "volume=5.3dB" if b.get("vo") else "volume=1.0"   # recording -21.7 LUFS vs fair bites -16.4
+    fc.append(f"[{k}:a]aformat=sample_rates=48000:channel_layouts=stereo,{clean},{gain},"
               f"afade=t=in:d=0.03,afade=t=out:st={b['d'] - 0.05:.3f}:d=0.05,adelay={ms}|{ms}[b{k}]"); vlab.append(f"[b{k}]")
 n = len(plan["bites"])
 if os.path.exists(f"{V}/vo.wav"):

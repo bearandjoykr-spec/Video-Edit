@@ -189,8 +189,8 @@ export const TopThree: React.FC<{plan: TopPlan}> = ({plan}) => {
         t >= plan.captions.filter((c) => c.vo && c.s >= sec.s - .01 && c.s < sec.e)[sec.card.at].s &&
         <TestCard t={t} s={plan.captions.filter((c) => c.vo && c.s >= sec.s - .01 && c.s < sec.e)[sec.card.at].s} fps={fps} card={sec.card} />}
       {sec.kind === 'vo' && sec.info && <Info t={t} s={sec.s + .3} fps={fps} name={sec.info.name} lines={sec.info.lines} />}
-      {sec.kind === 'vo' && sec.play && t > (sec.s + sec.e) / 2 && (
-        <div style={{position: 'absolute', top: 820, left: 90, right: 90, ...glass, padding: '22px 30px', textAlign: 'center', opacity: sp(t, (sec.s + sec.e) / 2, fps)}}>
+      {sec.kind === 'vo' && sec.play && t > ((sec as Sec & {playAt?: number}).playAt ?? (sec.s + sec.e) / 2) && (
+        <div style={{position: 'absolute', top: 820, left: 90, right: 90, ...glass, padding: '22px 30px', textAlign: 'center', opacity: sp(t, (sec as Sec & {playAt?: number}).playAt ?? (sec.s + sec.e) / 2, fps)}}>
           <div style={{fontFamily: SERIF, fontStyle: 'italic', fontWeight: 600, fontSize: 52, color: C.white}}>“{sec.play[0]}”</div>
           <div style={{marginTop: 6, fontFamily: PRE, fontWeight: 700, fontSize: 34, color: C.cream}}>{sec.play[1]}</div>
         </div>)}
