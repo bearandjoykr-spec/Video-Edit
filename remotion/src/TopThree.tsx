@@ -148,7 +148,7 @@ const Phrase: React.FC<{t: number; fps: number; c: Cap; i: number; n: number}> =
 const End: React.FC<{t: number; fps: number; sec: Sec}> = ({t, fps, sec}) => {
   const k = sp(t, sec.s, fps, 16);
   return (
-    <div style={{position: 'absolute', top: 420, left: 90, right: 90, background: C.cream, borderRadius: 30, padding: '40px 40px 36px', textAlign: 'center',
+    <div style={{position: 'absolute', top: 900, left: 90, right: 90, background: C.cream, borderRadius: 30, padding: '40px 40px 36px', textAlign: 'center',
       boxShadow: '0 30px 70px rgba(0,0,0,.5)', border: `2px solid ${C.gold}`, opacity: k, transform: `translateY(${(1 - k) * 40}px)`}}>
       <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 26, letterSpacing: 3, color: '#8A6A35'}}>DAY 36 · 출간까지 매일 업로드</div>
       <Img src={staticFile('brand/logo-full.png')} style={{height: 150, objectFit: 'contain', marginTop: 10}} />
@@ -196,7 +196,7 @@ export const TopThree: React.FC<{plan: TopPlan}> = ({plan}) => {
         </div>)}
       {cap && cap.phrase && <Phrase t={t} fps={fps} c={cap} i={phrases.indexOf(cap)} n={phrases.length} />}
       {sec.kind === 'end' && <End t={t} fps={fps} sec={sec} />}
-      {cap && !cap.phrase && (
+      {cap && !cap.phrase && sec.kind !== 'end' && (
         <div style={{position: 'absolute', left: 70, right: 70, top: 1230, textAlign: 'center', opacity: fade(t, cap.s, cap.e, .1)}}>
           {cap.who && <div style={{display: 'inline-block', marginBottom: 12, fontFamily: PRE, fontWeight: 800, fontSize: 28, letterSpacing: 3, color: C.ink, background: C.goldHi,
             borderRadius: 999, padding: '4px 18px'}}>{cap.who === 'Mark' ? 'Mark T · 영국 원어민 선생님' : 'Joy · Bear & Joy 공동 저자'}</div>}
