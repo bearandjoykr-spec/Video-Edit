@@ -207,3 +207,23 @@ export const TopThree: React.FC<{plan: TopPlan}> = ({plan}) => {
     </AbsoluteFill>
   );
 };
+
+// DAY 36 cover (Joy, 20 Nov): Mark smiling with a thumbs-up (bg2 20.7 s), text below his face, all inside y 300–1450.
+export const TopThreeCover: React.FC<{day: number}> = ({day}) => {
+  useFonts();
+  return (
+    <AbsoluteFill style={{background: C.ink}}>
+      <Img src={staticFile('day36/cover-mark.jpg')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(8,12,22,.35) 0%, rgba(8,12,22,0) 22%, rgba(8,12,22,0) 50%, rgba(8,12,22,.78) 68%, rgba(8,12,22,.9) 100%)'}} />
+      <div style={{position: 'absolute', top: 310, left: 0, right: 0, textAlign: 'center'}}>
+        <div style={{display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 32, letterSpacing: 2, color: C.ink, background: C.goldHi, borderRadius: 999, padding: '8px 26px'}}>
+          DAY {day} · 출간까지 매일 업로드</div>
+      </div>
+      <div style={{position: 'absolute', top: 1080, left: 70, right: 70, textAlign: 'center'}}>
+        <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 32, letterSpacing: 10, color: C.goldHi}}>COEX 유아교육전</div>
+        <Pre text={'다 돌고, 딱 3개만\n골랐어요'} style={{marginTop: 10, fontFamily: PRE, fontWeight: 900, fontSize: 96, lineHeight: 1.1, color: C.white, textShadow: SH}} />
+        <div style={{marginTop: 6, fontFamily: SERIF, fontStyle: 'italic', fontWeight: 600, fontSize: 120, lineHeight: 1.05, color: C.goldHi, textShadow: '0 8px 30px rgba(0,0,0,.6)'}}>TOP 3</div>
+      </div>
+    </AbsoluteFill>
+  );
+};
