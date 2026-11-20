@@ -181,7 +181,7 @@ export const TopThree: React.FC<{plan: TopPlan}> = ({plan}) => {
       <AbsoluteFill style={{background: 'radial-gradient(ellipse 80% 70% at 50% 48%, rgba(0,0,0,0) 55%, rgba(5,8,16,.55) 100%)'}} />
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(8,12,22,.55) 0%, rgba(8,12,22,0) 30%, rgba(8,12,22,0) 58%, rgba(8,12,22,.6) 82%, rgba(8,12,22,.75) 100%)'}} />
       {sec.kind === 'q' && <QHook t={t} fps={fps} sec={sec} day={plan.day} />}
-      {(sec as Sec & {cta?: string}).cta && <Cta t={t} fps={fps} s={secs.find((x) => (x as Sec & {cta?: string}).cta)!.s + .2} text={(sec as Sec & {cta?: string}).cta!} />}
+      {(sec as Sec & {cta?: string}).cta && <Cta t={t} fps={fps} s={secs.find((x) => (x as Sec & {cta?: string}).cta)!.s + .05} text={(sec as Sec & {cta?: string}).cta!} />}
       {sec.kind === 'hook' && <Hook t={t} fps={fps} sec={sec} day={plan.day} />}
       {sec.kind === 'rank' && <Rank t={t} fps={fps} sec={sec} />}
       {showChip && cur && <Chip n={cur.n!} title={cur.title!} t={t} s={cur.e} fps={fps} day={plan.day} />}

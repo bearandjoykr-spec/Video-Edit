@@ -43,8 +43,7 @@ SECTIONS = [
                (B2, 16.2, 2), (B2, 305.0, 2)],
      "info": {"name": "블루래빗 사운드 차트", "lines": ["누르면 우리말·영어 단어와 소리", "퀴즈 · 동요 5곡 · 피아노·실로폰 연주", "현장가 1장 17,500원 (4장 64,000원)"]},
      "play": ("Where's the tiger? Press it!", "호랑이 어디 있지? 눌러 봐!")},
-    # 7 Mark: "Brilliant." (his voice, poster picture) + comment call-to-action
-    {"kind": "bite", "bite": (B2, 316.85, 317.65), "who": "Mark", "cap": "Brilliant! 👏", "cta": "더 궁금한 점은\n댓글에 '포스터' 💬"},
+    # (v5, Joy: Mark's fair bites "Brilliant!" and "jumping up and down" removed — hard to hear)
     {"kind": "cta", "beats": 3, "shot": (B2, 312.0), "cta": "더 궁금한 점은\n댓글에 '포스터' 💬"},
     # 9 No.1 reveal — the AI floor ball game (the climax)
     {"kind": "rank", "n": 1, "title": "몸으로 하는 공 게임", "shot": (B2, 203.0, "rot")},
@@ -55,9 +54,6 @@ SECTIONS = [
     # 11 phrase cards (Joy says them in the VO), Mark kicking on the beat
     {"kind": "phrases", "n": 1, "phrases": [(30.10, 31.28, "Kick the ball!", "공을 차!"), (31.50, 32.82, "Throw it to me!", "나한테 던져!"), (33.60, 34.60, "Your turn!", "네 차례야!")],
      "shots": [(B2, 213.0, 2, "rot"), (B2, 215.6, 2, "rot"), (B2, 207.0, 2, "rot")]},   # "Catch!" was not in the recording
-    # 12 Mark on why it works (his voice; picture = the game)
-    {"kind": "bite", "bite": (B2, 251.95, 255.75), "who": "Mark", "cap": "They're not just on their fingers,\nthey're actually jumping up and down!",
-     "ko": "손가락만 쓰는 게 아니라, 온몸으로 뛰면서 놀아요!", "picture": (B2, 204.5, "rot")},
     # 13 end: save + share + follow (Joy's last VO line)
     {"kind": "end", "pieces": [(34.98, 36.92, "저장해 두고\n아이랑 꼭 해 보세요!"), (37.38, 39.20, "See you tomorrow!", "Mark")], "shot": (B2, 0.8)},
 ]

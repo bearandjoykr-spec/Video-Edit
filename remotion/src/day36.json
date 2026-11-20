@@ -2,8 +2,8 @@
  "fps": 30,
  "day": 36,
  "media": "day36",
- "duration": 52.93,
- "frames": 1588,
+ "duration": 48.33,
+ "frames": 1450,
  "beat": 0.5,
  "shots": [
   {
@@ -201,95 +201,82 @@
   },
   {
    "src": "raw-footage/day35/bg2.mov",
-   "ss": 316.85,
-   "t": 30.67,
-   "d": 0.8
-  },
-  {
-   "src": "raw-footage/day35/bg2.mov",
    "ss": 312.0,
-   "t": 31.47,
+   "t": 30.67,
    "d": 1.5
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 203.0,
-   "t": 32.97,
+   "t": 32.17,
    "d": 1.5,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 198.6,
-   "t": 34.47,
+   "t": 33.67,
    "d": 1.0,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 200.6,
-   "t": 35.47,
+   "t": 34.67,
    "d": 1.0,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 181.3,
-   "t": 36.47,
+   "t": 35.67,
    "d": 1.0
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 203.5,
-   "t": 37.47,
+   "t": 36.67,
    "d": 1.0,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 205.5,
-   "t": 38.47,
+   "t": 37.67,
    "d": 1.0,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 25.0,
-   "t": 39.47,
+   "t": 38.67,
    "d": 0.3
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 213.0,
-   "t": 39.77,
+   "t": 38.97,
    "d": 1.4,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 215.6,
-   "t": 41.17,
+   "t": 40.37,
    "d": 1.54,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
    "ss": 207.0,
-   "t": 42.71,
+   "t": 41.91,
    "d": 1.22,
    "rot": 180
   },
   {
    "src": "raw-footage/day35/bg2.mov",
-   "ss": 204.5,
-   "t": 43.93,
-   "d": 3.8,
-   "rot": 180
-  },
-  {
-   "src": "raw-footage/day35/bg2.mov",
    "ss": 0.8,
-   "t": 47.73,
+   "t": 43.13,
    "d": 5.2
   }
  ],
@@ -337,64 +324,50 @@
    "who": ""
   },
   {
-   "s": 30.72,
-   "e": 31.47,
-   "text": "Brilliant! 👏",
-   "ko": "",
-   "who": "Mark"
-  },
-  {
-   "s": 34.47,
-   "e": 37.97,
+   "s": 33.67,
+   "e": 37.17,
    "text": "아이들은 앉아서 공부할 때보다\n놀 때 훨씬 빨리 배워요",
    "vo": true,
    "who": ""
   },
   {
-   "s": 37.97,
-   "e": 39.77,
+   "s": 37.17,
+   "e": 38.97,
    "text": "놀면서 이렇게 말해 주세요",
    "vo": true,
    "who": ""
   },
   {
-   "s": 39.77,
-   "e": 41.17,
+   "s": 38.97,
+   "e": 40.37,
    "text": "Kick the ball!",
    "ko": "공을 차!",
    "phrase": true
   },
   {
-   "s": 41.17,
-   "e": 42.71,
+   "s": 40.37,
+   "e": 41.91,
    "text": "Throw it to me!",
    "ko": "나한테 던져!",
    "phrase": true
   },
   {
-   "s": 42.71,
-   "e": 43.93,
+   "s": 41.91,
+   "e": 43.13,
    "text": "Your turn!",
    "ko": "네 차례야!",
    "phrase": true
   },
   {
-   "s": 43.98,
-   "e": 47.73,
-   "text": "They're not just on their fingers,\nthey're actually jumping up and down!",
-   "ko": "손가락만 쓰는 게 아니라, 온몸으로 뛰면서 놀아요!",
-   "who": "Mark"
-  },
-  {
-   "s": 47.73,
-   "e": 49.79,
+   "s": 43.13,
+   "e": 45.19,
    "text": "저장해 두고\n아이랑 꼭 해 보세요!",
    "vo": true,
    "who": ""
   },
   {
-   "s": 49.79,
-   "e": 51.73,
+   "s": 45.19,
+   "e": 47.13,
    "text": "See you tomorrow!",
    "vo": true,
    "who": "Mark"
@@ -508,26 +481,18 @@
    "e": 30.67
   },
   {
-   "kind": "bite",
-   "who": "Mark",
-   "cap": "Brilliant! 👏",
-   "cta": "더 궁금한 점은\n댓글에 '포스터' 💬",
-   "s": 30.67,
-   "e": 31.47
-  },
-  {
    "kind": "cta",
    "beats": 3,
    "cta": "더 궁금한 점은\n댓글에 '포스터' 💬",
-   "s": 31.47,
-   "e": 32.97
+   "s": 30.67,
+   "e": 32.17
   },
   {
    "kind": "rank",
    "n": 1,
    "title": "몸으로 하는 공 게임",
-   "s": 32.97,
-   "e": 34.47
+   "s": 32.17,
+   "e": 33.67
   },
   {
    "kind": "vo",
@@ -552,8 +517,8 @@
      "원하는 활동을 문장으로 쓰면 AI가 게임으로"
     ]
    },
-   "s": 34.47,
-   "e": 39.77
+   "s": 33.67,
+   "e": 38.97
   },
   {
    "kind": "phrases",
@@ -578,16 +543,8 @@
      "네 차례야!"
     ]
    ],
-   "s": 39.77,
-   "e": 43.93
-  },
-  {
-   "kind": "bite",
-   "who": "Mark",
-   "cap": "They're not just on their fingers,\nthey're actually jumping up and down!",
-   "ko": "손가락만 쓰는 게 아니라, 온몸으로 뛰면서 놀아요!",
-   "s": 43.93,
-   "e": 47.73
+   "s": 38.97,
+   "e": 43.13
   },
   {
    "kind": "end",
@@ -604,8 +561,8 @@
      "Mark"
     ]
    ],
-   "s": 47.73,
-   "e": 52.93
+   "s": 43.13,
+   "e": 48.33
   }
  ],
  "bites": [
@@ -671,63 +628,51 @@
    "vo": true
   },
   {
-   "src": "raw-footage/day35/bg2.mov",
-   "ss": 316.85,
-   "t": 30.67,
-   "d": 0.8
-  },
-  {
    "src": "raw-footage/day36/vo.m4a",
    "ss": 24.56,
-   "t": 34.47,
+   "t": 33.67,
    "d": 3.38,
    "vo": true
   },
   {
    "src": "raw-footage/day36/vo.m4a",
    "ss": 28.2,
-   "t": 37.97,
+   "t": 37.17,
    "d": 1.68,
    "vo": true
   },
   {
    "src": "raw-footage/day36/vo.m4a",
    "ss": 30.1,
-   "t": 39.77,
+   "t": 38.97,
    "d": 1.18,
    "vo": true
   },
   {
    "src": "raw-footage/day36/vo.m4a",
    "ss": 31.5,
-   "t": 41.17,
+   "t": 40.37,
    "d": 1.32,
    "vo": true
   },
   {
    "src": "raw-footage/day36/vo.m4a",
    "ss": 33.6,
-   "t": 42.71,
+   "t": 41.91,
    "d": 1.0,
    "vo": true
   },
   {
-   "src": "raw-footage/day35/bg2.mov",
-   "ss": 251.95,
-   "t": 43.93,
-   "d": 3.8
-  },
-  {
    "src": "raw-footage/day36/vo.m4a",
    "ss": 34.98,
-   "t": 47.73,
+   "t": 43.13,
    "d": 1.94,
    "vo": true
   },
   {
    "src": "raw-footage/day36/vo.m4a",
    "ss": 37.38,
-   "t": 49.79,
+   "t": 45.19,
    "d": 1.82,
    "vo": true
   }
@@ -754,27 +699,27 @@
    "gain": -13
   },
   {
-   "t": 32.97,
+   "t": 32.17,
    "sound": "whoosh",
    "gain": -12
   },
   {
-   "t": 33.07,
+   "t": 32.27,
    "sound": "impact",
    "gain": -13
   },
   {
-   "t": 39.77,
+   "t": 38.97,
    "sound": "pop",
    "gain": -16
   },
   {
-   "t": 41.17,
+   "t": 40.37,
    "sound": "pop",
    "gain": -16
   },
   {
-   "t": 42.71,
+   "t": 41.91,
    "sound": "pop",
    "gain": -16
   }
