@@ -35,11 +35,23 @@ while True:
     buf = p.stdout.read(W * H * 4)
     if len(buf) < W * H * 4: break
     f = np.frombuffer(buf, np.uint8).reshape(H, W, 4).copy()
-    a = np.maximum(f[:, :, 3], body)
+    a0 = f[:, :, 3].astype(np.float32) / 255
+    # head and hair (Joy, 21 Nov: "머리카락 누끼 확실히"): firmer edge so the dark wall around the dark hair drops out —
+    # contrast the soft edge, shrink it 2 px, feather 1.5 px. Below the neck the steady body shape takes over.
+    hd = np.clip((a0 - .45) / .4, 0, 1)
+    hd = cv2.erode(hd, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)))
+    hd = cv2.GaussianBlur(hd, (0, 0), 1.5)
+    head = (hd * 255).astype(np.uint8)
+    a = f[:, :, 3].copy(); a[:neck] = head[:neck]
+    blend = slice(neck, min(H, neck + 40))                      # ease from the head treatment to the raw alpha over 40 px
+    w = np.linspace(1, 0, blend.stop - blend.start)[:, None]
+    a[blend] = (head[blend] * w + f[blend, :, 3] * (1 - w)).astype(np.uint8)
+    a = np.maximum(a, body)
     solid = cv2.morphologyEx((a > 100).astype(np.uint8), cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9)))
     pad = np.pad(solid, 1); flood = pad.copy(); m = np.zeros((H + 4, W + 4), np.uint8)
     cv2.floodFill(flood, m, (0, 0), 1)
     inside = cv2.erode(((pad | (1 - flood))[1:-1, 1:-1]).astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)
+    inside[:neck + 60] = False   # never fill around the head: the gap between hair and neck is real background
     a[inside] = 255
     f[:, :, 3] = a
     enc.stdin.write(f.tobytes()); n += 1

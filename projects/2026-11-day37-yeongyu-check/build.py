@@ -25,6 +25,7 @@ PARTS = {
     ("p1", 37.60, 45.06, [(37.60, "중간 입학이라면 지금 교재가\n어디까지 진행됐는지"), (41.54, "교재비는 어떻게 책정되는지\n꼭 확인해 보세요")]),
     ("end1", 150.54, 154.98, [(150.54, "영유에 대해 궁금한 점은\n댓글로 남겨 주세요"), (153.84, "그럼 안녕! 👋")]),
  ],
+ 3: None,   # filled below: one video with everything (Joy, 21 Nov: "두 개를 한 개로")
  2: [
     ("hook2", 61.30, 65.20, [(61.30, "영어가 모국어라고 해서\n어린아이를 잘 가르치는 건 아니에요")]),
     ("p2", 74.66, 83.42, [(74.66, "중요한 건 유아교육에 대한\n이해가 있는지"), (79.94, "아이들을 가르친 경험이\n얼마나 있는지예요")]),
@@ -34,6 +35,11 @@ PARTS = {
     ("end2", 150.54, 154.98, [(150.54, "영유에 대해 궁금한 점은\n댓글로 남겨 주세요"), (153.84, "그럼 안녕! 👋")]),
  ],
 }
+PARTS[3] = PARTS[1][:4] + [
+    ("p2", 57.96, 60.72, [(57.96, "두 번째, 원어민 강사의 교육 경험")]),
+    ("p2", 61.30, 65.20, [(61.30, "영어가 모국어라고 해서\n어린아이를 잘 가르치는 건 아니에요")]),
+] + PARTS[2][1:5] + [("end2",) + PARTS[2][5][1:]]
+DAYS = {1: 37, 2: 38, 3: 37}
 ST = "raw-footage/day37/stock/"
 # background scenes per section (Pexels clip id, start s), each ~2 s
 BG = {
@@ -107,10 +113,10 @@ def main():
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", SRC, "-filter_complex", ";".join(fc), "-map", "[v]", "-c:v", "h264_videotoolbox", "-b:v", "30M",
                     "-an", f"{HERE}/joy-src-p{PART}.mp4", "-map", "[a]", "-ac", "2", f"{HERE}/versions/part{PART}/voice.wav"], check=True)
 
-    plan = {"fps": FPS, "day": 36 + PART, "part": PART, "media": f"day37/p{PART}", "duration": total, "frames": int(math.ceil(total * FPS)), "voice": round(total_voice, 3),
+    plan = {"fps": FPS, "day": DAYS[PART], "part": PART, "media": f"day37/p{PART}", "duration": total, "frames": int(math.ceil(total * FPS)), "voice": round(total_voice, 3),
             "captions": caps, "sections": secs, "ticks": ticks,
             "sfx": [{"t": s["s"], "sound": "whoosh", "gain": -16} for s in secs[1:]] + [{"t": t, "sound": "pop", "gain": -15} for v in ticks.values() for t in v]}
-    for p in (f"{HERE}/versions/part{PART}/plan.json", f"{HERE}/../../remotion/src/day{36 + PART}.json"):
+    for p in (f"{HERE}/versions/part{PART}/plan.json", f"{HERE}/../../remotion/src/day{DAYS[PART]}.json"):
         json.dump(plan, open(p, "w", encoding="utf8"), ensure_ascii=False, indent=1)
     # background: stock scenes per section, ~2 s each, soft 0.3 s dissolves, dimmed in Remotion
     os.makedirs(f"{HERE}/../../remotion/public/day37/p{PART}", exist_ok=True)

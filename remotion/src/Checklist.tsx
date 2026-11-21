@@ -50,7 +50,7 @@ const Tick: React.FC<{text: string; on: number; t: number; fps: number; dark?: b
 };
 
 // the little picture for each point, above its checklist
-const Graphic: React.FC<{kind: string; t: number; s: number; fps: number}> = ({kind, t, s, fps}) => {
+const Graphic: React.FC<{kind: string; t: number; s: number; fps: number; ticks?: number[]}> = ({kind, t, s, fps, ticks}) => {
   const k = interpolate(t, [s + .3, s + 1.6], [0, 1], clamp);
   if (kind === 'p1') return (
     <div style={{marginTop: 18}}>
@@ -74,7 +74,10 @@ const Graphic: React.FC<{kind: string; t: number; s: number; fps: number}> = ({k
         <div style={{width: `${desk}%`, background: C.navy, color: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', whiteSpace: 'nowrap'}}>{k > .5 && '책상 수업'}</div>
         <div style={{flex: 1, background: C.goldHi, color: C.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', whiteSpace: 'nowrap'}}>놀이</div>
       </div>
-      <div style={{marginTop: 6, fontFamily: PRE, fontWeight: 700, fontSize: 26, color: C.muted}}>'놀이형'이어도 앉아 있는 시간이 길 수 있어요</div>
+      {/* Joy (21 Nov): once free play is ticked, the note becomes the why */}
+      {t >= (ticks?.[2] ?? 1e9)
+        ? <div style={{marginTop: 6, fontFamily: PRE, fontWeight: 900, fontSize: 28, color: C.red, opacity: sp(t, ticks![2], fps)}}>💡 앉아서 공부만 하면, 영어 자체를 싫어하게 될 수 있어요</div>
+        : <div style={{marginTop: 6, fontFamily: PRE, fontWeight: 700, fontSize: 26, color: C.muted}}>'놀이형'이어도 앉아 있는 시간이 길 수 있어요</div>}
     </div>);
 };
 
@@ -87,7 +90,7 @@ const PointCard: React.FC<{kind: string; sec: Sec; t: number; fps: number; ticks
           fontFamily: SERIF, fontWeight: 700, fontSize: 48, color: C.goldHi}}>{P.n}</div>
         <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 50, color: C.navy}}>{P.title}</div>
       </div>
-      <Graphic kind={kind} t={t} s={sec.s} fps={fps} />
+      <Graphic kind={kind} t={t} s={sec.s} fps={fps} ticks={ticks} />
       <div style={{marginTop: 8}}>{P.ticks.map((x, i) => <Tick key={i} text={x} on={ticks[i] ?? 1e9} t={t} fps={fps} />)}</div>
     </div>
   );
@@ -215,7 +218,7 @@ export const Checklist: React.FC<{plan: CheckPlan}> = ({plan}) => {
       </div>
       <div style={{position: 'absolute', top: 300, left: 0, right: 0, display: 'flex', justifyContent: 'center'}}>
         <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 26, letterSpacing: 2, color: C.ink, background: C.goldHi, borderRadius: 999, padding: '5px 20px'}}>
-          DAY {plan.day} · 출간까지 매일 업로드</div>
+          DAY {plan.day}</div>
       </div>
       <div style={{position: 'absolute', top: 352, left: 90, right: 90, display: 'flex', alignItems: 'center', gap: 14}}>
         <div style={{flex: 1, height: 10, borderRadius: 5, background: 'rgba(255,255,255,.22)', overflow: 'hidden'}}>
