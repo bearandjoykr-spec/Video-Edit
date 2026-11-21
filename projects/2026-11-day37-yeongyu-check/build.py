@@ -74,6 +74,18 @@ PARTS[4] = [
 ]
 DAYS = {1: 37, 2: 38, 3: 37, 4: 37}
 ST = "raw-footage/day37/stock/"
+# Joy (21 Nov): no repeated background clips in the full version — 34 new clips (Pexels + Pixabay, see STOCK.md), each used once
+ST2 = "raw-footage/day37/stock2/"
+BG4 = {
+    "hook2": [("8363212", 1.0), ("8927388", 2.0), ("8363653", 2.0), ("12903708", 3.0)],
+    "intro": [("8471678", 2.0), ("7494858", 1.0)],
+    "p1": [("8343627", 1.0), ("px215474", 1.0), ("7098319", 1.0), ("12760956", 1.0), ("5601059", 1.0), ("7159519", 1.0)],
+    "p2": [("8500931", 1.0), ("8500932", 1.0), ("6968480", 2.0), ("7159512", 1.0), ("7159516", 1.0), ("7078672", 1.0)],
+    "p3": [("3676968", 1.0), ("6952581", 1.0), ("6952627", 1.0), ("8612213", 1.0), ("3676951", 1.0), ("6965204", 2.0)],
+    "p4": [("38786371", 2.0), ("35733042", 1.0), ("7102473", 1.0), ("4009685", 0.5), ("8034400", 1.0)],
+    "next": [("6965202", 1.0), ("7940895", 1.0), ("px229572", 0.5), ("px214776", 0.5)],
+    "end2": [("8384571", 0.5)],
+}
 # background scenes per section (Pexels clip id, start s), each ~2 s
 BG = {
     "hook": [("5897636", 1.0), ("5426854", 2.0), ("5897636", 5.0), ("8363896", 3.0)],
@@ -175,13 +187,17 @@ def main():
     os.makedirs(f"{HERE}/../../remotion/public/day37/p{PART}", exist_ok=True)
     shots = []
     for sc in secs:
-        lst, d0 = BG[sc["kind"]], sc["e"] - sc["s"]; n2 = max(1, round(d0 / 2.0)); per = d0 / n2
+        if PART == 4:
+            lst, d0 = BG4[sc["kind"]], sc["e"] - sc["s"]; n2 = len(lst); per = d0 / n2
+        else:
+            lst, d0 = BG[sc["kind"]], sc["e"] - sc["s"]; n2 = max(1, round(d0 / 2.0)); per = d0 / n2
         for i in range(n2):
             sid, ss = lst[i % len(lst)]
-            dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", ST + sid + ".mp4"],
+            base = ST2 if PART == 4 else ST
+            dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", base + sid + ".mp4"],
                                        capture_output=True, text=True).stdout)
             ss = (ss + (i // len(lst)) * 2.5) % max(1.0, dur - per - .8)   # stay inside the clip (no frozen frames)
-            shots.append((ST + sid + ".mp4", round(ss, 2), round(sc["s"] + i * per, 3), round(per, 3)))
+            shots.append((base + sid + ".mp4", round(ss, 2), round(sc["s"] + i * per, 3), round(per, 3)))
     X = 0.3; ins2, fc2 = [], []
     for k, (src, ss, t0, d) in enumerate(shots):
         ins2 += ["-ss", f"{ss:.2f}", "-t", f"{d + X + .3:.2f}", "-i", src]
