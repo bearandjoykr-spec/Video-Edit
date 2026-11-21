@@ -184,3 +184,4 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Joy may add music herself in another app: then deliver with voice + light SFX only.
 - DAY 35 (event-logistics tips, 70 s, mostly B-roll) reached ~800 views. Lesson: lead with faces (Joy and Mark), a curiosity hook in the
   first second, value that works for viewers who are NOT at the event, a countdown that makes people stay to the end, and 35–45 s.
+- Stock footage (Joy, 21 Nov 2026): do not use clips with Muslim subjects (e.g. hijab); pick other people for the same scene.
