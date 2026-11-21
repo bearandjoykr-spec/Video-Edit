@@ -102,11 +102,13 @@ const Hook: React.FC<{sec: Sec; t: number; fps: number; caps: Cap[]}> = ({sec, t
   return (
     <div style={{position: 'absolute', top: 420, left: 70, right: 70, textAlign: 'center'}}>
       <div style={{display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 30, color: C.ink, background: C.goldHi, borderRadius: 999, padding: '6px 20px',
-        opacity: sp(t, 0, fps)}}>영유에서 실제로 있었던 일</div>
+        opacity: sp(t, 0, fps)}}>영유 보내기 전, 이것 모르면 손해</div>
       {!second && <div style={{marginTop: 26, fontFamily: PRE, fontWeight: 900, fontSize: 92, lineHeight: 1.12, color: C.white, textShadow: SH,
         transform: `scale(${.85 + .15 * sp(t, .1, fps, 12)})`}}>교재비는<br />다 냈는데 💸</div>}
       {second && <div style={{marginTop: 26, fontFamily: PRE, fontWeight: 900, fontSize: 88, lineHeight: 1.12, color: C.white, textShadow: SH,
         transform: `scale(${.85 + .15 * sp(t, c2.s, fps, 12)})`}}>몇 페이지만 하고<br /><span style={{color: C.goldHi}}>새 책 그대로 집에?!</span></div>}
+      <div style={{marginTop: 22, display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 36, color: C.navy, background: C.cream, borderRadius: 16,
+        padding: '10px 22px', opacity: sp(t, .8, fps), transform: `translateY(${(1 - sp(t, .8, fps)) * 20}px)`}}>📌 끝까지 보면 '영유 상담 체크리스트' 완성</div>
     </div>
   );
 };
@@ -154,6 +156,26 @@ const Next: React.FC<{sec: Sec; t: number; fps: number; caps: Cap[]}> = ({sec, t
             <span style={{fontSize: 44}}>{e}</span><span style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, color: C.cream}}>{txt}</span></div>);
       })}
       <div style={{marginTop: 22, fontFamily: PRE, fontWeight: 800, fontSize: 32, color: C.goldHi, opacity: sp(t, (cs[3]?.s ?? sec.e) , fps)}}>다음 영상 놓치지 않게 팔로우 · @thebearandjoy</div>
+    </div>
+  );
+};
+
+const Tip: React.FC<{sec: Sec; t: number; fps: number; ticks: number[]}> = ({sec, t, fps, ticks}) => {
+  const k = sp(t, sec.s, fps, 15);
+  const items = [['🏃', '신체 활동'], ['🧸', '자유로운 놀이'], ['🌱', '다양한 경험']];
+  return (
+    <div style={{...PANEL, background: C.navy, border: `3px solid ${C.gold}`, padding: '30px 38px', opacity: k, transform: `scale(${.95 + .05 * k})`}}>
+      <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 28, letterSpacing: 4, color: C.gold}}>PLUS TIP</div>
+      <div style={{marginTop: 6, fontFamily: PRE, fontWeight: 900, fontSize: 54, color: C.white}}>학습형 영유에 다닌다면?</div>
+      <div style={{marginTop: 8, fontFamily: PRE, fontWeight: 700, fontSize: 32, color: C.cream}}>정규 수업 후에는 '학습 더'보다</div>
+      <div style={{marginTop: 18, display: 'flex', gap: 14}}>
+        {items.map(([e, x], i) => {
+          const on = t >= (ticks[i] ?? 1e9); const q = sp(t, ticks[i] ?? 1e9, fps, 12);
+          return <div key={i} style={{flex: 1, height: 130, borderRadius: 20, background: on ? C.goldHi : 'rgba(255,255,255,.08)', display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center', transform: `scale(${on ? .85 + .15 * q : 1})`}}>
+            <span style={{fontSize: 50}}>{e}</span><span style={{fontFamily: PRE, fontWeight: 900, fontSize: 30, color: on ? C.navy : C.cream}}>{x}</span></div>;
+        })}
+      </div>
     </div>
   );
 };
@@ -230,6 +252,7 @@ export const Checklist: React.FC<{plan: CheckPlan}> = ({plan}) => {
       {sec.kind === 'intro' && <Intro sec={sec} t={t} fps={fps} />}
       {POINTS[sec.kind] && <PointCard kind={sec.kind} sec={sec} t={t} fps={fps} ticks={plan.ticks[sec.kind] ?? []} />}
       {sec.kind === 'next' && <Next sec={sec} t={t} fps={fps} caps={plan.captions} />}
+      {sec.kind === 'p4' && <Tip sec={sec} t={t} fps={fps} ticks={plan.ticks.p4 ?? []} />}
       {sec.kind === 'end1' && <End1 sec={sec} t={t} fps={fps} />}
       {(sec.kind === 'end' || sec.kind === 'end2') && <End sec={sec} t={t} fps={fps} />}
       {cap && (

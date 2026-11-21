@@ -13,7 +13,8 @@ SRC = "raw-footage/day37/main.mov"
 SPEED, FPS, KEEP = 1.1, 30, 0.14     # pauses ≥ 0.3 s inside a segment shrink to KEEP (source seconds)
 # pauses measured on the audio (level below floor+14 dB), source seconds
 PAUSES = [(3.84, 4.22), (6.02, 6.46), (36.22, 36.9), (37.34, 37.6), (41.62, 42.06), (65.2, 65.72), (75.84, 76.12), (79.98, 80.42),
-          (98.12, 98.4), (107.1, 107.6), (109.26, 109.7), (139.38, 139.92), (142.3, 142.74), (144.76, 145.06), (147.08, 147.64)]
+          (98.12, 98.4), (107.1, 107.6), (109.26, 109.7), (139.38, 139.92), (142.3, 142.74), (144.76, 145.06), (147.08, 147.64),
+          (122.0, 122.52), (124.46, 124.82), (126.92, 127.32), (130.1, 130.4)]
 # Joy (21 Nov): under 30 s each, so the talk becomes TWO reels. Part 1 (DAY 37): the textbook story → check ①;
 # Part 2 (DAY 38): checks ② and ③, opening on the native-teacher line. Background scenes are Pexels stock (STOCK.md).
 # (section, src start, src end, [(src time, caption)])  — captions are Joy's own words, two lines max
@@ -38,7 +39,11 @@ PARTS = {
 PARTS[3] = PARTS[1][:4] + [
     ("p2", 57.96, 60.72, [(57.96, "두 번째, 원어민 강사의 교육 경험")]),
     ("p2", 61.30, 65.20, [(61.30, "영어가 모국어라고 해서\n어린아이를 잘 가르치는 건 아니에요")]),
-] + PARTS[2][1:5] + [("end2",) + PARTS[2][5][1:]]
+] + PARTS[2][1:5] + [
+    # Joy (21 Nov): also speak to parents whose child is already in a study-focused 영유
+    ("p4", 117.04, 131.70, [(117.04, "만약 아이가 학습 중심의\n영유에 다니고 있다면"), (120.10, "정규 수업 이후까지\n계속 학습을 이어가기보다는"),
+                            (124.46, "신체 활동이나 자유로운 놀이,\n다양한 경험을 할 수 있는 시간을"), (129.17, "만들어 주는 것도\n좋은 방법이라고 생각해요")]),
+] + [("end2",) + PARTS[2][5][1:]]
 DAYS = {1: 37, 2: 38, 3: 37}
 ST = "raw-footage/day37/stock/"
 # background scenes per section (Pexels clip id, start s), each ~2 s
@@ -51,9 +56,10 @@ BG = {
     "p2": [("8363857", 2.0), ("8088320", 4.0), ("8342750", 4.0), ("8363857", 8.0)],
     "p3": [("7356018", 4.0), ("8088307", 4.0), ("5426854", 11.0), ("7356018", 14.0), ("37477954", 2.0), ("34125223", 4.0)],
     "end2": [("37477954", 5.0), ("34125223", 9.0)],
+    "p4": [("34125223", 1.0), ("37477954", 1.0), ("8088320", 6.0), ("34125223", 12.0), ("37477954", 7.0)],
 }
 # when each checklist tick appears (source time of the words that name it)
-TICKS = {"p1": [37.60, 41.54], "p2": [74.66, 79.94], "p3": [103.85, 108.0, 109.7]}
+TICKS = {"p1": [37.60, 41.54], "p2": [74.66, 79.94], "p3": [103.85, 108.0, 109.7], "p4": [124.46, 125.27, 126.90]}
 PART = int(os.environ.get("PART", "1"))
 SEGS = PARTS[PART]
 
