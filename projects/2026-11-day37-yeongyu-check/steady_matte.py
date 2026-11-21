@@ -19,11 +19,11 @@ while True:
     i += 1
 p.wait()
 body = np.percentile(np.stack(al), 80, axis=0) > 160
-body = cv2.erode(body.astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15)))
+body = cv2.morphologyEx(body.astype(np.uint8), cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (21, 21)))
 rows = np.where(body.any(axis=1))[0]
 neck = int(rows[0] + 0.33 * (rows[-1] - rows[0]))   # the shape below about a third of the way down = shoulders and torso
 body[:neck] = 0
-body = cv2.GaussianBlur(body.astype(np.float32) * 255, (0, 0), 3).astype(np.uint8)
+body = cv2.GaussianBlur(body.astype(np.float32) * 255, (0, 0), 1.2).astype(np.uint8)
 del al
 
 # pass 2
@@ -46,6 +46,10 @@ while True:
     blend = slice(neck, min(H, neck + 40))                      # ease from the head treatment to the raw alpha over 40 px
     w = np.linspace(1, 0, blend.stop - blend.start)[:, None]
     a[blend] = (head[blend] * w + f[blend, :, 3] * (1 - w)).astype(np.uint8)
+    low = a[neck + 40:].astype(np.float32)
+    low = np.where(low > 140, 255, 0).astype(np.uint8)          # hard edge below the shoulders, no flickering fringe
+    low = cv2.GaussianBlur(low, (0, 0), 1.0)
+    a[neck + 40:] = low
     a = np.maximum(a, body)
     solid = cv2.morphologyEx((a > 100).astype(np.uint8), cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9)))
     pad = np.pad(solid, 1); flood = pad.copy(); m = np.zeros((H + 4, W + 4), np.uint8)
