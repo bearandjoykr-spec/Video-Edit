@@ -48,8 +48,8 @@ const Box: React.FC<{text: string; on: number; t: number; fps: number}> = ({text
 
 const Head: React.FC<{n: string; title: string}> = ({n, title}) => (
   <div style={{display: 'flex', alignItems: 'baseline', gap: 14, height: 70}}>
-    <span style={{fontFamily: HAND, fontWeight: 700, fontSize: 64, color: C.red}}>{n}</span>
-    <span style={{fontFamily: HAND, fontWeight: 700, fontSize: 58, color: C.navy}}>{title}</span>
+    <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 50, color: C.red}}>{n}</span>
+    <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 48, color: C.navy}}>{title}</span>
   </div>
 );
 
@@ -91,7 +91,7 @@ const P2: React.FC<{sec: Sec; t: number; fps: number; ticks: number[]; caps: Cap
 const P3: React.FC<{sec: Sec; t: number; fps: number; ticks: number[]; caps: Cap[]}> = ({sec, t, fps, ticks, caps}) => {
   const cs = caps.filter((c) => c.sec === 'p3');
   const go = cs[2] ? Math.max(0, t - cs[2].s) : 0;   // the message travels while she explains it
-  const chain = ['학부모', '상담실', '운영진', '원어민 강사'];
+  const chain = ['학부모', '상담실', '한국인 강사', '원어민 강사'];
   return (
     <div style={{...NOTE, padding: '18px 36px 0 100px'}}><Margin />
       <Head n="③" title="운영진의 소통 방식" />
@@ -100,7 +100,7 @@ const P3: React.FC<{sec: Sec; t: number; fps: number; ticks: number[]; caps: Cap
           const on = go > i * .7;
           return <React.Fragment key={i}>
             {i > 0 && <span style={{fontFamily: HAND, fontWeight: 700, fontSize: 36, color: C.muted, opacity: on ? 1 : .3}}>→</span>}
-            <span style={{fontFamily: HAND, fontWeight: 700, fontSize: 34, color: i === 3 ? C.red : C.navy, background: on ? '#FFF1B8' : 'transparent', borderRadius: 10,
+            <span style={{fontFamily: HAND, fontWeight: 700, fontSize: 31, color: i === 3 ? C.red : C.navy, background: on ? '#FFF1B8' : 'transparent', borderRadius: 10,
               padding: '2px 8px', opacity: on ? 1 : .35, filter: i === 3 && on && t < (ticks[0] ?? 1e9) ? 'blur(.6px)' : 'none'}}>{i === 3 && on && t < (ticks[0] ?? 1e9) ? x + ' ❓' : x}</span>
           </React.Fragment>;
         })}
@@ -140,7 +140,7 @@ const Last: React.FC<{sec: Sec; t: number; fps: number; caps: Cap[]}> = ({sec, t
 const Intro: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => (
   <div style={{...NOTE, padding: '22px 36px 0 100px'}}><Margin />
     <div style={{fontFamily: HAND, fontWeight: 700, fontSize: 44, color: C.red}}>📝 상담 전 체크리스트 2편</div>
-    {['교사의 근속 기간', '교과서', '운영진의 소통 방식'].map((x, i) => (
+    {['교사의 근속 기간', '교과서', '운영진의 소통 방식'].map((x, i) => ( // intro list
       <div key={i} style={{display: 'flex', alignItems: 'center', gap: 14, height: 70, opacity: sp(t, sec.s + .3 + .25 * i, fps)}}>
         <span style={{fontFamily: HAND, fontWeight: 700, fontSize: 52, color: C.red}}>{'①②③'[i]}</span>
         <span style={{fontFamily: HAND, fontWeight: 700, fontSize: 48, color: C.navy, filter: 'blur(9px)'}}>{x}</span><span style={{fontSize: 36}}>🔒</span>
@@ -189,6 +189,12 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       <div style={{position: 'absolute', left: (1080 - W) / 2, top: 1920 - H - 40, width: W, height: H, filter: outline}}>
         <OffthreadVideo src={staticFile(`${plan.media}/joy.webm`)} transparent muted style={{width: '100%', height: '100%'}} />
       </div>
+      {/* hook: flags of the native teachers' countries either side of Joy's face */}
+      {sec.kind === 'hook' && [['🇬🇧', 70, 1180, -8], ['🇺🇸', 90, 1380, 6], ['🇨🇦', 850, 1170, 7], ['🇦🇺', 830, 1390, -6]].map(([f, x, y, r], i) => {
+        const k = sp(t, .2 + .15 * i, fps, 10);
+        return <div key={i} style={{position: 'absolute', left: x as number, top: (y as number) + Math.sin(t * 2 + i) * 6, fontSize: 130, transform: `scale(${k}) rotate(${r}deg)`,
+          filter: 'drop-shadow(0 8px 14px rgba(60,40,10,.35))'}}>{f as string}</div>;
+      })}
       {/* DAY chip + yellow progress bar */}
       <div style={{position: 'absolute', top: 300, left: 0, right: 0, display: 'flex', justifyContent: 'center'}}>
         <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 26, letterSpacing: 2, color: C.navy, background: C.yellow, borderRadius: 999, padding: '5px 20px'}}>DAY {plan.day}</div>
@@ -203,10 +209,7 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
           <div style={{display: 'inline-block', fontFamily: HAND, fontWeight: 700, fontSize: 40, color: C.navy, background: C.yellow, borderRadius: 12, padding: '0 18px', transform: 'rotate(-2deg)',
             opacity: hk}}>영유 상담 전 체크리스트 2편</div>
           <div style={{marginTop: 22, fontFamily: PRE, fontWeight: 900, fontSize: 100, lineHeight: 1.12, color: C.white, textShadow: '0 4px 18px rgba(0,0,0,.7)', transform: `scale(${.85 + .15 * hk})`}}>
-            선생님이<br /><span style={{color: C.yellow}}>자주 바뀐다면?</span></div>
-          <div style={{marginTop: 10, fontSize: 70, display: 'flex', justifyContent: 'center', gap: 24}}>
-            {['👩‍🏫', '👨‍🏫', '🧑‍🏫'].map((f, i) => <span key={i} style={{opacity: sp(t, .5 + .35 * i, fps), transform: `translateY(${(1 - sp(t, .5 + .35 * i, fps)) * 30}px)`}}>{f}</span>)}
-          </div>
+            영유 선생님이<br /><span style={{color: C.yellow}}>자주 바뀐다면?</span></div>
         </div>)}
       {sec.kind === 'intro' && <Intro sec={sec} t={t} fps={fps} />}
       {sec.kind === 'p1' && <P1 sec={sec} t={t} fps={fps} ticks={plan.ticks.p1 ?? []} />}

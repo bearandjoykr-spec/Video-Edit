@@ -5,10 +5,8 @@ P = os.path.dirname(os.path.abspath(__file__)); V = f"{P}/versions/main"
 pic, out = sys.argv[1:3]; mdb = float(sys.argv[3]) if len(sys.argv) > 3 else -14
 plan = json.load(open(f"{V}/plan.json")); dur = plan["duration"]
 music, m0 = "projects/2026-11-day36-top3/music/fashion-lifestyle-628637.mp3", 0.557   # same track as DAY 36 (Pixabay licence)
-ins = ["-i", f"{V}/voice.wav", "-ss", str(m0), "-i", music]
-fc = [f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,highpass=f=80,apad=whole_dur={dur},atrim=0:{dur},asplit=2[voice][key]",
-      f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={mdb}dB,atrim=0:{dur},afade=t=in:d=0.4,afade=t=out:st={dur - 1.5}:d=1.5[m0]",
-      "[m0][key]sidechaincompress=threshold=0.05:ratio=3:attack=20:release=350[m]"]
+ins = ["-i", f"{V}/voice.wav", "-f", "lavfi", "-t", "1", "-i", "anullsrc=r=48000:cl=stereo"]   # Joy (21 Nov): no music, she adds her own
+fc = [f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,highpass=f=80,apad=whole_dur={dur},atrim=0:{dur}[voice]", "[1:a]anull[m]"]
 lab = ["[voice]", "[m]"]
 for k, c in enumerate(plan["sfx"]):
     ins += ["-i", f"projects/2026-11-day34-bookguide/versions/main/audio/sfx_{c['sound']}.wav"]; ms = int(c["t"] * 1000)

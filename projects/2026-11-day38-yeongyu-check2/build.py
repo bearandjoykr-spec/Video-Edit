@@ -34,7 +34,7 @@ SEGS = [
                              (116.80, "영유를 선택하신다면,\n혹은 이미 다니고 있다면"), (119.60, "유명한 교재나 화려한 시설보다"),
                              (123.10, "우리 아이가 매일 어떤 선생님과\n어떤 환경에서 시간을 보내는지"), (127.00, "확인해 주셨으면 좋겠어요"),
                              (129.00, "결국 중요한 건 어디에서\n영어를 배우느냐보다"), (132.00, "어떤 경험을 통해\n영어를 배우느냐니까요")]),
-    ("end", 135.65, 143.50, [(135.65, "관련해서 더 궁금한 점이 있다면\n댓글로 남겨 주세요"),
+    ("end", 135.65, 144.45, [(135.65, "관련해서 더 궁금한 점이 있다면\n댓글로 남겨 주세요"),
                             (139.10, "제가, 혹은 원어민 마크가 경험했던\n이야기를 바탕으로 함께 나눠볼게요")]),
 ]
 TICKS = {"p1": [27.80, 32.80], "p2": [65.10, 68.10], "p3": [91.60, 96.20]}
@@ -77,11 +77,24 @@ def main():
         best = min(range(len(ps)), key=lambda i: min(abs(x - ps[i][1]), abs(x - ps[i][2])))
         return round(starts[best] if x < ps[best][1] else starts[best] + (ps[best][2] - ps[best][1]) / SPEED, 3)
 
+    # Joy (21 Nov): captions must not move on while she is still talking. Whisper word times run early, so every caption
+    # boundary inside a segment snaps to the quietest 80 ms in [t-0.25, t+0.7] (the breath between her phrases).
+    with wave.open(WAV) as f:
+        au = np.frombuffer(f.readframes(f.getnframes()), np.int16).astype(np.float32) / 32768; sr = f.getframerate()
+    def snap(x):
+        best, bt = 1e9, x
+        for y in np.arange(x - .25, x + .7, .01):
+            i = int(y * sr); e = float(np.mean(au[i:i + int(.08 * sr)] ** 2))
+            if e < best: best, bt = e, y + .04
+        return round(bt, 3)
     caps = []
     for sec, a, b, cl in SEGS:
+        cl = [(st if k == 0 else snap(st), text) for k, (st, text) in enumerate(cl)]
         for k, (st, text) in enumerate(cl):
             e = cl[k + 1][0] if k + 1 < len(cl) else b
             caps.append({"s": o(st), "e": round(o(e) - .02, 3), "text": text, "sec": sec})
+    for sec, a, b, cl in SEGS:
+        pass
     secs = [{"kind": sec, "s": o(a), "e": o(b)} for sec, a, b, _ in SEGS]
     for i in range(len(secs) - 1):
         secs[i]["e"] = secs[i + 1]["s"]
