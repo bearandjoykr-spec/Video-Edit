@@ -7,6 +7,7 @@ Run (repo root): .venv/bin/python projects/2026-11-day37-yeongyu-check/build.py
 → joy-src.mp4 (video for the matte), versions/main/voice.wav, versions/main/plan.json (+ remotion/src/day37.json)
 """
 import json, math, os, subprocess
+PART = int(os.environ.get("PART", "1"))
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = "raw-footage/day37/main.mov"
@@ -44,7 +45,32 @@ PARTS[3] = PARTS[1][:4] + [
     ("p4", 117.04, 131.70, [(117.04, "만약 아이가 학습 중심의\n영유에 다니고 있다면"), (120.10, "정규 수업 이후까지\n계속 학습을 이어가기보다는"),
                             (124.46, "신체 활동이나 자유로운 놀이,\n다양한 경험을 할 수 있는 시간을"), (129.17, "만들어 주는 것도\n좋은 방법이라고 생각해요")]),
 ] + [("end2",) + PARTS[2][5][1:]]
-DAYS = {1: 37, 2: 38, 3: 37}
+# Part 4 = the full talk as Joy's script (21 Nov): nothing cut but the science-activity aside and the closing "그럼 안녕";
+# opens on her native-teacher lines as the hook. Long pauses still shrink (no dead air).
+PARTS[4] = [
+    ("hook2", 61.30, 71.28, [(61.30, "영어가 모국어라고 해서\n어린아이를 잘 가르치는 건 아니에요"), (65.72, "실제로 영어교육이나\n유아교육 전공자가 아니어도"),
+                             (68.86, "영어를 가르치는\n강사들이 있어요")]),
+    # Joy (21 Nov): the textbook-story question is cut too; her "실제로 봤던 일" line now backs up the hook
+    ("hook2", 9.52, 13.26, [(9.52, "제가 영어유아학원에서 근무하면서\n실제로 봤던 일입니다")]),
+    ("intro", 13.92, 20.56, [(13.92, "오늘은 제가 직접\n아이들을 가르치면서 느꼈던"), (16.84, "영유 상담 때 꼭 확인해야 할\n세 가지를 말씀드릴게요")]),
+    ("p1", 21.12, 45.06, [(21.12, "첫 번째, 교재 진도"), (23.24, "영유에서는 한두 달 단위로\n교재를 끝내는 경우가 있어요"),
+                         (26.61, "그런데 중간에 입학한 아이가\n이미 거의 끝나가는 교재를 구매하고"), (32.02, "마지막 단원만 공부한 뒤\n집에 가져가는 경우도 있었어요"),
+                         (36.90, "그래서 중간 입학이라면\n현재 교재가 어디까지 진행됐는지"), (41.54, "교재비는 어떻게 책정되는지\n꼭 확인해 보세요")]),
+    ("p2", 57.96, 90.84, [(57.96, "두 번째, 원어민 강사의 교육 경험"), (61.30, "영어가 모국어라고 해서\n어린아이를 잘 가르치는 건 아니에요"),
+                         (65.72, "실제로 영어교육이나\n유아교육 전공자가 아니어도"), (68.86, "영어를 가르치는\n강사들이 있어요"), (71.88, "물론 전공이 전부는 아니죠"),
+                         (74.66, "중요한 건 우리 아이 선생님이\n유아교육에 대한 이해가 있는지"), (79.94, "아이들을 가르친 경험은\n얼마나 있는지예요"),
+                         (84.16, "그리고 학원의 교육 방식에 대해\n충분히 교육받고"), (88.14, "수업을 진행하는지도\n확인해 보셨으면 좋겠어요")]),
+    ("p3", 91.62, 113.50, [(91.62, "세 번째, 아이들의 하루 일과"), (94.30, "놀이형 영유라고 해서\n무조건 뛰어놀기만 하는 건 아니에요"),
+                          (98.68, "놀이형이라고 하더라도 책상에 앉아\n수업하는 시간이 상당할 수 있거든요"), (103.85, "그래서 실제 시간표를 확인하고"),
+                          (107.04, "아이들이 얼마나 움직이는지,\n자유롭게 노는 시간은 충분한지"), (111.74, "살펴보셨으면 좋겠어요")]),
+    ("p4", 114.22, 135.12, [(114.22, "그리고 이건\n제 개인적인 생각인데요"), (117.04, "만약 아이가 학습 중심의\n영유에 다니고 있다면"),
+                           (120.10, "정규 수업 이후까지\n계속 학습을 이어가기보다는"), (124.46, "신체 활동이나 자유로운 놀이,\n다양한 경험을 할 수 있는 시간을"),
+                           (129.17, "만들어 주는 것도\n좋은 방법이라고 생각해요"), (131.93, "물론 아이의 체력과\n성향에 따라 다르겠죠")]),
+    ("next", 135.78, 150.04, [(135.78, "그런데 영유에서 근무하면서 느낀\n중요한 문제가 또 있어요"), (139.92, "바로 선생님이\n얼마나 자주 바뀌는지"),
+                             (142.74, "그리고 학원 운영진이 아이들 교육을\n얼마나 이해하고 있는지예요"), (147.64, "이 이야기는 다음 영상에서\n자세히 해볼게요")]),
+    ("end2", 150.54, 153.36, [(150.54, "영유에 대해 궁금한 점이 있다면\n댓글로 남겨 주세요!")]),
+]
+DAYS = {1: 37, 2: 38, 3: 37, 4: 37}
 ST = "raw-footage/day37/stock/"
 # background scenes per section (Pexels clip id, start s), each ~2 s
 BG = {
@@ -56,12 +82,31 @@ BG = {
     "p2": [("8363857", 2.0), ("8088320", 4.0), ("8342750", 4.0), ("8363857", 8.0)],
     "p3": [("7356018", 4.0), ("8088307", 4.0), ("5426854", 11.0), ("7356018", 14.0), ("37477954", 2.0), ("34125223", 4.0)],
     "end2": [("37477954", 5.0), ("34125223", 9.0)],
+    "next": [("8088346", 2.0), ("8088307", 6.0), ("8363896", 10.0), ("8088346", 6.0)],
     "p4": [("34125223", 1.0), ("37477954", 1.0), ("8088320", 6.0), ("34125223", 12.0), ("37477954", 7.0)],
 }
 # when each checklist tick appears (source time of the words that name it)
 TICKS = {"p1": [37.60, 41.54], "p2": [74.66, 79.94], "p3": [103.85, 108.0, 109.7], "p4": [124.46, 125.27, 126.90]}
+if PART == 4:
+    TICKS = {"p1": [36.90, 41.54], "p2": [74.66, 79.94, 84.16], "p3": [103.85, 107.04, 109.68], "p4": [124.46, 125.27, 126.90]}
 PART = int(os.environ.get("PART", "1"))
 SEGS = PARTS[PART]
+
+
+if PART == 4:
+    import numpy as _np, wave as _w
+    _src = "raw-footage/day37/main16k.wav"
+    with _w.open(_src) as _f:
+        _a = _np.frombuffer(_f.readframes(_f.getnframes()), _np.int16).astype(_np.float32) / 32768; _sr = _f.getframerate()
+    _win = int(_sr * .02); _r = _np.array([20 * _np.log10(_np.sqrt(_np.mean(_a[i:i + _win] ** 2)) + 1e-9) for i in range(0, len(_a) - _win, _win)])
+    _th = _np.percentile(_r, 10) + 14; _sp = _r > _th; PAUSES = []; _i = 0
+    while _i < len(_sp):
+        if not _sp[_i]:
+            _j = _i
+            while _j < len(_sp) and not _sp[_j]: _j += 1
+            if (_j - _i) * .02 >= .3: PAUSES.append((_i * .02 + .03, _j * .02 - .03))
+            _i = _j
+        else: _i += 1
 
 
 def pieces():
@@ -130,7 +175,11 @@ def main():
     for sc in secs:
         lst, d0 = BG[sc["kind"]], sc["e"] - sc["s"]; n2 = max(1, round(d0 / 2.0)); per = d0 / n2
         for i in range(n2):
-            sid, ss = lst[i % len(lst)]; shots.append((ST + sid + ".mp4", ss + (i // len(lst)) * 2.5, round(sc["s"] + i * per, 3), round(per, 3)))
+            sid, ss = lst[i % len(lst)]
+            dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", ST + sid + ".mp4"],
+                                       capture_output=True, text=True).stdout)
+            ss = (ss + (i // len(lst)) * 2.5) % max(1.0, dur - per - .8)   # stay inside the clip (no frozen frames)
+            shots.append((ST + sid + ".mp4", round(ss, 2), round(sc["s"] + i * per, 3), round(per, 3)))
     X = 0.3; ins2, fc2 = [], []
     for k, (src, ss, t0, d) in enumerate(shots):
         ins2 += ["-ss", f"{ss:.2f}", "-t", f"{d + X + .3:.2f}", "-i", src]

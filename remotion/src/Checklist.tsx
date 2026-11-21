@@ -33,7 +33,7 @@ const PANEL: React.CSSProperties = {position: 'absolute', top: 395, left: 70, ri
 
 const POINTS: Record<string, {n: string; title: string; ticks: string[]}> = {
   p1: {n: '1', title: '교재 진도', ticks: ['지금 교재, 어디까지 진행됐나요?', '교재비는 어떻게 책정되나요?']},
-  p2: {n: '2', title: '원어민 강사의 교육 경험', ticks: ['유아교육에 대한 이해가 있나요?', '아이들을 가르친 경험은 얼마나?']},
+  p2: {n: '2', title: '원어민 강사의 교육 경험', ticks: ['유아교육에 대한 이해가 있나요?', '아이들을 가르친 경험은 얼마나?', '학원 교육 방식으로 교육받았나요?']},
   p3: {n: '3', title: '아이들의 하루 일과', ticks: ['실제 시간표 확인하기', '하루에 얼마나 움직이나요?', '자유 놀이 시간은 충분한가요?']},
 };
 
@@ -117,12 +117,14 @@ const Hook: React.FC<{sec: Sec; t: number; fps: number; caps: Cap[]}> = ({sec, t
 const Hook2: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => (
   <div style={{position: 'absolute', top: 400, left: 70, right: 70, textAlign: 'center'}}>
     <div style={{display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 30, color: C.ink, background: C.goldHi, borderRadius: 999, padding: '6px 20px',
-      opacity: sp(t, 0, fps)}}>영유 상담 체크리스트 2편</div>
+      opacity: sp(t, 0, fps)}}>영유 보내기 전, 이것 모르면 손해</div>
     <div style={{marginTop: 26, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, transform: `scale(${.85 + .15 * sp(t, .1, fps, 12)})`}}>
       <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 96, color: C.white, textShadow: SH}}>원어민</span>
       <span style={{fontFamily: SERIF, fontWeight: 700, fontSize: 130, color: C.goldHi, lineHeight: 1, textShadow: SH}}>≠</span>
     </div>
     <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 88, color: C.goldHi, textShadow: SH, opacity: sp(t, .5, fps)}}>유아 영어 전문가</div>
+    <div style={{marginTop: 22, display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 36, color: C.navy, background: C.cream, borderRadius: 16,
+      padding: '10px 22px', opacity: sp(t, 1.0, fps)}}>📌 끝까지 보면 '영유 상담 체크리스트' 완성</div>
   </div>
 );
 
