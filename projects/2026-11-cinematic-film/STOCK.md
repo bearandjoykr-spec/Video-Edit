@@ -28,3 +28,8 @@ Search results with file paths: `raw-footage/cinematic-film/pexels/list3.txt` (c
 15614364 plane takeoff (from v2). Joy's clips: c06 Oxford rooftops, c09 Sydney, j6 our book in Oxford.
 
 31474610 Heunginjimun and city wall, Seoul · 40834925 Gangnam crossing at night (both Pexels License; Joy picked them for the Seoul beat, 18 Nov 2026). 29354411 (Seoul street) dropped.
+
+## v6 additions
+- Globe outlines: Natural Earth 1:50m and 1:10m land (public domain), github.com/nvkelso/natural-earth-vector, in raw-footage/cinematic-film/geo/.
+- Book art supplied by Joy (our own books): bookart/ (Oxford page, bear running, Headington map, blue door, website globe screenshot for reference).
+- Pexels: 8426407, 8384707, 8498360 (kids playing/reading, no other books visible), 27118848, 37595373 Rio, 31385031 Kyoto.

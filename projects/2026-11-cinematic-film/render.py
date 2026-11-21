@@ -56,7 +56,8 @@ def render_shot(fmt, i):
         cmd = ['ffmpeg', '-v', 'error', '-y', '-f', 'lavfi', '-i', f'color=c={col}:s={PW}x{PH}:r={FPS}',
                '-frames:v', str(n), *enc, out]
         subprocess.run(cmd, check=True); return out
-    p = sb.src(clip); w, h, sfps = probe(p)
+    p = (f'{ROOT}/raw-footage/cinematic-film/gen/{clip[4:]}_{fmt}.mov' if clip.startswith('gen:') else sb.src(clip))
+    w, h, sfps = probe(p)
     if fmt == 'v':
         fy = 0.5 if h > w else fy
     tgt = PW / PH
@@ -71,8 +72,25 @@ def render_shot(fmt, i):
     else:
         chain.append(f'fps={FPS}')
     zt = f'({z0}+({z1}-{z0})*t/{dur:.3f})'
+    # zoom-punch transition (plan.TRANS): incoming shot starts 30% in and snaps back; outgoing shot rushes in
+    trans = getattr(_plan, 'TRANS', ['cut'] * len(SHOTS))
+    tin_z = trans[i] == 'zoom' and i > 0
+    tout_z = i + 1 < len(SHOTS) and trans[i + 1] == 'zoom'
+    TD = 0.22
+    if tin_z:
+        zt += f'*(1+0.30*pow(max(0,1-t/{TD}),2))'
+    if tout_z:
+        zt += f'*(1+0.35*pow(max(0,(t-{dur - TD:.3f})/{TD}),2))'
     chain += [f"scale=w='ceil({PW}*{zt}/2)*2':h='ceil({PH}*{zt}/2)*2':eval=frame:flags=bicubic",
-              f'crop={PW}:{PH}:(in_w-{PW})/2:(in_h-{PH})/2', LOOKS[look], 'format=yuv420p']
+              f'crop={PW}:{PH}:(in_w-{PW})/2:(in_h-{PH})/2', LOOKS[look]]
+    blur = []
+    if tin_z:
+        blur.append(f'lt(t,{TD * 0.7:.3f})')
+    if tout_z:
+        blur.append(f'gt(t,{dur - TD * 0.7:.3f})')
+    if blur:
+        chain.append(f"gblur=sigma=14:enable='{'+'.join(blur)}'")
+    chain.append('format=yuv420p')
     cmd = ['ffmpeg', '-v', 'error', '-y', '-ss', f'{tin:.3f}', '-t', f'{src_dur:.3f}', '-i', p,
            '-vf', ','.join(chain), '-frames:v', str(n), '-r', str(FPS), *enc, out]
     subprocess.run(cmd, check=True)

@@ -185,3 +185,9 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - DAY 35 (event-logistics tips, 70 s, mostly B-roll) reached ~800 views. Lesson: lead with faces (Joy and Mark), a curiosity hook in the
   first second, value that works for viewers who are NOT at the event, a countdown that makes people stay to the end, and 35–45 s.
 - Stock footage (Joy, 21 Nov 2026): do not use clips with Muslim subjects (e.g. hijab); pick other people for the same scene.
+
+## Brand film v6 (Joy, 21 Nov 2026)
+- v5 felt slow. Open on a globe (our route of 24 stories, navy and gold like the website globe) that spins and dives into the UK and Oxford, then our book's Oxford page, the bear's house, and the **blue door swinging open onto Oxford** (built from Joy's Book One door page in 3D perspective, `genclips.py`).
+- Use our books' own illustrations that Joy supplies (`projects/2026-11-cinematic-film/bookart/`) together with real footage, moved with camera moves and punchy zoom transitions. (The earlier "no AI pictures" rule is about art that is not from our books.)
+- **How the bear looks (Joy):** sketchy pen line, soft navy-black watercolour, a lightly fuzzy, plush body, straw hat with a pink ribbon. Keep this look whenever the bear appears.
+- The 24 stories / 12 places beat goes by fast (one beat per city, small place labels).

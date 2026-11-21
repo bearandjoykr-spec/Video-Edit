@@ -136,7 +136,8 @@ def shot_under(ln):
 def on_light_art(ln):
     """True when the shot under this line is our light artwork (pages, watercolours; not the navy card grid)."""
     shot = max((sh for sh in SHOTS if sh[0] <= ln[0] + 0.05), key=lambda sh: sh[0])
-    return shot[1].startswith('a:') and 'cards' not in shot[1]
+    return (shot[1].startswith('a:') and 'cards' not in shot[1]) or \
+        shot[1] in ('gen:oxpage', 'gen:house', 'gen:door', 'gen:bearrun', 'gen:map')
 
 
 def is_bright(img, W, y0, y1):
@@ -152,7 +153,7 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
     _, _, ko, en, style = ln
     s = W / 1920 if not vertical else W / 1080
     # v3 storybook type: small, quiet, our voice (Joy, 18 Nov 2026)
-    base = top + pic_h * (0.86 if not vertical else 0.74)
+    base = top + pic_h * (0.86 if not vertical else 0.70)   # vertical: keep text inside y 300–1450 (Joy, DAY 35)
     if shot_under(ln)[1] == 'd34n5':
         base = top + pic_h * (0.12 if not vertical else 0.24)   # the open page fills the lower frame; use the dark bark above
     if vertical and shot_under(ln)[1] == 'j6':
@@ -189,7 +190,7 @@ def draw_line(img, ln, W, H, top, pic_h, vertical):
         return
     if style == 'place':
         x = (72 if not vertical else 64) * s
-        y = top + (84 if not vertical else 250) * s
+        y = top + (84 if not vertical else 340) * s
         spaced(img, (x, y), en, ImageFont.truetype(EN, int((26 if not vertical else 32) * s)), CREAM, 4 * s)
         d = ImageDraw.Draw(img)
         d.line([(x, y + 16 * s), (x + 44 * s, y + 16 * s)], fill=GOLD, width=max(1, int(2 * s)))

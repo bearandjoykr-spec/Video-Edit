@@ -22,3 +22,5 @@ Download note: pixabay.com is behind a browser challenge; the cdn.pixabay.com/do
 | piano-hopeful-main-title-436853.mp3 (2:22) | https://pixabay.com/music/main-title-hopeful-436853/ |
 | piano-inspiring-moment-611638.mp3 (2:08) | https://pixabay.com/music/solo-piano-inspiring-moment-inspiring-piano-611638/ |
 | piano-inspiring-small-drama-602520, piano-lovely-252204, piano-emotional-solo-510218 (also downloaded, not offered) | ids on pixabay.com/music |
+
+v6 uses piano-freedom-journey-184142.mp3 (Pixabay "Freedom Journey", Pixabay Content License): beats cached in beats-*.txt.

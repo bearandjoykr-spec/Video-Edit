@@ -14,7 +14,8 @@ import plan as _plan  # noqa
 
 SR = 48000
 MUSIC = f"{HERE}/music/{getattr(_plan, 'MUSIC', 'good_b_music-epic-hollywood-trailer-9489.mp3')}"
-TRAILER = 'MUSIC' not in dir(_plan)               # v2 trailer cut used impact SFX; v4 is piano only
+TRAILER = 'MUSIC' not in dir(_plan)               # v2 trailer cut used impact SFX; v4+ is piano
+PUNCH = hasattr(_plan, 'WHOOSH')                   # v6: whooshes on zoom transitions, soft booms on tagline/end card
 BOOMS = [21.5, 53.5, 94.5, 108.6] if TRAILER else []                 # biggest hits: colour break, climax, title, end card
 WHOOSH_INTO = [21.5, 30.0, 37.0, 45.0, 49.0, 53.5, 94.5] if TRAILER else []
 TICKS = [2.0, 5.5, 7.5, 9.5, 12.5, 15.0] if TRAILER else []          # soft low thumps on the B/W statement cuts
@@ -78,6 +79,16 @@ def main():
     w = whoosh()
     for k, t in enumerate(WHOOSH_INTO):
         place(sfx, w, t - 0.8, -13, stereo_spread=0.3 * (1 if k % 2 else -1))
+    if PUNCH:
+        ws = whoosh(0.5)
+        for k, t in enumerate(_plan.WHOOSH):
+            place(sfx, ws, max(0, t - 0.42), -16, stereo_spread=0.35 * (1 if k % 2 else -1))
+        tick = whoosh(0.22)
+        for r, s0 in zip(_plan.SEQ, [sh[0] for sh in _plan.SHOTS]):
+            if r[0] == 1:                       # fast montage: a light swish on every cut
+                place(sfx, tick, max(0, s0 - 0.12), -24)
+        for t in getattr(_plan, 'BOOMS', []):
+            place(sfx, boom(2.2), t, -15)
     for t in TICKS:
         place(sfx, thump(), t, -14)
     if TRAILER:
