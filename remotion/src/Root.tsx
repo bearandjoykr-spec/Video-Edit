@@ -46,6 +46,9 @@ import promoC from '../../projects/2026-11-day1-promos/versions/mistakes-ok/time
 import {LittleStepsAd, AdPlan} from './LittleStepsAd';
 import {ExpoPromo, ExpoPlan} from './ExpoPromo';
 import {TopThree, TopPlan, TopThreeCover} from './TopThree';
+import {Checklist, CheckPlan} from './Checklist';
+import day37 from './day37.json';
+import day38 from './day38.json';
 import day36 from './day36.json';
 import day35 from './day35.json';
 import day1ad from '../../projects/2026-11-day1-ad/versions/main/timeline.json';
@@ -98,6 +101,8 @@ export const Root: React.FC = () => (
     {reelV2('Day32', day32 as unknown as PlanV2)}
     {reelV2('MarkSpicy', spicy as unknown as PlanV2)}
     <Composition id="Day36" component={TopThree} durationInFrames={(day36 as unknown as TopPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day36 as unknown as TopPlan}} />
+    <Composition id="Day37" component={Checklist} durationInFrames={(day37 as unknown as CheckPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day37 as unknown as CheckPlan}} />
+    <Composition id="Day38" component={Checklist} durationInFrames={(day38 as unknown as CheckPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day38 as unknown as CheckPlan}} />
     <Composition id="Day36Cover" component={TopThreeCover} durationInFrames={1} fps={30} width={1080} height={1920} defaultProps={{day: 36}} />
     <Composition id="Day35" component={ExpoPromo} durationInFrames={(day35 as unknown as ExpoPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day35 as unknown as ExpoPlan}} />
     <Composition id="Day34" component={BookGuide} durationInFrames={(day34 as unknown as GuidePlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: {...(day34 as unknown as GuidePlan), showVo: true}}} />
