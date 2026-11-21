@@ -29,6 +29,19 @@ const useFonts = () => {
 const sp = (t: number, s: number, fps: number, damping = 15) => spring({frame: Math.round((t - s) * fps), fps, config: {damping, stiffness: 180, mass: .6}});
 const Pre: React.FC<{text: string; style: React.CSSProperties}> = ({text, style}) => <div style={{whiteSpace: 'pre-line', ...style}}>{text}</div>;
 
+const HOOK_HI = ['모국어라고', '잘 가르치는 건 아니에요', '전공자가 아니어도', '강사들이', '실제로 봤던 일'];
+const hiText = (txt: string) => {
+  const parts: React.ReactNode[] = []; let rest = txt; let k = 0;
+  while (rest.length) {
+    const hit = HOOK_HI.map((h) => [rest.indexOf(h), h] as [number, string]).filter(([i]) => i >= 0).sort((a, b) => a[0] - b[0])[0];
+    if (!hit) { parts.push(rest); break; }
+    const [i, h] = hit; if (i) parts.push(rest.slice(0, i));
+    parts.push(<span key={k++} style={{color: '#FFFFFF', background: '#D9534F', borderRadius: 10, padding: '0 10px', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone'}}>{h}</span>);
+    rest = rest.slice(i + h.length);
+  }
+  return parts;
+};
+
 const PANEL: React.CSSProperties = {position: 'absolute', top: 395, left: 70, right: 70, height: 440, borderRadius: 34, overflow: 'hidden', boxShadow: '0 26px 60px rgba(0,0,0,.5)'};
 
 const POINTS: Record<string, {n: string; title: string; ticks: string[]}> = {
