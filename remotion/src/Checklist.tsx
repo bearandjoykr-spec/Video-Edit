@@ -158,11 +158,11 @@ const Intro: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => {
 
 const Next: React.FC<{sec: Sec; t: number; fps: number; caps: Cap[]}> = ({sec, t, fps, caps}) => {
   const k = sp(t, sec.s, fps, 15); const cs = caps.filter((c) => c.sec === 'next');
-  const items = [['🔄', '선생님이 자주 바뀐다면?', cs[1]], ['🏫', '운영진은 아이 교육을 이해할까?', cs[2]]] as const;
+  const items = [['🔄', '선생님은 얼마나 오래 함께하나요?', cs[1]], ['🏫', '운영진의 교육 철학은?', cs[2]]] as const;
   return (
     <div style={{...PANEL, background: C.navy, border: `3px solid ${C.gold}`, padding: '36px 42px', opacity: k}}>
       <div style={{fontFamily: SERIF, fontStyle: 'italic', fontWeight: 600, fontSize: 40, color: C.goldHi}}>Next episode</div>
-      <div style={{marginTop: 4, fontFamily: PRE, fontWeight: 900, fontSize: 56, color: C.white}}>영유의 진짜 문제 👀</div>
+      <div style={{marginTop: 4, fontFamily: PRE, fontWeight: 900, fontSize: 56, color: C.white}}>상담 전 체크리스트 ➕ 👀</div>
       {items.map(([e, txt, c], i) => {
         const on = c ? t >= c.s : false;
         return (
@@ -258,9 +258,9 @@ export const Checklist: React.FC<{plan: CheckPlan}> = ({plan}) => {
           DAY {plan.day}</div>
       </div>
       <div style={{position: 'absolute', top: 352, left: 90, right: 90, display: 'flex', alignItems: 'center', gap: 14}}>
-        <div style={{flex: 1, height: 10, borderRadius: 5, background: 'rgba(255,255,255,.22)', overflow: 'hidden'}}>
-          <div style={{height: '100%', width: `${Math.min(100, (t / plan.duration) * 100)}%`, background: `linear-gradient(90deg, ${C.gold}, ${C.goldHi})`}} /></div>
-        <div style={{width: 80, textAlign: 'right', fontFamily: PRE, fontWeight: 800, fontSize: 26, color: C.goldHi}}>{Math.min(100, Math.round((t / plan.duration) * 100))}%</div>
+        <div style={{flex: 1, height: 14, borderRadius: 7, background: 'rgba(255,255,255,.25)', overflow: 'hidden', boxShadow: '0 0 12px rgba(255,214,90,.35)'}}>
+          <div style={{height: '100%', width: `${Math.min(100, (t / plan.duration) * 100)}%`, background: 'linear-gradient(90deg, #FFC93C, #FFE27A)', boxShadow: '0 0 10px rgba(255,214,90,.8)'}} /></div>
+        <div style={{width: 84, textAlign: 'right', fontFamily: PRE, fontWeight: 900, fontSize: 28, color: '#FFD84D', textShadow: '0 2px 6px rgba(0,0,0,.6)'}}>{Math.min(100, Math.round((t / plan.duration) * 100))}%</div>
       </div>
       {sec.kind === 'hook' && <Hook sec={sec} t={t} fps={fps} caps={plan.captions} />}
       {sec.kind === 'hook2' && <Hook2 sec={sec} t={t} fps={fps} />}
