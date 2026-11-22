@@ -36,10 +36,50 @@ SEGS = [
                              (129.00, "결국 중요한 건 어디에서\n영어를 배우느냐보다"), (132.00, "어떤 경험을 통해\n영어를 배우느냐니까요")]),
     ("end", 135.65, 144.45, [(135.65, "관련해서 더 궁금한 점이 있다면\n댓글로 남겨 주세요"),
                             (139.10, "제가, 혹은 원어민 마크가 경험했던\n이야기를 바탕으로 함께 나눠볼게요")]),
+    ("bye", 149.85, 151.80, [(149.85, "그럼 내일 만나요, 안녕! 👋")]),   # Joy (22 Nov): keep her goodbye + a follow card
 ]
 TICKS = {"p1": [27.80, 32.80], "p2": [65.10, 68.10], "p3": [91.60, 96.20]}
 # fresh stock for DAY 38 (Pexels + Pixabay, STOCK.md) — each clip once
 BG = {}  # filled by stock.json
+
+
+def speech_mask():
+    with wave.open(WAV) as f:
+        a = np.frombuffer(f.readframes(f.getnframes()), np.int16).astype(np.float32) / 32768; sr = f.getframerate()
+    w = int(sr * .02); r = np.array([20 * np.log10(np.sqrt(np.mean(a[i:i + w] ** 2)) + 1e-9) for i in range(0, len(a) - w, w)])
+    sp = r > np.percentile(r, 10) + 8
+    i = 0
+    while i < len(sp):           # fill gaps < 0.12 s inside words
+        if not sp[i]:
+            j = i
+            while j < len(sp) and not sp[j]: j += 1
+            if 0 < i and j < len(sp) and (j - i) * .02 < .12: sp[i:j] = True
+            i = j
+        else: i += 1
+    return sp
+
+
+SP = speech_mask()
+
+
+def runs(min_len):
+    """silent runs (start, end) in seconds, at least min_len long"""
+    out, i = [], 0
+    while i < len(SP):
+        if not SP[i]:
+            j = i
+            while j < len(SP) and not SP[j]: j += 1
+            if (j - i) * .02 >= min_len: out.append((i * .02, j * .02))
+            i = j
+        else: i += 1
+    return out
+
+
+def speech_end(b):
+    """first silence of 0.2 s that starts after b - 0.3 → her voice has really stopped"""
+    for a0, a1 in runs(.2):
+        if a0 >= b - .3: return round(a0 + .1, 3)
+    return b
 
 
 def pauses():
@@ -58,7 +98,9 @@ def pauses():
 
 
 def main():
-    P = pauses(); ps = []
+    global SEGS
+    SEGS = [(sec, a, min(speech_end(b), b + .6, SEGS[k + 1][1] - .05) if k + 1 < len(SEGS) else min(speech_end(b), b + .6), cl) for k, (sec, a, b, cl) in enumerate(SEGS)]
+    P = [(a0 + .1, a1 - .06) for a0, a1 in runs(.35)]; ps = []
     for sec, a, b, _ in SEGS:
         t = a
         for pa, pb in P:
@@ -81,12 +123,10 @@ def main():
     # boundary inside a segment snaps to the quietest 80 ms in [t-0.25, t+0.7] (the breath between her phrases).
     with wave.open(WAV) as f:
         au = np.frombuffer(f.readframes(f.getnframes()), np.int16).astype(np.float32) / 32768; sr = f.getframerate()
+    gaps = runs(.1)
     def snap(x):
-        best, bt = 1e9, x
-        for y in np.arange(x - .25, x + .7, .01):
-            i = int(y * sr); e = float(np.mean(au[i:i + int(.08 * sr)] ** 2))
-            if e < best: best, bt = e, y + .04
-        return round(bt, 3)
+        c = [g for g in gaps if x - .2 <= g[0] <= x + .9]
+        return round(c[0][0] + min(.1, (c[0][1] - c[0][0]) / 2), 3) if c else round(x + .3, 3)
     caps = []
     for sec, a, b, cl in SEGS:
         cl = [(st if k == 0 else snap(st), text) for k, (st, text) in enumerate(cl)]
@@ -98,7 +138,7 @@ def main():
     secs = [{"kind": sec, "s": o(a), "e": o(b)} for sec, a, b, _ in SEGS]
     for i in range(len(secs) - 1):
         secs[i]["e"] = secs[i + 1]["s"]
-    total = round(voice + 1.0, 3); secs[-1]["e"] = total
+    total = round(voice + 2.6, 3); secs[-1]["e"] = total
     ticks = {k: [o(x) for x in v] for k, v in TICKS.items()}
 
     os.makedirs(f"{HERE}/versions/main", exist_ok=True)

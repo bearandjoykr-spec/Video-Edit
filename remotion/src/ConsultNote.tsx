@@ -149,6 +149,20 @@ const Intro: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => (
   </div>
 );
 
+const Follow: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => {
+  const k = sp(t, sec.s, fps, 13);
+  const tap = t - sec.s - 1.4; const done = tap > .15;
+  return (
+    <div style={{...NOTE, background: C.note, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: k, transform: `rotate(-1deg) scale(${.94 + .06 * k})`}}>
+      <Img src={staticFile('brand/logo-full.png')} style={{height: 120, objectFit: 'contain'}} />
+      <div style={{marginTop: 10, fontFamily: PRE, fontWeight: 900, fontSize: 54, color: C.navy}}>@thebearandjoy</div>
+      <div style={{marginTop: 6, fontFamily: HAND, fontWeight: 700, fontSize: 40, color: C.muted}}>팔로우하고 다음 체크리스트도 받아 가세요</div>
+      <div style={{marginTop: 18, fontFamily: PRE, fontWeight: 900, fontSize: 44, color: '#fff', background: done ? '#7A8599' : '#4C6EF5', borderRadius: 16, padding: '10px 54px',
+        transform: `scale(${tap > 0 && tap < .15 ? .92 : 1})`}}>{done ? '✓ 팔로잉' : '+ 팔로우'}</div>
+    </div>
+  );
+};
+
 const End: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => {
   const k = sp(t, sec.s, fps, 14);
   return (
@@ -217,8 +231,11 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       {sec.kind === 'p3' && <P3 sec={sec} t={t} fps={fps} ticks={plan.ticks.p3 ?? []} caps={plan.captions} />}
       {sec.kind === 'last' && <Last sec={sec} t={t} fps={fps} caps={plan.captions} />}
       {sec.kind === 'end' && <End sec={sec} t={t} fps={fps} />}
+      {sec.kind === 'bye' && <Follow sec={sec} t={t} fps={fps} />}
       {cap && (
         <div style={{position: 'absolute', left: 60, right: 60, top: 1305, height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
+          {cap.text.includes('마크') && <div style={{position: 'absolute', top: -70, left: 0, right: 0, textAlign: 'center', fontSize: 76,
+            transform: `scale(${sp(t, cap.s, fps, 10)})`, filter: 'drop-shadow(0 6px 10px rgba(0,0,0,.4))'}}>🇬🇧</div>}
           <Pre text={cap.text} style={{fontFamily: PRE, fontWeight: 800, fontSize: 52, lineHeight: 1.3, color: C.white, textShadow: '0 3px 12px rgba(0,0,0,.9), 0 0 4px rgba(0,0,0,.9)'}} />
         </div>)}
     </AbsoluteFill>
