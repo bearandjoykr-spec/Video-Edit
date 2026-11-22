@@ -15,9 +15,9 @@ ST = "raw-footage/day38/stock/"
 stock = json.load(open(f"{HERE}/stock.json"))
 
 PARTS = {
-    38: {"ranges": [(0.0, 3.755), (9.236, 34.555), BYE], "hook": None, "n": 1,
+    38: {"ranges": [(0.0, 34.555), BYE], "hook": None, "n": 1,
          "hookTitle": ["영유 선생님이", "자주 바뀐다면?"], "props": ["👩‍🏫", "🔄", "👨‍🏫", "📅"], "next": "② 미국·영국 교과서면 다 좋을까?",
-         "bg": {"hook": stock["hook"], "p1": stock["p1"], "bye": stock["intro"], "tip": ["5427517"]},
+         "bg": {"hook": stock["hook"], "intro": stock["intro"], "p1": stock["p1"], "bye": ["8297900"], "tip": ["5427517"]},
          # Joy (22 Nov): a silent bonus card at the very end, typed out with keyboard sounds
          "tip": ["💡 꿀팁 하나 더!", "상담 전, 영유 이름을 영어로", "구글에 검색해 보세요 🔍", "원어민 선생님들이 남긴", "리뷰를 볼 수 있어요",
                  "구글 지도 · Glassdoor · Reddit", "👉 '선생님이 자주 바뀐다'는 이야기가", "반복되는지 꼭 확인해 보세요!"]},
@@ -32,10 +32,14 @@ PARTS = {
 
 def run(day, P):
     out = f"{HERE}/versions/day{day}"; os.makedirs(out, exist_ok=True)
-    jm, t = [], 0.0
-    for a, b in P["ranges"]:
+    # Joy (22 Nov): the tip card goes right before "그럼 내일 만나요" — a silent gap before the last range (BYE)
+    TIP = 8.5 if P.get("tip") else 0
+    jm, t, tip_s = [], 0.0, None
+    for i, (a, b) in enumerate(P["ranges"]):
+        if TIP and i == len(P["ranges"]) - 1:
+            tip_s = round(t, 3); t += TIP
         jm.append({"t": round(t, 3), "src": a, "d": round(b - a, 3)}); t += b - a
-    voice = t; TIP = 8.5 if P.get("tip") else 0; total = round(voice + TAIL + TIP, 3)
+    voice = t; total = round(voice + TAIL, 3)
 
     def m(x):  # full timeline -> part timeline
         for r in jm:
@@ -57,18 +61,21 @@ def run(day, P):
                 else: secs.append({"kind": sc["kind"], "s": s0, "e": round(s0 + b - a, 3)})
     if P["hook"]:   # parts 2 and 3: the question sits over the first seconds of the point card
         secs.insert(0, {"kind": "hook", "s": 0.0, "e": P["hook"]}); secs[1]["s"] = P["hook"]
-    secs[-1]["e"] = round(voice + TAIL, 3)
+    secs[-1]["e"] = total
     if TIP:
-        secs.append({"kind": "tip", "s": round(voice + TAIL, 3), "e": total})
+        secs.append({"kind": "tip", "s": tip_s, "e": round(tip_s + TIP, 3)}); secs.sort(key=lambda x: x["s"])
     ticks = {k: [m(x) for x in v if m(x) is not None] for k, v in full["ticks"].items()}
     ticks = {k: v for k, v in ticks.items() if v}
     sfx = [{"t": m(x["t"]), "sound": x["sound"], "gain": x["gain"]} for x in full["sfx"] if m(x["t"]) is not None]
     if TIP:   # keyboard typing while the lines type out (Pixabay sound, sfx/SOURCE.md)
-        sfx.append({"t": round(voice + TAIL + .3, 3), "file": "projects/2026-11-day38-yeongyu-check2/sfx/typing.mp3", "ss": .25, "d": 5.6, "gain": -4})
+        sfx.append({"t": round(tip_s + .3, 3), "file": "projects/2026-11-day38-yeongyu-check2/sfx/typing.mp3", "ss": .25, "d": 5.6, "gain": -4})
 
     # voice: the same ranges of the full voice track, then silence for the end card
     fc = [f"[0:a]atrim={a:.3f}:{b:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.01,afade=t=out:st={b - a - 0.02:.3f}:d=0.02[a{i}]" for i, (a, b) in enumerate(P["ranges"])]
-    fc.append("".join(f"[a{i}]" for i in range(len(P["ranges"]))) + f"concat=n={len(P['ranges'])}:v=0:a=1,apad=whole_dur={total}[o]")
+    order = [f"[a{i}]" for i in range(len(P["ranges"]))]
+    if TIP:
+        fc.append(f"anullsrc=r=48000:cl=stereo,atrim=0:{TIP}[gap]"); order.insert(len(order) - 1, "[gap]")
+    fc.append("".join(order) + f"concat=n={len(order)}:v=0:a=1,apad=whole_dur={total}[o]")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{V}/voice-full.wav", "-filter_complex", ";".join(fc), "-map", "[o]", "-t", str(total), f"{out}/voice.wav"], check=True)
 
     # background

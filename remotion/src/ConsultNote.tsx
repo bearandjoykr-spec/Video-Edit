@@ -227,7 +227,7 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       <div style={{position: 'absolute', left: (1080 - W) / 2, top: 1920 - H - 40, width: W, height: H, filter: outline,
         opacity: sec.kind === 'tip' ? interpolate(t - sec.s, [0, .35], [1, 0], clamp) : 1, transform: sec.kind === 'tip' ? `translateY(${interpolate(t - sec.s, [0, .35], [0, 200], clamp)}px)` : undefined}}>
         {plan.joyMap ? plan.joyMap.map((r, i) => (
-          <Sequence key={i} from={Math.round(r.t * fps)} durationInFrames={Math.round((i === plan.joyMap!.length - 1 ? plan.duration - r.t : r.d) * fps)} layout="none">
+          <Sequence key={i} from={Math.round(r.t * fps)} durationInFrames={Math.round((i === plan.joyMap!.length - 1 ? plan.duration - r.t : plan.joyMap![i + 1].t - r.t) * fps)} layout="none">
             <OffthreadVideo src={staticFile(plan.joyMedia!)} transparent muted startFrom={Math.round(r.src * fps)} style={{position: 'absolute', width: '100%', height: '100%'}} />
           </Sequence>))
           : <OffthreadVideo src={staticFile(`${plan.media}/joy.webm`)} transparent muted style={{width: '100%', height: '100%'}} />}
