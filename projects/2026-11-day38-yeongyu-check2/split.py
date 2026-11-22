@@ -17,7 +17,10 @@ stock = json.load(open(f"{HERE}/stock.json"))
 PARTS = {
     38: {"ranges": [(0.0, 3.755), (9.236, 34.555), BYE], "hook": None, "n": 1,
          "hookTitle": ["영유 선생님이", "자주 바뀐다면?"], "props": ["👩‍🏫", "🔄", "👨‍🏫", "📅"], "next": "② 미국·영국 교과서면 다 좋을까?",
-         "bg": {"hook": stock["hook"], "p1": stock["p1"], "bye": stock["intro"]}},
+         "bg": {"hook": stock["hook"], "p1": stock["p1"], "bye": stock["intro"], "tip": ["5427517"]},
+         # Joy (22 Nov): a silent bonus card at the very end, typed out with keyboard sounds
+         "tip": ["💡 꿀팁 하나 더!", "상담 전, 영유 이름을 영어로", "구글에 검색해 보세요 🔍", "원어민 선생님들이 남긴", "리뷰를 볼 수 있어요",
+                 "구글 지도 · Glassdoor · Reddit", "👉 '선생님이 자주 바뀐다'는 이야기가", "반복되는지 꼭 확인해 보세요!"]},
     39: {"ranges": [(34.555, 64.618), BYE], "hook": 2.6, "n": 2,
          "hookTitle": ["미국·영국 교과서면", "다 좋을까?"], "props": ["📘", "🇺🇸", "📗", "🇬🇧"], "next": "③ 학부모 의견, 원어민 선생님께 잘 전달될까?",
          "bg": {"p2": stock["p2"], "bye": stock["end"]}},
@@ -32,7 +35,7 @@ def run(day, P):
     jm, t = [], 0.0
     for a, b in P["ranges"]:
         jm.append({"t": round(t, 3), "src": a, "d": round(b - a, 3)}); t += b - a
-    voice = t; total = round(voice + TAIL, 3)
+    voice = t; TIP = 8.5 if P.get("tip") else 0; total = round(voice + TAIL + TIP, 3)
 
     def m(x):  # full timeline -> part timeline
         for r in jm:
@@ -54,10 +57,14 @@ def run(day, P):
                 else: secs.append({"kind": sc["kind"], "s": s0, "e": round(s0 + b - a, 3)})
     if P["hook"]:   # parts 2 and 3: the question sits over the first seconds of the point card
         secs.insert(0, {"kind": "hook", "s": 0.0, "e": P["hook"]}); secs[1]["s"] = P["hook"]
-    secs[-1]["e"] = total
+    secs[-1]["e"] = round(voice + TAIL, 3)
+    if TIP:
+        secs.append({"kind": "tip", "s": round(voice + TAIL, 3), "e": total})
     ticks = {k: [m(x) for x in v if m(x) is not None] for k, v in full["ticks"].items()}
     ticks = {k: v for k, v in ticks.items() if v}
     sfx = [{"t": m(x["t"]), "sound": x["sound"], "gain": x["gain"]} for x in full["sfx"] if m(x["t"]) is not None]
+    if TIP:   # keyboard typing while the lines type out (Pixabay sound, sfx/SOURCE.md)
+        sfx.append({"t": round(voice + TAIL + .3, 3), "file": "projects/2026-11-day38-yeongyu-check2/sfx/typing.mp3", "ss": .25, "d": 5.6, "gain": -4})
 
     # voice: the same ranges of the full voice track, then silence for the end card
     fc = [f"[0:a]atrim={a:.3f}:{b:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.01,afade=t=out:st={b - a - 0.02:.3f}:d=0.02[a{i}]" for i, (a, b) in enumerate(P["ranges"])]
@@ -88,7 +95,7 @@ def run(day, P):
 
     plan = {"fps": FPS, "day": day, "part": P["n"], "media": f"day38/p{day}", "joyMedia": "day38/joy.webm", "joyMap": jm, "duration": total,
             "frames": int(math.ceil(total * FPS)), "captions": caps, "sections": secs, "ticks": ticks, "sfx": sfx,
-            "hookTitle": P["hookTitle"], "props": P["props"], "next": P["next"]}
+            "hookTitle": P["hookTitle"], "props": P["props"], "next": P["next"], "tip": P.get("tip"), "tipType": [.35, 5.9]}
     for p in (f"{out}/plan.json", f"{HERE}/../../remotion/src/day{day}.json"):
         json.dump(plan, open(p, "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"DAY {day}: {total:.1f}s", [(s["kind"], s["s"], s["e"]) for s in secs])

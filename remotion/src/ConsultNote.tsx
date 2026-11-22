@@ -6,18 +6,19 @@ import {AbsoluteFill, OffthreadVideo, Sequence, continueRender, delayRender, int
 
 type Cap = {s: number; e: number; text: string; sec: string};
 type Sec = {kind: string; s: number; e: number};
-export type NotePlan = {part?: number; joyMedia?: string; joyMap?: {t: number; src: number; d: number}[]; hookTitle?: string[]; props?: string[]; next?: string | null;
+export type NotePlan = {part?: number; joyMedia?: string; joyMap?: {t: number; src: number; d: number}[]; hookTitle?: string[]; props?: string[]; next?: string | null; tip?: string[]; tipType?: number[];
   fps: number; day: number; media: string; duration: number; frames: number; captions: Cap[]; sections: Sec[]; ticks: Record<string, number[]>};
 
 const C = {paper: '#F3EADB', note: '#FFFDF7', line: '#E6DCC8', margin: '#E8A0A0', navy: '#1E2D4D', ink: '#2B2B2B', gold: '#C9A86A', yellow: '#FFD84D',
   red: '#D9534F', green: '#3E8E5E', muted: '#7A6F60', white: '#FFFFFF'};
 const PRE = "'Pretendard', 'Noto Color Emoji', sans-serif";
+const ROUND = "'Jua', 'Pretendard', 'Noto Color Emoji', sans-serif";
 const HAND = "'Gaegu', 'Pretendard', 'Noto Color Emoji', cursive";
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
 const FONTS: [string, string, string, string][] = [
   ['Pretendard', 'normal', '700', 'Pretendard-Bold.woff2'], ['Pretendard', 'normal', '800', 'Pretendard-ExtraBold.woff2'],
   ['Pretendard', 'normal', '900', 'Pretendard-Black.woff2'], ['Noto Color Emoji', 'normal', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'],
-  ['Gaegu', 'normal', '700', 'Gaegu-Bold.ttf'],
+  ['Gaegu', 'normal', '700', 'Gaegu-Bold.ttf'], ['Jua', 'normal', '400', 'Jua-Regular.ttf'],
 ];
 const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
@@ -166,6 +167,26 @@ const Follow: React.FC<{sec: Sec; t: number; fps: number; next?: string | null; 
   );
 };
 
+// silent bonus tip, typed out line by line (Joy, 22 Nov)
+const TypeCard: React.FC<{sec: Sec; t: number; fps: number; lines: string[]; span: number[]}> = ({sec, t, fps, lines, span}) => {
+  const total = lines.reduce((n, l) => n + [...l].length, 0);
+  const shown = Math.floor(interpolate(t - sec.s, span, [0, total], clamp));
+  let left = shown;
+  const k = sp(t, sec.s, fps, 14);
+  return (
+    <div style={{...NOTE, top: 420, height: 980, padding: '40px 40px 0 104px', opacity: k, transform: `rotate(-1deg) scale(${.95 + .05 * k})`}}><Margin />
+      {lines.map((l, i) => {
+        const ch = [...l]; const n = Math.max(0, Math.min(ch.length, left)); left -= ch.length;
+        const typing = n > 0 && n < ch.length || (n === ch.length && left < 0 && left + ch.length === 0);
+        return <div key={i} style={{minHeight: i === 0 ? 96 : 104, whiteSpace: 'nowrap', fontFamily: i === 0 ? PRE : ROUND, fontWeight: i === 0 ? 900 : 400, fontSize: i === 0 ? 62 : 46,
+          color: i === 0 ? C.red : i >= 6 ? C.red : C.navy, lineHeight: '104px'}}>
+          {ch.slice(0, n).join('')}{(n > 0 && n < ch.length) || (i === lines.length - 1 && n === ch.length) ?
+            <span style={{opacity: Math.floor(t * 2.5) % 2 ? 1 : 0, color: C.navy}}>|</span> : null}</div>;
+      })}
+    </div>
+  );
+};
+
 const End: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => {
   const k = sp(t, sec.s, fps, 14);
   return (
@@ -203,7 +224,8 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
         <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(20,24,34,.55) 0%, rgba(20,24,34,.15) 30%, rgba(20,24,34,.1) 70%, rgba(20,24,34,.35) 100%)'}} />
       </div>
       {/* Joy */}
-      <div style={{position: 'absolute', left: (1080 - W) / 2, top: 1920 - H - 40, width: W, height: H, filter: outline}}>
+      <div style={{position: 'absolute', left: (1080 - W) / 2, top: 1920 - H - 40, width: W, height: H, filter: outline,
+        opacity: sec.kind === 'tip' ? interpolate(t - sec.s, [0, .35], [1, 0], clamp) : 1, transform: sec.kind === 'tip' ? `translateY(${interpolate(t - sec.s, [0, .35], [0, 200], clamp)}px)` : undefined}}>
         {plan.joyMap ? plan.joyMap.map((r, i) => (
           <Sequence key={i} from={Math.round(r.t * fps)} durationInFrames={Math.round((i === plan.joyMap!.length - 1 ? plan.duration - r.t : r.d) * fps)} layout="none">
             <OffthreadVideo src={staticFile(plan.joyMedia!)} transparent muted startFrom={Math.round(r.src * fps)} style={{position: 'absolute', width: '100%', height: '100%'}} />
@@ -248,6 +270,7 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       {sec.kind === 'p3' && <P3 sec={sec} t={t} fps={fps} ticks={plan.ticks.p3 ?? []} caps={plan.captions} />}
       {sec.kind === 'last' && <Last sec={sec} t={t} fps={fps} caps={plan.captions} />}
       {sec.kind === 'end' && <End sec={sec} t={t} fps={fps} />}
+      {sec.kind === 'tip' && plan.tip && <TypeCard sec={sec} t={t} fps={fps} lines={plan.tip} span={plan.tipType ?? [.3, 6]} />}
       {sec.kind === 'bye' && <Follow sec={sec} t={t} fps={fps} next={plan.next} part={plan.part} />}
       {cap && (
         <div style={{position: 'absolute', left: 60, right: 60, top: 1305, height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>

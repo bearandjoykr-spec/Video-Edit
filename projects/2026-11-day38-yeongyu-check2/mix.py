@@ -9,8 +9,14 @@ ins = ["-i", f"{V}/voice.wav", "-f", "lavfi", "-t", "1", "-i", "anullsrc=r=48000
 fc = [f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,highpass=f=80,apad=whole_dur={dur},atrim=0:{dur}[voice]", "[1:a]anull[m]"]
 lab = ["[voice]", "[m]"]
 for k, c in enumerate(plan["sfx"]):
-    ins += ["-i", f"projects/2026-11-day34-bookguide/versions/main/audio/sfx_{c['sound']}.wav"]; ms = int(c["t"] * 1000)
-    fc.append(f"[{k + 2}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={c['gain']}dB,adelay={ms}|{ms}[s{k}]"); lab.append(f"[s{k}]")
+    ms = int(c["t"] * 1000)
+    if c.get("file"):
+        ins += ["-ss", str(c.get("ss", 0)), "-t", str(c.get("d", 5)), "-i", c["file"]]
+        fc.append(f"[{k + 2}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={c['gain']}dB,afade=t=out:st={c.get('d', 5) - 0.4:.2f}:d=0.4,adelay={ms}|{ms}[s{k}]")
+    else:
+        ins += ["-i", f"projects/2026-11-day34-bookguide/versions/main/audio/sfx_{c['sound']}.wav"]
+        fc.append(f"[{k + 2}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={c['gain']}dB,adelay={ms}|{ms}[s{k}]")
+    lab.append(f"[s{k}]")
 fc.append("".join(lab) + f"amix=inputs={len(lab)}:normalize=0:duration=first,atrim=0:{dur}[mix]")
 g = ";".join(fc)
 m = subprocess.run(["ffmpeg", "-hide_banner", *ins, "-filter_complex", g + ";[mix]loudnorm=I=-14:TP=-2:LRA=11:print_format=json[o]", "-map", "[o]", "-f", "null", "-"], capture_output=True, text=True)
