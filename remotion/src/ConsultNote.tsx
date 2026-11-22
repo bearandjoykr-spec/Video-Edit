@@ -2,11 +2,12 @@
 // stock B-roll in a rounded window across the top, warm paper below where Joy's sticker stands, and "상담 노트" cards in the chalk
 // fonts (Gaegu, house default since DAY 33). All text sits in y 300–1450. Yellow progress bar (Joy, DAY 37).
 import React, {useEffect, useState} from 'react';
-import {AbsoluteFill, OffthreadVideo, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Img} from 'remotion';
+import {AbsoluteFill, OffthreadVideo, Sequence, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Img} from 'remotion';
 
 type Cap = {s: number; e: number; text: string; sec: string};
 type Sec = {kind: string; s: number; e: number};
-export type NotePlan = {fps: number; day: number; media: string; duration: number; frames: number; captions: Cap[]; sections: Sec[]; ticks: Record<string, number[]>};
+export type NotePlan = {part?: number; joyMedia?: string; joyMap?: {t: number; src: number; d: number}[]; hookTitle?: string[]; props?: string[]; next?: string | null;
+  fps: number; day: number; media: string; duration: number; frames: number; captions: Cap[]; sections: Sec[]; ticks: Record<string, number[]>};
 
 const C = {paper: '#F3EADB', note: '#FFFDF7', line: '#E6DCC8', margin: '#E8A0A0', navy: '#1E2D4D', ink: '#2B2B2B', gold: '#C9A86A', yellow: '#FFD84D',
   red: '#D9534F', green: '#3E8E5E', muted: '#7A6F60', white: '#FFFFFF'};
@@ -113,7 +114,7 @@ const P3: React.FC<{sec: Sec; t: number; fps: number; ticks: number[]; caps: Cap
 
 const Last: React.FC<{sec: Sec; t: number; fps: number; caps: Cap[]}> = ({sec, t, fps, caps}) => {
   const cs = caps.filter((c) => c.sec === 'last');
-  const vsAt = cs[5]?.s ?? 1e9, kidAt = cs[6]?.s ?? 1e9, quoteAt = cs[8]?.s ?? 1e9;
+  const vsAt = cs[5]?.s ?? 1e9, kidAt = cs[6]?.s ?? 1e9, quoteAt = cs.find((c) => c.text.startsWith('결국'))?.s ?? 1e9;
   if (t >= quoteAt) {
     const k = sp(t, quoteAt, fps, 12);
     return (
@@ -149,14 +150,16 @@ const Intro: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => (
   </div>
 );
 
-const Follow: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => {
+const Follow: React.FC<{sec: Sec; t: number; fps: number; next?: string | null; part?: number}> = ({sec, t, fps, next, part}) => {
   const k = sp(t, sec.s, fps, 13);
   const tap = t - sec.s - 1.4; const done = tap > .15;
   return (
     <div style={{...NOTE, background: C.note, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: k, transform: `rotate(-1deg) scale(${.94 + .06 * k})`}}>
       <Img src={staticFile('brand/logo-full.png')} style={{height: 120, objectFit: 'contain'}} />
       <div style={{marginTop: 10, fontFamily: PRE, fontWeight: 900, fontSize: 54, color: C.navy}}>@thebearandjoy</div>
-      <div style={{marginTop: 6, fontFamily: HAND, fontWeight: 700, fontSize: 40, color: C.muted}}>팔로우하고 다음 체크리스트도 받아 가세요</div>
+      {part ? <div style={{marginTop: 8, textAlign: 'center', fontFamily: HAND, fontWeight: 700, fontSize: 40, color: next ? C.red : C.green, opacity: sp(t, sec.s + .4, fps)}}>
+          {next ? <>다음 편 👉 {next}</> : <>✓ 영유 상담 체크리스트 완성!</>}</div>
+        : <div style={{marginTop: 6, fontFamily: HAND, fontWeight: 700, fontSize: 40, color: C.muted}}>팔로우하고 다음 체크리스트도 받아 가세요</div>}
       <div style={{marginTop: 18, fontFamily: PRE, fontWeight: 900, fontSize: 44, color: '#fff', background: done ? '#7A8599' : '#4C6EF5', borderRadius: 16, padding: '10px 54px',
         transform: `scale(${tap > 0 && tap < .15 ? .92 : 1})`}}>{done ? '✓ 팔로잉' : '+ 팔로우'}</div>
     </div>
@@ -201,11 +204,25 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       </div>
       {/* Joy */}
       <div style={{position: 'absolute', left: (1080 - W) / 2, top: 1920 - H - 40, width: W, height: H, filter: outline}}>
-        <OffthreadVideo src={staticFile(`${plan.media}/joy.webm`)} transparent muted style={{width: '100%', height: '100%'}} />
+        {plan.joyMap ? plan.joyMap.map((r, i) => (
+          <Sequence key={i} from={Math.round(r.t * fps)} durationInFrames={Math.round((i === plan.joyMap!.length - 1 ? plan.duration - r.t : r.d) * fps)} layout="none">
+            <OffthreadVideo src={staticFile(plan.joyMedia!)} transparent muted startFrom={Math.round(r.src * fps)} style={{position: 'absolute', width: '100%', height: '100%'}} />
+          </Sequence>))
+          : <OffthreadVideo src={staticFile(`${plan.media}/joy.webm`)} transparent muted style={{width: '100%', height: '100%'}} />}
       </div>
       {/* hook: flags of the native teachers' countries either side of Joy's face */}
-      {sec.kind === 'hook' && [['🇬🇧', 70, 1180, -8], ['🇺🇸', 90, 1380, 6], ['🇨🇦', 850, 1170, 7], ['🇦🇺', 830, 1390, -6]].map(([f, x, y, r], i) => {
-        const k = sp(t, .2 + .15 * i, fps, 10);
+      {(() => {
+        const pts: [number, number, number][] = [[70, 1180, -8], [90, 1380, 6], [850, 1170, 7], [830, 1390, -6]];
+        const flags = ['🇬🇧', '🇺🇸', '🇨🇦', '🇦🇺'];
+        const pointSec = secs.find((x) => /^p\d$/.test(x.kind));
+        const usePart = plan.props && (plan.part !== 1 || sec.kind !== 'hook');
+        const show = sec.kind === 'hook' || (plan.props && /^p\d$/.test(sec.kind));
+        if (!show) return null;
+        const items = usePart ? plan.props! : flags;
+        const s0 = usePart && sec.kind !== 'hook' ? (pointSec?.s ?? 0) : 0;
+        return items.map((f, i) => [f, ...pts[i]] as [string, number, number, number]);
+      })()?.map(([f, x, y, r], i) => {
+        const k = sp(t, (sec.kind === 'hook' ? 0 : sec.s) + .2 + .15 * i, fps, 10);
         return <div key={i} style={{position: 'absolute', left: x as number, top: (y as number) + Math.sin(t * 2 + i) * 6, fontSize: 130, transform: `scale(${k}) rotate(${r}deg)`,
           filter: 'drop-shadow(0 8px 14px rgba(60,40,10,.35))'}}>{f as string}</div>;
       })}
@@ -221,9 +238,9 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       {sec.kind === 'hook' && (
         <div style={{position: 'absolute', top: 420, left: 60, right: 60, textAlign: 'center'}}>
           <div style={{display: 'inline-block', fontFamily: HAND, fontWeight: 700, fontSize: 40, color: C.navy, background: C.yellow, borderRadius: 12, padding: '0 18px', transform: 'rotate(-2deg)',
-            opacity: hk}}>영유 상담 전 체크리스트 2편</div>
-          <div style={{marginTop: 22, fontFamily: PRE, fontWeight: 900, fontSize: 100, lineHeight: 1.12, color: C.white, textShadow: '0 4px 18px rgba(0,0,0,.7)', transform: `scale(${.85 + .15 * hk})`}}>
-            영유 선생님이<br /><span style={{color: C.yellow}}>자주 바뀐다면?</span></div>
+            opacity: hk}}>{plan.part ? `영유 상담 체크리스트 ${'①②③'[plan.part - 1]}` : '영유 상담 전 체크리스트 2편'}</div>
+          <div style={{marginTop: 22, fontFamily: PRE, fontWeight: 900, fontSize: (plan.hookTitle?.[1]?.length ?? 0) > 10 ? 80 : 100, lineHeight: 1.12, color: C.white, textShadow: '0 4px 18px rgba(0,0,0,.7)', transform: `scale(${.85 + .15 * hk})`}}>
+            {(plan.hookTitle ?? ['영유 선생님이', '자주 바뀐다면?'])[0]}<br /><span style={{color: C.yellow}}>{(plan.hookTitle ?? ['', '자주 바뀐다면?'])[1]}</span></div>
         </div>)}
       {sec.kind === 'intro' && <Intro sec={sec} t={t} fps={fps} />}
       {sec.kind === 'p1' && <P1 sec={sec} t={t} fps={fps} ticks={plan.ticks.p1 ?? []} />}
@@ -231,7 +248,7 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       {sec.kind === 'p3' && <P3 sec={sec} t={t} fps={fps} ticks={plan.ticks.p3 ?? []} caps={plan.captions} />}
       {sec.kind === 'last' && <Last sec={sec} t={t} fps={fps} caps={plan.captions} />}
       {sec.kind === 'end' && <End sec={sec} t={t} fps={fps} />}
-      {sec.kind === 'bye' && <Follow sec={sec} t={t} fps={fps} />}
+      {sec.kind === 'bye' && <Follow sec={sec} t={t} fps={fps} next={plan.next} part={plan.part} />}
       {cap && (
         <div style={{position: 'absolute', left: 60, right: 60, top: 1305, height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
           {cap.text.includes('마크') && <div style={{position: 'absolute', top: -70, left: 0, right: 0, textAlign: 'center', fontSize: 76,

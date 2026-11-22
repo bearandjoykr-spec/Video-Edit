@@ -50,6 +50,8 @@ import {Checklist, CheckPlan} from './Checklist';
 import day37 from './day37.json';
 import day38 from './day38.json';
 import {ConsultNote, NotePlan} from './ConsultNote';
+import day39 from './day39.json';
+import day40 from './day40.json';
 import day36 from './day36.json';
 import day35 from './day35.json';
 import day1ad from '../../projects/2026-11-day1-ad/versions/main/timeline.json';
@@ -103,6 +105,8 @@ export const Root: React.FC = () => (
     {reelV2('MarkSpicy', spicy as unknown as PlanV2)}
     <Composition id="Day36" component={TopThree} durationInFrames={(day36 as unknown as TopPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day36 as unknown as TopPlan}} />
     <Composition id="Day37" component={Checklist} durationInFrames={(day37 as unknown as CheckPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day37 as unknown as CheckPlan}} />
+    <Composition id="Day39" component={ConsultNote} durationInFrames={(day39 as unknown as NotePlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day39 as unknown as NotePlan}} />
+    <Composition id="Day40" component={ConsultNote} durationInFrames={(day40 as unknown as NotePlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day40 as unknown as NotePlan}} />
     <Composition id="Day38" component={ConsultNote} durationInFrames={(day38 as unknown as NotePlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day38 as unknown as NotePlan}} />
     <Composition id="Day36Cover" component={TopThreeCover} durationInFrames={1} fps={30} width={1080} height={1920} defaultProps={{day: 36}} />
     <Composition id="Day35" component={ExpoPromo} durationInFrames={(day35 as unknown as ExpoPlan).frames} fps={30} width={1080} height={1920} defaultProps={{plan: day35 as unknown as ExpoPlan}} />

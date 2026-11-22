@@ -1,7 +1,7 @@
 """DAY 38 mix: Joy's tightened voice (versions/main/voice.wav) + soft music under it + light SFX, -14 LUFS.
 Usage (repo root): .venv/bin/python projects/2026-11-day37-yeongyu-check/mix.py PICTURE OUT [MUSIC_DB]"""
 import json, os, re, subprocess, sys
-P = os.path.dirname(os.path.abspath(__file__)); V = f"{P}/versions/main"
+P = os.path.dirname(os.path.abspath(__file__)); V = f"{P}/versions/" + os.environ.get("VER", "main")
 pic, out = sys.argv[1:3]; mdb = float(sys.argv[3]) if len(sys.argv) > 3 else -14
 plan = json.load(open(f"{V}/plan.json")); dur = plan["duration"]
 music, m0 = "projects/2026-11-day36-top3/music/fashion-lifestyle-628637.mp3", 0.557   # same track as DAY 36 (Pixabay licence)
