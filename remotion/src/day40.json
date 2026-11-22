@@ -171,5 +171,10 @@
   "☎️",
   "📩"
  ],
- "next": null
+ "next": null,
+ "tip": null,
+ "tipType": [
+  0.35,
+  5.9
+ ]
 }
