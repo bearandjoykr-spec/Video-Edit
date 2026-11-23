@@ -29,6 +29,14 @@ Started 23 Nov 2026. Not a Bear & Joy channel: do not use brand/BRAND.md or its 
 - Chant only where Mark is silent: title, a 5 s swell after "The Word of the Lord", end card.
 - Mix: projects/2026-11-templar-ep01-genesis1/mix.py (bed -31, chant -20, fire -35 LUFS; voice -16; final -14).
 
+## Paintings (owner, 23 Nov 2026: "visuals from antiquity", placed cleverly, Ken Burns, smooth antique transitions)
+- Public-domain art only (Doré Bible 1866, Sistine Chapel); credits in projects/2026-11-templar-ep01-genesis1/art/CREDITS.md.
+- Talking parts: a painting per idea, timed to the words (build_plan.py ART_CUES). Reading: the camera stays on the Bible and
+  pulls back in the pause after each day to reveal that day's painting (DAY_ART). Prayer/benediction: faint.
+- Look: sepia, firelit, dust/scratches/gate weave; transitions "burn in" with ember edges (remotion/src/templar/Art.tsx).
+- Avoid gore (dropped David & Goliath).
+- Headphones card at the very start ("Best experienced with headphones / in a quiet, dark place"), ~4.5 s.
+
 ## Waiting on the owner
 - The audio file (Google Drive, anyone with the link), which book/chapters, which Bible translation
 - Look and feel (reference channels/videos), language(s), rough length

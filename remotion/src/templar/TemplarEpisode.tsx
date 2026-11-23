@@ -2,6 +2,7 @@
 // Not Bear & Joy: no Bear & Joy brand, colours or assets here.
 import React, {useEffect, useState} from 'react';
 import {noise2D} from '@remotion/noise';
+import {ArtLayer, ArtCue, ART_LEVEL, pullAmount} from './Art';
 import {
   AbsoluteFill, Audio, Easing, Sequence, continueRender, delayRender, interpolate,
   random, staticFile, useCurrentFrame, useVideoConfig,
@@ -19,16 +20,16 @@ export type Scene =
   | {type: 'speech'; from: number; to: number; chunks: Chunk[]}
   | {type: 'prayer'; from: number; to: number; heading: string; kneelFrom: number; kneelTo: number; kneelText?: string; kneelSub?: string;
      blocks: {style: 'latin' | 'english' | 'say' | 'prayer'; tokens: Tok[]}[]}
-  | {type: 'bible'; from: number; to: number; spreads: Spread[]}
+  | {type: 'bible'; from: number; to: number; spreads: Spread[]; breaks?: {at: number; until: number}[]; art?: ArtCue[]}
   | {type: 'notes'; from: number; to: number; label: string; title: string; items: NoteItem[]; chunks: Chunk[]}
   | {type: 'end'; from: number; to: number; next: string; sign: string; chunks?: Chunk[]};
 export type TemplarPlan = {fps: number; duration: number; audio?: string | null; music?: string | null;
-  musicVolume?: number; scenes: Scene[]};
+  musicVolume?: number; art?: ArtCue[]; scenes: Scene[]};
 
 // ---------- palette ----------
 const C = {
   night: '#040302', stone: '#0b0806', gold: '#b8893f', goldHi: '#ffb54a', red: '#7d1612', ember: '#ff8a2a',
-  ivory: '#e6d6b8', dimIvory: 'rgba(230,214,184,.22)', ink: '#1a0f07', parch: '#b99868',
+  ivory: '#e6d6b8', dimIvory: 'rgba(230,214,184,.34)', ink: '#1a0f07', parch: '#b99868',
 };
 const SERIF = "'EB Garamond', Georgia, serif";
 const CAPS = "'Cinzel', 'EB Garamond', serif";
@@ -135,7 +136,7 @@ const Word: React.FC<{tok: Tok; t: number; mode: WordStyle; lead?: number}> = ({
           background: mode === 'dark' ? 'radial-gradient(ellipse 70% 75% at 50% 58%, rgba(255,150,40,.75), rgba(230,90,20,.35) 60%, rgba(230,90,20,0) 100%)'
             : 'radial-gradient(ellipse at 50% 60%, rgba(255,140,40,.32), rgba(255,140,40,0) 70%)', filter: 'blur(1px)'}} />
       ) : null}
-      <span style={{position: 'relative', textShadow: hl > 0 ? (mode === 'light' ? `0 0 ${20 * hl}px rgba(255,130,30,${0.95 * hl})` : `0 0 ${8 * hl}px rgba(255,200,120,${0.8 * hl})`) : undefined,
+      <span style={{position: 'relative', textShadow: hl > 0 ? (mode === 'light' ? `0 0 ${20 * hl}px rgba(255,130,30,${0.95 * hl}), 0 2px 10px rgba(0,0,0,.9)` : `0 0 ${8 * hl}px rgba(255,200,120,${0.8 * hl})`) : (mode === 'light' ? '0 2px 10px rgba(0,0,0,.95), 0 0 30px rgba(0,0,0,.8)' : undefined),
         color: mode === 'light' && hl > 0.5 ? C.goldHi : undefined}}>{tok.t}</span>
     </span>
   );
@@ -188,6 +189,7 @@ const SpeechScene: React.FC<{s: Extract<Scene, {type: 'speech'}>; t: number}> = 
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: fade(t, s.from, s.to, 0.8, 0.8)}}>
       <div style={{position: 'absolute', opacity: 0.07}}><Cross size={760} color={C.gold} /></div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 300, height: 480, background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(5,3,2,.72), rgba(5,3,2,.45) 55%, transparent 100%)'}} />
       {c ? (
         <div style={{width: 1440, textAlign: 'center', fontFamily: SERIF, fontSize: 64, lineHeight: 1.32, opacity: fade(t, c.from, c.to, 0.35, 0.35),
           transform: `translateY(${interpolate(t, [c.from, c.from + 0.5], [14, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease})}px)`}}>
@@ -276,10 +278,14 @@ const BibleScene: React.FC<{s: Extract<Scene, {type: 'bible'}>; t: number}> = ({
   const turn = fade(t, sp.from, sp.to, 0.5, 0.5);
   const f = fire(t);
   const lx = 30 + 6 * noise2D('lx', t * 0.6, 0);      // the fire's light wanders a little
+  const pull = pullAmount(t, s.breaks);               // camera pulls back in the pause after each day
+  const sc = (0.9 + 0.03 * k) * (1 - 0.34 * pull);
   return (
-    <AbsoluteFill style={{opacity: o, alignItems: 'center', justifyContent: 'center', perspective: 2400}}>
-      <div style={{position: 'relative', width: 1720, height: 1000, marginTop: 30,
-        transform: `rotateX(9deg) scale(${0.9 + 0.03 * k}) translateY(${noise2D('cam', t * 0.15, 0) * 4}px)`}}>
+    <AbsoluteFill style={{opacity: o}}>
+      {s.art ? <ArtLayer cues={s.art} t={t} fire={f} opacity={0.45 + 0.5 * pull} dim={0.85 + 0.25 * pull} /> : null}
+    <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', perspective: 2400}}>
+      <div style={{position: 'relative', width: 1720, height: 1000, marginTop: 30 - 40 * pull,
+        transform: `rotateX(${9 + 6 * pull}deg) scale(${sc}) translateY(${noise2D('cam', t * 0.15, 0) * 4}px)`}}>
         {/* battered leather cover + page block */}
         <div style={{position: 'absolute', inset: '10px -16px -26px -16px', borderRadius: 18, background: 'linear-gradient(160deg, #2b120b, #120604 60%, #1d0a06)',
           boxShadow: '0 50px 120px rgba(0,0,0,.95), inset 0 0 30px rgba(0,0,0,.9)'}} />
@@ -308,7 +314,8 @@ const BibleScene: React.FC<{s: Extract<Scene, {type: 'bible'}>; t: number}> = ({
         {/* ribbon */}
         <div style={{position: 'absolute', left: 1180, top: 985, width: 26, height: 110, background: `linear-gradient(${C.red}, #3e0907)`, clipPath: 'polygon(0 0,100% 0,100% 100%,50% 86%,0 100%)'}} />
       </div>
-      <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 80% at ${lx + 15}% 75%, transparent 45%, rgba(0,0,0,${0.9 - 0.15 * f}) 100%)`}} />
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 80% at ${lx + 15}% 75%, transparent 45%, rgba(0,0,0,${(0.9 - 0.15 * f) * (1 - 0.6 * pull)}) 100%)`}} />
+    </AbsoluteFill>
     </AbsoluteFill>
   );
 };
@@ -318,6 +325,7 @@ const NotesScene: React.FC<{s: Extract<Scene, {type: 'notes'}>; t: number}> = ({
   const shown = s.items.filter((it) => t >= it.at);
   return (
     <AbsoluteFill style={{opacity: fade(t, s.from, s.to, 1, 1)}}>
+      <AbsoluteFill style={{background: 'linear-gradient(90deg, rgba(5,3,2,.8) 0%, rgba(5,3,2,.55) 45%, rgba(5,3,2,.1) 80%), linear-gradient(180deg, rgba(5,3,2,.6) 0%, transparent 30%, transparent 78%, rgba(5,3,2,.75) 100%)'}} />
       <div style={{position: 'absolute', top: 90, left: 0, right: 0, textAlign: 'center'}}>
         <div style={{fontFamily: CAPS, color: C.gold, letterSpacing: '0.5em', fontSize: 22}}>{s.label}</div>
         <div style={{fontFamily: CAPS, color: C.ivory, fontSize: 58, marginTop: 14, letterSpacing: '0.05em'}}>{s.title}</div>
@@ -373,6 +381,8 @@ export const TemplarEpisode: React.FC<{plan: TemplarPlan}> = ({plan}) => {
   return (
     <AbsoluteFill style={{background: C.night}}>
       <Backdrop t={t} warm={warm} />
+      {plan.art ? <ArtLayer cues={plan.art} t={t} fire={fire(t)}
+        opacity={Math.min(1, visible.reduce((m, s) => Math.max(m, (ART_LEVEL[s.type] ?? 0) * fade(t, s.from, s.to, 1.2, 1.2)), 0))} /> : null}
       {visible.map((s, i) => {
         switch (s.type) {
           case 'notice': return <NoticeScene key={i} s={s} t={t} />;

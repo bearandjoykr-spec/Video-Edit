@@ -206,18 +206,31 @@ while k_ < len(stream):
     run = [k_]
     while run[-1] + 1 < len(stream) and _sil_at(stream[run[-1] + 1]['s']) == sl: run.append(run[-1] + 1)
     nxt = run[-1] + 1
+    # words up to the first one ending in punctuation belong BEFORE the pause (Mark pauses at punctuation)
+    cut = 0
+    prev_punct = run[0] > 0 and stream[run[0] - 1]['t'][-1] in '.,;:!?'
+    for m_, r_ in enumerate([] if prev_punct else run):
+        if stream[r_]['t'][-1] in '.,;:!?': cut = m_ + 1; break
+    before, run = run[:cut], run[cut:]
+    if before:
+        prev_s = stream[before[0] - 1]['s'] if before[0] > 0 else sl[0] - 1
+        b0 = max(prev_s + 0.2, sl[0] - 0.35 * len(before)); b1 = sl[0] + 0.1
+        for m_, r_ in enumerate(before):
+            stream[r_]['s'] = b0 + (b1 - b0) * m_ / len(before); stream[r_]['e'] = b0 + (b1 - b0) * (m_ + 1) / len(before)
+    if not run:
+        moved += len(before); k_ = nxt; continue
     t0 = sl[1] + 0.02
     t1 = stream[nxt]['s'] if nxt < len(stream) else t0 + 0.3 * len(run)
     if t1 < t0 + 0.18 * len(run): t1 = t0 + 0.18 * len(run)   # not enough room: give each word ~0.18 s
     for m_, r_ in enumerate(run):
         stream[r_]['s'] = t0 + (t1 - t0) * m_ / len(run)
         stream[r_]['e'] = t0 + (t1 - t0) * (m_ + 1) / len(run) - 0.02
-    if run[0] > 0 and stream[run[0] - 1]['e'] > sl[0] + 0.12: stream[run[0] - 1]['e'] = sl[0] + 0.12
+    if not before and run[0] > 0 and stream[run[0] - 1]['e'] > sl[0] + 0.12: stream[run[0] - 1]['e'] = sl[0] + 0.12
     # if we had to push past the next word, carry the push forward until the timeline catches up
     q_ = nxt
     while q_ < len(stream) and stream[q_]['s'] < stream[q_ - 1]['s'] + 0.15:
         stream[q_]['s'] = stream[q_ - 1]['s'] + 0.18; stream[q_]['e'] = max(stream[q_]['e'], stream[q_]['s'] + 0.15); q_ += 1
-    moved += len(run); k_ = nxt
+    moved += len(run) + len(before); k_ = nxt
 print('silences', len(SIL), 'words snapped to the end of a pause', moved)
 for x in stream:   # nothing can be spoken before the first sound
     if x['s'] < ONSET:
@@ -384,8 +397,65 @@ scenes.append({'type': 'end', 'from': round(a - 0.2, 3), 'to': end, 'next': 'Gen
 for i, s in enumerate(scenes):
     if s['to'] is None: s['to'] = scenes[i + 1]['from']
 
+# ---------------- paintings (public domain; see art/CREDITS.md) ----------------
+# (stream key prefix, phrase that triggers it, art key, focus x, focus y, zoom from, zoom to)
+ART_CUES = [
+    ('open', 'Brothers.', 'army', .5, .55, 1.06, 1.18),
+    ('open', 'The Templars of old', 'combat', .5, .45, 1.15, 1.05),
+    ('open', 'They lived by a Rule', 'jacob_prays', .45, .62, 1.05, 1.2),
+    ('p_', None, 'gethsemane', .55, .5, 1.04, 1.14),
+    ('context', 'We start where God starts', 'creation_light', .62, .3, 1.05, 1.16),
+    ('context', 'Jewish and Christian tradition', 'moses_sinai', .5, .3, 1.15, 1.05),
+    ('context', 'walked out of slavery', 'red_sea', .45, .5, 1.04, 1.16),
+    ('context', 'Egypt worshipped', 'pharaoh', .55, .55, 1.12, 1.03),
+    ('context', 'These opening verses', 'first_day', .5, .48, 1.25, 1.4),
+    ('context', 'one man, one garden', 'creation_eve', .45, .55, 1.05, 1.15),
+    ('analysis', 'God speaks, and it happens', 'first_day', .5, .45, 1.3, 1.45),
+    ('analysis', 'Order out of chaos', 'waters', .5, .5, 1.05, 1.18),
+    ('analysis', 'Man is different', 'adam', .42, .55, 1.25, 1.12),
+    ('brothers', 'Now, brothers', 'samuel_saul', .5, .5, 1.04, 1.16),
+    ('brothers', 'Dominion is stewardship', 'jacob_flocks', .5, .5, 1.12, 1.03),
+    ('brothers', 'Work hard, then rest', 'elijah_rest', .4, .6, 1.04, 1.16),
+    ('charge', None, 'jacob_journey', .5, .5, 1.04, 1.14),
+    ('blessing', None, 'isaac_blesses', .5, .45, 1.04, 1.14),
+    ('next', None, 'creation_eve', .5, .5, 1.03, 1.12),
+]
+art = []
+for key, phrase, img, fx, fy, z0, z1 in ART_CUES:
+    ws = keyed(key)
+    at = first(ws, phrase) if phrase else ws[0]['s']
+    art.append({'src': f'templar/art/{img}.jpg', 'from': round(at - 0.8, 3), 'focus': [fx, fy], 'zoom': [z0, z1]})
+art.sort(key=lambda c: c['from'])
+# a cue lasts until the next one has burned in; cues stop at the reading (it has its own) and at the end
+bible_scene = [x for x in scenes if x['type'] == 'bible'][0]
+for i, c in enumerate(art):
+    nxt = art[i + 1]['from'] if i + 1 < len(art) else end
+    if c['from'] < bible_scene['from'] <= nxt: nxt = bible_scene['from'] + 1.2
+    c['to'] = round(nxt + 1.8, 3)
+# the opening card + title have no painting; the prayer one sits behind the whole prayer
+# the reading: one painting per day, revealed when the camera pulls back in the pause after each day
+DAY_ART = ['creation_light', 'waters', 'canaan', 'sun_moon', 'leviathan', 'adam', 'jacob_dream']
+btoks = [t for sp in bible_scene['spreads'] for pg in (sp['left'], sp['right']) for para in pg for t in para['tokens']]
+breaks = [{'at': round(bible_scene['from'] + 0.2, 3), 'until': round(btoks[0]['s'] - 0.2, 3)}]
+for i, t in enumerate(btoks):
+    if t['t'].startswith('day') and i > 0 and btoks[i - 1]['t'] in ('first', 'second', 'third', 'fourth', 'fifth', 'sixth'):
+        nxt = btoks[i + 1]['s'] if i + 1 < len(btoks) else t['e'] + 2
+        breaks.append({'at': round(t['s'] + 0.45, 3), 'until': round(nxt - 0.15, 3)})
+bart = []
+for d, b in enumerate(breaks):
+    nb = breaks[d + 1]['at'] if d + 1 < len(breaks) else bible_scene['to']
+    bart.append({'src': f'templar/art/{DAY_ART[d]}.jpg', 'from': round(b['at'] - (0.6 if d else 0.8), 3), 'to': round(nb + 1.8, 3),
+                 'focus': [.5, .45], 'zoom': [1.04, 1.16]})
+bible_scene['breaks'] = breaks
+bible_scene['art'] = bart
+from PIL import Image as _Im
+_pub = __file__.rsplit('/', 1)[0] + '/../../remotion/public/'
+for c in art + bart:
+    with _Im.open(_pub + c['src']) as im_: c['w'], c['h'] = im_.size
+print('art cues', len(art), '| reading breaks', [round(b['until'] - b['at'], 1) for b in breaks])
+
 # where the chant plays (video time): title card, the book-closing swell, the end card
 chant = [[PRE, OFF + 1.5], [round(endw[-1]['e'] + 0.3, 3), round(bend + 1.0, 3)], [round(w[-1]['e'] + 0.5, 3), end]]
-plan = {'fps': fps, 'duration': end, 'audio': None, 'offset': OFF, 'trim': TRIM, 'gaps': [[round(a_ - TRIM, 3), g_] for a_, g_ in gaps], 'chant': chant, 'scenes': scenes}
+plan = {'fps': fps, 'duration': end, 'art': art, 'audio': None, 'offset': OFF, 'trim': TRIM, 'gaps': [[round(a_ - TRIM, 3), g_] for a_, g_ in gaps], 'chant': chant, 'scenes': scenes}
 json.dump(plan, open(args.out, 'w'), indent=1)
 for s in scenes: print(f"{s['type']:7s} {s['from']:8.2f} → {s['to']:8.2f}")
