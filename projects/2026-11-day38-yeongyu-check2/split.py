@@ -31,7 +31,10 @@ PARTS = {
                      ["day38/series/b-reading.jpg", "Bricks Reading", "리딩 (30→300)"], ["day38/series/b-listening.jpg", "Bricks Listening", "리스닝"],
                      ["day38/series/b-grammar.jpg", "First Grammar", "문법"]]}],
          "hookTitle": ["미국·영국 교과서면", "다 좋을까?"], "props": ["📘", "🇺🇸", "📗", "🇬🇧"], "next": "③ 학부모 의견, 원어민 선생님께 잘 전달될까?",
-         "bg": {"p2": stock["p2"], "bye": stock["end"]}},
+         "bg": {"p2": stock["p2"], "bye": stock["end"], "tip": ["5897643"]},
+         # Joy (23 Nov): after "배운 영어를 직접 써 볼 기회…" a typed card asks for '교과서' in the comments to get the textbook table
+         "tip": ["📚 교재 목록 필요하세요?", "오늘 소개한 교재들을", "영역별 표로 정리했어요", "👉 팔로우하고 댓글에", "'교과서' 라고 남겨 주세요 💬", "DM으로 보내 드릴게요!"],
+         "tipDur": 6.5, "tipType": [.35, 3.9], "tipRed": 3, "tipImg": "day38/textbook-table.png"},
     40: {"ranges": [(64.618, 89.936), (115.055, 120.4), (120.4, 123.462), BYE], "hook": 2.6, "n": 3,
          "hookTitle": ["학부모 의견,", "원어민 선생님께 잘 전달될까?"], "props": ["📞", "💬", "☎️", "📩"], "next": None,
          "bg": {"p3": stock["p3"], "last": stock["last"][:3], "end": stock["last"][3:5], "bye": stock["bye"]}},
@@ -41,7 +44,7 @@ PARTS = {
 def run(day, P):
     out = f"{HERE}/versions/day{day}"; os.makedirs(out, exist_ok=True)
     # Joy (22 Nov): the tip card goes right before "그럼 내일 만나요" — a silent gap before the last range (BYE)
-    TIP = 8.5 if P.get("tip") else 0
+    TIP = P.get("tipDur", 8.5) if P.get("tip") else 0
     PRE = P.get("pre", 0.0)
     jm, t, tip_s = [], PRE, None
     for i, (a, b) in enumerate(P["ranges"]):
@@ -81,7 +84,7 @@ def run(day, P):
     if PRE:   # a soft pop as each book photo lands
         sfx += [{"t": round(i * PRE / len(P["books"]), 3), "sound": "pop", "gain": -12} for i in range(len(P["books"]))]
     if TIP:   # keyboard typing while the lines type out (Pixabay sound, sfx/SOURCE.md)
-        sfx.append({"t": round(tip_s + .3, 3), "file": "projects/2026-11-day38-yeongyu-check2/sfx/typing.mp3", "ss": .25, "d": 5.6, "gain": -4})
+        sfx.append({"t": round(tip_s + .3, 3), "file": "projects/2026-11-day38-yeongyu-check2/sfx/typing.mp3", "ss": .25, "d": round(P.get("tipType", [.35, 5.9])[1] - .3, 2), "gain": -4})
 
     # voice: the same ranges of the full voice track, then silence for the end card
     fc = [f"[0:a]atrim={a:.3f}:{b:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.01,afade=t=out:st={b - a - 0.02:.3f}:d=0.02[a{i}]" for i, (a, b) in enumerate(P["ranges"])]
@@ -119,7 +122,7 @@ def run(day, P):
         a, b = sr["cap"]; series.append({"s": p2c[a]["s"], "e": p2c[b]["s"], "title": sr["title"], "items": sr["items"]})
     plan = {"fps": FPS, "day": day, "part": P["n"], "media": f"day38/p{day}", "joyMedia": "day38/joy.webm", "joyMap": jm, "duration": total,
             "frames": int(math.ceil(total * FPS)), "captions": caps, "sections": secs, "ticks": ticks, "sfx": sfx,
-            "hookTitle": P["hookTitle"], "props": P["props"], "next": P["next"], "tip": P.get("tip"), "tipType": [.35, 5.9], "books": P.get("books"), "series": series}
+            "hookTitle": P["hookTitle"], "props": P["props"], "next": P["next"], "tip": P.get("tip"), "tipType": P.get("tipType", [.35, 5.9]), "tipRed": P.get("tipRed", 6), "tipImg": P.get("tipImg"), "books": P.get("books"), "series": series}
     for p in (f"{out}/plan.json", f"{HERE}/../../remotion/src/day{day}.json"):
         json.dump(plan, open(p, "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"DAY {day}: {total:.1f}s", [(s["kind"], s["s"], s["e"]) for s in secs])

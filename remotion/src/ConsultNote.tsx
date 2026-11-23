@@ -6,7 +6,7 @@ import {AbsoluteFill, OffthreadVideo, Sequence, continueRender, delayRender, int
 
 type Cap = {s: number; e: number; text: string; sec: string};
 type Sec = {kind: string; s: number; e: number};
-export type NotePlan = {part?: number; joyMedia?: string; joyMap?: {t: number; src: number; d: number}[]; hookTitle?: string[]; props?: string[]; next?: string | null; tip?: string[]; tipType?: number[]; books?: string[]; series?: {s: number; e: number; title: string; items: string[][]}[];
+export type NotePlan = {part?: number; joyMedia?: string; joyMap?: {t: number; src: number; d: number}[]; hookTitle?: string[]; props?: string[]; next?: string | null; tip?: string[]; tipType?: number[]; tipRed?: number; tipImg?: string; books?: string[]; series?: {s: number; e: number; title: string; items: string[][]}[];
   fps: number; day: number; media: string; duration: number; frames: number; captions: Cap[]; sections: Sec[]; ticks: Record<string, number[]>};
 
 const C = {paper: '#F3EADB', note: '#FFFDF7', line: '#E6DCC8', margin: '#E8A0A0', navy: '#1E2D4D', ink: '#2B2B2B', gold: '#C9A86A', yellow: '#FFD84D',
@@ -168,7 +168,7 @@ const Follow: React.FC<{sec: Sec; t: number; fps: number; next?: string | null; 
 };
 
 // silent bonus tip, typed out line by line (Joy, 22 Nov)
-const TypeCard: React.FC<{sec: Sec; t: number; fps: number; lines: string[]; span: number[]}> = ({sec, t, fps, lines, span}) => {
+const TypeCard: React.FC<{sec: Sec; t: number; fps: number; lines: string[]; span: number[]; red?: number; img?: string}> = ({sec, t, fps, lines, span, red = 6, img}) => {
   const total = lines.reduce((n, l) => n + [...l].length, 0);
   const shown = Math.floor(interpolate(t - sec.s, span, [0, total], clamp));
   let left = shown;
@@ -179,10 +179,19 @@ const TypeCard: React.FC<{sec: Sec; t: number; fps: number; lines: string[]; spa
         const ch = [...l]; const n = Math.max(0, Math.min(ch.length, left)); left -= ch.length;
         const typing = n > 0 && n < ch.length || (n === ch.length && left < 0 && left + ch.length === 0);
         return <div key={i} style={{minHeight: i === 0 ? 96 : 104, whiteSpace: 'nowrap', fontFamily: i === 0 ? PRE : ROUND, fontWeight: i === 0 ? 900 : 400, fontSize: i === 0 ? 62 : 46,
-          color: i === 0 ? C.red : i >= 6 ? C.red : C.navy, lineHeight: '104px'}}>
+          color: i === 0 ? C.red : i >= red ? C.red : C.navy, lineHeight: '104px'}}>
           {ch.slice(0, n).join('')}{(n > 0 && n < ch.length) || (i === lines.length - 1 && n === ch.length) ?
             <span style={{opacity: Math.floor(t * 2.5) % 2 ? 1 : 0, color: C.navy}}>|</span> : null}</div>;
       })}
+      {img && (() => {   // a blurred peek at the table people get by commenting
+        const q = sp(t, sec.s + span[1] + .1, fps, 14);
+        return <div style={{position: 'absolute', left: 110, right: 50, bottom: 24, height: 250, borderRadius: 16, overflow: 'hidden', opacity: q, transform: `translateY(${(1 - q) * 40}px) rotate(1.5deg)`,
+          boxShadow: '0 10px 24px rgba(60,40,10,.3)'}}>
+          <Img src={staticFile(img)} style={{width: '100%', filter: 'blur(5px)', transform: 'translateY(-12%)'}} />
+          <div style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: PRE, fontWeight: 900, fontSize: 44, color: C.navy}}>
+            <span style={{background: C.yellow, borderRadius: 14, padding: '6px 22px'}}>💬 '교과서' 댓글 → 📩 DM</span></div>
+        </div>;
+      })()}
     </div>
   );
 };
@@ -323,7 +332,7 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
       {sec.kind === 'p3' && <P3 sec={sec} t={t} fps={fps} ticks={plan.ticks.p3 ?? []} caps={plan.captions} />}
       {sec.kind === 'last' && <Last sec={sec} t={t} fps={fps} caps={plan.captions} />}
       {sec.kind === 'end' && <End sec={sec} t={t} fps={fps} />}
-      {sec.kind === 'tip' && plan.tip && <TypeCard sec={sec} t={t} fps={fps} lines={plan.tip} span={plan.tipType ?? [.3, 6]} />}
+      {sec.kind === 'tip' && plan.tip && <TypeCard sec={sec} t={t} fps={fps} lines={plan.tip} span={plan.tipType ?? [.3, 6]} red={plan.tipRed} img={plan.tipImg} />}
       {sec.kind === 'bye' && <Follow sec={sec} t={t} fps={fps} next={plan.next} part={plan.part} />}
       {cap && (
         <div style={{position: 'absolute', left: 60, right: 60, top: 1305, height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
