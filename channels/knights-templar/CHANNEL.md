@@ -1,11 +1,13 @@
-# New YouTube channel (name to be confirmed)
+# Knights Templar channel (YouTube @weareknightstemplar)
 
 Started 23 Nov 2026. Not a Bear & Joy channel: do not use brand/BRAND.md or its assets.
-Rename this folder once the owner gives the channel name.
+
+## What the owner told us (23 Nov 2026)
+- Faceless videos: the owner's own audio of him reading the Bible, part by part.
+- Visuals: beautiful, Knights Templar style.
 
 ## Waiting on the owner
-- Topic, audience, channel name
-- Footage (Google Drive "anyone with the link") or a script/plan first
+- The audio file (Google Drive, anyone with the link), which book/chapters, which Bible translation
 - Look and feel (reference channels/videos), language(s), rough length
 - Logo/brand set-up? Thumbnail prompt? YouTube title/description?
 
