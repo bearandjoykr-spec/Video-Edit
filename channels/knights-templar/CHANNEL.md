@@ -19,6 +19,12 @@ Started 23 Nov 2026. Not a Bear & Joy channel: do not use brand/BRAND.md or its 
 - Opening prayer: the whole prayer shown beautifully, with a prompt for the brothers to take a knee.
 - Fonts: Cinzel (titles), EB Garamond (scripture, notes), UnifrakturMaguntia (drop caps) in remotion/public/templar/fonts.
 
+## Sound (owner, 23 Nov 2026)
+- Mood: dark, masculine, battle-worn — a camp by the fire before going to war. Gritty, powerful.
+- Voice: the fuller chain in projects/2026-11-templar-ep01-genesis1/mix.sh (VOICE_FX) is APPROVED ("2nd version is better").
+- Subtle SFX only (page turns, book open/close, fire); never over the voice.
+- Owner supplies real fire SFX and music; synthesised fire/music were not good enough.
+
 ## Waiting on the owner
 - The audio file (Google Drive, anyone with the link), which book/chapters, which Bible translation
 - Look and feel (reference channels/videos), language(s), rough length
