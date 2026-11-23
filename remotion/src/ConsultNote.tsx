@@ -178,19 +178,21 @@ const TypeCard: React.FC<{sec: Sec; t: number; fps: number; lines: string[]; spa
       {lines.map((l, i) => {
         const ch = [...l]; const n = Math.max(0, Math.min(ch.length, left)); left -= ch.length;
         const typing = n > 0 && n < ch.length || (n === ch.length && left < 0 && left + ch.length === 0);
-        return <div key={i} style={{minHeight: i === 0 ? 96 : 104, whiteSpace: 'nowrap', fontFamily: i === 0 ? PRE : ROUND, fontWeight: i === 0 ? 900 : 400, fontSize: i === 0 ? 62 : 46,
-          color: i === 0 ? C.red : i >= red ? C.red : C.navy, lineHeight: '104px'}}>
+        return <div key={i} style={{minHeight: i === 0 ? 96 : img ? 84 : 104, whiteSpace: 'nowrap', fontFamily: i === 0 ? PRE : ROUND, fontWeight: i === 0 ? 900 : 400, fontSize: i === 0 ? 62 : 46,
+          color: i === 0 ? C.red : i >= red ? C.red : C.navy, lineHeight: img && i > 0 ? '84px' : '104px'}}>
           {ch.slice(0, n).join('')}{(n > 0 && n < ch.length) || (i === lines.length - 1 && n === ch.length) ?
             <span style={{opacity: Math.floor(t * 2.5) % 2 ? 1 : 0, color: C.navy}}>|</span> : null}</div>;
       })}
-      {img && (() => {   // a blurred peek at the table people get by commenting
+      {img && (() => {   // Joy (23 Nov): the whole table visible but blurred — what people get by commenting
         const q = sp(t, sec.s + span[1] + .1, fps, 14);
-        return <div style={{position: 'absolute', left: 110, right: 50, bottom: 24, height: 250, borderRadius: 16, overflow: 'hidden', opacity: q, transform: `translateY(${(1 - q) * 40}px) rotate(1.5deg)`,
-          boxShadow: '0 10px 24px rgba(60,40,10,.3)'}}>
-          <Img src={staticFile(img)} style={{width: '100%', filter: 'blur(5px)', transform: 'translateY(-12%)'}} />
-          <div style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: PRE, fontWeight: 900, fontSize: 44, color: C.navy}}>
-            <span style={{background: C.yellow, borderRadius: 14, padding: '6px 22px'}}>💬 '교과서' 댓글 → 📩 DM</span></div>
-        </div>;
+        return <>
+          <div style={{position: 'absolute', right: 70, bottom: 18, height: 380, transform: `translateY(${(1 - q) * 40}px) rotate(3deg)`, opacity: q,
+            boxShadow: '0 10px 24px rgba(60,40,10,.35)', borderRadius: 10, overflow: 'hidden'}}>
+            <Img src={staticFile(img)} style={{height: 380, display: 'block', filter: 'blur(3px)'}} /></div>
+          <div style={{position: 'absolute', left: 110, bottom: 120, opacity: q, fontFamily: PRE, fontWeight: 900, fontSize: 38, lineHeight: 1.35, color: C.navy, transform: 'rotate(-2deg)'}}>
+            <span style={{background: C.yellow, borderRadius: 10, padding: '2px 12px'}}>💬 '교과서'</span><br />
+            <span style={{background: C.yellow, borderRadius: 10, padding: '2px 12px'}}>→ 📩 DM</span></div>
+        </>;
       })()}
     </div>
   );

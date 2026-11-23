@@ -34,7 +34,8 @@ PARTS = {
          "bg": {"p2": stock["p2"], "bye": stock["end"], "tip": ["5897643"]},
          # Joy (23 Nov): after "배운 영어를 직접 써 볼 기회…" a typed card asks for '교과서' in the comments to get the textbook table
          "tip": ["📚 교재 목록 필요하세요?", "오늘 소개한 교재들을", "영역별 표로 정리했어요", "👉 팔로우하고 댓글에", "'교과서' 라고 남겨 주세요 💬", "DM으로 보내 드릴게요!"],
-         "tipDur": 6.5, "tipType": [.35, 3.9], "tipRed": 3, "tipImg": "day38/textbook-table.png"},
+         "tipDur": 6.5, "tipType": [.35, 3.9], "tipRed": 3, "tipImg": "day38/textbook-table.png",
+         "tail": .25},   # Joy (23 Nov): end right after her wave (~41.6 s), so the countdown finishes there too
     40: {"ranges": [(64.618, 89.936), (115.055, 120.4), (120.4, 123.462), BYE], "hook": 2.6, "n": 3,
          "hookTitle": ["학부모 의견,", "원어민 선생님께 잘 전달될까?"], "props": ["📞", "💬", "☎️", "📩"], "next": None,
          "bg": {"p3": stock["p3"], "last": stock["last"][:3], "end": stock["last"][3:5], "bye": stock["bye"]}},
@@ -51,7 +52,7 @@ def run(day, P):
         if TIP and i == len(P["ranges"]) - 1:
             tip_s = round(t, 3); t += TIP
         jm.append({"t": round(t, 3), "src": a, "d": round(b - a, 3)}); t += b - a
-    voice = t; total = round(voice + TAIL, 3)
+    voice = t; total = round(voice + P.get("tail", TAIL), 3)
 
     def m(x):  # full timeline -> part timeline
         for r in jm:
