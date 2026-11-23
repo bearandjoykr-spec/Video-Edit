@@ -15,4 +15,4 @@ Joy의 두 사진(영유 교재표, 책장)에 함께 나오는 교재: Wonders,
 - 알티오라 (5세 1년차 / 6세 1년차 진열): HABITUS Level 1–4 (Harvest·Accelerate·Build·Inspire·Thrive·Utilize·Strive), Speaking Acquisition, Listening Acquisition, Vocabulary & Speaking (Multi-Sensory Integrated), 스토리북(Let's Dance, Guess How I Feel 등)
 - 라이즈: Circle Time 3 (My Favorite Things), RISE 리더스(Sammy's New Shape), Super Simple Songs Fun Book (Oxford), Oxford 스파이럴 스토리북, Little Instrument Explorers, 수 교구
 - 공통점: 영역별(리딩/스피킹/리스닝)로 자체 교재를 나누고, Oxford 같은 해외 출판사 교재를 함께 씀
-→ textbook-brands.png (2페이지)
+→ Joy (23 Nov): 브랜드 이름은 말하지 않기. 표에 "* 영유마다 따로 만든 자체 교재도 함께 써요" 한 줄만 (2페이지 삭제)
