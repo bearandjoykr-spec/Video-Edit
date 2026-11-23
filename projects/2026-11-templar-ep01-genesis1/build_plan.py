@@ -176,6 +176,49 @@ TRIM = args.trim if args.trim is not None else round(max(0, ONSET - 0.25), 2)
 OVERRIDE = {0: (3.32, 3.90), 1: (4.52, 5.00)}
 for i_, (s_, e_) in OVERRIDE.items():
     stream[i_]['s'], stream[i_]['e'] = s_, e_
+# Snap to the real pauses: Whisper often puts the first word after a pause too early (inside the
+# silence), so the highlight ran ahead while Mark was silent. Find silences in the recording and
+# move any word that starts inside one to where the sound resumes; end words where the silence begins.
+_ya, _ = _sf.read(args.voice)
+_ra = _np.array([20 * _np.log10(_np.sqrt((_ya[i:i + _w] ** 2).mean()) + 1e-9) for i in range(0, len(_ya) - _w, _w)])
+_q = _ra < -48
+SIL = []
+_i = 0
+while _i < len(_q):
+    if _q[_i]:
+        _j = _i
+        while _j < len(_q) and _q[_j]: _j += 1
+        if (_j - _i) * 0.02 >= 0.3: SIL.append((_i * 0.02, _j * 0.02))
+        _i = _j
+    else: _i += 1
+import bisect as _bs
+_starts = [a_ for a_, b_ in SIL]
+moved = 0
+def _sil_at(t):
+    j_ = _bs.bisect_right(_starts, t) - 1
+    return SIL[j_] if j_ >= 0 and SIL[j_][0] <= t < SIL[j_][1] - 0.04 else None
+k_ = 0
+while k_ < len(stream):
+    sl = _sil_at(stream[k_]['s'])
+    if not sl:
+        k_ += 1; continue
+    # run of consecutive words that start inside this silence
+    run = [k_]
+    while run[-1] + 1 < len(stream) and _sil_at(stream[run[-1] + 1]['s']) == sl: run.append(run[-1] + 1)
+    nxt = run[-1] + 1
+    t0 = sl[1] + 0.02
+    t1 = stream[nxt]['s'] if nxt < len(stream) else t0 + 0.3 * len(run)
+    if t1 < t0 + 0.18 * len(run): t1 = t0 + 0.18 * len(run)   # not enough room: give each word ~0.18 s
+    for m_, r_ in enumerate(run):
+        stream[r_]['s'] = t0 + (t1 - t0) * m_ / len(run)
+        stream[r_]['e'] = t0 + (t1 - t0) * (m_ + 1) / len(run) - 0.02
+    if run[0] > 0 and stream[run[0] - 1]['e'] > sl[0] + 0.12: stream[run[0] - 1]['e'] = sl[0] + 0.12
+    # if we had to push past the next word, carry the push forward until the timeline catches up
+    q_ = nxt
+    while q_ < len(stream) and stream[q_]['s'] < stream[q_ - 1]['s'] + 0.15:
+        stream[q_]['s'] = stream[q_ - 1]['s'] + 0.18; stream[q_]['e'] = max(stream[q_]['e'], stream[q_]['s'] + 0.15); q_ += 1
+    moved += len(run); k_ = nxt
+print('silences', len(SIL), 'words snapped to the end of a pause', moved)
 for x in stream:   # nothing can be spoken before the first sound
     if x['s'] < ONSET:
         x['s'] = ONSET; x['e'] = max(x['e'], ONSET + 0.3)
