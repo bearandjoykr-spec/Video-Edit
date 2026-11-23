@@ -5,12 +5,12 @@
 set -e
 V=$1; OFF=$2; DUR=$3; OUT=$4; D=$(dirname "$0")
 mkdir -p "$D/work"
-python3 "$D/audio/synth_sanctum.py" "$DUR" "$D/work/music.wav"
-python3 "$D/audio/synth_campfire.py" "$DUR" "$D/work/fire.wav"
+[ -f "$D/work/music.wav" ] || python3 "$D/audio/synth_sanctum.py" "$DUR" "$D/work/music.wav"
+[ -f "$D/work/fire.wav" ] || python3 "$D/audio/synth_campfire.py" "$DUR" "$D/work/fire.wav"
 MS=$(python3 -c "print(int($OFF*1000))")
 ffmpeg -v error -y -i "$V" -af "highpass=f=70,acompressor=threshold=-24dB:ratio=3:attack=15:release=250:makeup=2,loudnorm=I=-16:TP=-2:LRA=7,adelay=${MS}:all=1,apad,atrim=0:${DUR},aformat=sample_rates=48000:channel_layouts=stereo" -ar 48000 "$D/work/voice.wav"
-ffmpeg -v error -y -i "$D/work/music.wav" -af "loudnorm=I=-34:TP=-10:LRA=11" -ar 48000 "$D/work/music_n.wav"
-ffmpeg -v error -y -i "$D/work/fire.wav" -af "loudnorm=I=-35:TP=-12:LRA=11" -ar 48000 "$D/work/fire_n.wav"
+ffmpeg -v error -y -i "$D/work/music.wav" -af "loudnorm=I=-34:TP=-9:LRA=11" -ar 48000 "$D/work/music_n.wav"
+ffmpeg -v error -y -i "$D/work/fire.wav" -af "loudnorm=I=-35:TP=-9:LRA=11" -ar 48000 "$D/work/fire_n.wav"
 ffmpeg -v error -y -i "$D/work/voice.wav" -i "$D/work/music_n.wav" -i "$D/work/fire_n.wav" \
   -filter_complex "[0][1][2]amix=inputs=3:normalize=0:duration=first" -ar 48000 "$D/work/premix.wav"
 J=$(ffmpeg -hide_banner -i "$D/work/premix.wav" -af loudnorm=I=-14:TP=-1.5:LRA=9:print_format=json -f null - 2>&1 | sed -n '/{/,/}/p')
