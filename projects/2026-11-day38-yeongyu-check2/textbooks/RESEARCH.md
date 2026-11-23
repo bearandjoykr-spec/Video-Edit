@@ -10,3 +10,9 @@
 교집합: ① 미국 교과서(Wonders 등) ② 국내 출판 리딩·파닉스 시리즈(Bricks, e-future) ③ 자체 교재.
 Joy의 두 사진(영유 교재표, 책장)에 함께 나오는 교재: Wonders, Bricks Reading, Bricks Phonics 계열.
 표(textbook-table.png)는 브랜드 이름 없이 "자주 쓰는 교재"로만 정리 (브랜드별 목록은 공식 확인 불가).
+
+## Joy의 추가 사진 (23 Nov)
+- 알티오라 (5세 1년차 / 6세 1년차 진열): HABITUS Level 1–4 (Harvest·Accelerate·Build·Inspire·Thrive·Utilize·Strive), Speaking Acquisition, Listening Acquisition, Vocabulary & Speaking (Multi-Sensory Integrated), 스토리북(Let's Dance, Guess How I Feel 등)
+- 라이즈: Circle Time 3 (My Favorite Things), RISE 리더스(Sammy's New Shape), Super Simple Songs Fun Book (Oxford), Oxford 스파이럴 스토리북, Little Instrument Explorers, 수 교구
+- 공통점: 영역별(리딩/스피킹/리스닝)로 자체 교재를 나누고, Oxford 같은 해외 출판사 교재를 함께 씀
+→ textbook-brands.png (2페이지)

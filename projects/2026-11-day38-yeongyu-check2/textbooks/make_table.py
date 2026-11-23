@@ -12,7 +12,7 @@ d.text((W // 2, 160), "영역별 정리 · ★ = 여러 영유에서 겹치는 �
 rows = [("파닉스", ["★ Bricks Phonics / Spotlight on First Phonics", "Smart Phonics · Fly Phonics"]),
         ("리딩", ["★ Wonders (McGraw-Hill · 미국 교과서)", "★ Bricks Reading 30 → 150", "Reading Link · Wonderful World"]),
         ("라이팅", ["★ Wonders Your Turn Practice Book", "My First Writing · Writing Monster"]),
-        ("리스닝 · 스피킹", ["★ Let's Go (Oxford)", "Hand in Hand · English Bus"]),
+        ("리스닝 · 스피킹", ["★ Let's Go (Oxford)", "Super Simple Songs (Oxford) · Hand in Hand"]),
         ("문법 · 어휘", ["★ Grammar Space · My First Grammar", "Vocabulary Workshop · Reading for Vocabulary"])]
 y, L, R = 220, 60, W - 60
 for name, items in rows:
@@ -29,3 +29,29 @@ for name, items in rows:
 d.text((W // 2, y + 40), "교재 이름보다 중요한 것: 어떤 활동·문장을 배우는지 직접 펼쳐 보세요 📖".replace(" 📖", ""), font=f("Bold", 30), fill=NAVY, anchor="mm")
 d.text((W // 2, Hh - 50), "@thebearandjoy", font=f("Black", 32), fill=NAVY, anchor="mm")
 im.save(f"{H}/textbook-table.png"); print(y)
+
+# page 2 (Joy's photos, 23 Nov): each 영유's own books
+im = Image.new("RGB", (W, Hh), CREAM); d = ImageDraw.Draw(im)
+d.text((W // 2, 92), "영유마다 다른 자체 교재", font=f("Black", 62), fill=NAVY, anchor="mm")
+d.text((W // 2, 160), "같은 영역도 교재 이름은 제각각이에요", font=f("SemiBold", 30), fill=GREY, anchor="mm")
+brands = [("알티오라", ["리딩 · HABITUS (Level 1 → 4)", "스피킹 · Speaking Acquisition", "리스닝 · Listening Acquisition", "어휘 · Vocabulary & Speaking"]),
+          ("라이즈", ["수업 · Circle Time (주제별)", "리딩 · RISE 리더스 북", "노래 · Super Simple Songs (Oxford)"]),
+          ("폴리", ["리딩 · Wonders (미국 교과서)", "독서 · AR 레벨 독서", "+ 자체 교재"])]
+y = 220
+for name, items in brands:
+    h = 58 + 52 * len(items)
+    d.rounded_rectangle((L, y, R, y + h), 26, fill="white", outline=NAVY, width=3)
+    d.rounded_rectangle((L, y, L + 250, y + h), 26, fill=NAVY); d.rectangle((L + 220, y, L + 250, y + h), fill=NAVY)
+    d.text((L + 125, y + h // 2), name, font=f("ExtraBold", 38), fill="white", anchor="mm")
+    for i, t in enumerate(items):
+        k, v = t.split(" · ", 1) if " · " in t else ("", t)
+        x = L + 286
+        if k:
+            d.text((x, y + 52 + 52 * i), k, font=f("Bold", 30), fill=GREY, anchor="lm"); x += 110
+        d.text((x, y + 52 + 52 * i), v, font=f("Bold", 30), fill=NAVY, anchor="lm")
+    y += h + 22
+d.rounded_rectangle((L, y + 20, R, y + 170), 26, fill=YEL)
+d.text((W // 2, y + 70), "교재 이름보다 중요한 것", font=f("Black", 38), fill=NAVY, anchor="mm")
+d.text((W // 2, y + 125), "어떤 활동·문장을 배우는지 직접 펼쳐 보세요", font=f("Bold", 32), fill=NAVY, anchor="mm")
+d.text((W // 2, Hh - 50), "@thebearandjoy", font=f("Black", 32), fill=NAVY, anchor="mm")
+im.save(f"{H}/textbook-brands.png"); print("page2", y)
