@@ -206,7 +206,7 @@ const PrayerScene: React.FC<{s: Extract<Scene, {type: 'prayer'}>; t: number}> = 
 const Page: React.FC<{paras: Para[]; t: number; side: 'l' | 'r'}> = ({paras, t, side}) => (
   <div style={{position: 'absolute', top: 0, bottom: 0, [side === 'l' ? 'left' : 'right']: 0, width: '50%',
     padding: side === 'l' ? '70px 70px 60px 92px' : '70px 92px 60px 70px', boxSizing: 'border-box',
-    fontFamily: SERIF, fontSize: 33, lineHeight: 1.42, color: C.ink, textAlign: 'justify', hyphens: 'manual'} as React.CSSProperties}>
+    fontFamily: SERIF, fontSize: 40, lineHeight: 1.4, color: C.ink, textAlign: 'justify', hyphens: 'manual'} as React.CSSProperties}>
     {paras.map((p, i) => (
       <div key={i} style={{marginBottom: p.label ? 0 : 6}}>
         {p.label ? <div style={{fontFamily: CAPS, fontSize: 30, letterSpacing: '0.24em', textAlign: 'center', color: C.red, margin: '0 0 18px'}}>{p.label}</div> : null}
@@ -223,7 +223,7 @@ const Page: React.FC<{paras: Para[]; t: number; side: 'l' | 'r'}> = ({paras, t, 
           </span>
         ) : (
           <span>
-            {p.verse ? <sup style={{color: C.red, fontSize: 20, fontWeight: 600, marginRight: 6, fontFamily: SERIF}}>{p.verse}</sup> : null}
+            {p.verse ? <sup style={{color: C.red, fontSize: 23, fontWeight: 600, marginRight: 6, fontFamily: SERIF}}>{p.verse}</sup> : null}
             <Words tokens={p.tokens} t={t} mode="dark" />
           </span>
         )}
@@ -280,11 +280,11 @@ const BibleScene: React.FC<{s: Extract<Scene, {type: 'bible'}>; t: number}> = ({
           </div>
           {/* firelight from below-left, darkness above */}
           <AbsoluteFill style={{mixBlendMode: 'soft-light', background: `radial-gradient(ellipse 90% 110% at ${lx}% 120%, rgba(255,150,50,${0.95 * f}), rgba(255,110,30,${0.4 * f}) 45%, rgba(0,0,0,0) 80%)`}} />
-          <AbsoluteFill style={{mixBlendMode: 'multiply', background: `linear-gradient(180deg, rgba(40,20,8,${0.62 - 0.12 * f}) 0%, rgba(60,30,10,.12) 40%, rgba(0,0,0,0) 60%, rgba(30,12,4,.25) 100%)`}} />
+          <AbsoluteFill style={{mixBlendMode: 'multiply', background: `linear-gradient(180deg, rgba(40,20,8,${0.48 - 0.12 * f}) 0%, rgba(60,30,10,.12) 40%, rgba(0,0,0,0) 60%, rgba(30,12,4,.25) 100%)`}} />
           <AbsoluteFill style={{boxShadow: 'inset 0 0 90px 18px rgba(30,12,3,.85), inset 0 0 14px 4px rgba(10,4,0,.9)'}} />
         </div>
         {/* ribbon */}
-        <div style={{position: 'absolute', left: 1180, top: 960, width: 26, height: 120, background: `linear-gradient(${C.red}, #3e0907)`, clipPath: 'polygon(0 0,100% 0,100% 100%,50% 86%,0 100%)'}} />
+        <div style={{position: 'absolute', left: 1180, top: 985, width: 26, height: 110, background: `linear-gradient(${C.red}, #3e0907)`, clipPath: 'polygon(0 0,100% 0,100% 100%,50% 86%,0 100%)'}} />
       </div>
       <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 80% at ${lx + 15}% 75%, transparent 45%, rgba(0,0,0,${0.9 - 0.15 * f}) 100%)`}} />
     </AbsoluteFill>

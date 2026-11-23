@@ -231,7 +231,7 @@ for ch, v, txt in KJV:
     paras.append(p)
 endw = keyed('b_end')
 paras.append({'center': True, 'tokens': [T(x) for x in endw], 'ch': 2})
-CPL, LPP = 50, 17.5       # characters per line, lines per page (checked against rendered stills)
+CPL, LPP = 42, 16.2       # characters per line, lines per page (checked against rendered stills)
 def lines(p):
     n = sum(len(t['t']) + 1 for t in p['tokens']) + (4 if p.get('verse') else 0)
     l = -(-n // CPL)
