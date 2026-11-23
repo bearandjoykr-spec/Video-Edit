@@ -12,6 +12,13 @@ Started 23 Nov 2026. Not a Bear & Joy channel: do not use brand/BRAND.md or its 
 - Scripts are written with the owner in Claude docs, then copied to projects/<yyyy-mm>-templar-epNN-<book>/script.md.
 - Episode 1: Genesis 1:1–2:3 — projects/2026-11-templar-ep01-genesis1/
 
+## Look (owner, 23 Nov 2026)
+- Dark, sanctified, simple.
+- Reading: we look at an open Bible page; each word highlights as Mark says it (word-level Whisper timing).
+- Teaching (Analysis, For the brothers): notes appear for the brothers to take to heart.
+- Opening prayer: the whole prayer shown beautifully, with a prompt for the brothers to take a knee.
+- Fonts: Cinzel (titles), EB Garamond (scripture, notes), UnifrakturMaguntia (drop caps) in remotion/public/templar/fonts.
+
 ## Waiting on the owner
 - The audio file (Google Drive, anyone with the link), which book/chapters, which Bible translation
 - Look and feel (reference channels/videos), language(s), rough length
