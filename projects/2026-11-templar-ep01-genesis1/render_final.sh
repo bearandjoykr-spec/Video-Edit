@@ -17,8 +17,8 @@ ffmpeg -v error -y -i "$VOICE" -ar 48000 -ac 1 -c:a pcm_s24le "$P/work/voice48k.
 $PY "$P/mix.py" "$P/versions/main/plan.json" "$P/work/voice48k.wav" "$P/work/final_mix.wav" \
   --bed "$BED" --chant "$CHANT" --fire "$FIRE" --fire-lufs -35
 
-# 2. video (Mac: 8 workers, Remotion's own Chrome; cloud: Playwright's Chromium, in 4 parts)
-if [ -n "$CLOUD" ]; then BX="--browser-executable=/opt/pw-browsers/chromium"; CONC=4; else BX=""; CONC=8; fi
+# 2. video (Mac M1: 6 workers, Remotion's own Chrome; cloud: Playwright's Chromium, in 4 parts)
+if [ -n "$CLOUD" ]; then BX="--browser-executable=/opt/pw-browsers/chromium"; CONC=4; else BX=""; CONC=6; fi   # Apple M1: 8 cores (4 performance)
 TOTAL=$(node -e "const p=require('./$P/versions/main/plan.json');console.log(Math.ceil(p.duration*p.fps))")
 PARTS=4; STEP=$(( (TOTAL + PARTS - 1) / PARTS )); : > remotion/out/templar/parts.txt
 i=0; while [ $i -lt $PARTS ]; do

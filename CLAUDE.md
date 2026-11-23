@@ -23,7 +23,7 @@ Remotion, HyperFrames (npm, in `remotion/`), FFmpeg, yt-dlp, numpy, and Whisper 
 5. Render Remotion with `--browser-executable=/opt/pw-browsers/chromium`.
 
 ### Process on the Mac, not in the cloud (owner, 9 Nov 2026)
-The owner wants Instagram videos made with this Mac's own processor (Apple M4, 10 cores, 24 GB). When a session runs on the Mac:
+The owner wants Instagram videos made with this Mac's own processor (Apple M1 — owner corrected this on 23 Nov 2026; it was noted as M4). When a session runs on the Mac:
 - Do every step here: transcription, cuts, mattes, Remotion renders, mix and export. Do not move the work to a cloud session, remote agent or web service, and do not upload footage anywhere to process it.
 - Use the Mac's hardware: Whisper runs on the GPU through Metal automatically (about 2 s for 11 s of audio with large-v3-turbo); background removal with `--device coreml`; Remotion renders with `--concurrency=8`; draft, preview and intermediate encodes with `-c:v h264_videotoolbox -b:v 20M` (fast, hardware). The final Instagram MP4 stays libx264 (`projects/2026-11-welcome-reels/export.sh` settings), which also runs on this Mac's CPU.
 - Run long jobs (mattes, full renders) in the background and keep the Mac awake.
