@@ -6,7 +6,7 @@ import {AbsoluteFill, OffthreadVideo, Sequence, continueRender, delayRender, int
 
 type Cap = {s: number; e: number; text: string; sec: string};
 type Sec = {kind: string; s: number; e: number};
-export type NotePlan = {part?: number; joyMedia?: string; joyMap?: {t: number; src: number; d: number}[]; hookTitle?: string[]; props?: string[]; next?: string | null; tip?: string[]; tipType?: number[];
+export type NotePlan = {part?: number; joyMedia?: string; joyMap?: {t: number; src: number; d: number}[]; hookTitle?: string[]; props?: string[]; next?: string | null; tip?: string[]; tipType?: number[]; books?: string[]; series?: {s: number; e: number; title: string; items: string[][]}[];
   fps: number; day: number; media: string; duration: number; frames: number; captions: Cap[]; sections: Sec[]; ticks: Record<string, number[]>};
 
 const C = {paper: '#F3EADB', note: '#FFFDF7', line: '#E6DCC8', margin: '#E8A0A0', navy: '#1E2D4D', ink: '#2B2B2B', gold: '#C9A86A', yellow: '#FFD84D',
@@ -205,6 +205,51 @@ const End: React.FC<{sec: Sec; t: number; fps: number}> = ({sec, t, fps}) => {
   );
 };
 
+// Joy (23 Nov): DAY 39 opens on her real textbook photos landing one on another (0.3 s each) before she speaks; the question sits below
+const Books: React.FC<{sec: Sec; t: number; fps: number; books: string[]; title: string[]}> = ({sec, t, fps, books, title}) => {
+  const step = (sec.e - sec.s) / books.length; const n = Math.min(books.length - 1, Math.floor((t - sec.s) / step));
+  const rot = [-4, 3, -2, 5, -3, 2, -5, 3];
+  return (
+    <AbsoluteFill>
+      <AbsoluteFill style={{background: 'rgba(243,234,219,.92)'}} />
+      {books.slice(0, n + 1).map((b, i) => {
+        const k = sp(t, sec.s + i * step, fps, 16);
+        return <div key={i} style={{position: 'absolute', left: 60, right: 60, top: 405, height: 720, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transform: `translate(${(i % 2 ? 1 : -1) * 18}px, ${(1 - k) * -60}px) scale(${1.25 - .25 * k}) rotate(${rot[i % rot.length]}deg)`, opacity: Math.min(1, k * 1.5)}}>
+          <Img src={staticFile(b)} style={{maxWidth: '100%', maxHeight: '100%', border: '14px solid #fff', borderRadius: 10, boxShadow: '0 18px 40px rgba(60,40,10,.45)'}} />
+        </div>;
+      })}
+      <div style={{position: 'absolute', top: 1170, left: 60, right: 60, textAlign: 'center'}}>
+        <div style={{display: 'inline-block', fontFamily: HAND, fontWeight: 700, fontSize: 40, color: C.navy, background: C.yellow, borderRadius: 12, padding: '0 18px', transform: 'rotate(-2deg)'}}>영유 상담 체크리스트 ②</div>
+        <div style={{marginTop: 14, fontFamily: PRE, fontWeight: 900, fontSize: 84, lineHeight: 1.12, color: C.navy, transform: `scale(${.9 + .1 * sp(t, sec.s, fps, 12)})`}}>
+          {title[0]}<br /><span style={{color: '#D9534F'}}>{title[1]}</span></div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// Joy (23 Nov): famous series shown book by book (cover + English name + what it is for) while she talks about textbooks
+const Series: React.FC<{sr: {s: number; e: number; title: string; items: string[][]}; t: number; fps: number}> = ({sr, t, fps}) => {
+  const step = Math.min(.9, (sr.e - sr.s - .4) / sr.items.length);
+  const out = interpolate(t, [sr.e - .25, sr.e], [1, 0], clamp);
+  return (
+    <div style={{...NOTE, background: C.note, padding: '18px 26px 0', opacity: Math.min(sp(t, sr.s, fps, 16), out)}}>
+      <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 40, color: C.navy, textAlign: 'center'}}>{sr.title}</div>
+      <div style={{display: 'flex', gap: 14, marginTop: 14, height: 330}}>
+        {sr.items.map(([img, en, ko], i) => {
+          const k = sp(t, sr.s + .25 + i * step, fps, 14);
+          return <div key={i} style={{flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: Math.min(1, k * 1.4), transform: `translateY(${(1 - k) * 40}px) scale(${.85 + .15 * k})`}}>
+            <div style={{height: 230, display: 'flex', alignItems: 'flex-end', justifyContent: 'center'}}>
+              <Img src={staticFile(img)} style={{maxWidth: 210, maxHeight: 230, borderRadius: 6, boxShadow: '0 8px 18px rgba(60,40,10,.35)'}} /></div>
+            <div style={{marginTop: 12, fontFamily: PRE, fontWeight: 800, fontSize: 21, lineHeight: 1.15, color: C.navy, textAlign: 'center'}}>{en}</div>
+            <div style={{marginTop: 4, fontFamily: PRE, fontWeight: 700, fontSize: 24, color: C.navy, background: C.yellow, borderRadius: 8, padding: '0 8px'}}>{ko}</div>
+          </div>;
+        })}
+      </div>
+    </div>
+  );
+};
+
 export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
   useFonts();
   const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const t = frame / fps;
@@ -248,6 +293,7 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
         return <div key={i} style={{position: 'absolute', left: x as number, top: (y as number) + Math.sin(t * 2 + i) * 6, fontSize: 130, transform: `scale(${k}) rotate(${r}deg)`,
           filter: 'drop-shadow(0 8px 14px rgba(60,40,10,.35))'}}>{f as string}</div>;
       })}
+      {sec.kind === 'books' && plan.books && <Books sec={sec} t={t} fps={fps} books={plan.books} title={plan.hookTitle ?? ['', '']} />}
       {/* DAY chip + yellow progress bar */}
       <div style={{position: 'absolute', top: 300, left: 0, right: 0, display: 'flex', justifyContent: 'center'}}>
         <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 26, letterSpacing: 2, color: C.navy, background: C.yellow, borderRadius: 999, padding: '5px 20px'}}>DAY {plan.day}</div>
@@ -266,7 +312,14 @@ export const ConsultNote: React.FC<{plan: NotePlan}> = ({plan}) => {
         </div>)}
       {sec.kind === 'intro' && <Intro sec={sec} t={t} fps={fps} />}
       {sec.kind === 'p1' && <P1 sec={sec} t={t} fps={fps} ticks={plan.ticks.p1 ?? []} />}
-      {sec.kind === 'p2' && <P2 sec={sec} t={t} fps={fps} ticks={plan.ticks.p2 ?? []} caps={plan.captions} />}
+      {sec.kind === 'p2' && (() => {
+        const sr = plan.series?.find((x) => t >= x.s && t < x.e);
+        const near = plan.series?.find((x) => t >= x.e && t < x.e + .3);
+        return <>
+          <div style={{opacity: sr ? 0 : near ? interpolate(t, [near.e, near.e + .3], [0, 1], clamp) : 1}}><P2 sec={sec} t={t} fps={fps} ticks={plan.ticks.p2 ?? []} caps={plan.captions} /></div>
+          {sr && <Series sr={sr} t={t} fps={fps} />}
+        </>;
+      })()}
       {sec.kind === 'p3' && <P3 sec={sec} t={t} fps={fps} ticks={plan.ticks.p3 ?? []} caps={plan.captions} />}
       {sec.kind === 'last' && <Last sec={sec} t={t} fps={fps} caps={plan.captions} />}
       {sec.kind === 'end' && <End sec={sec} t={t} fps={fps} />}

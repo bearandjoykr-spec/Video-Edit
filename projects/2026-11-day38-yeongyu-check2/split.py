@@ -21,7 +21,15 @@ PARTS = {
          # Joy (22 Nov): a silent bonus card at the very end, typed out with keyboard sounds
          "tip": ["💡 꿀팁 하나 더!", "상담 전, 영유 이름을 영어로", "구글에 검색해 보세요 🔍", "원어민 선생님들이 남긴", "리뷰를 볼 수 있어요",
                  "구글 지도 · Glassdoor · Reddit", "👉 '선생님이 자주 바뀐다'는 이야기가", "반복되는지 꼭 확인해 보세요!"]},
-    39: {"ranges": [(34.555, 64.618), BYE], "hook": 2.6, "n": 2,
+    # Joy (23 Nov): real textbook photos flash by first (0.3 s each, her own photos, no 영유 logos), then she speaks
+    39: {"ranges": [(34.555, 64.618), BYE], "hook": None, "n": 2, "pre": 3.0, "books": [f"day38/books/b{i}.jpg" for i in range(10)],
+         # Joy (23 Nov): Wonders and Bricks introduced book by book (caption indexes within ②: from, to)
+         "series": [{"cap": (1, 3), "title": "🇺🇸 미국 교과서 Wonders 시리즈", "items": [["day38/series/w-rwc.jpg", "Reading/Writing Companion", "읽기·쓰기 본책"],
+                     ["day38/series/w-practice.jpg", "Practice Book", "연습 문제집"], ["day38/series/w-anthology.jpg", "Literature Anthology", "문학 작품집"],
+                     ["day38/series/w-leveled.jpg", "Leveled Readers", "수준별 읽기책"]]},
+                    {"cap": (4, 6), "title": "📚 Bricks 시리즈", "items": [["day38/series/b-phonics.jpg", "First Phonics", "파닉스"],
+                     ["day38/series/b-reading.jpg", "Bricks Reading", "리딩 (30→300)"], ["day38/series/b-listening.jpg", "Bricks Listening", "리스닝"],
+                     ["day38/series/b-grammar.jpg", "First Grammar", "문법"]]}],
          "hookTitle": ["미국·영국 교과서면", "다 좋을까?"], "props": ["📘", "🇺🇸", "📗", "🇬🇧"], "next": "③ 학부모 의견, 원어민 선생님께 잘 전달될까?",
          "bg": {"p2": stock["p2"], "bye": stock["end"]}},
     40: {"ranges": [(64.618, 89.936), (115.055, 120.4), (120.4, 123.462), BYE], "hook": 2.6, "n": 3,
@@ -34,7 +42,8 @@ def run(day, P):
     out = f"{HERE}/versions/day{day}"; os.makedirs(out, exist_ok=True)
     # Joy (22 Nov): the tip card goes right before "그럼 내일 만나요" — a silent gap before the last range (BYE)
     TIP = 8.5 if P.get("tip") else 0
-    jm, t, tip_s = [], 0.0, None
+    PRE = P.get("pre", 0.0)
+    jm, t, tip_s = [], PRE, None
     for i, (a, b) in enumerate(P["ranges"]):
         if TIP and i == len(P["ranges"]) - 1:
             tip_s = round(t, 3); t += TIP
@@ -61,12 +70,16 @@ def run(day, P):
                 else: secs.append({"kind": sc["kind"], "s": s0, "e": round(s0 + b - a, 3)})
     if P["hook"]:   # parts 2 and 3: the question sits over the first seconds of the point card
         secs.insert(0, {"kind": "hook", "s": 0.0, "e": P["hook"]}); secs[1]["s"] = P["hook"]
+    if PRE:
+        secs.insert(0, {"kind": "books", "s": 0.0, "e": PRE})
     secs[-1]["e"] = total
     if TIP:
         secs.append({"kind": "tip", "s": tip_s, "e": round(tip_s + TIP, 3)}); secs.sort(key=lambda x: x["s"])
     ticks = {k: [m(x) for x in v if m(x) is not None] for k, v in full["ticks"].items()}
     ticks = {k: v for k, v in ticks.items() if v}
     sfx = [{"t": m(x["t"]), "sound": x["sound"], "gain": x["gain"]} for x in full["sfx"] if m(x["t"]) is not None]
+    if PRE:   # a soft pop as each book photo lands
+        sfx += [{"t": round(i * PRE / len(P["books"]), 3), "sound": "pop", "gain": -12} for i in range(len(P["books"]))]
     if TIP:   # keyboard typing while the lines type out (Pixabay sound, sfx/SOURCE.md)
         sfx.append({"t": round(tip_s + .3, 3), "file": "projects/2026-11-day38-yeongyu-check2/sfx/typing.mp3", "ss": .25, "d": 5.6, "gain": -4})
 
@@ -75,7 +88,7 @@ def run(day, P):
     order = [f"[a{i}]" for i in range(len(P["ranges"]))]
     if TIP:
         fc.append(f"anullsrc=r=48000:cl=stereo,atrim=0:{TIP}[gap]"); order.insert(len(order) - 1, "[gap]")
-    fc.append("".join(order) + f"concat=n={len(order)}:v=0:a=1,apad=whole_dur={total}[o]")
+    fc.append("".join(order) + f"concat=n={len(order)}:v=0:a=1,adelay={int(PRE * 1000)}:all=1,apad=whole_dur={total}[o]")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{V}/voice-full.wav", "-filter_complex", ";".join(fc), "-map", "[o]", "-t", str(total), f"{out}/voice.wav"], check=True)
 
     # background
@@ -83,8 +96,8 @@ def run(day, P):
     shots = []
     for sc in secs:
         lst = P["bg"].get(sc["kind"]) or P["bg"].get("p%d" % P["n"])
-        if sc["kind"] == "hook" and P["hook"]: continue          # the hook shares the point's first clip
-        s0 = 0.0 if (P["hook"] and sc is secs[1]) else sc["s"]
+        if (sc["kind"] == "hook" and P["hook"]) or sc["kind"] == "books": continue   # the hook / book flash share the point's first clip
+        s0 = 0.0 if ((P["hook"] or PRE) and sc is secs[1]) else sc["s"]
         per = (sc["e"] - s0) / len(lst)
         for i, sid in enumerate(lst):
             dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", ST + sid + ".mp4"], capture_output=True, text=True).stdout)
@@ -100,13 +113,18 @@ def run(day, P):
     f2.append(f"[{prev}]trim=0:{total},setpts=PTS-STARTPTS[v]")
     subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-filter_complex", ";".join(f2), "-map", "[v]", "-c:v", "h264_videotoolbox", "-b:v", "16M", f"{pub}/bg.mp4"], check=True)
 
+    series = []
+    p2c = [c for c in caps if c["sec"] == "p%d" % P["n"]]
+    for sr in P.get("series", []):
+        a, b = sr["cap"]; series.append({"s": p2c[a]["s"], "e": p2c[b]["s"], "title": sr["title"], "items": sr["items"]})
     plan = {"fps": FPS, "day": day, "part": P["n"], "media": f"day38/p{day}", "joyMedia": "day38/joy.webm", "joyMap": jm, "duration": total,
             "frames": int(math.ceil(total * FPS)), "captions": caps, "sections": secs, "ticks": ticks, "sfx": sfx,
-            "hookTitle": P["hookTitle"], "props": P["props"], "next": P["next"], "tip": P.get("tip"), "tipType": [.35, 5.9]}
+            "hookTitle": P["hookTitle"], "props": P["props"], "next": P["next"], "tip": P.get("tip"), "tipType": [.35, 5.9], "books": P.get("books"), "series": series}
     for p in (f"{out}/plan.json", f"{HERE}/../../remotion/src/day{day}.json"):
         json.dump(plan, open(p, "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"DAY {day}: {total:.1f}s", [(s["kind"], s["s"], s["e"]) for s in secs])
 
 
+ONLY = os.environ.get("DAYS")   # e.g. DAYS=39 to rebuild one part
 for day, P in PARTS.items():
-    run(day, P)
+    if not ONLY or str(day) in ONLY.split(","): run(day, P)
