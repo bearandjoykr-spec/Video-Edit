@@ -24,6 +24,10 @@ Started 23 Nov 2026. Not a Bear & Joy channel: do not use brand/BRAND.md or its 
 - Voice: the fuller chain in projects/2026-11-templar-ep01-genesis1/mix.sh (VOICE_FX) is APPROVED ("2nd version is better").
 - Subtle SFX only (page turns, book open/close, fire); never over the voice.
 - Owner supplies real fire SFX and music; synthesised fire/music were not good enough.
+  Ep 1 uses: bed "Landscape KT" (owner's), chant from the owner's video (owner says cleared to use),
+  fire "soundreality fire ambience". Files live in raw-footage/templar-ep01/ (not in git).
+- Chant only where Mark is silent: title, a 5 s swell after "The Word of the Lord", end card.
+- Mix: projects/2026-11-templar-ep01-genesis1/mix.py (bed -31, chant -20, fire -35 LUFS; voice -16; final -14).
 
 ## Waiting on the owner
 - The audio file (Google Drive, anyone with the link), which book/chapters, which Bible translation

@@ -148,8 +148,19 @@ for i, x in enumerate(stream):
         a, b = stream[prev]['e'], stream[nxt]['s']
         x['s'] = a + (b - a) * (i - prev) / (nxt - prev)
     x['e'] = x['s'] + 0.25; x['interp'] = True
+# Music-only pauses inserted into the voice (audio time -> seconds of silence), e.g. a chant swell
+# after "The Word of the Lord" while the book closes. mix.py inserts the same gaps into the voice.
+GAP_AFTER = {'b_end': 5.0}
+gaps = []
+for key, secs in GAP_AFTER.items():
+    ws = [x for x in stream if x['key'] == key]
+    nxt = [x for x in stream if x['s'] > ws[-1]['e']]
+    at = (ws[-1]['e'] + min(x['s'] for x in nxt)) / 2 if nxt else ws[-1]['e'] + 0.5
+    gaps.append([round(at, 3), secs])
+def vt(t):  # audio time -> video time
+    return t + OFF + sum(g for a, g in gaps if t >= a)
 for x in stream:
-    x['s'] = round(x['s'] + OFF, 3); x['e'] = round(x['e'] + OFF, 3)
+    x['s'] = round(vt(x['s']), 3); x['e'] = round(vt(x['e']), 3)
 # report unmatched runs so they can be checked by ear
 run = []
 for x in stream + [{'s': 0, 'key': ''}]:
@@ -250,7 +261,7 @@ spreads = []
 for i in range(0, len(pages), 2):
     allw = [t for pg in pages[i:i + 2] for p in pg for t in p['tokens']]
     spreads.append({'from': allw[0]['s'] - 0.7, 'left': pages[i], 'right': pages[i + 1], 'header': 'GENESIS'})
-bend = endw[-1]['e'] + 2.5
+bend = endw[-1]['e'] + 2.5 + GAP_AFTER['b_end'] - 1.0
 for i, s in enumerate(spreads):
     s['from'] = round(b0 if i == 0 else s['from'], 3)
     s['to'] = round(spreads[i + 1]['from'] if i + 1 < len(spreads) else bend, 3)
@@ -299,12 +310,14 @@ scenes.append({'type': 'prayer', 'from': round(a - 1.2, 3), 'to': None, 'heading
 # next time + sign-off
 w = keyed('next'); a, b = span(w)
 scenes[-1]['to'] = round(a - 0.2, 3)
-end = round(w[-1]['e'] + 6, 3)
+end = round(w[-1]['e'] + 10, 3)
 scenes.append({'type': 'end', 'from': round(a - 0.2, 3), 'to': end, 'next': 'Genesis 2:4 · The Garden', 'sign': 'Non nobis, Domine.',
                'chunks': chunks(w)})
 for i, s in enumerate(scenes):
     if s['to'] is None: s['to'] = scenes[i + 1]['from']
 
-plan = {'fps': fps, 'duration': end, 'audio': None, 'offset': OFF, 'scenes': scenes}
+# where the chant plays (video time): title card, the book-closing swell, the end card
+chant = [[0.0, OFF + 1.5], [round(endw[-1]['e'] + 0.3, 3), round(bend + 1.0, 3)], [round(w[-1]['e'] + 0.5, 3), end]]
+plan = {'fps': fps, 'duration': end, 'audio': None, 'offset': OFF, 'gaps': gaps, 'chant': chant, 'scenes': scenes}
 json.dump(plan, open(args.out, 'w'), indent=1)
 for s in scenes: print(f"{s['type']:7s} {s['from']:8.2f} → {s['to']:8.2f}")
