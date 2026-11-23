@@ -1,5 +1,6 @@
 #!/bin/sh
 # Final render of Templar Ep 1 (run on the owner's Mac, or in the cloud with CLOUD=1).
+# Re-run to resume: finished parts are kept. COMP/PLAN/PARTS env vars pick the version (default: v2 with paintings).
 # usage: sh projects/2026-11-templar-ep01-genesis1/render_final.sh <voice .aifc/.wav> <Landscape KT mp3> <chant video/mp4> <fire mp3>
 # On the Mac the files are usually in ~/Downloads:
 #   "Episode 1 — In the Beginning (Genesis 1-1–2-3).aifc", "Landsacape KT-copy.MP3",
@@ -10,21 +11,22 @@ cd "$(dirname "$0")/../.."
 P=projects/2026-11-templar-ep01-genesis1
 OUT=exports/youtube/templar-ep01; mkdir -p "$OUT" "$P/work" remotion/out/templar
 VOICE=$1; BED=$2; CHANT=$3; FIRE=$4
+COMP=${COMP:-TemplarEp01v2}; PLAN=${PLAN:-$P/versions/main/plan_v2.json}; PARTS=${PARTS:-6}
 PY=python3; [ -x .venv/bin/python ] && PY=.venv/bin/python
 
 # 1. audio
 ffmpeg -v error -y -i "$VOICE" -ar 48000 -ac 1 -c:a pcm_s24le "$P/work/voice48k.wav"
-$PY "$P/mix.py" "$P/versions/main/plan.json" "$P/work/voice48k.wav" "$P/work/final_mix.wav" \
+$PY "$P/mix.py" "$PLAN" "$P/work/voice48k.wav" "$P/work/final_mix.wav" \
   --bed "$BED" --chant "$CHANT" --fire "$FIRE" --fire-lufs -35
 
 # 2. video (Mac M1: 6 workers, Remotion's own Chrome; cloud: Playwright's Chromium, in 4 parts)
 if [ -n "$CLOUD" ]; then BX="--browser-executable=/opt/pw-browsers/chromium"; CONC=4; else BX=""; CONC=6; fi   # Apple M1: 8 cores (4 performance)
-TOTAL=$(node -e "const p=require('./$P/versions/main/plan.json');console.log(Math.ceil(p.duration*p.fps))")
-PARTS=4; STEP=$(( (TOTAL + PARTS - 1) / PARTS )); : > remotion/out/templar/parts.txt
+TOTAL=$(node -e "const p=require('./$PLAN');console.log(Math.ceil(p.duration*p.fps))")
+STEP=$(( (TOTAL + PARTS - 1) / PARTS )); : > remotion/out/templar/parts.txt
 i=0; while [ $i -lt $PARTS ]; do
   A=$((i * STEP)); B=$(( (i + 1) * STEP - 1 )); [ $B -ge $TOTAL ] && B=$((TOTAL - 1))
   F=remotion/out/templar/part$i.mp4
-  [ -f "$F" ] || (cd remotion && npx remotion render src/templar/index.ts TemplarEp01 "out/templar/part$i.mp4" \
+  [ -f "$F" ] || (cd remotion && npx remotion render src/templar/index.ts $COMP "out/templar/part$i.mp4" \
     --frames=$A-$B --concurrency=$CONC $BX --muted --crf=14 --log=error)
   echo "file 'part$i.mp4'" >> remotion/out/templar/parts.txt; i=$((i + 1))
 done
