@@ -1,4 +1,4 @@
-"""Solemn ambient bed for the Templar channel: low drone + slow minor-mode string/organ pad + soft choir 'ah'.
+"""Dark ambient bed for the Templar channel: low drone + slow minor strings/organ + low male choir + distant war drum.
 Original, synthesised here (no licensing issues). usage: synth_sanctum.py <seconds> <out.wav>"""
 import sys, numpy as np, soundfile as sf
 from scipy.signal import oaconvolve as fftconvolve, butter, sosfilt
@@ -45,7 +45,7 @@ for i in range(nseg):
         sig += 0.22 * voice(hz(m), t, 'string')
         sig += 0.10 * voice(hz(m + 12 if j else m), t, 'organ')
     if i % 2 == 1:
-        sig += 0.18 * voice(hz(ch[2] + 12), t, 'choir') * np.sin(np.pi * np.clip(t / (n / SR), 0, 1)) ** 2
+        sig += 0.16 * voice(hz(ch[1]), t, 'choir') * np.sin(np.pi * np.clip(t / (n / SR), 0, 1)) ** 2
     sig *= env
     pan = 0.5 + 0.15 * np.sin(i)
     L[a:b] += sig * (1 - pan) * 2; R[a:b] += sig * pan * 2
@@ -54,7 +54,23 @@ drone = 0.35 * (np.sin(2 * np.pi * hz(38) * t_all) + 0.4 * np.sin(2 * np.pi * hz
 drone *= 0.8 + 0.2 * np.sin(2 * np.pi * t_all / 23)
 L += drone; R += drone
 
-sos = butter(4, 2400, 'low', fs=SR, output='sos')
+# distant war drum: a low tom every 6 s, two-beat pattern every 4th
+drum = np.zeros(N)
+def hit(at, amp):
+    a = int(at * SR); L = int(1.6 * SR)
+    if a + L > N: return
+    tt = np.arange(L) / SR
+    f = 52 * (1 + 0.6 * np.exp(-tt * 18))
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 3.2)
+    thud = rng.standard_normal(L) * np.exp(-tt * 40) * 0.25
+    drum[a:a + L] += amp * (body + thud)
+k = 0; at = 10.0
+while at < dur - 10:
+    hit(at, 0.9)
+    if k % 4 == 3: hit(at + 0.55, 0.6)
+    at += 6.0; k += 1
+L += drum * 0.9; R += drum * 0.9
+sos = butter(4, 1700, 'low', fs=SR, output='sos')
 L = sosfilt(sos, L); R = sosfilt(sos, R)
 # cathedral reverb: 5 s decaying noise IR, separate per side
 ir_t = np.arange(int(5 * SR)) / SR

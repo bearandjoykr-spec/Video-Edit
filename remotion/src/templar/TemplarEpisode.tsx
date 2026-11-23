@@ -1,6 +1,7 @@
 // Knights Templar channel — faceless Bible-reading episode (1920x1080).
 // Not Bear & Joy: no Bear & Joy brand, colours or assets here.
 import React, {useEffect, useState} from 'react';
+import {noise2D} from '@remotion/noise';
 import {
   AbsoluteFill, Audio, Easing, Sequence, continueRender, delayRender, interpolate,
   random, staticFile, useCurrentFrame, useVideoConfig,
@@ -25,8 +26,8 @@ export type TemplarPlan = {fps: number; duration: number; audio?: string | null;
 
 // ---------- palette ----------
 const C = {
-  night: '#07060a', stone: '#14110f', gold: '#c9a24a', goldHi: '#f1d48a', red: '#9e1b1b',
-  ivory: '#efe4cc', dimIvory: 'rgba(239,228,204,.28)', ink: '#2a1b10', parch: '#e8d7b0',
+  night: '#040302', stone: '#0b0806', gold: '#b8893f', goldHi: '#ffb54a', red: '#7d1612', ember: '#ff8a2a',
+  ivory: '#e6d6b8', dimIvory: 'rgba(230,214,184,.22)', ink: '#1a0f07', parch: '#b99868',
 };
 const SERIF = "'EB Garamond', Georgia, serif";
 const CAPS = "'Cinzel', 'EB Garamond', serif";
@@ -48,40 +49,68 @@ const useFonts = () => {
 };
 
 const ease = Easing.bezier(0.33, 0, 0.2, 1);
+export const fire = (t: number) => {
+  const n = 0.55 * noise2D('fire', t * 1.7, 0) + 0.3 * noise2D('fire2', t * 5.3, 1) + 0.15 * noise2D('fire3', t * 11, 2);
+  return 0.78 + 0.22 * n;   // ~0.56–1.0
+};
+// film grain: SVG turbulence re-seeded every frame
+const Grain: React.FC<{t: number; o?: number}> = ({t, o = 0.16}) => {
+  const seed = Math.floor(t * 24) % 97;
+  return (
+    <AbsoluteFill style={{opacity: o, mixBlendMode: 'overlay', pointerEvents: 'none'}}>
+      <svg width="1920" height="1080"><filter id={`g${seed}`}><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={seed} stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" /></filter><rect width="1920" height="1080" filter={`url(#g${seed})`} /></svg>
+    </AbsoluteFill>
+  );
+};
 const fade = (t: number, a: number, b: number, inD = 0.8, outD = 0.8) =>
   Math.min(interpolate(t, [a, a + inD], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease}),
     interpolate(t, [b - outD, b], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease}));
 
 // ---------- the cross (simple cross pattée) ----------
 export const Cross: React.FC<{size: number; color?: string; glow?: number}> = ({size, color = C.red, glow = 0}) => (
-  <svg width={size} height={size} viewBox="-50 -50 100 100" style={{filter: glow ? `drop-shadow(0 0 ${glow}px rgba(201,162,74,.55))` : undefined}}>
-    {[0, 90, 180, 270].map((r) => (
-      <path key={r} transform={`rotate(${r})`} d="M -7 -4 L -20 -46 Q 0 -40 20 -46 L 7 -4 Z" fill={color} />
-    ))}
-    <rect x={-8} y={-8} width={16} height={16} fill={color} transform="rotate(45)" />
+  <svg width={size} height={size} viewBox="-50 -50 100 100" style={{filter: glow ? `drop-shadow(0 0 ${glow}px rgba(255,120,30,.5))` : undefined}}>
+    <filter id="worn" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves={3} seed={3} result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale={3.2} result="d" />
+      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves={2} seed={9} result="s" />
+      <feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.5 1.45" result="m" />
+      <feComposite in="d" in2="m" operator="in" />
+    </filter>
+    <g filter="url(#worn)">
+      {[0, 90, 180, 270].map((r) => (
+        <path key={r} transform={`rotate(${r})`} d="M -7 -4 L -20 -46 Q 0 -40 20 -46 L 7 -4 Z" fill={color} />
+      ))}
+      <rect x={-8} y={-8} width={16} height={16} fill={color} transform="rotate(45)" />
+    </g>
   </svg>
 );
 
-// ---------- background: dark stone, candlelight, embers ----------
+// ---------- background: night camp, firelight from below, sparks, smoke ----------
 const Backdrop: React.FC<{t: number; warm?: number}> = ({t, warm = 1}) => {
-  const flick = 0.92 + 0.05 * Math.sin(t * 7.3) + 0.03 * Math.sin(t * 13.1 + 1.2);
-  const embers = Array.from({length: 26}, (_, i) => {
-    const sp = 14 + random(`s${i}`) * 22;
-    const life = 1080 / sp + 4;
+  const f = fire(t) * warm;
+  const sparks = Array.from({length: 70}, (_, i) => {
+    const sp = 60 + random(`s${i}`) * 120;            // px per second, fast like sparks
+    const life = 900 / sp + 1.5;
     const ph = ((t + random(`p${i}`) * life) % life) / life;
-    const x = random(`x${i}`) * 1920 + Math.sin(t * 0.6 + i) * 30;
-    const y = 1120 - ph * 1200;
-    const o = Math.sin(ph * Math.PI) * (0.25 + random(`o${i}`) * 0.45);
-    const r = 1.2 + random(`r${i}`) * 2.4;
-    return <div key={i} style={{position: 'absolute', left: x, top: y, width: r * 2, height: r * 2, borderRadius: '50%',
-      background: '#ffb35c', opacity: o * warm, boxShadow: `0 0 ${r * 5}px #ff9a3c`}} />;
+    const x0 = 760 + random(`x${i}`) * 400;
+    const x = x0 + (random(`d${i}`) - 0.5) * 500 * ph + noise2D(`w${i}`, t * 0.8, i) * 60 * ph;
+    const y = 1110 - ph * 1000;
+    const o = (1 - ph) ** 1.5 * (0.5 + random(`o${i}`) * 0.5);
+    const r = 0.8 + random(`r${i}`) * 1.8;
+    return <div key={i} style={{position: 'absolute', left: x, top: y, width: r * 2, height: r * 2 + 3 * ph, borderRadius: '50%',
+      background: '#ffd08a', opacity: o * warm, boxShadow: `0 0 ${r * 6}px #ff6a12`}} />;
   });
+  const smokeX = noise2D('smx', t * 0.05, 0) * 120;
   return (
-    <AbsoluteFill style={{background: `radial-gradient(ellipse 70% 60% at 50% 62%, rgba(120,62,20,${0.42 * flick * warm}) 0%, rgba(40,22,12,.55) 45%, ${C.night} 100%), linear-gradient(${C.stone}, ${C.night})`}}>
-      <AbsoluteFill style={{opacity: 0.07, backgroundImage:
-        'repeating-linear-gradient(0deg, rgba(255,255,255,.5) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(0,0,0,.6) 0 2px, transparent 2px 7px)'}} />
-      {embers}
-      <AbsoluteFill style={{boxShadow: 'inset 0 0 260px 120px rgba(0,0,0,.9)'}} />
+    <AbsoluteFill style={{background: C.night}}>
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 95% 80% at 50% 122%, rgba(255,120,30,${0.85 * f}) 0%, rgba(190,60,12,${0.55 * f}) 26%, rgba(70,22,6,${0.55 * f}) 52%, ${C.night} 84%)`}} />
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 30% 18% at ${50 + 4 * noise2D('fx', t * 0.9, 0)}% 104%, rgba(255,190,90,${0.55 * f * f}), rgba(255,120,30,0) 100%)`}} />
+      <AbsoluteFill style={{opacity: 0.22, transform: `translateX(${smokeX}px)`, background:
+        `radial-gradient(ellipse 40% 30% at ${40 + 10 * noise2D('a', t * 0.04, 1)}% ${45 + 8 * noise2D('b', t * 0.03, 2)}%, rgba(120,95,80,.35), transparent 70%),
+         radial-gradient(ellipse 35% 25% at ${62 + 10 * noise2D('c', t * 0.035, 3)}% ${30 + 8 * noise2D('d', t * 0.05, 4)}%, rgba(110,90,75,.3), transparent 70%)`}} />
+      {sparks}
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 75% 85% at 50% 72%, transparent 35%, rgba(0,0,0,.85) 100%)'}} />
     </AbsoluteFill>
   );
 };
@@ -95,17 +124,17 @@ const Word: React.FC<{tok: Tok; t: number; mode: WordStyle; lead?: number}> = ({
   const glowIn = s != null ? interpolate(t, [s - lead - 0.06, s - lead], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) : 0;
   const after = e != null ? interpolate(t, [e, e + 0.35], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) : 0;
   const hl = state === 'now' ? glowIn : state === 'past' ? after : 0;
-  const colorFuture = mode === 'dark' ? 'rgba(42,27,16,.36)' : C.dimIvory;
+  const colorFuture = mode === 'dark' ? 'rgba(26,15,7,.42)' : C.dimIvory;
   const colorPast = mode === 'dark' ? C.ink : C.ivory;
   const color = state === 'future' ? colorFuture : colorPast;
   return (
     <span style={{position: 'relative', color, whiteSpace: 'pre-wrap'}}>
       {hl > 0 ? (
         <span style={{position: 'absolute', left: '-0.12em', right: '-0.12em', top: '0.08em', bottom: '0.02em', borderRadius: '0.18em', opacity: hl,
-          background: mode === 'dark' ? 'linear-gradient(180deg, rgba(240,196,90,.0) 10%, rgba(236,186,72,.62) 55%, rgba(214,150,40,.55))'
-            : 'radial-gradient(ellipse at 50% 60%, rgba(241,212,138,.35), rgba(241,212,138,0) 70%)'}} />
+          background: mode === 'dark' ? 'radial-gradient(ellipse 70% 75% at 50% 58%, rgba(255,150,40,.75), rgba(230,90,20,.35) 60%, rgba(230,90,20,0) 100%)'
+            : 'radial-gradient(ellipse at 50% 60%, rgba(255,140,40,.32), rgba(255,140,40,0) 70%)', filter: 'blur(1px)'}} />
       ) : null}
-      <span style={{position: 'relative', textShadow: mode === 'light' && hl > 0 ? `0 0 ${18 * hl}px rgba(241,212,138,${0.9 * hl})` : undefined,
+      <span style={{position: 'relative', textShadow: hl > 0 ? (mode === 'light' ? `0 0 ${20 * hl}px rgba(255,130,30,${0.95 * hl})` : `0 0 ${8 * hl}px rgba(255,200,120,${0.8 * hl})`) : undefined,
         color: mode === 'light' && hl > 0.5 ? C.goldHi : undefined}}>{tok.t}</span>
     </span>
   );
@@ -123,7 +152,7 @@ const TitleScene: React.FC<{s: Extract<Scene, {type: 'title'}>; t: number}> = ({
       <div style={{opacity: cross, transform: `scale(${0.9 + 0.1 * cross})`}}><Cross size={150} glow={22} /></div>
       <div style={{fontFamily: CAPS, color: C.gold, letterSpacing: '0.42em', fontSize: 26, marginTop: 46, opacity: fade(t, s.from + 1.2, s.to, 1, 1)}}>{s.kicker}</div>
       <div style={{fontFamily: CAPS, color: C.ivory, fontSize: 92, fontWeight: 600, marginTop: 18, letterSpacing: '0.06em',
-        textShadow: '0 0 40px rgba(201,162,74,.35)', opacity: fade(t, s.from + 1.8, s.to, 1.2, 1)}}>{s.title}</div>
+        textShadow: '0 0 40px rgba(255,120,30,.35), 0 4px 0 rgba(0,0,0,.6)', opacity: fade(t, s.from + 1.8, s.to, 1.2, 1)}}>{s.title}</div>
       <div style={{width: 420, height: 1, background: `linear-gradient(90deg, transparent, ${C.gold}, transparent)`, margin: '28px 0', opacity: fade(t, s.from + 2.2, s.to, 1, 1)}} />
       <div style={{fontFamily: SERIF, fontStyle: 'italic', color: C.ivory, opacity: 0.8 * fade(t, s.from + 2.5, s.to, 1, 1), fontSize: 38}}>{s.sub}</div>
     </AbsoluteFill>
@@ -203,37 +232,61 @@ const Page: React.FC<{paras: Para[]; t: number; side: 'l' | 'r'}> = ({paras, t, 
   </div>
 );
 
+const PaperTexture: React.FC = () => (
+  <AbsoluteFill style={{mixBlendMode: 'multiply', opacity: 0.55}}>
+    <svg width="100%" height="100%"><filter id="paper"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves={5} seed={4} />
+      <feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.40  0 0 0 0 0.24  0 0 0 1.1 -0.25" /></filter>
+      <rect width="100%" height="100%" filter="url(#paper)" /></svg>
+  </AbsoluteFill>
+);
+const FIBRE = (
+  <AbsoluteFill style={{mixBlendMode: 'multiply', opacity: 0.35}}>
+    <svg width="100%" height="100%"><filter id="fibre"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={11} />
+      <feColorMatrix values="0 0 0 0 0.4  0 0 0 0 0.3  0 0 0 0 0.2  0 0 0 0.9 -0.2" /></filter>
+      <rect width="100%" height="100%" filter="url(#fibre)" /></svg>
+  </AbsoluteFill>
+);
+
 const BibleScene: React.FC<{s: Extract<Scene, {type: 'bible'}>; t: number}> = ({s, t}) => {
   const o = fade(t, s.from, s.to, 1.2, 1.2);
   const k = interpolate(t, [s.from, s.to], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const sp = s.spreads.find((x) => t >= x.from && t < x.to) ?? s.spreads[s.spreads.length - 1];
   const turn = fade(t, sp.from, sp.to, 0.5, 0.5);
-  const flick = 0.95 + 0.03 * Math.sin(t * 6.1) + 0.02 * Math.sin(t * 11.7);
+  const f = fire(t);
+  const lx = 30 + 6 * noise2D('lx', t * 0.6, 0);      // the fire's light wanders a little
   return (
-    <AbsoluteFill style={{opacity: o, alignItems: 'center', justifyContent: 'center'}}>
-      <div style={{position: 'relative', width: 1720, height: 1000, transform: `scale(${0.9 + 0.025 * k})`}}>
-        {/* book block + edges */}
-        <div style={{position: 'absolute', inset: '14px -8px -18px -8px', borderRadius: 14, background: 'linear-gradient(#3a1410, #1c0807)', boxShadow: '0 40px 90px rgba(0,0,0,.85)'}} />
-        <div style={{position: 'absolute', inset: '4px 2px -6px 2px', borderRadius: 8, background: `repeating-linear-gradient(0deg, #d9c49a 0 2px, #b89c6a 2px 3px)`}} />
+    <AbsoluteFill style={{opacity: o, alignItems: 'center', justifyContent: 'center', perspective: 2400}}>
+      <div style={{position: 'relative', width: 1720, height: 1000, marginTop: 30,
+        transform: `rotateX(9deg) scale(${0.9 + 0.03 * k}) translateY(${noise2D('cam', t * 0.15, 0) * 4}px)`}}>
+        {/* battered leather cover + page block */}
+        <div style={{position: 'absolute', inset: '10px -16px -26px -16px', borderRadius: 18, background: 'linear-gradient(160deg, #2b120b, #120604 60%, #1d0a06)',
+          boxShadow: '0 50px 120px rgba(0,0,0,.95), inset 0 0 30px rgba(0,0,0,.9)'}} />
+        <div style={{position: 'absolute', inset: '4px 0 -10px 0', borderRadius: 8, background: 'repeating-linear-gradient(0deg, #8d7148 0 2px, #5e4527 2px 3px)'}} />
         {/* pages */}
         <div style={{position: 'absolute', inset: 0, borderRadius: 6, overflow: 'hidden',
-          background: `radial-gradient(ellipse 60% 80% at 50% 50%, rgba(255,240,205,${0.25 * flick}), rgba(0,0,0,0) 70%),
-            linear-gradient(90deg, #cdb58a 0%, ${C.parch} 7%, #efe0bd 40%, #c9ac7c 49.2%, #8a6a40 50%, #c9ac7c 50.8%, #efe0bd 60%, ${C.parch} 93%, #cdb58a 100%)`}}>
-          <AbsoluteFill style={{opacity: 0.18, mixBlendMode: 'multiply', background:
-            'radial-gradient(circle at 20% 30%, #a4793e 0, transparent 30%), radial-gradient(circle at 80% 75%, #9a6d36 0, transparent 28%), radial-gradient(circle at 65% 15%, #b0874c 0, transparent 22%)'}} />
-          <div style={{position: 'absolute', top: 26, left: 92, right: 92, display: 'flex', justifyContent: 'space-between', fontFamily: CAPS, fontSize: 20, letterSpacing: '0.3em', color: 'rgba(120,30,20,.75)'}}>
+          background: `linear-gradient(90deg, #6e5230 0%, ${C.parch} 6%, #c7a878 38%, #9c7b4c 48.6%, #3d2814 50%, #9c7b4c 51.4%, #c7a878 62%, ${C.parch} 94%, #6e5230 100%)`}}>
+          <PaperTexture />
+          {FIBRE}
+          {/* stains and scorch marks */}
+          <AbsoluteFill style={{mixBlendMode: 'multiply', opacity: 0.5, background:
+            `radial-gradient(circle at 12% 88%, #5a3a1a 0, transparent 14%), radial-gradient(circle at 86% 9%, #4a2c12 0, transparent 11%),
+             radial-gradient(ellipse 9% 6% at 72% 80%, #7a5530 0, transparent 100%), radial-gradient(circle at 33% 18%, #8a6438 0, transparent 9%)`}} />
+          <div style={{position: 'absolute', top: 26, left: 92, right: 92, display: 'flex', justifyContent: 'space-between', fontFamily: CAPS, fontSize: 20, letterSpacing: '0.3em', color: 'rgba(110,24,16,.8)'}}>
             <span>{sp.header ?? 'GENESIS'}</span><span>{sp.header ?? 'GENESIS'}</span>
           </div>
           <div style={{position: 'absolute', inset: 0, opacity: turn}}>
             <Page paras={sp.left} t={t} side="l" />
             <Page paras={sp.right} t={t} side="r" />
           </div>
-          <AbsoluteFill style={{boxShadow: 'inset 0 0 120px rgba(60,30,8,.55)'}} />
+          {/* firelight from below-left, darkness above */}
+          <AbsoluteFill style={{mixBlendMode: 'soft-light', background: `radial-gradient(ellipse 90% 110% at ${lx}% 120%, rgba(255,150,50,${0.95 * f}), rgba(255,110,30,${0.4 * f}) 45%, rgba(0,0,0,0) 80%)`}} />
+          <AbsoluteFill style={{mixBlendMode: 'multiply', background: `linear-gradient(180deg, rgba(40,20,8,${0.62 - 0.12 * f}) 0%, rgba(60,30,10,.12) 40%, rgba(0,0,0,0) 60%, rgba(30,12,4,.25) 100%)`}} />
+          <AbsoluteFill style={{boxShadow: 'inset 0 0 90px 18px rgba(30,12,3,.85), inset 0 0 14px 4px rgba(10,4,0,.9)'}} />
         </div>
         {/* ribbon */}
-        <div style={{position: 'absolute', left: 1180, top: 960, width: 26, height: 120, background: `linear-gradient(${C.red}, #5e0d0d)`, clipPath: 'polygon(0 0,100% 0,100% 100%,50% 86%,0 100%)'}} />
+        <div style={{position: 'absolute', left: 1180, top: 960, width: 26, height: 120, background: `linear-gradient(${C.red}, #3e0907)`, clipPath: 'polygon(0 0,100% 0,100% 100%,50% 86%,0 100%)'}} />
       </div>
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse 75% 75% at 50% 50%, transparent 55%, rgba(0,0,0,.75) 100%)'}} />
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 80% at ${lx + 15}% 75%, transparent 45%, rgba(0,0,0,${0.9 - 0.15 * f}) 100%)`}} />
     </AbsoluteFill>
   );
 };
@@ -294,7 +347,7 @@ export const TemplarEpisode: React.FC<{plan: TemplarPlan}> = ({plan}) => {
   const {fps} = useVideoConfig();
   const t = frame / fps;
   const visible = plan.scenes.filter((s) => t >= s.from - 0.01 && t < s.to + 0.01);
-  const warm = visible.some((s) => s.type === 'bible') ? 0.5 : 1;
+  const warm = visible.some((s) => s.type === 'bible') ? 0.7 : 1;
   return (
     <AbsoluteFill style={{background: C.night}}>
       <Backdrop t={t} warm={warm} />
@@ -308,6 +361,7 @@ export const TemplarEpisode: React.FC<{plan: TemplarPlan}> = ({plan}) => {
           case 'end': return <EndScene key={i} s={s} t={t} />;
         }
       })}
+      <Grain t={t} />
       {plan.audio ? <Audio src={staticFile(plan.audio)} /> : null}
       {plan.music ? <Audio src={staticFile(plan.music)} volume={plan.musicVolume ?? 0.12} /> : null}
     </AbsoluteFill>
