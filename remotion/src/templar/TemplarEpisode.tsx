@@ -14,6 +14,7 @@ export type Spread = {from: number; to: number; header?: string; left: Para[]; r
 export type Chunk = {from: number; to: number; tokens: Tok[]};
 export type NoteItem = {at: number; head: string; body?: string};
 export type Scene =
+  | {type: 'notice'; from: number; to: number; text: string; sub: string}
   | {type: 'title'; from: number; to: number; kicker: string; title: string; sub: string}
   | {type: 'speech'; from: number; to: number; chunks: Chunk[]}
   | {type: 'prayer'; from: number; to: number; heading: string; kneelFrom: number; kneelTo: number; kneelText?: string; kneelSub?: string;
@@ -144,6 +145,27 @@ const Words: React.FC<{tokens: Tok[]; t: number; mode: WordStyle}> = ({tokens, t
 );
 
 // ---------- scenes ----------
+const Headphones: React.FC<{size: number; color: string}> = ({size, color}) => (
+  <svg width={size} height={size} viewBox="0 0 100 100" fill="none" stroke={color} strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 62 V52 a32 32 0 0 1 64 0 V62" />
+    <rect x="12" y="58" width="16" height="28" rx="6" />
+    <rect x="72" y="58" width="16" height="28" rx="6" />
+  </svg>
+);
+const NoticeScene: React.FC<{s: Extract<Scene, {type: 'notice'}>; t: number}> = ({s, t}) => {
+  const o = fade(t, s.from + 0.3, s.to, 0.9, 0.9);
+  return (
+    <AbsoluteFill style={{background: C.night, alignItems: 'center', justifyContent: 'center', flexDirection: 'column', opacity: Math.min(1, fade(t, s.from, s.to, 0.01, 0.9) + 0.0)}}>
+      <div style={{opacity: o, display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `translateY(${(1 - o) * 8}px)`}}>
+        <div style={{filter: 'drop-shadow(0 0 14px rgba(255,140,40,.35))'}}><Headphones size={92} color={C.gold} /></div>
+        <div style={{fontFamily: CAPS, color: C.ivory, fontSize: 34, letterSpacing: '0.32em', marginTop: 34}}>{s.text.toUpperCase()}</div>
+        <div style={{width: 260, height: 1, margin: '20px 0', background: `linear-gradient(90deg, transparent, ${C.gold}, transparent)`}} />
+        <div style={{fontFamily: SERIF, fontStyle: 'italic', color: C.ivory, opacity: 0.75, fontSize: 32}}>{s.sub}</div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
 const TitleScene: React.FC<{s: Extract<Scene, {type: 'title'}>; t: number}> = ({s, t}) => {
   const o = fade(t, s.from, s.to, 1.4, 1.2);
   const cross = interpolate(t, [s.from + 0.3, s.from + 2.4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease});
@@ -353,6 +375,7 @@ export const TemplarEpisode: React.FC<{plan: TemplarPlan}> = ({plan}) => {
       <Backdrop t={t} warm={warm} />
       {visible.map((s, i) => {
         switch (s.type) {
+          case 'notice': return <NoticeScene key={i} s={s} t={t} />;
           case 'title': return <TitleScene key={i} s={s} t={t} />;
           case 'speech': return <SpeechScene key={i} s={s} t={t} />;
           case 'prayer': return <PrayerScene key={i} s={s} t={t} />;

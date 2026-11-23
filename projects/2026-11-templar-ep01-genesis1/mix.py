@@ -31,9 +31,9 @@ def ff(*args): subprocess.run(['ffmpeg', '-v', 'error', '-y', *args], check=True
 def load(path):
     y, sr = sf.read(path, always_2d=True); assert sr == SR
     return y if y.shape[1] == 2 else np.repeat(y, 2, 1)
-def norm_clip(src, start, dur, lufs, out, loop=True):
+def norm_clip(src, start, dur, lufs, out, loop=True, pre_af=''):
     pre = ['-stream_loop', '-1'] if loop else []
-    ff(*pre, '-ss', str(start), '-i', src, '-t', str(dur), '-vn', '-af', f'loudnorm=I={lufs}:TP=-6:LRA=11,aformat=sample_rates={SR}:channel_layouts=stereo', '-c:a', 'pcm_f32le', out)
+    ff(*pre, '-ss', str(start), '-i', src, '-t', str(dur), '-vn', '-af', f'{pre_af}loudnorm=I={lufs}:TP=-6:LRA=11,aformat=sample_rates={SR}:channel_layouts=stereo', '-c:a', 'pcm_f32le', out)
     return load(out)
 def ramp(n, t_in, t_out):
     e = np.ones(n); i, o = int(t_in * SR), int(t_out * SR)
@@ -43,8 +43,14 @@ def ramp(n, t_in, t_out):
 
 # voice
 vp = os.path.join(W, 'voice_proc.wav')
-ff('-i', a.voice, '-af', VOICE_FX + ',loudnorm=I=-16:TP=-2:LRA=7', '-ar', str(SR), '-ac', '1', '-c:a', 'pcm_f32le', vp)
+# cut the lead-in before the first word (breaths/clicks), de-click, approved EQ/compression,
+# then ONE fixed gain to -16 LUFS (no dynamic levelling, which pumped up the quiet lead-in)
+TRIM = plan.get('trim', 0)
+ff('-ss', str(TRIM), '-i', a.voice, '-af', 'adeclick=w=55:o=75,' + VOICE_FX + ',afade=in:d=0.08', '-ar', str(SR), '-ac', '1', '-c:a', 'pcm_f32le', vp)
 v, _ = sf.read(vp)
+import pyloudnorm as pyln
+v = v * 10 ** ((-16 - pyln.Meter(SR).integrated_loudness(v)) / 20)
+v = np.clip(v, -0.89, 0.89)
 voice = np.zeros(N); pos_src = 0.0; cur = plan['offset']
 for at, secs in sorted(plan.get('gaps', [])) + [[len(v) / SR, 0]]:
     seg = v[int(pos_src * SR):int(at * SR)]
@@ -74,12 +80,14 @@ bed *= ramp(N, 3, 8)[:, None] * bed_env[:, None]
 # fire (optional) and SFX
 fire = np.zeros((N, 2))
 if a.fire:
-    one = norm_clip(a.fire, 0, 10 ** 6, a.fire_lufs, os.path.join(W, 'fire_n.wav'), loop=False)
+    # tame the crackle pops (they were 30+ dB above the fire's body and read as clicks): fast compression + limiter
+    one = norm_clip(a.fire, 0, 10 ** 6, a.fire_lufs, os.path.join(W, 'fire_n.wav'), loop=False,
+                    pre_af='acompressor=threshold=-30dB:ratio=6:attack=0.3:release=40:knee=4,alimiter=limit=0.18:attack=0.5:release=30:level=disabled,lowpass=f=9000,')
     X = int(3 * SR); fire = one.copy()
     while len(fire) < N:   # seamless loop: 3 s equal-power crossfade at each join
         w = np.sqrt(np.linspace(0, 1, X))[:, None]
         fire = np.concatenate([fire[:-X], fire[-X:] * w[::-1] + one[:X] * w, one[X:]])
-    fire = fire[:N] * ramp(N, 3, 8)[:, None]
+    fire = fire[:N] * ramp(N, 1.5, 8)[:, None]
 sfxp = os.path.join(W, 'sfx.wav')
 subprocess.run(['python3', os.path.join(D, 'audio/synth_sfx.py'), a.plan, sfxp], check=True)
 sfx = load(sfxp)[:N]; sfx = np.pad(sfx, ((0, N - len(sfx)), (0, 0))) * 10 ** (-14 / 20)

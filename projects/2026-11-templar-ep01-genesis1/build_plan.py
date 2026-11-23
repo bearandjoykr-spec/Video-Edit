@@ -10,9 +10,12 @@ usage: python3 build_plan.py <whisper.json> <out plan.json> [--offset 7.0]
 import json, re, sys, difflib, argparse
 
 ap = argparse.ArgumentParser()
-ap.add_argument('whisper'); ap.add_argument('out'); ap.add_argument('--offset', type=float, default=7.0)
+ap.add_argument('whisper'); ap.add_argument('out'); ap.add_argument('--offset', type=float, default=11.5)
+ap.add_argument('--voice', default=__file__.rsplit('/', 1)[0] + '/../../raw-footage/templar-ep01/ep01_48k.wav')
+ap.add_argument('--pre', type=float, default=4.5, help='headphones card before the title')
+ap.add_argument('--trim', type=float, default=None, help='seconds cut from the start of the voice (default: just before the first word)')
 args = ap.parse_args()
-OFF = args.offset
+OFF = args.offset; PRE = args.pre
 
 # ---------------- heard words ----------------
 def heard_words(path):
@@ -101,6 +104,8 @@ def add(text, key):
         stream.append({'t': w, 'key': key})
 
 opening = clean(section('Opening'))
+# words Mark added while recording (shown on screen so the captions match his voice)
+opening = opening.replace('Brothers. Welcome.', "Brothers. Welcome. It's been a while.", 1)
 pre, rest = opening.split('Non nobis', 1)
 latin_rest, after_latin = rest.split('Not unto us', 1)
 english, prayer = ('Not unto us' + after_latin).split('Lord, open', 1)
@@ -157,8 +162,26 @@ for key, secs in GAP_AFTER.items():
     nxt = [x for x in stream if x['s'] > ws[-1]['e']]
     at = (ws[-1]['e'] + min(x['s'] for x in nxt)) / 2 if nxt else ws[-1]['e'] + 0.5
     gaps.append([round(at, 3), secs])
+# cut the noisy lead-in (breaths, mouth clicks) before the first word; the mix cuts the same amount
+# first sound in the recording (20 ms windows above -40 dBFS for 100 ms)
+import soundfile as _sf, numpy as _np
+_y, _sr = _sf.read(args.voice, frames=48000 * 15)
+_w = int(0.02 * _sr)
+_r = [20 * _np.log10(_np.sqrt((_y[i:i + _w] ** 2).mean()) + 1e-9) for i in range(0, len(_y) - _w, _w)]
+ONSET = next(i for i in range(len(_r) - 5) if min(_r[i:i + 5]) > -40) * 0.02
+# cut the noisy lead-in (breaths, mouth clicks) before the first word; the mix cuts the same amount
+TRIM = args.trim if args.trim is not None else round(max(0, ONSET - 0.25), 2)
+# hand-checked timings (raw audio seconds) where Whisper was wrong: stream index -> (start, end)
+# Ep 1: energy shows "Brothers." at 3.32–3.90 and "Welcome." at 4.52–5.00
+OVERRIDE = {0: (3.32, 3.90), 1: (4.52, 5.00)}
+for i_, (s_, e_) in OVERRIDE.items():
+    stream[i_]['s'], stream[i_]['e'] = s_, e_
+for x in stream:   # nothing can be spoken before the first sound
+    if x['s'] < ONSET:
+        x['s'] = ONSET; x['e'] = max(x['e'], ONSET + 0.3)
+print('voice trimmed at', TRIM, 's')
 def vt(t):  # audio time -> video time
-    return t + OFF + sum(g for a, g in gaps if t >= a)
+    return t - TRIM + OFF + sum(g for a, g in gaps if t >= a)
 for x in stream:
     x['s'] = round(vt(x['s']), 3); x['e'] = round(vt(x['e']), 3)
 # report unmatched runs so they can be checked by ear
@@ -198,12 +221,14 @@ def span(words, pad_in=0.6, pad_out=0.8):
 
 scenes = []
 fps = 30
-scenes.append({'type': 'title', 'from': 0, 'to': OFF + 0.4, 'kicker': 'THE WHOLE BIBLE · EPISODE 1',
+scenes.append({'type': 'notice', 'from': 0, 'to': PRE + 0.3, 'text': 'Best experienced with headphones', 'sub': 'in a quiet, dark place'})
+scenes.append({'type': 'title', 'from': PRE, 'to': OFF + 0.4, 'kicker': 'THE WHOLE BIBLE · EPISODE 1',
                'title': 'IN THE BEGINNING', 'sub': 'Genesis 1:1 – 2:3'})
 
 # opening speech
 w = keyed('open'); a, b = span(w)
-scenes.append({'type': 'speech', 'from': a, 'to': None, 'chunks': chunks(w)})
+opening_scene = {'type': 'speech', 'from': a, 'to': None, 'chunks': chunks(w)}
+scenes.append(opening_scene)
 
 # prayer
 pw = keyed('p_')
@@ -221,8 +246,8 @@ scenes.append({'type': 'prayer', 'from': round(pa - 0.4, 3), 'to': round(pend + 
                'kneelFrom': round(pa + 0.2, 3), 'kneelTo': round(pend, 3), 'kneelText': 'Brothers, take a knee',
                'kneelSub': 'Bow your head and pray with me', 'blocks': blocks})
 # the opening speech chunks must not overlap the prayer
-scenes[1]['chunks'] = [c for c in scenes[1]['chunks'] if c['from'] < pa - 0.2]
-for c in scenes[1]['chunks']: c['to'] = min(c['to'], pa - 0.15)
+opening_scene['chunks'] = [c for c in opening_scene['chunks'] if c['from'] < pa - 0.2]
+for c in opening_scene['chunks']: c['to'] = min(c['to'], pa - 0.15)
 
 # context
 w = keyed('context'); a, b = span(w)
@@ -317,7 +342,7 @@ for i, s in enumerate(scenes):
     if s['to'] is None: s['to'] = scenes[i + 1]['from']
 
 # where the chant plays (video time): title card, the book-closing swell, the end card
-chant = [[0.0, OFF + 1.5], [round(endw[-1]['e'] + 0.3, 3), round(bend + 1.0, 3)], [round(w[-1]['e'] + 0.5, 3), end]]
-plan = {'fps': fps, 'duration': end, 'audio': None, 'offset': OFF, 'gaps': gaps, 'chant': chant, 'scenes': scenes}
+chant = [[PRE, OFF + 1.5], [round(endw[-1]['e'] + 0.3, 3), round(bend + 1.0, 3)], [round(w[-1]['e'] + 0.5, 3), end]]
+plan = {'fps': fps, 'duration': end, 'audio': None, 'offset': OFF, 'trim': TRIM, 'gaps': [[round(a_ - TRIM, 3), g_] for a_, g_ in gaps], 'chant': chant, 'scenes': scenes}
 json.dump(plan, open(args.out, 'w'), indent=1)
 for s in scenes: print(f"{s['type']:7s} {s['from']:8.2f} → {s['to']:8.2f}")
