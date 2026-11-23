@@ -6,128 +6,178 @@
  "joyMedia": "day38/joy.webm",
  "joyMap": [
   {
-   "t": 0.0,
+   "t": 3.0,
    "src": 34.555,
    "d": 30.063
   },
   {
-   "t": 30.063,
+   "t": 33.063,
    "src": 128.945,
    "d": 1.805
   }
  ],
- "duration": 34.668,
- "frames": 1041,
+ "duration": 37.668,
+ "frames": 1131,
  "captions": [
   {
-   "s": 0.0,
-   "e": 1.934,
+   "s": 3.0,
+   "e": 4.934,
    "text": "두 번째, 교과서",
    "sec": "p2"
   },
   {
-   "s": 1.954,
-   "e": 4.716,
+   "s": 4.954,
+   "e": 7.716,
    "text": "상담을 가면 '우리 원은\n미국 교과서를 사용한다'",
    "sec": "p2"
   },
   {
-   "s": 4.736,
-   "e": 9.025,
+   "s": 7.736,
+   "e": 12.025,
    "text": "혹은 '영국 교과서를 사용한다'는\n이야기를 들으실 수도 있어요",
    "sec": "p2"
   },
   {
-   "s": 9.045,
-   "e": 13.77,
+   "s": 12.045,
+   "e": 16.77,
    "text": "하지만 유명한 교과서를 쓴다고\n반드시 좋은 수업이 되는 건 아니에요",
    "sec": "p2"
   },
   {
-   "s": 13.79,
-   "e": 17.57,
+   "s": 16.79,
+   "e": 20.57,
    "text": "교과서 속 영어 문장을 읽고\n문제를 푸는 것과",
    "sec": "p2"
   },
   {
-   "s": 17.59,
-   "e": 21.298,
+   "s": 20.59,
+   "e": 24.298,
    "text": "그 영어를 이해하고 일상에서\n사용하는 것은 다르거든요",
    "sec": "p2"
   },
   {
-   "s": 21.318,
-   "e": 23.48,
+   "s": 24.318,
+   "e": 26.48,
    "text": "그래서 어떤 교재를 쓰는지만\n확인하지 마시고",
    "sec": "p2"
   },
   {
-   "s": 23.5,
-   "e": 26.243,
+   "s": 26.5,
+   "e": 29.243,
    "text": "그 교재로 어떤 활동을 하는지",
    "sec": "p2"
   },
   {
-   "s": 26.263,
-   "e": 30.043,
+   "s": 29.263,
+   "e": 33.043,
    "text": "배운 영어를 직접 써 볼 기회가\n얼마나 있는지 물어보세요",
    "sec": "p2"
   },
   {
-   "s": 30.063,
-   "e": 31.853,
+   "s": 33.063,
+   "e": 34.853,
    "text": "그럼 내일 만나요, 안녕! 👋",
    "sec": "bye"
   }
  ],
  "sections": [
   {
-   "kind": "hook",
+   "kind": "books",
    "s": 0.0,
-   "e": 2.6
+   "e": 3.0
   },
   {
    "kind": "p2",
-   "s": 2.6,
-   "e": 30.063
+   "s": 3.0,
+   "e": 33.063
   },
   {
    "kind": "bye",
-   "s": 30.063,
-   "e": 34.668
+   "s": 33.063,
+   "e": 37.668
   }
  ],
  "ticks": {
   "p2": [
-   23.318,
-   25.99
+   26.318,
+   28.99
   ]
  },
  "sfx": [
   {
+   "t": 3.0,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 33.063,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 33.063,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 26.318,
+   "sound": "pop",
+   "gain": -15
+  },
+  {
+   "t": 28.99,
+   "sound": "pop",
+   "gain": -15
+  },
+  {
    "t": 0.0,
-   "sound": "whoosh",
-   "gain": -16
-  },
-  {
-   "t": 30.063,
-   "sound": "whoosh",
-   "gain": -16
-  },
-  {
-   "t": 30.063,
-   "sound": "whoosh",
-   "gain": -16
-  },
-  {
-   "t": 23.318,
    "sound": "pop",
-   "gain": -15
+   "gain": -12
   },
   {
-   "t": 25.99,
+   "t": 0.3,
    "sound": "pop",
-   "gain": -15
+   "gain": -12
+  },
+  {
+   "t": 0.6,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 0.9,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 1.2,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 1.5,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 1.8,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 2.1,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 2.4,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 2.7,
+   "sound": "pop",
+   "gain": -12
   }
  ],
  "hookTitle": [
@@ -145,5 +195,73 @@
  "tipType": [
   0.35,
   5.9
+ ],
+ "books": [
+  "day38/books/b0.jpg",
+  "day38/books/b1.jpg",
+  "day38/books/b2.jpg",
+  "day38/books/b3.jpg",
+  "day38/books/b4.jpg",
+  "day38/books/b5.jpg",
+  "day38/books/b6.jpg",
+  "day38/books/b7.jpg",
+  "day38/books/b8.jpg",
+  "day38/books/b9.jpg"
+ ],
+ "series": [
+  {
+   "s": 4.954,
+   "e": 12.045,
+   "title": "🇺🇸 미국 교과서 Wonders 시리즈",
+   "items": [
+    [
+     "day38/series/w-rwc.jpg",
+     "Reading/Writing Companion",
+     "읽기·쓰기 본책"
+    ],
+    [
+     "day38/series/w-practice.jpg",
+     "Practice Book",
+     "연습 문제집"
+    ],
+    [
+     "day38/series/w-anthology.jpg",
+     "Literature Anthology",
+     "문학 작품집"
+    ],
+    [
+     "day38/series/w-leveled.jpg",
+     "Leveled Readers",
+     "수준별 읽기책"
+    ]
+   ]
+  },
+  {
+   "s": 16.79,
+   "e": 24.318,
+   "title": "📚 Bricks 시리즈",
+   "items": [
+    [
+     "day38/series/b-phonics.jpg",
+     "First Phonics",
+     "파닉스"
+    ],
+    [
+     "day38/series/b-reading.jpg",
+     "Bricks Reading",
+     "리딩 (30→300)"
+    ],
+    [
+     "day38/series/b-listening.jpg",
+     "Bricks Listening",
+     "리스닝"
+    ],
+    [
+     "day38/series/b-grammar.jpg",
+     "First Grammar",
+     "문법"
+    ]
+   ]
+  }
  ]
 }
