@@ -91,7 +91,7 @@ export const Cross: React.FC<{size: number; color?: string; glow?: number}> = ({
 // ---------- background: night camp, firelight from below, sparks, smoke ----------
 const Backdrop: React.FC<{t: number; warm?: number}> = ({t, warm = 1}) => {
   const f = fire(t) * warm;
-  const sparks = Array.from({length: 70}, (_, i) => {
+  const sparks = Array.from({length: 40}, (_, i) => {
     const sp = 60 + random(`s${i}`) * 120;            // px per second, fast like sparks
     const life = 900 / sp + 1.5;
     const ph = ((t + random(`p${i}`) * life) % life) / life;
@@ -111,8 +111,32 @@ const Backdrop: React.FC<{t: number; warm?: number}> = ({t, warm = 1}) => {
       <AbsoluteFill style={{opacity: 0.22, transform: `translateX(${smokeX}px)`, background:
         `radial-gradient(ellipse 40% 30% at ${40 + 10 * noise2D('a', t * 0.04, 1)}% ${45 + 8 * noise2D('b', t * 0.03, 2)}%, rgba(120,95,80,.35), transparent 70%),
          radial-gradient(ellipse 35% 25% at ${62 + 10 * noise2D('c', t * 0.035, 3)}% ${30 + 8 * noise2D('d', t * 0.05, 4)}%, rgba(110,90,75,.3), transparent 70%)`}} />
-      {sparks}
       <AbsoluteFill style={{background: 'radial-gradient(ellipse 75% 85% at 50% 72%, transparent 35%, rgba(0,0,0,.85) 100%)'}} />
+    </AbsoluteFill>
+  );
+};
+
+// the fire in front of everything: warm glow rising from below the frame and sparks drifting up
+// (paintings and the Bible would otherwise hide the backdrop's fire)
+const FireFront: React.FC<{t: number; strength: number}> = ({t, strength}) => {
+  if (strength <= 0.01) return null;
+  const f = fire(t);
+  const sparks = Array.from({length: 46}, (_, i) => {
+    const sp = 60 + random(`fs${i}`) * 120;
+    const life = 900 / sp + 1.5;
+    const ph = ((t + random(`fp${i}`) * life) % life) / life;
+    const x0 = 620 + random(`fx${i}`) * 680;
+    const x = x0 + (random(`fd${i}`) - 0.5) * 560 * ph + noise2D(`fw${i}`, t * 0.8, i) * 70 * ph;
+    const y = 1110 - ph * 900;
+    const o = (1 - ph) ** 1.6 * (0.45 + random(`fo${i}`) * 0.55);
+    const r = 0.8 + random(`fr${i}`) * 1.7;
+    return <div key={i} style={{position: 'absolute', left: x, top: y, width: r * 2, height: r * 2 + 3 * ph, borderRadius: '50%',
+      background: '#ffd08a', opacity: o, boxShadow: `0 0 ${r * 6}px #ff6a12`}} />;
+  });
+  return (
+    <AbsoluteFill style={{opacity: strength, pointerEvents: 'none'}}>
+      <AbsoluteFill style={{mixBlendMode: 'screen', background: `radial-gradient(ellipse 70% 38% at ${50 + 3 * noise2D('ffx', t * 0.9, 0)}% 112%, rgba(255,130,40,${0.55 * f}), rgba(200,70,15,${0.22 * f}) 45%, transparent 75%)`}} />
+      {sparks}
     </AbsoluteFill>
   );
 };
@@ -279,10 +303,10 @@ const BibleScene: React.FC<{s: Extract<Scene, {type: 'bible'}>; t: number}> = ({
   const f = fire(t);
   const lx = 30 + 6 * noise2D('lx', t * 0.6, 0);      // the fire's light wanders a little
   const pull = pullAmount(t, s.breaks);               // camera pulls back in the pause after each day
-  const sc = (0.9 + 0.03 * k) * (1 - 0.34 * pull);
+  const sc = (0.76 + 0.03 * k) * (1 - 0.3 * pull);
   return (
     <AbsoluteFill style={{opacity: o}}>
-      {s.art ? <ArtLayer cues={s.art} t={t} fire={f} opacity={0.45 + 0.5 * pull} dim={0.85 + 0.25 * pull} /> : null}
+      {s.art ? <ArtLayer cues={s.art} t={t} fire={f} opacity={0.85 + 0.15 * pull} dim={1.15} vignette={0.62} /> : null}
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', perspective: 2400}}>
       <div style={{position: 'relative', width: 1720, height: 1000, marginTop: 30 - 40 * pull,
         transform: `rotateX(${9 + 6 * pull}deg) scale(${sc}) translateY(${noise2D('cam', t * 0.15, 0) * 4}px)`}}>
@@ -314,7 +338,7 @@ const BibleScene: React.FC<{s: Extract<Scene, {type: 'bible'}>; t: number}> = ({
         {/* ribbon */}
         <div style={{position: 'absolute', left: 1180, top: 985, width: 26, height: 110, background: `linear-gradient(${C.red}, #3e0907)`, clipPath: 'polygon(0 0,100% 0,100% 100%,50% 86%,0 100%)'}} />
       </div>
-      <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 80% at ${lx + 15}% 75%, transparent 45%, rgba(0,0,0,${(0.9 - 0.15 * f) * (1 - 0.6 * pull)}) 100%)`}} />
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 80% at ${lx + 15}% 75%, transparent 45%, rgba(0,0,0,${(0.7 - 0.15 * f) * (1 - 0.6 * pull)}) 100%)`}} />
     </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -394,6 +418,7 @@ export const TemplarEpisode: React.FC<{plan: TemplarPlan}> = ({plan}) => {
           case 'end': return <EndScene key={i} s={s} t={t} />;
         }
       })}
+      <FireFront t={t} strength={visible.some((s) => s.type === 'notice') ? 0 : plan.art ? 1 : 0} />
       <Grain t={t} />
       {plan.audio ? <Audio src={staticFile(plan.audio)} /> : null}
       {plan.music ? <Audio src={staticFile(plan.music)} volume={plan.musicVolume ?? 0.12} /> : null}

@@ -73,7 +73,7 @@ const FilmWear: React.FC<{t: number}> = ({t}) => {
   return <AbsoluteFill style={{pointerEvents: 'none'}}>{specks}{scratch}</AbsoluteFill>;
 };
 
-export const ArtLayer: React.FC<{cues: ArtCue[]; t: number; fire: number; opacity: number; dim?: number}> = ({cues, t, fire, opacity, dim = 1}) => {
+export const ArtLayer: React.FC<{cues: ArtCue[]; t: number; fire: number; opacity: number; dim?: number; vignette?: number}> = ({cues, t, fire, opacity, dim = 1, vignette = 0.88}) => {
   if (opacity <= 0.001) return null;
   const vis = cues.map((c, i) => ({c, i})).filter(({c}) => t >= c.from && t < c.to);
   if (!vis.length) return null;
@@ -84,7 +84,7 @@ export const ArtLayer: React.FC<{cues: ArtCue[]; t: number; fire: number; opacit
       <FilmWear t={t} />
       {/* warm firelight from below + heavy vignette so text and the book stay readable */}
       <AbsoluteFill style={{background: `radial-gradient(ellipse 90% 70% at 50% 115%, rgba(255,120,30,${0.22 * fire}), transparent 70%)`, mixBlendMode: 'screen'}} />
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse 72% 72% at 50% 50%, rgba(0,0,0,.15) 30%, rgba(0,0,0,.88) 100%)'}} />
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 72% 72% at 50% 50%, rgba(0,0,0,${0.15 * vignette / 0.88}) 30%, rgba(0,0,0,${vignette}) 100%)`}} />
     </AbsoluteFill>
   );
 };
