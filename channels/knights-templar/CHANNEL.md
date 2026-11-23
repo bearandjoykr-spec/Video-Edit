@@ -6,6 +6,12 @@ Started 23 Nov 2026. Not a Bear & Joy channel: do not use brand/BRAND.md or its 
 - Faceless videos: the owner's own audio of him reading the Bible, part by part.
 - Visuals: beautiful, Knights Templar style.
 
+## Series
+- Reads the whole Bible (KJV) start to finish, 10–15 min episodes (~850 in total). One playlist per book + a master playlist.
+- Each episode: Opening + prayer (Non nobis, Domine — Psalm 115), Context, The reading, Analysis, For the brothers, Closing + benediction (Numbers 6:24–26).
+- Scripts are written with the owner in Claude docs, then copied to projects/<yyyy-mm>-templar-epNN-<book>/script.md.
+- Episode 1: Genesis 1:1–2:3 — projects/2026-11-templar-ep01-genesis1/
+
 ## Waiting on the owner
 - The audio file (Google Drive, anyone with the link), which book/chapters, which Bible translation
 - Look and feel (reference channels/videos), language(s), rough length
