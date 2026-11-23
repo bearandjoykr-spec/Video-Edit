@@ -8,18 +8,18 @@ import {
 
 // ---------- plan types ----------
 export type Tok = {t: string; s?: number | null; e?: number | null};
-export type Para = {verse?: number | null; dropcap?: boolean; label?: string; tokens: Tok[]};
+export type Para = {verse?: number | null; dropcap?: boolean; label?: string; center?: boolean; tokens: Tok[]};
 export type Spread = {from: number; to: number; header?: string; left: Para[]; right: Para[]};
 export type Chunk = {from: number; to: number; tokens: Tok[]};
 export type NoteItem = {at: number; head: string; body?: string};
 export type Scene =
   | {type: 'title'; from: number; to: number; kicker: string; title: string; sub: string}
   | {type: 'speech'; from: number; to: number; chunks: Chunk[]}
-  | {type: 'prayer'; from: number; to: number; heading: string; kneelFrom: number; kneelTo: number;
+  | {type: 'prayer'; from: number; to: number; heading: string; kneelFrom: number; kneelTo: number; kneelText?: string; kneelSub?: string;
      blocks: {style: 'latin' | 'english' | 'say' | 'prayer'; tokens: Tok[]}[]}
   | {type: 'bible'; from: number; to: number; spreads: Spread[]}
   | {type: 'notes'; from: number; to: number; label: string; title: string; items: NoteItem[]; chunks: Chunk[]}
-  | {type: 'end'; from: number; to: number; next: string; sign: string};
+  | {type: 'end'; from: number; to: number; next: string; sign: string; chunks?: Chunk[]};
 export type TemplarPlan = {fps: number; duration: number; audio?: string | null; music?: string | null;
   musicVolume?: number; scenes: Scene[]};
 
@@ -156,8 +156,8 @@ const PrayerScene: React.FC<{s: Extract<Scene, {type: 'prayer'}>; t: number}> = 
         <Cross size={34} /><span style={{fontFamily: CAPS, color: C.gold, letterSpacing: '0.5em', fontSize: 24}}>{s.heading}</span><Cross size={34} />
       </div>
       <div style={{position: 'absolute', top: 170, opacity: kneel, textAlign: 'center', transform: `translateY(${(1 - kneel) * 10}px)`}}>
-        <div style={{fontFamily: CAPS, color: C.ivory, fontSize: 40, letterSpacing: '0.18em'}}>Brothers, take a knee</div>
-        <div style={{fontFamily: SERIF, fontStyle: 'italic', color: C.ivory, opacity: 0.65, fontSize: 28, marginTop: 8}}>Bow your head and pray with me</div>
+        <div style={{fontFamily: CAPS, color: C.ivory, fontSize: 40, letterSpacing: '0.18em'}}>{s.kneelText ?? 'Brothers, take a knee'}</div>
+        <div style={{fontFamily: SERIF, fontStyle: 'italic', color: C.ivory, opacity: 0.65, fontSize: 28, marginTop: 8}}>{s.kneelSub ?? 'Bow your head and pray with me'}</div>
       </div>
       <div style={{width: 1500, marginTop: 120, textAlign: 'center', opacity: Math.max(body, 0.0)}}>
         {s.blocks.map((b, i) => {
@@ -181,7 +181,12 @@ const Page: React.FC<{paras: Para[]; t: number; side: 'l' | 'r'}> = ({paras, t, 
     {paras.map((p, i) => (
       <div key={i} style={{marginBottom: p.label ? 0 : 6}}>
         {p.label ? <div style={{fontFamily: CAPS, fontSize: 30, letterSpacing: '0.24em', textAlign: 'center', color: C.red, margin: '0 0 18px'}}>{p.label}</div> : null}
-        {p.dropcap && p.tokens.length ? (
+        {p.center ? (
+          <div style={{textAlign: 'center', fontStyle: 'italic', fontSize: 36, marginTop: 30, color: C.red}}>
+            <div style={{width: 120, height: 1, background: 'rgba(158,27,27,.5)', margin: '0 auto 18px'}} />
+            <Words tokens={p.tokens} t={t} mode="dark" />
+          </div>
+        ) : p.dropcap && p.tokens.length ? (
           <span>
             <span style={{float: 'left', fontFamily: CAPS, fontWeight: 700, fontSize: 112, lineHeight: 0.84, color: C.red, margin: '8px 14px 0 0', textShadow: '0 1px 0 rgba(201,162,74,.6)'}}>{p.tokens[0].t[0]}</span>
             <Word tok={{...p.tokens[0], t: p.tokens[0].t.slice(1)}} t={t} mode="dark" />{' '}
@@ -275,6 +280,11 @@ const EndScene: React.FC<{s: Extract<Scene, {type: 'end'}>; t: number}> = ({s, t
     <div style={{fontFamily: CAPS, color: C.gold, letterSpacing: '0.42em', fontSize: 24, marginTop: 44}}>NEXT TIME</div>
     <div style={{fontFamily: CAPS, color: C.ivory, fontSize: 60, marginTop: 14}}>{s.next}</div>
     <div style={{fontFamily: SERIF, fontStyle: 'italic', color: C.ivory, opacity: 0.85, fontSize: 44, marginTop: 50}}>{s.sign}</div>
+    {(() => {
+      const c = s.chunks ? activeChunk(s.chunks, t) : undefined;
+      return c ? <div style={{position: 'absolute', bottom: 70, left: 220, right: 220, textAlign: 'center', fontFamily: SERIF, fontSize: 36,
+        opacity: fade(t, c.from, c.to, 0.3, 0.3)}}><Words tokens={c.tokens} t={t} mode="light" /></div> : null;
+    })()}
   </AbsoluteFill>
 );
 
