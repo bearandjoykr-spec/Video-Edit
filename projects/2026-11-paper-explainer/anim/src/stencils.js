@@ -12,15 +12,16 @@ const R = (x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
 function densify(pts, step = 10) { const out = []; for (let i = 0; i < pts.length; i++) { const [x0, y0] = pts[i], [x1, y1] = pts[(i + 1) % pts.length];
   const n = Math.max(1, Math.round(Math.hypot(x1 - x0, y1 - y0) / step)); for (let k = 0; k < n; k++) out.push([x0 + (x1 - x0) * k / n, y0 + (y1 - y0) * k / n]); } return out; }
 const path = (g, pts, sharp) => { if (!sharp) return smooth(g, pts); g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.closePath(); };
+let FINE = false;   // landmarks only: fine ink line over a pale watercolour wash (owner, 24 Nov 2026: no drawn friends for now)
 // one stencil print of a closed shape
 function print(g, pts0, col, seed, o = {}) {
   const r = rng(seed), sharp = o.sharp ?? (pts0.length <= 4 || o.lm), pts = sharp ? densify(pts0) : pts0;
   g.save();
   // misregistered second pass, darker, a few px off
-  g.globalAlpha = 0.28; g.fillStyle = shade(col, -0.25); g.translate(3, 2); path(g, pts, sharp); g.fill(); g.translate(-3, -2);
-  g.globalAlpha = o.alpha ?? 0.95; g.fillStyle = col; path(g, pts, sharp); g.fill();
+  g.globalAlpha = FINE ? 0.12 : 0.28; g.fillStyle = shade(col, -0.25); g.translate(3, 2); path(g, pts, sharp); g.fill(); g.translate(-3, -2);
+  g.globalAlpha = FINE ? 0.5 : (o.alpha ?? 0.95); g.fillStyle = col; path(g, pts, sharp); g.fill();
   // sprayed edge: fine speckle just outside the shape
-  g.globalAlpha = 0.35; g.fillStyle = shade(col, -0.15);
+  g.globalAlpha = FINE ? 0.12 : 0.35; g.fillStyle = shade(col, -0.15);
   for (let i = 0; i < pts.length; i++) { const [x, y] = pts[i]; for (let k = 0; k < 6; k++) { g.beginPath(); g.arc(x + (r() - 0.5) * 9, y + (r() - 0.5) * 9, 0.6 + r() * 1.3, 0, 7); g.fill(); } }
   // watercolour bloom inside
   g.save(); path(g, pts, sharp); g.clip();
@@ -28,7 +29,7 @@ function print(g, pts0, col, seed, o = {}) {
   const gr = g.createRadialGradient(cx - 10, cy - 14, 2, cx, cy, 120); gr.addColorStop(0, 'rgba(255,255,255,0.32)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
   g.globalAlpha = 1; g.globalCompositeOperation = 'soft-light'; g.fillStyle = gr; g.fillRect(cx - 200, cy - 200, 400, 400); g.restore();
   g.restore();
-  if (o.line !== false) ink(g, pts, seed, { w: o.w ?? 2.2, passes: 1, color: o.ink || INK, wob: sharp ? 0.8 : 2.2 });
+  if (o.line !== false) ink(g, pts, seed, { w: FINE ? 1.5 : (o.w ?? 2.2), passes: FINE ? 2 : 1, color: o.ink || (FINE ? '#3a3028' : INK), wob: sharp ? 0.8 : (FINE ? 1.2 : 2.2) });
 }
 const stroke = (g, pts, col, w, seed) => ink(g, pts, seed, { closed: false, w, color: col, passes: 1, wob: 1.2 });
 const dot = (g, x, y, r, col) => { g.fillStyle = col; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); };
@@ -99,7 +100,7 @@ const FR = {
 // a stop card: landmark behind (faded, like a watercolour wash), the friend in front
 export function stop(landmark, friend, seed = 1) {
   const c = canvas(400, 400), g = c.getContext('2d');
-  if (landmark) { g.save(); g.globalAlpha = 0.85; LM[landmark](g, seed); g.restore(); }
+  if (landmark) { g.save(); FINE = !friend; LM[landmark](g, seed); FINE = false; g.restore(); }
   if (friend) { g.save(); if (landmark) { g.translate(70, 90); g.scale(0.72, 0.72); } FR[friend](g, seed + 50); g.restore(); }
   return c;
 }

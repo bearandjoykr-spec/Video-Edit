@@ -86,7 +86,7 @@ export function buildWorld(B, IMG, h) { // h: helpers from story.js (stick, cutM
   STOPS.forEach(([name, lon, lat, lm, fr, at, en, ko], i) => {
     const site = new THREE.Group(); site.applyMatrix4(cityBasis(lon, lat)); site.position.copy(vec(lon, lat).multiplyScalar(R - 0.01)); globe.add(site);
     const hinge = new THREE.Group(); site.add(hinge);
-    const card = h.stick(stop(lm, fr, 7 + i * 13), name === 'oxford' ? 1.7 : 1.55, 10, 90 + i); card.position.set(0.62, 0, -0.15); hinge.add(card);   // friends stand to the right of the path, the bear on the left
+    const card = h.stick(stop(lm, null, 7 + i * 13), name === 'oxford' ? 1.55 : 1.45, 10, 90 + i);   // landmarks only for now (owner) card.position.set(0.62, 0, -0.15); hinge.add(card);   // friends stand to the right of the path, the bear on the left
     const tagC = P.canvas(420, 170), tg = tagC.getContext('2d');
     tg.fillStyle = '#f4ead2'; tg.beginPath(); tg.moveTo(40, 10); tg.lineTo(410, 10); tg.lineTo(410, 160); tg.lineTo(40, 160); tg.lineTo(8, 85); tg.closePath(); tg.fill();
     P.ink(tg, [[40, 10], [410, 10], [410, 160], [40, 160], [8, 85]], 5 + i, { w: 2.4, passes: 1 }); tg.fillStyle = '#b8352b'; tg.beginPath(); tg.arc(44, 85, 9, 0, 7); tg.fill();
