@@ -4,7 +4,7 @@ import B from './beats.json';
 
 // fonts and the book art must be in before the story draws its paper textures
 (async () => {
-  try { await Promise.all(['700 40px Gaegu', '400 40px PatrickHand', '600 40px Title'].map(f => document.fonts.load(f))); } catch (e) {}
+  try { await Promise.all(['700 40px Gaegu', '400 40px PatrickHand', '600 40px Title', '400 40px Brush', '700 40px Batang'].map(f => document.fonts.load(f))); } catch (e) {}
   const IMG = {};
   await Promise.all(Object.entries(ASSETS).map(([k, url]) => new Promise(res => {
     const im = new Image(); im.onload = () => { IMG[k] = im; res(); }; im.onerror = () => { console.error('asset failed', k); res(); }; im.src = url;

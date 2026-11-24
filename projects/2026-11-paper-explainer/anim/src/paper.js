@@ -3,7 +3,7 @@
 // (BRAND.md: sketchy pen line, soft watercolour). Everything is seeded, so every frame is identical on every worker.
 import { rng } from './kit.js';
 
-export const INK = '#2b2d3a';
+export const INK = '#2a2420';   // 먹 (sumi ink)
 export const C = { cream: '#F5F0E6', paper: '#FBF6EC', navy: '#1E2D4D', deep: '#173B5C', yellow: '#F6F0BA', blue: '#AECCE6', gold: '#C9A84C', rose: '#E9A3A3' };
 
 export function canvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
@@ -35,7 +35,7 @@ function noiseTile() {
 export function wash(g, pts, color, seed = 1, o = {}) {
   const r = rng(seed);
   g.save();
-  smooth(g, jit(pts, o.wob ?? 3, r)); g.fillStyle = color; g.globalAlpha = o.alpha ?? 0.92; g.fill();
+  smooth(g, jit(pts, o.wob ?? 3, r)); g.fillStyle = color; g.globalAlpha = o.alpha ?? 0.8; g.fill();
   g.clip();
   g.globalAlpha = 0.22; g.lineWidth = o.edge ?? 10; g.strokeStyle = shade(color, -0.28); g.filter = 'blur(3px)'; g.stroke(); g.filter = 'none';
   g.globalAlpha = 1; g.globalCompositeOperation = 'multiply'; g.fillStyle = g.createPattern(noiseTile(), 'repeat'); g.fill();
@@ -49,15 +49,35 @@ export function wash(g, pts, color, seed = 1, o = {}) {
   }
   g.restore();
 }
-// sketchy pen line: two loose passes
+// ink brush (먹선): one tapered stroke with a little pressure wobble and a dry, broken second pass
 export function ink(g, pts, seed = 1, o = {}) {
-  const r = rng(seed + 99);
-  g.save(); g.lineCap = g.lineJoin = 'round'; g.strokeStyle = o.color || INK;
-  for (let k = 0; k < (o.passes ?? 2); k++) {
-    g.globalAlpha = k ? 0.45 : 0.9; g.lineWidth = (o.w ?? 3.2) * (k ? 0.7 : 1);
-    smooth(g, jit(pts, o.wob ?? 2.6, r), o.closed ?? true); g.stroke();
+  const r = rng(seed + 99), closed = o.closed ?? true;
+  const path = sample(jit(pts, o.wob ?? 2.2, r), closed);
+  const n = path.length, W0 = (o.w ?? 3.2) * 1.25;
+  g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; g.strokeStyle = o.color || INK;
+  const ph = r() * 10;
+  for (let pass = 0; pass < (o.passes ?? 2); pass++) {
+    g.globalAlpha = pass ? 0.32 : 0.88;
+    for (let i = 1; i < n; i++) {
+      const u = i / (n - 1), taper = closed ? 1 : Math.min(1, u * 5, (1 - u) * 4 + 0.25);
+      const press = 0.72 + 0.38 * Math.sin(u * 9 + ph) * Math.sin(u * 3.3 + ph * 2);
+      if (pass && Math.sin(i * 1.7 + ph) > 0.35) continue;          // dry-brush gaps
+      g.lineWidth = Math.max(0.6, W0 * taper * press * (pass ? 0.6 : 1));
+      g.beginPath(); g.moveTo(path[i - 1][0] + (pass ? 1.2 : 0), path[i - 1][1] + (pass ? 0.8 : 0)); g.lineTo(path[i][0] + (pass ? 1.2 : 0), path[i][1] + (pass ? 0.8 : 0)); g.stroke();
+    }
   }
   g.restore();
+}
+// sample a smooth (Catmull-Rom) curve into points
+function sample(pts, closed, per = 10) {
+  const n = pts.length, P = i => closed ? pts[(i + n) % n] : pts[Math.max(0, Math.min(n - 1, i))], out = [];
+  const last = closed ? n : n - 1;
+  for (let i = 0; i < last; i++) {
+    const p0 = P(i - 1), p1 = P(i), p2 = P(i + 1), p3 = P(i + 2);
+    for (let k = 0; k < per; k++) { const t = k / per, t2 = t * t, t3 = t2 * t;
+      out.push([0, 1].map(d => 0.5 * ((2 * p1[d]) + (-p0[d] + p2[d]) * t + (2 * p0[d] - 5 * p1[d] + 4 * p2[d] - p3[d]) * t2 + (-p0[d] + 3 * p1[d] - 3 * p2[d] + p3[d]) * t3))); }
+  }
+  out.push(closed ? out[0] : pts[n - 1]); return out;
 }
 export function shade(hex, k) {
   const n = parseInt(hex.slice(1), 16); let [r, g, b] = [n >> 16, (n >> 8) & 255, n & 255];
@@ -70,6 +90,10 @@ export function paperTex(w, h, base = C.paper, seed = 3, o = {}) {
   g.fillStyle = base; g.fillRect(0, 0, w, h);
   g.globalCompositeOperation = 'multiply'; g.globalAlpha = o.grain ?? 0.5; g.fillStyle = g.createPattern(noiseTile(), 'repeat'); g.fillRect(0, 0, w, h);
   g.globalCompositeOperation = 'source-over';
+  for (let i = 0; i < (o.fibres ?? 260) * 0.25; i++) { // 한지: long, curling mulberry fibres
+    let x = r() * w, y = r() * h, a = r() * Math.PI * 2; g.strokeStyle = `rgba(${r() < 0.5 ? '255,255,250' : '150,120,80'},${0.10 + r() * 0.12})`; g.lineWidth = 0.6 + r() * 0.8;
+    g.beginPath(); g.moveTo(x, y); for (let k = 0; k < 8; k++) { a += (r() - 0.5) * 0.9; x += Math.cos(a) * 9; y += Math.sin(a) * 9; g.lineTo(x, y); } g.stroke();
+  }
   for (let i = 0; i < (o.fibres ?? 260); i++) { // fibres
     const x = r() * w, y = r() * h, a = r() * Math.PI, l = 6 + r() * 22;
     g.strokeStyle = `rgba(120,100,70,${0.05 + r() * 0.07})`; g.lineWidth = 0.8; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
@@ -111,76 +135,89 @@ export function hand(g, text, x, y, o = {}) {
 // ---------------------------------------------------------------- the paper families
 // A seated person, front view, legs crossed on a rug, arms coming round to the front.
 // Body and head are separate pieces so the head can tilt and talk. 'book' draws an open book in the hands.
+// Families drawn as in a vintage Korean ink-and-colour (수묵담채) picture: hanbok jeogori with a white collar band (동정) and a tied
+// ribbon (고름), 색동 rainbow sleeves on the children, braids with a red 댕기 for girls, a hairpin bun (쪽머리 + 비녀) for mum and grandma.
+const SAEKDONG = ['#c8553d', '#e2c271', '#7fa36a', '#5b7a99', '#e6b5ae', '#8e4a5a'];
 export const PEOPLE = {
-  mum: { adult: true, top: '#E7A4A0', bottom: '#7088B8', hair: '#4a3328', hairStyle: 'long', skin: '#F3D4B8', book: '#1E3A66' },
-  dad: { adult: true, top: '#8DB3D3', bottom: '#4D5A70', hair: '#2d2724', hairStyle: 'short', skin: '#EFCDB0', book: '#E9C46A' },
-  grandma: { adult: true, top: '#B9A6D2', bottom: '#8E7B6B', hair: '#d9d6d0', hairStyle: 'bun', skin: '#F2D5BD', glasses: true, book: '#6E9E6A' },
-  girl: { top: '#F4DE7E', bottom: '#E8896B', hair: '#3b2a22', hairStyle: 'pigtails', skin: '#F6D9C0' },
-  boy: { top: '#9CCB8C', bottom: '#5E7FA8', hair: '#33261f', hairStyle: 'boy', skin: '#F1D2B6' },
-  girl2: { top: '#F3B6C8', bottom: '#7C9CC9', hair: '#2f231d', hairStyle: 'bob', skin: '#F4D7BE' },
-  boy2: { top: '#AECCE6', bottom: '#C98A5A', hair: '#3a2b22', hairStyle: 'boy', skin: '#F2D3B5' },
+  mum: { adult: true, top: '#e9b9ae', bottom: '#6a86a6', goreum: '#8e4a5a', hair: '#2a2420', hairStyle: 'jjok', skin: '#f3dcc4', book: '#5b7a99' },
+  dad: { adult: true, top: '#a9cbbf', bottom: '#56606f', goreum: '#5b7a99', hair: '#2a2420', hairStyle: 'short', skin: '#efd3b6', book: '#c8553d' },
+  grandma: { adult: true, top: '#e6dcc4', bottom: '#7b6a8e', goreum: '#8e4a5a', hair: '#cfcac0', hairStyle: 'jjok', skin: '#f2dac2', glasses: true, book: '#7fa36a' },
+  girl: { top: '#ecd27e', bottom: '#d0614a', goreum: '#c8553d', hair: '#2a2420', hairStyle: 'braid', skin: '#f6dfc8', saekdong: true, yeonji: true },
+  boy: { top: '#bccb8e', bottom: '#5b7a99', goreum: '#5b7a99', hair: '#2a2420', hairStyle: 'boy', skin: '#f2d8bd', saekdong: true },
+  girl2: { top: '#efc2b8', bottom: '#8fb7ab', goreum: '#8e4a5a', hair: '#2a2420', hairStyle: 'braid', skin: '#f5dcc4', saekdong: true, yeonji: true },
+  boy2: { top: '#a9cbbf', bottom: '#8e4a5a', goreum: '#c8553d', hair: '#2a2420', hairStyle: 'boy', skin: '#f2d6ba', saekdong: true },
 };
 const BW = 440, BH = 400; // body canvas
 export function drawBody(p, seed = 1) {
   const c = canvas(BW, BH), g = c.getContext('2d');
-  // legs crossed: one soft wide shape, feet tucked
-  const legs = [[34, 322], [92, 292], [220, 306], [348, 292], [406, 322], [414, 362], [350, 388], [220, 380], [90, 388], [26, 362]];
+  // a full skirt / baji folded in a cross-legged sit
+  const legs = [[30, 320], [92, 284], [220, 296], [348, 284], [410, 320], [418, 364], [350, 392], [220, 384], [90, 392], [22, 364]];
   wash(g, legs, p.bottom, seed + 1); ink(g, legs, seed + 1);
-  ink(g, [[220, 318], [205, 368]], seed + 2, { closed: false, w: 2.2 });
-  for (const [x, s] of [[120, -1], [320, 1]]) { const f = ell(x, 360, 34, 16, 10); wash(g, f, '#efe6da', seed + x); ink(g, f, seed + x, { w: 2.4 }); void s; }
-  // neck
-  const neck = [[200, 40], [240, 40], [242, 92], [198, 92]]; wash(g, neck, p.skin, seed + 3, { light: false }); ink(g, neck, seed + 3, { w: 2.2 });
-  // torso
-  const torso = [[160, 78], [280, 78], [318, 108], [312, 210], [300, 318], [140, 318], [128, 210], [122, 108]];
+  for (const x of [160, 280]) ink(g, [[x, 300], [x - 8, 380]], seed + x, { closed: false, w: 1.8, passes: 1 });   // fold lines
+  for (const x of [118, 322]) { const f = ell(x, 364, 32, 14, 10); wash(g, f, '#f4efe6', seed + x); ink(g, f, seed + x, { w: 2.2 }); }   // 버선
+  const neck = [[202, 44], [238, 44], [240, 92], [200, 92]]; wash(g, neck, p.skin, seed + 3, { light: false }); ink(g, neck, seed + 3, { w: 2 });
+  // jeogori: short jacket over a long skirt/baji
+  const torso = [[162, 80], [278, 80], [316, 108], [312, 200], [304, 286], [136, 286], [128, 200], [124, 108]];
   wash(g, torso, p.top, seed + 4); ink(g, torso, seed + 4);
-  ink(g, [[198, 82], [220, 104], [242, 82]], seed + 5, { closed: false, w: 2.4 }); // collar
-  // arms round to the hands in front of the lap
+  // crossed collar (깃) with the white band (동정), right over left
+  const git = [[200, 82], [222, 130], [246, 82], [258, 84], [226, 160], [214, 160], [188, 84]];
+  wash(g, git, shade(p.top, -0.18), seed + 5, { light: false }); ink(g, git, seed + 5, { w: 2 });
+  ink(g, [[198, 84], [222, 138], [250, 84]], seed + 6, { closed: false, w: 4.5, color: '#fbf7ee', passes: 1 });
+  // goreum: the long ribbon tied at the chest
+  const bow = [[212, 160], [246, 150], [250, 170], [220, 172]]; wash(g, bow, p.goreum, seed + 7, { light: false }); ink(g, bow, seed + 7, { w: 2 });
+  for (const [x0, x1] of [[222, 206], [230, 236]]) { const rib = [[x0, 168], [x1, 260], [x1 + 14, 262], [x0 + 10, 168]]; wash(g, rib, p.goreum, seed + x0, { light: false }); ink(g, rib, seed + x0, { w: 1.8 }); }
+  // sleeves round to the hands; children get 색동 rainbow stripes
   const armL = [[126, 110], [96, 200], [112, 270], [190, 292], [198, 262], [140, 246], [132, 200], [150, 128]];
-  const armR = armL.map(([x, y]) => [BW - x, y]);
-  for (const [k, a] of [[0, armL], [1, armR]]) { wash(g, a, shade(p.top, -0.08), seed + 6 + k); ink(g, a, seed + 6 + k); }
-  for (const x of [196, 244]) { const h = ell(x, 276, 22, 18, 10); wash(g, h, p.skin, seed + x, { light: false }); ink(g, h, seed + x, { w: 2.4 }); }
-  if (p.book) { // open book held in front
+  for (const [k, a] of [[0, armL], [1, armL.map(([x, y]) => [BW - x, y])]]) {
+    wash(g, a, shade(p.top, -0.06), seed + 8 + k);
+    if (p.saekdong) { g.save(); smooth(g, a); g.clip(); for (let b = 0; b < 6; b++) { g.globalAlpha = 0.78; g.fillStyle = SAEKDONG[b]; g.fillRect(0, 128 + b * 22, BW, 22); } g.restore(); }
+    ink(g, a, seed + 8 + k);
+    const cuff = k ? [[BW - 198, 262], [BW - 190, 292]] : [[198, 262], [190, 292]]; ink(g, cuff, seed + 30 + k, { closed: false, w: 4, color: '#fbf7ee', passes: 1 });
+  }
+  for (const x of [196, 244]) { const h = ell(x, 276, 20, 17, 10); wash(g, h, p.skin, seed + x, { light: false }); ink(g, h, seed + x, { w: 2.2 }); }
+  if (p.book) { // an open book held in front
     const cov = [[96, 236], [220, 254], [344, 236], [350, 322], [220, 336], [90, 322]];
     wash(g, cov, p.book, seed + 8, { light: false }); ink(g, cov, seed + 8);
     const L = [[108, 230], [214, 248], [214, 322], [104, 310]], R = L.map(([x, y]) => [BW - x, y]);
     for (const [k, pg] of [[0, L], [1, R]]) {
-      wash(g, pg, '#fffaf0', seed + 9 + k, { light: false }); ink(g, pg, seed + 9 + k, { w: 2.4 });
-      for (let i = 0; i < 4; i++) { const x0 = k ? 236 : 124, y0 = 262 + i * 13 + (k ? 0 : 0); ink(g, [[x0, y0 + (k ? -4 : 4) * 0], [x0 + 70, y0 + (k ? -6 : 6)]], seed + 20 + i + k * 9, { closed: false, w: 1.6, color: '#9aa0ad', passes: 1 }); }
+      wash(g, pg, '#fbf6ea', seed + 9 + k, { light: false }); ink(g, pg, seed + 9 + k, { w: 2.2 });
+      for (let i = 0; i < 4; i++) { const x0 = k ? 236 : 124, y0 = 262 + i * 13; ink(g, [[x0, y0], [x0 + 66, y0 + (k ? -5 : 5)]], seed + 20 + i + k * 9, { closed: false, w: 1.3, color: '#9a8f80', passes: 1 }); }
     }
-    // a tiny bear sketched on the page
-    const b = ell(282, 300, 9, 9, 8); ink(g, b, seed + 40, { w: 1.6 });
   }
   return c;
 }
 const HW = 280, HH = 300; // head canvas; chin at y ~ 250
 export function drawHead(p, state = 'idle', seed = 1) { // state: idle | talk | blink
   const c = canvas(HW, HH), g = c.getContext('2d'), cx = 140, cy = 158;
-  const back = { long: [[48, 120], [60, 60], [140, 34], [220, 60], [232, 120], [244, 250], [200, 268], [140, 236], [80, 268], [36, 250]],
-    bob: [[46, 130], [62, 62], [140, 36], [218, 62], [234, 130], [230, 214], [190, 226], [90, 226], [50, 214]] }[p.hairStyle];
-  if (back) { wash(g, back, p.hair, seed + 1, { light: false }); ink(g, back, seed + 1); }
-  if (p.hairStyle === 'pigtails') for (const s of [-1, 1]) { const t = ell(cx + s * 98, 182, 26, 40, 10); wash(g, t, p.hair, seed + 2 + s, { light: false }); ink(g, t, seed + 2 + s); }
-  if (p.hairStyle === 'bun') { const b = ell(cx, 52, 40, 32, 12); wash(g, b, p.hair, seed + 3, { light: false }); ink(g, b, seed + 3); }
-  for (const s of [-1, 1]) { const e = ell(cx + s * 88, cy + 6, 18, 22, 10); wash(g, e, p.skin, seed + 4 + s, { light: false }); ink(g, e, seed + 4 + s, { w: 2.4 }); }
-  const face = ell(cx, cy, p.adult ? 84 : 88, p.adult ? 92 : 86, 16); wash(g, face, p.skin, seed + 5); ink(g, face, seed + 5);
-  // fringe / top hair
-  const top = { long: [[60, 128], [64, 76], [140, 50], [216, 76], [222, 128], [182, 96], [128, 112], [92, 104]],
-    short: [[60, 126], [62, 72], [140, 52], [218, 72], [222, 126], [196, 100], [140, 92], [84, 100]],
-    bun: [[60, 124], [66, 80], [140, 60], [214, 80], [220, 124], [180, 98], [140, 104], [100, 98]],
-    pigtails: [[58, 132], [66, 74], [140, 52], [214, 74], [222, 132], [176, 102], [140, 116], [104, 102]],
-    bob: [[58, 140], [64, 76], [140, 54], [216, 76], [222, 140], [196, 110], [140, 100], [84, 110]],
-    boy: [[58, 128], [60, 76], [100, 58], [140, 48], [184, 58], [220, 76], [222, 128], [196, 104], [166, 112], [140, 100], [110, 112], [84, 104]] }[p.hairStyle];
-  wash(g, top, p.hair, seed + 6, { light: false }); ink(g, top, seed + 6);
-  // face
+  if (p.hairStyle === 'braid') { // a long braid behind with a red 댕기
+    const br = [[190, 200], [214, 230], [206, 290], [190, 296], [180, 240]]; wash(g, br, p.hair, seed + 2, { light: false }); ink(g, br, seed + 2, { w: 2.2 });
+    const dg = [[186, 282], [216, 290], [210, 300], [184, 296]]; wash(g, dg, '#c8553d', seed + 3, { light: false });
+  }
+  if (p.hairStyle === 'jjok') { // low bun at the nape with a hairpin (비녀)
+    const bun = ell(cx + 72, 214, 36, 28, 12); wash(g, bun, p.hair, seed + 3, { light: false }); ink(g, bun, seed + 3);
+    ink(g, [[cx + 22, 222], [cx + 128, 202]], seed + 4, { closed: false, w: 5, color: '#c9a84c', passes: 1 });
+  }
+  for (const s of [-1, 1]) { const e = ell(cx + s * 86, cy + 8, 16, 20, 10); wash(g, e, p.skin, seed + 4 + s, { light: false }); ink(g, e, seed + 4 + s, { w: 2 }); }
+  const face = ell(cx, cy, p.adult ? 82 : 86, p.adult ? 90 : 84, 16); wash(g, face, p.skin, seed + 5); ink(g, face, seed + 5);
+  // hair: smooth, centre-parted ink wash (adults and girls); a soft cap for boys and dad
+  const top = { jjok: [[58, 140], [62, 80], [100, 56], [140, 50], [180, 56], [218, 80], [222, 140], [198, 100], [142, 72], [138, 72], [82, 100]],
+    braid: [[58, 140], [62, 80], [100, 54], [140, 48], [180, 54], [218, 80], [222, 140], [196, 104], [142, 76], [138, 76], [84, 104]],
+    short: [[58, 126], [62, 74], [140, 50], [218, 74], [222, 126], [196, 98], [140, 90], [84, 98]],
+    boy: [[58, 128], [60, 76], [100, 58], [140, 48], [184, 58], [220, 76], [222, 128], [196, 104], [166, 110], [140, 100], [110, 110], [84, 104]] }[p.hairStyle];
+  wash(g, top, p.hair, seed + 6, { light: false, alpha: 0.9 }); ink(g, top, seed + 6);
+  if (p.hairStyle === 'jjok' || p.hairStyle === 'braid') ink(g, [[140, 54], [140, 76]], seed + 7, { closed: false, w: 1.6, color: '#fbf7ee', passes: 1 });   // centre part
+  // face in the old-painting manner: short brow strokes, small eyes, a little mouth; 연지 dots for the girls
   const ey = cy + 8;
   for (const s of [-1, 1]) {
-    if (state === 'blink') ink(g, [[cx + s * 32 - 9, ey], [cx + s * 32, ey + 4], [cx + s * 32 + 9, ey]], seed + 7, { closed: false, w: 3 });
-    else { g.fillStyle = INK; g.beginPath(); g.ellipse(cx + s * 32, ey, 7, 8.5, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.arc(cx + s * 32 + 2.5, ey - 3, 2.2, 0, Math.PI * 2); g.fill(); }
-    g.fillStyle = 'rgba(236,128,128,0.34)'; g.beginPath(); g.ellipse(cx + s * 52, ey + 30, 17, 11, 0, 0, Math.PI * 2); g.fill();
-    if (p.glasses) { g.strokeStyle = INK; g.lineWidth = 2.6; g.beginPath(); g.arc(cx + s * 32, ey, 21, 0, Math.PI * 2); g.stroke(); }
+    ink(g, [[cx + s * 22, ey - 22], [cx + s * 42, ey - 24]], seed + 10 + s, { closed: false, w: 2.2, passes: 1 });
+    if (state === 'blink') ink(g, [[cx + s * 32 - 9, ey], [cx + s * 32, ey + 3], [cx + s * 32 + 9, ey]], seed + 7, { closed: false, w: 2.6, passes: 1 });
+    else { g.fillStyle = INK; g.beginPath(); g.ellipse(cx + s * 32, ey, 6.5, 7.5, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.arc(cx + s * 32 + 2.2, ey - 2.6, 1.9, 0, Math.PI * 2); g.fill(); }
+    g.fillStyle = p.yeonji ? 'rgba(200,70,60,0.55)' : 'rgba(226,128,118,0.28)'; g.beginPath(); g.arc(cx + s * 50, ey + 30, p.yeonji ? 10 : 15, 0, Math.PI * 2); g.fill();
+    if (p.glasses) { g.strokeStyle = INK; g.lineWidth = 2.4; g.beginPath(); g.arc(cx + s * 32, ey, 20, 0, Math.PI * 2); g.stroke(); }
   }
-  if (p.glasses) ink(g, [[cx - 11, ey - 2], [cx + 11, ey - 2]], seed + 8, { closed: false, w: 2.4, passes: 1 });
-  if (state === 'talk') { const m = ell(cx, ey + 46, 13, 11, 10); g.fillStyle = '#7a2e36'; smooth(g, m); g.fill(); ink(g, m, seed + 9, { w: 2.2 }); g.fillStyle = '#e98b8b'; g.beginPath(); g.ellipse(cx, ey + 52, 7, 4, 0, 0, Math.PI * 2); g.fill(); }
-  else ink(g, [[cx - 16, ey + 40], [cx, ey + 49], [cx + 16, ey + 40]], seed + 9, { closed: false, w: 3 });
+  if (p.glasses) ink(g, [[cx - 12, ey - 2], [cx + 12, ey - 2]], seed + 8, { closed: false, w: 2, passes: 1 });
+  if (state === 'talk') { const m = ell(cx, ey + 44, 12, 10, 10); g.fillStyle = '#7a2e36'; smooth(g, m); g.fill(); ink(g, m, seed + 9, { w: 1.8, passes: 1 }); }
+  else ink(g, [[cx - 13, ey + 40], [cx, ey + 47], [cx + 13, ey + 40]], seed + 9, { closed: false, w: 2.6, passes: 1 });
   return c;
 }
 export const BODY = { w: BW, h: BH, neckY: 78 }, HEAD = { w: HW, h: HH, chinY: 250 };
@@ -193,7 +230,7 @@ export function bubble(en, ko = '', o = {}) {
   const tail = [[tailX - 22, H - 2], [tailX + (o.tail === 'right' ? 34 : -34), H + 58], [tailX + 24, H]];
   g.fillStyle = '#fffdf7'; smooth(g, box); g.fill(); g.beginPath(); g.moveTo(...tail[0]); g.lineTo(...tail[1]); g.lineTo(...tail[2]); g.closePath(); g.fill();
   ink(g, box, 3); ink(g, tail, 4, { closed: false, w: 2.8 });
-  hand(g, en, (W + 32) / 2, ko ? 92 : H / 2 + 6, { font: 'PatrickHand', weight: 400, size: o.size || 82, color: o.color || C.deep });
+  hand(g, en, (W + 32) / 2, ko ? 92 : H / 2 + 6, { font: o.font || 'PatrickHand', weight: o.font ? 700 : 400, size: o.size || 82, color: o.color || C.deep });
   if (ko) hand(g, ko, (W + 32) / 2, 182, { size: 54, color: '#5b6070' });
   return c;
 }
@@ -247,15 +284,16 @@ export function drawAha(seed = 1) {
   hand(g, 'Aha!', 180, 368, { font: 'PatrickHand', weight: 400, size: 86, color: '#c0605e' });
   return c;
 }
-export function starterCard(q, seed = 1, col = '#AECCE6') {
-  const c = canvas(700, 400), g = c.getContext('2d');
-  const box = [[20, 24], [680, 14], [686, 384], [14, 390]]; wash(g, box, '#fffdf7', seed, { light: false }); ink(g, box, seed);
+export function starterCard([en, ko], seed = 1, col = '#a9cbbf') { // a Walkbook conversation-starter card: English question, its Korean line
+  const c = canvas(700, 420), g = c.getContext('2d');
+  const box = [[20, 24], [680, 14], [686, 404], [14, 410]]; wash(g, box, '#fbf6ea', seed, { light: false }); ink(g, box, seed);
   const band = [[20, 24], [680, 14], [682, 96], [18, 104]]; wash(g, band, col, seed + 1, { light: false });
-  hand(g, 'Conversation Starter', 350, 62, { font: 'PatrickHand', weight: 400, size: 46, color: '#173B5C' });
-  const words = q.split(' '); let l1 = '', l2 = '';
-  for (const w of words) ((l1 + ' ' + w).length < 18 && !l2 ? (l1 = (l1 + ' ' + w).trim()) : (l2 = (l2 + ' ' + w).trim()));
-  hand(g, l1, 350, l2 ? 196 : 240, { font: 'PatrickHand', weight: 400, size: 76, color: INK });
-  if (l2) hand(g, l2, 350, 296, { font: 'PatrickHand', weight: 400, size: 76, color: INK });
+  hand(g, '대화를 여는 질문', 350, 62, { font: 'Batang', weight: 700, size: 42, color: '#3a2e24' });
+  const words = en.split(' '); let l1 = '', l2 = '';
+  for (const w of words) ((l1 + ' ' + w).length < 20 && !l2 ? (l1 = (l1 + ' ' + w).trim()) : (l2 = (l2 + ' ' + w).trim()));
+  hand(g, l1, 350, l2 ? 170 : 200, { font: 'PatrickHand', weight: 400, size: 66, color: INK });
+  if (l2) hand(g, l2, 350, 240, { font: 'PatrickHand', weight: 400, size: 66, color: INK });
+  hand(g, ko, 350, 336, { font: 'Batang', weight: 700, size: 40, color: '#6b4a32' });
   return c;
 }
 export function picnic(g, x, y, rx, ry, seed = 1) { // a checked picnic blanket printed on the page
@@ -263,4 +301,45 @@ export function picnic(g, x, y, rx, ry, seed = 1) { // a checked picnic blanket 
   g.save(); smooth(g, pts); g.clip(); g.globalAlpha = 0.55; g.fillStyle = '#e88f86';
   for (let i = -12; i < 12; i++) { g.fillRect(x + i * 40, y - ry, 20, ry * 2); g.fillRect(x - rx, y + i * 30, rx * 2, 14); }
   g.restore(); ink(g, pts, seed, { w: 2.4, color: '#b26a5f' });
+}
+
+// ---------------------------------------------------------------- Korean vintage props
+export function drawPine(seed = 1) { // 소나무: a leaning trunk and flat, layered needle clouds
+  const c = canvas(560, 800), g = c.getContext('2d');
+  const trunk = [[250, 800], [262, 600], [230, 470], [262, 360], [300, 250], [322, 260], [290, 370], [270, 470], [302, 600], [300, 800]];
+  wash(g, trunk, '#8a6a52', seed); ink(g, trunk, seed, { w: 3.6 });
+  for (let i = 0; i < 6; i++) ink(g, [[262, 760 - i * 90], [286, 750 - i * 90]], seed + i, { closed: false, w: 2, passes: 1 });
+  for (const [x, y, rx, ry] of [[150, 420, 120, 46], [380, 330, 140, 50], [250, 220, 150, 52], [330, 130, 120, 44], [110, 300, 90, 36]]) {
+    const pts = ell(x, y, rx, ry, 14); wash(g, pts, '#5f7f5a', seed + x, { alpha: 0.85 }); ink(g, pts, seed + x, { w: 2.4, color: '#2f3a2a' });
+    for (let k = 0; k < 9; k++) ink(g, [[x - rx * 0.8 + k * rx * 0.2, y + ry * 0.1], [x - rx * 0.7 + k * rx * 0.2, y - ry * 0.5]], seed + x + k, { closed: false, w: 1.2, color: '#2f3a2a', passes: 1 });
+  }
+  return c;
+}
+export function mountains(g, W, layers, seed = 1) { // ink-wash mountain ranges fading into mist
+  layers.forEach(([y, amp, col, alpha], li) => {
+    const r = rng(seed + li * 13), pts = [[-20, W + 20], [-20, y]];
+    const f1 = r() * 6, f2 = r() * 6, f3 = r() * 6;
+    for (let x = 0; x <= W + 20; x += 24) { const v = 0.55 * Math.sin(x * 0.0045 + f1 + li * 1.7) + 0.3 * Math.sin(x * 0.011 + f2) + 0.15 * Math.sin(x * 0.027 + f3);
+      pts.push([x, y - Math.max(0, 0.35 + v) * amp]); }
+    pts.push([W + 20, W + 20]);
+    g.save(); g.globalAlpha = alpha; const gr = g.createLinearGradient(0, y - amp, 0, y + amp * 1.5); gr.addColorStop(0, col); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.beginPath(); g.moveTo(...pts[0]); pts.forEach(p => g.lineTo(...p)); g.closePath(); g.fill(); g.restore();
+    ink(g, pts.slice(2, -1), seed + li, { closed: false, w: 2.6, color: col, passes: 1 });
+  });
+}
+export function lattice(g, x, y, w, h, seed = 1) { // 창호: wooden lattice with hanji panes
+  g.fillStyle = 'rgba(251,246,234,0.95)'; g.fillRect(x, y, w, h);
+  g.fillStyle = 'rgba(255,220,150,0.25)'; g.fillRect(x, y, w, h);
+  const step = w / 6;
+  for (let i = 1; i < 6; i++) ink(g, [[x + i * step, y], [x + i * step, y + h]], seed + i, { closed: false, w: 4, color: '#6b4a32', passes: 1 });
+  for (let j = 1; j < 8; j++) ink(g, [[x, y + j * h / 8], [x + w, y + j * h / 8]], seed + 20 + j, { closed: false, w: 4, color: '#6b4a32', passes: 1 });
+  ink(g, [[x, y], [x + w, y], [x + w, y + h], [x, y + h]], seed + 40, { w: 7, color: '#5a3c28' });
+}
+export function seal(g, x, y, size, text, seed = 1) { // 낙관: a red seal stamp
+  g.save(); g.translate(x, y); g.rotate(-0.04); g.globalAlpha = 0.85; g.fillStyle = '#b8352b'; g.fillRect(-size / 2, -size / 2, size, size);
+  g.globalCompositeOperation = 'destination-out'; const r = rng(seed); for (let i = 0; i < 40; i++) { g.beginPath(); g.arc((r() - 0.5) * size, (r() - 0.5) * size, r() * 2.2, 0, 7); g.fill(); }
+  g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
+  g.fillStyle = '#fbf2df'; g.font = `400 ${size * 0.42}px Brush`; g.textAlign = 'center'; g.textBaseline = 'middle';
+  const ch = [...text]; if (ch.length <= 2) g.fillText(text, 0, 2); else { g.fillText(ch.slice(0, 2).join(''), 0, -size * 0.2); g.fillText(ch.slice(2).join(''), 0, size * 0.24); }
+  g.restore();
 }

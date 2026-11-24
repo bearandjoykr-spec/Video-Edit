@@ -18,7 +18,7 @@ if (existsSync('src/assets/title.woff2')) {
   font = `@font-face{font-family:'Title';font-weight:100 900;src:url(data:font/woff2;base64,${readFileSync('src/assets/title.woff2').toString('base64')}) format('woff2')}`;
 }
 // handwriting fonts for the paper look (Joy, DAY 33: Gaegu for Korean, Patrick Hand for English); both OFL
-for (const [fam, file] of [['Gaegu', 'Gaegu-Bold.ttf'], ['PatrickHand', 'PatrickHand.ttf']]) {
+for (const [fam, file] of [['Gaegu', 'Gaegu-Bold.ttf'], ['PatrickHand', 'PatrickHand.ttf'], ['Brush', 'NanumBrushScript.ttf'], ['Batang', 'GowunBatang-Bold.ttf']]) {
   if (existsSync(`src/assets/${file}`)) font += `@font-face{font-family:'${fam}';font-weight:100 900;src:url(data:font/ttf;base64,${readFileSync(`src/assets/${file}`).toString('base64')}) format('truetype')}`;
 }
 let audio = '';

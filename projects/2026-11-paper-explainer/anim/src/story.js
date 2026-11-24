@@ -42,7 +42,7 @@ export function buildStory(stage, B, IMG) {
   const cutMat = c => new THREE.MeshLambertMaterial({ map: tex(c), alphaTest: 0.5, side: THREE.DoubleSide });
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#e4d3b4');
+  scene.background = new THREE.Color('#e6d8bc');
   scene.add(new THREE.HemisphereLight('#fff6e6', '#e0cdb0', 1.95));
   const sun = new THREE.DirectionalLight('#ffeed2', 1.5);
   sun.position.set(-5, 10, 9); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
@@ -118,45 +118,60 @@ export function buildStory(stage, B, IMG) {
   const cloud = (g, x, y, s, seed) => { const pts = [[-90, 20], [-70, -20], [-30, -40], [10, -50], [50, -30], [90, -10], [100, 20], [40, 34], [-40, 34]].map(([a, b]) => [x + a * s, y + b * s]);
     g.save(); g.shadowColor = 'rgba(60,40,20,0.18)'; g.shadowBlur = 10; g.shadowOffsetY = 5; g.fillStyle = '#fffdf7'; P.smooth(g, pts); g.fill(); g.restore(); P.ink(g, pts, seed, { w: 2.2, color: '#8b98ad' }); };
   const stars = (g, n, seed) => { const r = rng(seed); for (let i = 0; i < n; i++) { const x = r() * S, y = r() * S * 0.8; g.fillStyle = `rgba(246,240,186,${0.3 + r() * 0.6})`; g.beginPath(); g.arc(x, y, 2 + r() * 3, 0, 7); g.fill(); } };
-  const bigWord = (g, num, en, col) => { // vintage chapter heading: small number over a big serif word, with a flourish
-    P.hand(g, `Step ${num}`, S / 2, 330, { font: SERIF, weight: 500, size: 70, color: '#8a6a4a' });
-    P.hand(g, en, S / 2, 470, { font: SERIF, weight: 700, size: 190, color: col });
-    P.ink(g, [[300, 570], [420, 555], [512, 575], [604, 555], [724, 570]], num * 3, { closed: false, w: 3.4, color: '#c9a84c' });
+  const bigWord = (g, num, en, col) => { // chapter heading in brush calligraphy: 하나 · 읽기, a small English word, a red seal
+    const KO = ['읽기', '연습', '대화'][num - 1], NUM = ['하나', '둘', '셋'][num - 1];
+    P.hand(g, NUM, S / 2, 320, { font: 'Brush', weight: 400, size: 120, color: '#6b4a32' });
+    P.hand(g, KO, S / 2, 470, { font: 'Brush', weight: 400, size: 250, color: col });
+    P.hand(g, en, S / 2, 590, { font: SERIF, weight: 500, size: 54, color: '#8a6a4a' });
+    P.seal(g, S / 2 + 230, 470, 84, '곰', num);
   };
   const hills = (g, cols) => cols.forEach(([y, col, seed]) => { const pts = [[-40, S + 40], [-40, y + 60], [200, y], [460, y + 50], [720, y - 20], [1060, y + 40], [1060, S + 40]];
     P.wash(g, pts, col, seed, { alpha: 0.85 }); P.ink(g, pts.slice(1, -1), seed, { closed: false, w: 2.4, color: '#6f8f55' }); });
 
-  const coverC = backdrop(2, [[0, '#1E2D4D'], [1, '#2c4a78']], g => {
-    stars(g, 60, 3);
-    P.hand(g, 'Once upon a time…', S / 2, 300, { font: SERIF, weight: 600, size: 100, color: '#F6F0BA' });
-    P.ink(g, [[300, 380], [420, 365], [512, 385], [604, 365], [724, 380]], 5, { closed: false, w: 3.4, color: '#c9a84c' });
-    paste(g, IMG.logoArt, S / 2, 680, 330, -0.04, 10);
+  const INDIGO = '#2c3d5c', MOUNT = '#5f6f6a';
+  const coverC = backdrop(2, [[0, '#2c3d5c'], [1, '#34496b']], g => {   // an old Korean book: stitched binding (선장) and a title slip (제첨)
+    for (let k = 0; k < 5; k++) { const y = 120 + k * 196; g.fillStyle = 'rgba(240,230,210,0.85)'; g.beginPath(); g.arc(70, y, 7, 0, 7); g.fill(); P.ink(g, [[70, y], [-10, y]], 40 + k, { closed: false, w: 3, color: '#e9dcc0', passes: 1 }); }
+    P.ink(g, [[70, 0], [70, S]], 46, { closed: false, w: 3, color: '#e9dcc0', passes: 1 });
+    const slip = [[150, 110], [330, 110], [330, 720], [150, 720]]; g.fillStyle = '#efe3c8'; g.fillRect(150, 110, 180, 610); P.ink(g, slip, 47, { w: 2.4, color: '#6b4a32' });
+    ['옛', '날', '옛', '적', '에'].forEach((ch, k) => P.hand(g, ch, 240, 200 + k * 108, { font: 'Brush', weight: 400, size: 110, color: '#2a2420' }));
+    paste(g, IMG.logoArt, 680, 560, 360, -0.03, 10); P.seal(g, 860, 820, 96, '베어앤조이', 3);
   });
   const BD = {
-    home: backdrop(4, [[0, '#cfe3f3'], [0.7, '#f3eedf'], [1, '#f7efe0']], g => { cloud(g, 200, 150, 1.0, 1); cloud(g, 790, 220, 0.8, 2); paste(g, IMG.cutOxford, 560, 560, 760, 0.02); }),
-    what: backdrop(6, [[0, '#fbf3c9'], [1, '#f6ecd6']], g => {
-      g.drawImage(IMG.wordmark, S / 2 - 330, 300, 660, 660 * IMG.wordmark.height / IMG.wordmark.width);
-      paste(g, IMG.cutWindow, 200, 640, 420, -0.05); paste(g, IMG.cutCat, 800, 660, 400, 0.05); }),
-    read: backdrop(8, [[0, '#dcebf7'], [1, '#f4efe3']], g => { bigWord(g, 1, 'Read', '#3d6fa8'); cloud(g, 160, 700, 0.7, 4); cloud(g, 860, 760, 0.6, 5); }),
-    practise: backdrop(10, [[0, '#f8e3dc'], [1, '#f6efe4']], g => { bigWord(g, 2, 'Practise', '#c0605e'); }),
-    starters: backdrop(12, [[0, '#e3f0d9'], [1, '#f5efe2']], g => { bigWord(g, 3, 'Talk', '#4f8a4a'); }),
-    park: backdrop(14, [[0, '#cfe3f3'], [0.55, '#eef3e3'], [1, '#e3edc9']], g => {
-      g.fillStyle = 'rgba(246,224,120,0.9)'; g.beginPath(); g.arc(820, 400, 70, 0, 7); g.fill(); P.ink(g, P.ell(820, 400, 70, 70, 14), 2, { w: 2.4, color: '#c9a84c' });
-      cloud(g, 230, 420, 0.9, 6); hills(g, [[640, '#b9d99a', 3], [760, '#9fca82', 4]]); }),
-    dinner: backdrop(16, [[0, '#f7e7c4'], [1, '#f3e2c8']], g => {
-      for (let x = 0; x < S; x += 64) { g.fillStyle = 'rgba(233,163,163,0.18)'; g.fillRect(x, 0, 28, S); }        // old striped wallpaper
-      g.fillStyle = '#cfe3f3'; g.fillRect(330, 380, 370, 320); g.strokeStyle = '#2b2d3a'; g.lineWidth = 6; g.strokeRect(330, 380, 370, 320);
-      P.ink(g, [[515, 380], [515, 700]], 8, { closed: false, w: 3 }); P.ink(g, [[330, 540], [700, 540]], 9, { closed: false, w: 3 });
-      g.fillStyle = 'rgba(246,224,120,0.9)'; g.beginPath(); g.arc(610, 460, 34, 0, 7); g.fill();
-      P.ink(g, [[200, 300], [200, 380]], 10, { closed: false, w: 2.6 }); const lamp = [[150, 380], [250, 380], [230, 430], [170, 430]]; P.wash(g, lamp, '#F6F0BA', 11); P.ink(g, lamp, 11); }),
-    bedtime: backdrop(18, [[0, '#1E2D4D'], [1, '#34507e']], g => {
-      stars(g, 80, 19); g.fillStyle = '#F6F0BA'; g.beginPath(); g.arc(780, 380, 80, 0, 7); g.fill(); g.fillStyle = '#25395f'; g.beginPath(); g.arc(810, 360, 72, 0, 7); g.fill();
-      paste(g, IMG.cutWindow, 260, 520, 360, -0.04); }),
-    fun: backdrop(20, [[0, '#fbf3c9'], [1, '#f4ecd9']], g => {
-      const r = rng(21); for (let i = 0; i < 70; i++) { g.fillStyle = ['#e9a3a3', '#AECCE6', '#F6E07E', '#9fca82'][i % 4]; g.save(); g.translate(r() * S, 300 + r() * 700); g.rotate(r() * 3); g.fillRect(-9, -5, 18, 10); g.restore(); }
-      P.hand(g, 'Not perfect.', S / 2, 360, { font: SERIF, weight: 600, size: 110, color: '#8a6a4a' });
-      P.hand(g, 'Just fun!', S / 2, 500, { font: SERIF, weight: 800, size: 150, color: '#c0605e' }); }),
-    cta: backdrop(22, [[0, '#1E2D4D'], [1, '#2c4a78']], g => { stars(g, 70, 23); }),
+    home: backdrop(4, [[0, '#efe6cf'], [1, '#f4ead4']], g => {
+      P.mountains(g, S, [[430, 150, MOUNT, 0.55], [560, 120, '#7f8a7c', 0.45]], 4);
+      g.fillStyle = 'rgba(215,95,70,0.75)'; g.beginPath(); g.arc(800, 220, 60, 0, 7); g.fill();               // a red sun
+      // a hanok roofline with curved eaves, and a plum branch
+      const roof = [[640, 600], [700, 560], [930, 560], [990, 600], [950, 585], [680, 585]]; P.wash(g, roof, '#4a4744', 5); P.ink(g, roof, 5);   // a hanok to the side
+      g.fillStyle = 'rgba(239,227,200,0.95)'; g.fillRect(690, 592, 250, 150); P.lattice(g, 715, 612, 200, 120, 6);
+      P.ink(g, [[1000, 120], [880, 170], [800, 260], [760, 360]], 7, { closed: false, w: 6, color: '#3a2e24' });
+      for (const [x, y] of [[900, 160], [840, 220], [790, 300], [770, 350], [950, 140]]) { g.fillStyle = 'rgba(230,140,150,0.9)'; for (let k = 0; k < 5; k++) { g.beginPath(); g.arc(x + Math.cos(k * 1.256) * 9, y + Math.sin(k * 1.256) * 9, 7, 0, 7); g.fill(); } }
+    }),
+    what: backdrop(6, [[0, '#f3e9cf'], [1, '#efe2c6']], g => {
+      g.drawImage(IMG.wordmark, S / 2 - 300, 290, 600, 600 * IMG.wordmark.height / IMG.wordmark.width);
+      paste(g, IMG.cutOxford, 520, 640, 420, 0.02); paste(g, IMG.cutWindow, 170, 650, 380, -0.05); paste(g, IMG.cutCat, 850, 680, 330, 0.05); P.seal(g, 870, 290, 70, '곰', 9); }),
+    read: backdrop(8, [[0, '#efe6cf'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 8); bigWord(g, 1, 'Read', '#3d5a80'); }),
+    practise: backdrop(10, [[0, '#f2e4d6'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 10); bigWord(g, 2, 'Practise', '#a8473a'); }),
+    starters: backdrop(12, [[0, '#e9ecd6'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 12); bigWord(g, 3, 'Talk', '#4f7a52'); }),
+    park: backdrop(14, [[0, '#e6ecdf'], [1, '#efe8d2']], g => {
+      P.mountains(g, S, [[470, 170, '#6f7f78', 0.5], [600, 130, '#7f927c', 0.5], [740, 90, '#8fa483', 0.55]], 14);
+      g.fillStyle = 'rgba(215,95,70,0.7)'; g.beginPath(); g.arc(820, 380, 54, 0, 7); g.fill();
+      const pav = [[640, 600], [690, 560], [800, 560], [850, 600], [820, 590], [670, 590]]; P.wash(g, pav, '#4a4744', 15); P.ink(g, pav, 15, { w: 2.4 });   // a small pavilion (정자)
+      for (const x of [690, 745, 800]) P.ink(g, [[x, 592], [x, 660]], 16 + x, { closed: false, w: 3, passes: 1 }); }),
+    dinner: backdrop(16, [[0, '#f2e6cc'], [1, '#efe0c4']], g => {
+      P.lattice(g, 250, 330, 520, 470, 17);                                                                      // a 창호 sliding door
+      g.fillStyle = 'rgba(255,205,120,0.18)'; g.fillRect(250, 330, 520, 470);
+      for (const [x, w] of [[60, 150], [814, 150]]) { g.fillStyle = 'rgba(169,203,191,0.55)'; g.fillRect(x, 360, w, 440); P.ink(g, [[x, 360], [x + w, 360], [x + w, 800], [x, 800]], x, { w: 3 }); // 병풍 panels
+        P.mountains(g, w, [[700, 60, '#5f6f6a', 0.5]], x); } }),
+    bedtime: backdrop(18, [[0, '#26344f'], [1, '#33476b']], g => {
+      stars(g, 70, 19); g.fillStyle = '#f2e6b8'; g.beginPath(); g.arc(700, 330, 110, 0, 7); g.fill();          // a full moon (보름달)
+      P.mountains(g, S, [[640, 160, '#1c2740', 0.9], [760, 110, '#16203a', 0.95]], 18);
+      paste(g, IMG.cutWindow, 230, 500, 330, -0.04); }),
+    fun: backdrop(20, [[0, '#f3e9cf'], [1, '#efe2c6']], g => {
+      const r = rng(21), cols = ['#c8553d', '#e2c271', '#7fa36a', '#5b7a99', '#e6b5ae', '#8e4a5a'];
+      for (let i = 0; i < 70; i++) { g.fillStyle = cols[i % 6]; g.save(); g.translate(r() * S, 250 + r() * 760); g.rotate(r() * 3); g.globalAlpha = 0.7; g.fillRect(-10, -5, 20, 10); g.restore(); }
+      P.hand(g, '완벽하지 않아도', S / 2, 340, { font: 'Brush', weight: 400, size: 120, color: '#6b4a32' });
+      P.hand(g, '즐겁게!', S / 2, 500, { font: 'Brush', weight: 400, size: 220, color: '#a8473a' }); P.seal(g, 820, 520, 80, '곰', 22); }),
+    cta: backdrop(22, [[0, '#26344f'], [1, '#33476b']], g => { stars(g, 60, 23); g.fillStyle = '#f2e6b8'; g.beginPath(); g.arc(820, 220, 70, 0, 7); g.fill(); }),
   };
   const FL = {
     home: floorTex(31, g => rug(g, 480, 600, 380, 170, '#e9cfa4', 1)),
@@ -178,23 +193,26 @@ export function buildStory(stage, B, IMG) {
   const people = [];
   function person(kind, scale, seed) {
     const p = P.PEOPLE[kind], book = p.adult ? p : { ...p, book: null };
-    const heads = ['idle', 'talk', 'blink'].map(st => cutMat(P.sticker(P.drawHead(p, st, seed), 10, { seed })));
+    // "boiling" ink (from the paper-animation playbook): every figure is drawn three times with different line wobbles, cycled on twos
+    const heads = [0, 1, 2].map(v => ['idle', 'talk', 'blink'].map(st => cutMat(P.sticker(P.drawHead(p, st, seed + v * 101), 10, { seed }))));
+    const bodies = [0, 1, 2].map(v => cutMat(P.sticker(P.drawBody(book, seed + v * 101), 10, { seed: seed + 1 })));
     const bodyS = P.sticker(P.drawBody(book, seed), 10, { seed: seed + 1 });
     const wB = 1.65 * scale, hB = wB * bodyS.height / bodyS.width;
     const geoB = new THREE.PlaneGeometry(wB, hB); geoB.translate(0, hB / 2, 0);
-    const bm = new THREE.Mesh(geoB, cutMat(bodyS)); bm.castShadow = true;
+    const bm = new THREE.Mesh(geoB, bodies[0]); bm.castShadow = true;
     const hs = p.adult ? 1 : 1.16, wH = wB * 300 / bodyS.width * hs, hH = wH * 320 / 300;
     const geoH = new THREE.PlaneGeometry(wH, hH); geoH.translate(0, hH * (260 / 320 - 0.5), 0);
-    const hm = new THREE.Mesh(geoH, heads[0]); hm.castShadow = true;
+    const hm = new THREE.Mesh(geoH, heads[0][0]); hm.castShadow = true;
     const neck = new THREE.Group(); neck.position.set(0, hB * (1 - 88 / bodyS.height), 0.012); neck.add(hm);
     const g = new THREE.Group(); g.add(bm, neck);
-    const pr = { g, neck, hm, heads, seed, talks: [], laugh: [], topY: hB * (1 - 88 / bodyS.height) + hH * (260 / 320) };
+    const pr = { g, neck, hm, bm, heads, bodies, seed, talks: [], laugh: [], topY: hB * (1 - 88 / bodyS.height) + hH * (260 / 320) };
     people.push(pr); return pr;
   }
   function personUpdate(pr, t) {
     const tq = q12(t), talking = pr.talks.some(([a, b]) => t >= a && t < b), laughing = pr.laugh.some(([a, b]) => t >= a && t < b);
     const blink = ((tq + pr.seed * 0.37) % 3.3) < 0.12;
-    pr.hm.material = pr.heads[talking || laughing ? (Math.floor(tq * 6) % 2 ? 1 : 0) : blink ? 2 : 0];
+    const v = Math.floor(t * 8 + pr.seed) % 3; pr.bm.material = pr.bodies[v];
+    pr.hm.material = pr.heads[v][talking || laughing ? (Math.floor(tq * 6) % 2 ? 1 : 0) : blink ? 2 : 0];
     pr.neck.rotation.z = wobble(tq * 0.8, pr.seed) * 0.07 + (talking ? Math.sin(tq * 9) * 0.05 : 0) + (laughing ? Math.sin(tq * 14) * 0.12 : 0);
     pr.g.position.y = talking || laughing ? Math.abs(Math.sin(tq * (laughing ? 14 : 9))) * (laughing ? 0.06 : 0.02) : 0;
   }
@@ -205,7 +223,7 @@ export function buildStory(stage, B, IMG) {
   }
   const bubbles = [];
   function bub(parent, en, s, e, x, y, o = {}) { // speech bubble (English only), pops in with a spring
-    const c = P.sticker(P.bubble(en, '', { tail: o.tail, w: o.w || Math.max(360, en.length * 34), size: 86 }), 6), h = o.h || 0.84, w = h * c.width / c.height;
+    const c = P.sticker(P.bubble(en, '', { tail: o.tail, w: o.w || Math.max(360, en.length * (o.font ? 64 : 34)), size: o.font ? 70 : 86, font: o.font }), 6), h = o.h || 0.84, w = h * c.width / c.height;
     const geo = new THREE.PlaneGeometry(w, h); geo.translate(o.tail === 'right' ? -w * 0.22 : w * 0.22, h / 2, 0);
     const m = new THREE.Mesh(geo, cutMat(c)); m.position.set(x, y, 0.08); m.castShadow = true; parent.add(m);
     bubbles.push({ m, s, e }); return m;
@@ -235,8 +253,8 @@ export function buildStory(stage, B, IMG) {
   { const pts = [[80, 210], [70, 120], [170, 60], [300, 40], [430, 50], [560, 70], [640, 150], [630, 260], [540, 330], [380, 350], [220, 340], [110, 300]];
     wg.fillStyle = '#fffdf7'; P.smooth(wg, pts); wg.fill(); P.ink(wg, pts, 4, { w: 3 });
     for (const [x, y, r] of [[140, 390, 22], [90, 410, 12]]) { wg.fillStyle = '#fffdf7'; wg.beginPath(); wg.arc(x, y - 30, r, 0, 7); wg.fill(); P.ink(wg, P.ell(x, y - 30, r, r, 8), 5, { w: 2.4 }); }
-    P.hand(wg, 'My accent…?', 360, 150, { font: HANDF, weight: 400, size: 92, color: P.C.deep });
-    for (let i = 0; i < 3; i++) P.ink(wg, [[230 + i * 40, 250], [260 + i * 40, 225], [290 + i * 40, 262], [320 + i * 40, 230]], 20 + i, { closed: false, w: 3, color: '#c0605e', passes: 1 }); }
+    P.hand(wg, '내 발음…', 360, 140, { font: 'Batang', weight: 700, size: 84, color: P.C.deep }); P.hand(wg, '괜찮을까?', 360, 250, { font: 'Batang', weight: 700, size: 70, color: '#a8473a' });
+    for (let i = 0; i < 0; i++) P.ink(wg, [[230 + i * 40, 250], [260 + i * 40, 225], [290 + i * 40, 262], [320 + i * 40, 230]], 20 + i, { closed: false, w: 3, color: '#c0605e', passes: 1 }); }
   const worry = new THREE.Mesh((() => { const gg = new THREE.PlaneGeometry(2.2, 1.32); gg.translate(0.4, 0.66, 0); return gg; })(), cutMat(P.sticker(worryC, 8)));
   worry.position.set(-0.9, 2.3, 0.1); home.a.g.add(worry); bubbles.push({ m: worry, s: cue['worry'], e: cue['bear-in'] + 0.3 });
   const leap = stick(IMG.cutLeap, 1.55, 10, 21);
@@ -264,9 +282,9 @@ export function buildStory(stage, B, IMG) {
   function drawPron(k) { // the guide's idea, set by hand: the English line, its Korean sound under it, a pencil circle drawing round the sound
     const g = pronC.getContext('2d'); g.clearRect(0, 0, 880, 560);
     g.drawImage(P.sticker(P.paperTex(840, 520, '#fbf3e6', 52, { fibres: 80, ring: false }), 18), 2, 2, 876, 556);
-    P.hand(g, 'Walkbook · Pronunciation Guide', 440, 80, { font: HANDF, weight: 400, size: 48, color: '#9a8a70' });
+    P.hand(g, 'Walkbook · 발음 가이드', 440, 80, { font: 'Batang', weight: 700, size: 46, color: '#8a6a4a' });
     P.hand(g, 'One morning,', 440, 210, { font: SERIF, weight: 500, size: 92, color: '#2c4a78' });
-    P.hand(g, '원 모닝,', 440, 360, { size: 120, color: '#8a4b3a' });
+    P.hand(g, '원 모닝,', 440, 360, { font: 'Batang', weight: 700, size: 116, color: '#8a4b3a' });
     if (k > 0) { g.save(); g.strokeStyle = '#d65a4a'; g.lineWidth = 7; g.lineCap = 'round'; g.beginPath();
       for (let i = 0; i <= 40 * k; i++) { const a = -2.6 + i / 40 * Math.PI * 2.15; g.lineTo(440 + Math.cos(a) * (200 + Math.sin(i) * 4), 360 + Math.sin(a) * (80 + Math.cos(i * 1.3) * 3)); } g.stroke(); g.restore(); }
     pronTex.needsUpdate = true;
@@ -282,7 +300,7 @@ export function buildStory(stage, B, IMG) {
 
   // ------------------------------------------------ 3 · conversation starters take the story outside
   B.starters.forEach((q, i) => {
-    const c = stick(P.starterCard(q, 60 + i, ['#AECCE6', '#F6E07E', '#e9a3a3'][i]), 1.75, 6, 60 + i);
+    const c = stick(P.starterCard(q, 60 + i, ['#a9cbbf', '#e2c271', '#e6b5ae'][i]), 1.8, 6, 60 + i);
     c.rotation.z = (i - 1) * -0.1; c.position.y = i === 1 ? 1.35 : 0.15;
     pop(stg('starters'), (i - 1) * 1.75, i === 1 ? 1.8 : 3.4, [c], cue['starters'] + i * 0.4, { layer: i });
   });
@@ -292,7 +310,7 @@ export function buildStory(stage, B, IMG) {
   const parkPair = pair('dad', 'boy', 0.9, 12);
   const parkGp = pop(stg('park'), -0.4, 3.7, parkPair.kids, cue['park'], { layer: 1 });
   talkPair(parkPair, 'park', parkGp);
-  pop(stg('park'), -2.1, 1.7, [stick(P.drawTree(7), 2.6, 8, 71)], cue['park-tree']);
+  pop(stg('park'), -2.1, 1.7, [stick(P.drawPine(7), 2.9, 8, 71)], cue['park-tree']);
   const friends = pair('boy2', 'girl2', 0.62, 14, 0.9); friends.c.g.scale.setScalar(1.35);
   pop(stg('park'), 1.9, 2.3, friends.kids, cue['park-friends']);
   pop(stg('park'), 2.3, 4.9, [stick(IMG.cutFlowers, 0.7, 8, 72)], cue['park-friends'] + 0.2, { layer: 2 });
@@ -322,7 +340,7 @@ export function buildStory(stage, B, IMG) {
     g.save(); g.beginPath(); g.roundRect(60, 70, sw, sh, 14); g.clip(); const k = Math.max(sw / im.width, sh / im.height);
     g.drawImage(im, 60 + (sw - im.width * k) / 2, 70 + (sh - im.height * k) / 2, im.width * k, im.height * k); g.restore();
     g.fillStyle = 'rgba(255,253,247,0.94)'; g.beginPath(); g.roundRect(300, 615, 400, 90, 40); g.fill();
-    P.hand(g, 'Little Steps · 7 days', 500, 660, { font: HANDF, weight: 400, size: 56, color: P.C.deep });
+    P.hand(g, 'Little Steps · 7일', 500, 660, { font: 'Batang', weight: 700, size: 52, color: P.C.deep });
     tabTex.needsUpdate = true;
   }
   drawTab(0);
@@ -334,7 +352,7 @@ export function buildStory(stage, B, IMG) {
     P.hand(g, name, 210, 450, { font: HANDF, weight: 400, size: 70, color: P.C.deep }); return stick(c, 1.5, 10, seed); };
   pop(stg('fun'), 0.6, 4.6, [avatar(IMG.markAv, 'Mark T', 73)], cue['mark'], { layer: 2 });
   const joyGp = pop(stg('fun'), 1.8, 4.5, [avatar(IMG.joyAv, 'Joy T', 74)], cue['joy'], { layer: 2 });
-  bub(joyGp, "We're here to help!", cue['joy'] + 0.4, spreadEnd(8) - 0.3, 0.2, 1.5, { tail: 'right', h: 0.7 });
+  bub(joyGp, '언제든 물어보세요!', cue['joy'] + 0.4, spreadEnd(8) - 0.3, 0.2, 1.5, { tail: 'right', h: 0.7, font: 'Batang' });
 
   // ------------------------------------------------ Book 1 and the comment call
   pop(stg('cta'), -0.55, 1.9, [card(IMG.cover1, 3.0, { margin: 0.03, seed: 81 })], cue['cta-book']);
@@ -397,21 +415,25 @@ export function buildStory(stage, B, IMG) {
     const k = seg(q12(t), a, a + 0.3) * (1 - seg(t, b - 0.2, b)); if (k <= 0) return;
     g.save(); g.globalAlpha = ease.out(k); g.translate(540, 410 + (1 - ease.out(k)) * 18); g.rotate(i % 2 ? 0.01 : -0.012);
     g.shadowColor = 'rgba(60,40,20,0.28)'; g.shadowBlur = 14; g.shadowOffsetY = 6; g.drawImage(label, -490, -115, 980, 230); g.shadowColor = 'transparent';
-    tape(g, -440, -105, -0.5, ['#e9a3a3', '#AECCE6', '#F6E07E'][i % 3]); tape(g, 440, -105, 0.45, ['#AECCE6', '#F6E07E', '#e9a3a3'][i % 3]);
-    g.font = `600 62px ${SERIF}`; let l1 = '', l2 = '';
-    for (const w of en.split(' ')) { const tryL = (l1 + ' ' + w).trim(); if (!l2 && g.measureText(tryL).width < 860) l1 = tryL; else l2 = (l2 + ' ' + w).trim(); }
-    const sz = l2 ? 56 : 66;
-    P.hand(g, l1, 0, l2 ? -34 : 2, { font: SERIF, weight: 600, size: sz, color: '#2a3550' });
-    if (l2) P.hand(g, l2, 0, 40, { font: SERIF, weight: 600, size: sz, color: '#2a3550' });
+    g.strokeStyle = 'rgba(168,71,58,0.75)'; g.lineWidth = 3; g.strokeRect(-462, -96, 924, 192); g.lineWidth = 1.2; g.strokeRect(-452, -86, 904, 172);
+    // one line when it fits; otherwise break at the comma (or the middle), never leaving one word alone
+    let sz = 58; g.font = `700 ${sz}px Batang`; let l1 = en, l2 = '';
+    if (g.measureText(en).width > 880) { sz = 54; g.font = `700 ${sz}px Batang`;
+      if (g.measureText(en).width > 880) { // the space nearest the middle wins; a comma nearby is preferred
+        const sp = [...en].map((ch, i) => ch === ' ' ? i : -1).filter(i => i > 0), half = en.length / 2;
+        const best = sp.reduce((b, i) => { const score = Math.abs(i - half) - (en[i - 1] === ',' ? en.length * 0.12 : 0); return score < b[0] ? [score, i] : b; }, [1e9, -1])[1];
+        l1 = en.slice(0, best); l2 = en.slice(best + 1); } }
+    P.hand(g, l1, 0, l2 ? -32 : 2, { font: 'Batang', weight: 700, size: sz, color: '#2a2420' });
+    if (l2) P.hand(g, l2, 0, 40, { font: 'Batang', weight: 700, size: sz, color: '#2a2420' });
     g.restore();
   }
   function ctaCard(g, t) {
     const a = cue['cta-comment'] - 0.1, k = clamp(ease.spring(seg(q12(t), a, a + 0.6))); if (k <= 0) return;
     g.save(); g.translate(540, 430); g.scale(k, k); g.rotate(-0.012);
     g.shadowColor = 'rgba(20,20,40,0.35)'; g.shadowBlur = 22; g.shadowOffsetY = 8; g.drawImage(label, -490, -150, 980, 300); g.shadowColor = 'transparent';
-    tape(g, -430, -140, -0.45, '#F6E07E'); tape(g, 430, -140, 0.4, '#AECCE6');
-    P.hand(g, 'Comment “Bear”', 0, -48, { font: SERIF, weight: 700, size: 92, color: '#c0605e' });
-    P.hand(g, 'to be the first to own Book 1!', 0, 52, { font: SERIF, weight: 600, size: 58, color: '#2a3550' });
+    g.strokeStyle = 'rgba(168,71,58,0.75)'; g.lineWidth = 3; g.strokeRect(-462, -132, 924, 264); g.lineWidth = 1.2; g.strokeRect(-452, -122, 904, 244);
+    P.hand(g, '댓글에 ‘Bear’를 남기고', 0, -44, { font: 'Batang', weight: 700, size: 70, color: '#a8473a' });
+    P.hand(g, 'Book 1의 첫 주인이 되어보세요!', 0, 50, { font: 'Batang', weight: 700, size: 58, color: '#2a2420' });
     g.restore();
   }
   // vintage finish: warm sepia wash, a soft vignette for a tall frame, dust and hairline scratches on twos, a slow light leak
@@ -431,7 +453,7 @@ export function buildStory(stage, B, IMG) {
     ctaCard(g, t);
   }
 
-  const sets = { book: { scene, update: t => world(t), grade: 'sepia(0.18) saturate(0.95) contrast(1.04)' } };
+  const sets = { book: { scene, update: t => world(t), grade: 'sepia(0.12) saturate(0.92) contrast(1.03)' } };
   const shots = [{ set: 'book', dur: B.duration, cam: (l) => cam(l) }];
   return { sets, shots, overlay, design: [], designTitle: B.title, finish: { grain: 0.08, vignette: 0, fadeIn: 0.4, fadeOut: 0.6 } };
 }

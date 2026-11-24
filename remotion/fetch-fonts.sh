@@ -22,3 +22,6 @@ for u in https://fonts.gstatic.com/s/shipporiminchob1/v24/wXK1E2wCr44tulPdnn-xbI
 # Day 33 chalkboard (outdoor English): Gaegu 700 (Korean handwriting) and Patrick Hand (English chalk handwriting)
 curl -sS -o Gaegu-Bold.ttf https://fonts.gstatic.com/s/gaegu/v23/TuGSUVB6Up9NU573jvw7.ttf
 curl -sS -o PatrickHand.ttf https://fonts.gstatic.com/s/patrickhand/v25/LDI1apSQOAYtSuYWp8ZhfYeMWQ.ttf
+# Paper explainer (24 Nov 2026): Nanum Brush Script (Korean brush calligraphy) and Gowun Batang Bold, both OFL
+curl -sS -o NanumBrushScript.ttf https://fonts.gstatic.com/s/nanumbrushscript/v26/wXK2E2wfpokopxzthSqPbcR5_gVaxazyjg.ttf
+curl -sS -o GowunBatang-Bold.ttf https://fonts.gstatic.com/s/gowunbatang/v12/ijwNs5nhRMIjYsdSgcMa3wRZ4J7awg.ttf

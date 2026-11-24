@@ -201,3 +201,10 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - **Never show complete book pages.** Cut the bear, Joy the butterfly and small scenes out of the books (`anim/cutouts.py`), give them a solid
   white paper edge, and animate them on the page. Covers may appear as product cards. The proofs are unpublished: keep them out of git.
 - CTA for this film: **comment "Bear" to be the first to own Book 1** ("댓글에 ‘Bear’ 남기고 Book 1을 가장 먼저 만나보세요!").
+- **Update (owner, 24 Nov 2026, later the same day):** the explainer is in **Korean** for our Korean audience (narration, step titles, CTA:
+  "댓글에 ‘Bear’를 남기고 Book 1의 첫 주인이 되어보세요!"); the family dialogue stays in the English they use. Look: vintage paper animation
+  drawn like a **vintage Korean ink-and-colour picture** (수묵담채): hanji paper, ink-brush lines that "boil", muted traditional washes, families
+  in hanbok (색동 sleeves for children, 댕기 braids, 쪽머리 with 비녀), ink-wash mountains, pine, a lattice door, a full moon, red seals;
+  Gowun Batang for narration and Nanum Brush Script for titles. Soft piano (licensed, credited in the caption).
+  The story: parents practise with the pronunciation guide, "아하!", then take the conversation starters into the park, dinner and bedtime —
+  "완벽하지 않아도 괜찮아요. 즐거우면 돼요." Reference for technique only: github.com/eeselapp/claude-paper-animation (boiling ink lines).
