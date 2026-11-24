@@ -91,6 +91,28 @@ const CutText: React.FC<{text: string; size: number; color: string; style?: Reac
     filter: SHADOW, ...style}}>{text}</div>
 );
 
+const Dino: React.FC<{w: number; t: number}> = ({w, t}) => (
+  <svg viewBox="0 0 320 220" width={w} height={w * 220 / 320} style={{overflow: 'visible'}}><Defs id="dino" />
+    <g transform={`rotate(${Math.sin(t * 2) * 2} 160 160)`}>
+      <P id="dino" d="M40 150 Q20 120 60 112 Q110 100 140 96 L150 60 Q156 20 196 18 Q236 18 244 44 Q246 62 222 64 L196 66 L190 104 Q260 112 300 160 Q250 150 200 152 L196 196 L174 196 L170 156 L120 158 L116 196 L94 196 L92 158 Q60 160 40 150 Z" fill="#6F9A5B" />
+      <P id="dino" d="M150 100 Q170 92 188 100 L186 130 Q168 136 150 128 Z" fill="#88B070" />
+      {[[110, 118], [130, 108], [210, 128], [240, 140]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={7} fill="#4E7A42" />)}
+      <circle cx={214} cy={36} r={5} fill="#222" /><path d="M224 52 Q232 56 238 50" stroke="#222" strokeWidth={3} fill="none" /></g></svg>
+);
+
+// ---------- a real-looking computer (Joy: the monitor is a real computer, not paper) ----------
+const Monitor: React.FC<{x: number; y: number; w: number; h: number; children: React.ReactNode}> = ({x, y, w, h, children}) => (
+  <div style={{position: 'absolute', left: x, top: y, width: w, filter: 'drop-shadow(0 30px 40px rgba(0,0,0,.35))'}}>
+    <div style={{width: w, height: h, borderRadius: 26, background: 'linear-gradient(160deg, #3a3d44, #15161a 60%, #0c0c0e)', padding: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,.25)'}}>
+      <div style={{position: 'relative', width: '100%', height: '100%', borderRadius: 8, overflow: 'hidden', background: '#F4F6FA'}}>
+        {children}
+        <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 38%)', pointerEvents: 'none'}} /></div></div>
+    <div style={{width: 46, height: 10, borderRadius: 5, background: '#0b0b0d', margin: '-16px auto 0', position: 'relative'}} />
+    <div style={{width: 120, height: 110, margin: '0 auto', background: 'linear-gradient(90deg, #b9bcc2, #e6e8ec 50%, #a9acb2)'}} />
+    <div style={{width: 320, height: 22, margin: '0 auto', borderRadius: '12px 12px 4px 4px', background: 'linear-gradient(#e9ebef, #a6a9af)'}} />
+  </div>
+);
+
 // ---------- the classroom diorama ----------
 const Classroom: React.FC<{t: number; board?: React.ReactNode}> = ({t, board}) => {
   const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
@@ -198,11 +220,10 @@ const Kids: React.FC<{t: number; fps: number; top: number; raise: (number | null
   <div style={{position: 'absolute', left: 0, top, width: 1080, height: 1920 - top}}>
     <Img src={staticFile('paper/kids-base.png')} style={{position: 'absolute', left: 0, top: 0, width: 1080, transformOrigin: '50% 100%', transform: `scaleY(${1 + Math.sin(t * 2) * .004})`}} />
     {ARMS.map((a, i) => { const r = raise[i]; if (r == null) return null;
-      const p = spring({frame: Math.round((t - r) * fps), fps, config: {damping: 9, stiffness: 110, mass: .8}});
-      if (p <= .01) return null;
-      const wob = p > .9 ? Math.sin((t - r) * 5 + i) * 2.5 : 0;
+      const p = Math.max(0, spring({frame: Math.round((t - r) * fps), fps, config: {damping: 9, stiffness: 110, mass: .8}}));
+      const wob = Math.sin(t * (p > .9 ? 5 : 2.2) + i * 2) * (p > .9 ? 3 : 1.5);
       return <Img key={i} src={staticFile(a.src)} style={{position: 'absolute', left: a.x * KK, top: (a.y - 250) * KK, width: a.w * KK, height: a.h * KK,
-        transformOrigin: `${(a.px - a.x) * KK}px ${(a.py - a.y) * KK}px`, transform: `rotate(${(1 - p) * (i ? 18 : -18) + wob}deg) scaleY(${.12 + .88 * Math.min(p, 1.05)})`, filter: SHADOW}} />; })}
+        transformOrigin: `${(a.px - a.x) * KK}px ${(a.py - a.y) * KK}px`, transform: `rotate(${(1 - p) * (i ? 30 : -30) + wob}deg) scaleY(${.42 + .58 * Math.min(p, 1.06)})`, filter: SHADOW}} />; })}
   </div>
 );
 
@@ -237,7 +258,7 @@ export const PT_CAPS: Cap[] = [
   {s: 22, e: 27, text: '아이들 머릿속은\n질문과 상상으로 가득 차요', en: "children's minds fill up\nwith questions and imagination."},
   {s: 27, e: 34, text: '다른 나라 사람을 만났을 때도\n내 생각을 내 말로 표현하는 힘', en: 'Meeting people from other countries,\nwe say what we think, in our own words.'},
   {s: 34, e: 38, text: 'AI는 우리가 쓰는 도구예요.\n생각은 우리 아이가 하는 거고요', en: "AI is a tool we use.\nThe thinking is our children's."},
-  {s: 38, e: 42, text: '여러분 아이는 요즘 어떤 질문을 하나요?', en: 'What questions is your child asking these days?'},
+  {s: 38, e: 42, text: 'AI 시대, 우리 아이에게\n어떤 AI 교육이 필요할까요?', en: 'What kind of AI education do our children need?\nLet\'s talk in the comments.'},
 ];
 export const PT_SCENES = {hook: [0, 3], ai: [3, 8], cross: [8, 13], turn: [13, 17], cls: [17, 27], world: [27, 34], msg: [34, 38], end: [38, 42]};
 
@@ -245,44 +266,62 @@ export const PaperThink: React.FC = () => {
   useFonts();
   const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const t = frame / fps;
   const S = PT_SCENES; const inS = (k: keyof typeof S) => t >= S[k][0] && t < S[k][1];
+  const vis = (k: keyof typeof S) => t >= S[k][0] && t < S[k][1] + .7;
+  const W = (k: keyof typeof S, node: React.ReactNode) => { const s0 = S[k][0]; const dur = S[k][1] - s0;
+    const e = s0 === 0 ? 1 : spring({frame: frame - Math.round(s0 * fps), fps, config: {damping: 18, stiffness: 90, mass: .9}});
+    const cam = 1.02 + .045 * Math.min(1, (t - s0) / dur); const dir = ['ai', 'turn', 'world', 'end'].includes(k) ? -1 : 1;
+    return <AbsoluteFill style={{transform: `translateX(${(1 - e) * 1150 * dir}px) rotate(${(1 - e) * 5 * dir}deg)`, boxShadow: e < .99 ? '0 0 60px rgba(0,0,0,.45)' : undefined, overflow: 'hidden'}}>
+      <AbsoluteFill style={{transform: `scale(${cam}) translateY(${-(cam - 1) * 120}px)`}}>{node}</AbsoluteFill></AbsoluteFill>; };
   const lt = (k: keyof typeof S) => t - S[k][0];
   const cap = PT_CAPS.find((c) => t >= c.s && t < c.e);
   const drift = Math.sin(t * .6) * 6;
   return (
     <AbsoluteFill style={{background: C.kraft, overflow: 'hidden'}}>
       {/* HOOK: in the classroom, a child's head opens and question marks burst out */}
-      {inS('hook') && (() => { const l = lt('hook');
+      {vis('hook') && W('hook', (() => { const l = lt('hook');
         return <AbsoluteFill style={{transform: `scale(${1.05 - l * .015})`, transformOrigin: '50% 70%'}}>
           <Classroom t={t} />
-          <Kids t={t} fps={fps} top={1000} raise={[null, null]} />
+          <Kids t={t} fps={fps} top={1000} raise={[.35, .75]} />
           {KID_HEADS.flatMap((hx, i) => [0, 1].map((j) => { const st = .5 + i * .22 + j * .35; const k = sp(t, st, fps, 9); const up = interpolate(t - st, [0, 1.6], [0, 1], clamp);
             return k > .02 && <CutText key={`${i}${j}`} text={j ? '!' : '?'} size={j ? 96 : 130} color={(i + j) % 2 ? C.yellow : C.red}
               style={{position: 'absolute', left: hx - 40 + (j ? 60 : -10) + Math.sin(t * 3 + i) * 6, top: 1010 - 230 * k - up * 60, transform: `rotate(${(i - 1.5) * 8 + Math.sin(t * 4 + i * 2) * 5}deg) scale(${k})`}} />; }))}
           <Sheet x={70} y={330} w={940} h={250} color={C.paper} seed={5} rot={-1.5}>
             <div style={{padding: '36px 40px', ...CUTTYPE, fontSize: 64, lineHeight: 1.2, color: C.navy, textAlign: 'center'}}>
               AI가 다 알려주는 시대,<br /><span style={{color: C.red}}>우리 아이에게 필요한 힘은?</span></div></Sheet>
-        </AbsoluteFill>; })()}
+        </AbsoluteFill>; })())}
 
       {/* AI: a paper laptop pours out answer slips */}
-      {inS('ai') && (() => { const l = lt('ai'); const typed = '공룡은 왜 사라졌어?'; const n = Math.floor(interpolate(l, [.3, 1.6], [0, typed.length], clamp));
+      {vis('ai') && W('ai', (() => { const l = lt('ai');
+        const msgs: {at: number; me?: boolean; text?: string; dino?: boolean}[] = [{at: .4, me: true, text: '공룡은 왜 사라졌어? 🦖'},
+          {at: 1.5, dino: true, text: '약 6,600만 년 전, 커다란 소행성이 지구에 떨어졌어요 ☄️'}, {at: 2.3, text: '화산 폭발로 하늘이 어두워지고 ☁️'},
+          {at: 2.9, text: '날씨가 추워져 먹이가 사라졌대요 🍂'}, {at: 3.5, text: '더 궁금한 거 있어요? 😊'}];
+        const shown = msgs.filter((m) => l >= m.at); const typing = (l > .9 && l < 1.5) || (l > 2.0 && l < 2.3);
+        const scroll = interpolate(l, [2.3, 3.9], [0, -250], clamp);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.cream} seed={7} edge={false} />
-          <Sheet x={-30} y={1060} w={1140} h={900} color={C.kraftD} seed={8} />
-          <Sheet x={180} y={420 + drift} w={720} h={470} color={C.navy} seed={21}>
-            <div style={{position: 'absolute', left: 36, top: 36, right: 36, bottom: 36, background: '#EAF2F8', padding: 30}}>
-              <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 40, color: C.blue}}>🤖 AI</div>
-              <div style={{marginTop: 24, fontFamily: PRE, fontWeight: 800, fontSize: 46, color: C.ink}}>{typed.slice(0, n)}<span style={{opacity: Math.floor(t * 3) % 2}}>|</span></div>
-            </div></Sheet>
-          <Sheet x={110} y={880 + drift} w={860} h={70} color="#8E8A84" seed={22} />
-          {Array.from({length: 16}, (_, i) => { const s0 = 1.8 + i * .15; const p = interpolate(l, [s0, s0 + .9], [0, 1], clamp); const r = rng(i + 3);
-            const xx = 120 + r() * 780; const yy = interpolate(p, [0, 1], [700, 980 + r() * 300]);
-            return p > 0 && <Sheet key={i} x={xx} y={yy} w={180} h={110} color={i % 3 ? C.paper : '#FFF6D6'} seed={30 + i} tex="news" rot={-25 + r() * 50} />; })}
-          <CutText text="⚡ 3초" size={70} color={C.red} style={{position: 'absolute', left: 760, top: 330, transform: `rotate(8deg) scale(${sp(t, S.ai[0] + 1.8, fps)})`}} />
-          <Vignette k={.35} />
-        </AbsoluteFill>; })()}
+          <Sheet x={-30} y={1080} w={1140} h={900} color={C.kraftD} seed={8} />
+          <Monitor x={90} y={360} w={900} h={640}>
+            <div style={{height: 58, background: '#fff', borderBottom: '1px solid #e3e6ec', display: 'flex', alignItems: 'center', gap: 12, padding: '0 22px', fontFamily: PRE, fontWeight: 800, fontSize: 26, color: '#334'}}>
+              <span style={{width: 34, height: 34, borderRadius: 17, background: 'linear-gradient(135deg,#6C8CFF,#9E6CFF)', display: 'inline-block'}} /> AI 도우미
+              <span style={{marginLeft: 'auto', fontSize: 20, color: '#2BA84A'}}>● 온라인</span></div>
+            <div style={{position: 'absolute', left: 0, right: 0, top: 58, bottom: 0, padding: '18px 22px', overflow: 'hidden'}}>
+              <div style={{transform: `translateY(${scroll}px)`}}>
+                {shown.map((m, i) => { const k = sp(t, S.ai[0] + m.at, fps, 12);
+                  return <div key={i} style={{display: 'flex', justifyContent: m.me ? 'flex-end' : 'flex-start', marginBottom: 14, transform: `translateY(${(1 - k) * 30}px) scale(${.9 + .1 * k})`, opacity: k, transformOrigin: m.me ? '100% 100%' : '0 100%'}}>
+                    <div style={{maxWidth: 560, padding: '14px 20px', borderRadius: 22, borderBottomRightRadius: m.me ? 6 : 22, borderBottomLeftRadius: m.me ? 22 : 6,
+                      background: m.me ? '#3B7CF6' : '#fff', color: m.me ? '#fff' : '#222', boxShadow: '0 2px 6px rgba(0,0,0,.08)', fontFamily: PRE, fontWeight: 700, fontSize: 30, lineHeight: 1.35}}>
+                      {m.dino && <div style={{background: '#EAF3E2', borderRadius: 14, padding: 10, marginBottom: 10, display: 'flex', justifyContent: 'center'}}><Dino w={300} t={t} /></div>}
+                      {m.text}</div></div>; })}
+                {typing && <div style={{display: 'flex', gap: 8, padding: '16px 22px', background: '#fff', borderRadius: 22, width: 90}}>
+                  {[0, 1, 2].map((d) => <span key={d} style={{width: 12, height: 12, borderRadius: 6, background: '#9aa', opacity: .4 + .6 * Math.max(0, Math.sin(t * 8 - d))}} />)}</div>}
+              </div></div>
+          </Monitor>
+          <CutText text="⚡ 3초" size={74} color={C.red} style={{position: 'absolute', left: 770, top: 310, transform: `rotate(8deg) scale(${sp(t, S.ai[0] + 1.6, fps, 9)})`}} />
+          <Vignette k={.3} />
+        </AbsoluteFill>; })())}
 
       {/* CROSS: books, search and asking someone get crossed out */}
-      {inS('cross') && (() => { const l = lt('cross');
+      {vis('cross') && W('cross', (() => { const l = lt('cross');
         const items: [string, string][] = [['📚', '책 찾기'], ['🔍', '검색하기'], ['🙋', '누군가에게 묻기']];
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color="#E6DCC5" seed={9} edge={false} />
@@ -296,22 +335,37 @@ export const PaperThink: React.FC = () => {
                 <Draw d="M60 40 L780 220" p={xp} color={C.red} w={16} /><Draw d="M780 40 L60 220" p={interpolate(xp, [.4, 1], [0, 1], clamp)} color={C.red} w={16} /></svg>
             </div>; })}
           <Vignette k={.35} />
-        </AbsoluteFill>; })()}
+        </AbsoluteFill>; })())}
 
       {/* TURN: the answers blow away, one big question mark stays */}
-      {inS('turn') && (() => { const l = lt('turn'); const k = sp(t, S.turn[0] + .5, fps, 10);
+      {vis('turn') && W('turn', (() => { const l = lt('turn'); const k = sp(t, S.turn[0] + .5, fps, 10);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.navy} seed={10} edge={false} />
           {Array.from({length: 10}, (_, i) => { const r = rng(i + 50); const p = interpolate(l, [0, 1.4], [0, 1], clamp);
             return <Sheet key={i} x={100 + r() * 800 - p * 700} y={300 + r() * 1000 - p * 600} w={170} h={100} color={C.paper} tex="news" seed={60 + i} rot={r() * 60 - 30 + p * 90} style={{opacity: 1 - p}} />; })}
-          <CutText text="?" size={760} color={C.yellow} style={{position: 'absolute', left: 300, top: 420, transform: `scale(${k}) rotate(${-6 + Math.sin(t * 1.5) * 3}deg)`}} />
+          <CutText text="?" size={520} color={C.yellow} style={{position: 'absolute', left: 400, top: 600, transform: `scale(${k}) rotate(${-6 + Math.sin(t * 1.5) * 3}deg)`}} />
+          {/* Joy (24 Nov): the questions we ask children rise out of the ? like thought bubbles */}
+          {([[.9, 80, 560, 400, '너는 어떻게 생각해?', 'What do you think?'], [1.5, 545, 640, 480, '네가 주인공이라면\n어떤 마음이었을 것 같아?', 'If you were the hero, how would you feel?'],
+            [2.1, 80, 950, 390, '왜 그렇게 생각했어?', 'Why do you think so?'], [2.7, 610, 985, 400, '다음엔 무슨 일이\n일어날까?', 'What happens next?']] as [number, number, number, number, string, string][]).map(([at, bx, by, bw, ko, en], i) => {
+            const q = spring({frame: Math.round((t - S.turn[0] - at) * fps), fps, config: {damping: 8, stiffness: 140, mass: .6}}); if (q < .01) return null;
+            const fy = -(t - S.turn[0] - at) * 9 + Math.sin(t * 2.2 + i) * 6; const fx = Math.sin(t * 1.4 + i * 2) * 5;
+            const cx = bx + bw / 2, cy = by + 80; const ox = 620, oy = 760;   // trail from the top of the ?
+            return <React.Fragment key={i}>
+              {[.25, .5, .72].map((f, j) => { const d = spring({frame: Math.round((t - S.turn[0] - at + .25 - j * .08) * fps), fps, config: {damping: 10, stiffness: 160}});
+                return d > .02 && <div key={j} style={{position: 'absolute', left: ox + (cx - ox) * f - (8 + j * 6) + fx, top: oy + (cy - oy) * f + fy * f, width: (16 + j * 12), height: (16 + j * 12), borderRadius: '50%',
+                  background: '#FBF5E8', transform: `scale(${d})`, filter: SHADOW}} />; })}
+              <div style={{position: 'absolute', left: bx + fx, top: by + fy, width: bw, transform: `scale(${q})`, transformOrigin: '50% 100%', filter: SHADOW}}>
+                <div style={{background: '#FBF5E8', borderRadius: '50%', padding: '34px 30px', textAlign: 'center', boxShadow: 'inset 0 -6px 0 rgba(0,0,0,.05)'}}>
+                  <div style={{...CUTTYPE, fontSize: 34, lineHeight: 1.3, color: C.navy, whiteSpace: 'pre'}}>{ko}</div>
+                  <div style={{...CUTTYPE, fontSize: 22, lineHeight: 1.3, color: '#7A5B3A', marginTop: 6}}>{en}</div></div></div>
+            </React.Fragment>; })}
           <Sheet x={140} y={330} w={800} h={130} color={C.paper} seed={70} rot={-2} style={{opacity: interpolate(l, [1.2, 1.6], [0, 1], clamp)}}>
             <div style={{textAlign: 'center', lineHeight: '130px', ...CUTTYPE, fontSize: 60, color: C.navy}}>정답보다 <span style={{color: C.red}}>질문</span></div></Sheet>
           <Vignette k={.5} />
-        </AbsoluteFill>; })()}
+        </AbsoluteFill>; })())}
 
       {/* CLASS: Joy and Mark read a picture book, the children raise their hands and their heads fill with ideas */}
-      {inS('cls') && (() => { const l = lt('cls');
+      {vis('cls') && W('cls', (() => { const l = lt('cls');
         const ideas = ['🐻', '🚀', '🌊', '🦋'];
         return <AbsoluteFill>
           <Classroom t={t} board={<div style={{fontFamily: HAND, fontWeight: 700, fontSize: 62, color: '#F2EEDC', textAlign: 'center', paddingTop: 70, lineHeight: 1.15}}>What happens<br />next? 🤔</div>} />
@@ -322,17 +376,17 @@ export const PaperThink: React.FC = () => {
             {[0, 1, 2, 3, 4].map((q) => <div key={q} style={{position: 'absolute', left: 30, top: 54 + q * 34, width: 140 - q * 12, height: 8, background: '#C4B9A4'}} />)}
             <div style={{position: 'absolute', left: 188, top: 10, bottom: 10, width: 3, background: 'rgba(0,0,0,.12)'}} /></Sheet>
           {l > .5 && l < 5 && <Bubble x={470} y={420} w={520} k={sp(t, S.cls[0] + .6, fps)} tail="left">What do you think<br />happens next?</Bubble>}
-          <Kids t={t} fps={fps} top={1055} raise={[S.cls[0] + 2.3, S.cls[0] + 3.1]} />
+          <Kids t={t} fps={fps} top={1055} raise={[S.cls[0] + 1.6, S.cls[0] + 2.3]} />
           {KID_HEADS.map((hx, i) => { const think = sp(t, S.cls[0] + 4.6 + i * .45, fps, 11);
             return think > .02 && <div key={i} style={{position: 'absolute', left: hx - 115, top: 860 - (i % 2) * 40 + Math.sin(t * 1.6 + i) * 6, width: 230, height: 200, transform: `scale(${think})`, transformOrigin: '50% 100%', filter: SHADOW}}>
               <svg width={230} height={200}><ellipse cx={115} cy={84} rx={104} ry={76} fill={C.paper} /><circle cx={100} cy={180} r={12} fill={C.paper} /><circle cx={110} cy={158} r={18} fill={C.paper} />
                 <Gear x={52} y={62} r={20} a={t * 120} /><Gear x={86} y={96} r={14} a={-t * 160} color={C.red} /></svg>
               <div style={{position: 'absolute', left: 116, top: 30, fontSize: 82, transform: `rotate(${Math.sin(t * 2.4 + i) * 8}deg)`}}>{ideas[i]}</div></div>; })}
           <Vignette k={.45} />
-        </AbsoluteFill>; })()}
+        </AbsoluteFill>; })())}
 
       {/* WORLD: Joy takes off the AI glasses and speaks for herself */}
-      {inS('world') && (() => { const l = lt('world'); const g = l < 2.2 ? 1 : interpolate(l, [2.2, 3.2], [.999, 0], clamp);
+      {vis('world') && W('world', (() => { const l = lt('world'); const g = l < 2.2 ? 1 : interpolate(l, [2.2, 3.2], [.999, 0], clamp);
         const people = [{x: 560, y: 640, shirt: C.green, skin: '#8D5A3B', hair: '#1D1612', flag: '🇰🇪'}, {x: 810, y: 610, shirt: C.red, skin: '#F1CDB0', hair: '#C99A4A', flag: '🇫🇷'},
           {x: 690, y: 860, shirt: C.yellow, skin: '#D9A77F', hair: '#2A1E16', flag: '🇧🇷'}];
         return <AbsoluteFill>
@@ -350,10 +404,10 @@ export const PaperThink: React.FC = () => {
           <Sheet x={-40} y={1290} w={1160} h={700} color="#B48A60" seed={131} />
           {g < .1 && <Bubble x={300} y={430} w={420} k={sp(t, S.world[0] + 3.3, fps)}>I think…<div style={{fontSize: 32, color: C.red}}>내 생각은요!</div></Bubble>}
           <Vignette k={.4} />
-        </AbsoluteFill>; })()}
+        </AbsoluteFill>; })())}
 
       {/* MESSAGE */}
-      {inS('msg') && (() => { const k = sp(t, S.msg[0] + .2, fps);
+      {vis('msg') && W('msg', (() => { const k = sp(t, S.msg[0] + .2, fps);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.navy} seed={15} edge={false} />
           <Sheet x={90} y={560} w={900} h={560} color={C.cream} seed={100} rot={-1.5} style={{transform: `rotate(-1.5deg) scale(${.9 + .1 * k})`, opacity: k}}>
@@ -361,21 +415,21 @@ export const PaperThink: React.FC = () => {
               AI는 <span style={{background: C.yellow, padding: '0 10px'}}>쓰는 것</span>,<br />생각은 <span style={{color: C.red}}>내가</span> 하는 것</div>
             <div style={{position: 'absolute', bottom: 60, left: 0, right: 0, textAlign: 'center', fontFamily: HAND, fontWeight: 700, fontSize: 44, color: C.kraftD}}>질문하는 아이, 생각을 말하는 아이</div></Sheet>
           <Vignette k={.5} />
-        </AbsoluteFill>; })()}
+        </AbsoluteFill>; })())}
 
       {/* END */}
-      {t >= S.end[0] && (() => { const k = sp(t, S.end[0] + .2, fps);
+      {t >= S.end[0] && W('end', (() => { const k = sp(t, S.end[0] + .2, fps);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.cream} seed={16} edge={false} />
-          <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', left: 290, top: 420, width: 500, opacity: k, filter: SHADOW}} />
-          <Sheet x={140} y={980} w={800} h={150} color={C.yellow} seed={110} rot={-1.5} style={{opacity: k}}>
-            <div style={{textAlign: 'center', lineHeight: '150px', ...CUTTYPE, fontSize: 56, color: C.navy}}>💬 우리 아이 요즘 질문은?</div></Sheet>
-          <div style={{position: 'absolute', top: 1180, left: 0, right: 0, textAlign: 'center', fontFamily: PRE, fontWeight: 800, fontSize: 40, color: C.navy, opacity: k}}>@thebearandjoy 팔로우</div>
-        </AbsoluteFill>; })()}
+          <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', left: 300, top: 330, width: 480, opacity: k, filter: SHADOW}} />
+          <Sheet x={120} y={840} w={840} h={150} color={C.yellow} seed={110} rot={-1.5} style={{opacity: k}}>
+            <div style={{textAlign: 'center', lineHeight: '150px', ...CUTTYPE, fontSize: 56, color: C.navy}}>💬 어떤 AI 교육이 좋을까요?</div></Sheet>
+          <div style={{position: 'absolute', top: 1030, left: 0, right: 0, textAlign: 'center', ...CUTTYPE, fontSize: 40, color: C.navy, opacity: k}}>@thebearandjoy 팔로우</div>
+        </AbsoluteFill>; })())}
 
       <Grain />
       {/* captions: a torn strip of mulberry paper with paper-cut letters (Joy, 24 Nov: square, and made of paper) */}
-      {cap && !inS('msg') && !inS('end') && (() => { const lines = cap.text.split('\n'); const en = (cap.en ?? '').split('\n').filter(Boolean);
+      {cap && !inS('msg') && (() => { const lines = cap.text.split('\n'); const en = (cap.en ?? '').split('\n').filter(Boolean);
         const wpx = Math.min(980, 110 + Math.max(...lines.map((x) => x.length * 40), ...en.map((x) => x.length * 16.5))); const hpx = 52 + lines.length * 56 + en.length * 38 + (en.length ? 8 : 0);
         const k = sp(t, cap.s, fps, 16); const tilt = Math.round(cap.s) % 2 ? .8 : -.8;
         return <Sheet key={cap.s} x={540 - wpx / 2} y={1450 - hpx} w={wpx} h={hpx} color="#F7EFDF" seed={Math.round(cap.s * 10) + 200} rot={tilt}
