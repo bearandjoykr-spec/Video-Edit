@@ -413,10 +413,10 @@ export const PaperThink: React.FC = () => {
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.navy} seed={15} edge={false} />
           <Sheet x={80} y={520} w={920} h={640} color={C.cream} seed={100} rot={-1.5} style={{transform: `rotate(-1.5deg) scale(${.9 + .1 * k})`, opacity: k}}>
-            <div style={{padding: '70px 50px 0', textAlign: 'center', ...CUTTYPE, fontSize: 64, lineHeight: 1.35, color: C.navy}}>
-              <span style={{color: C.red}}>궁금해하는</span> 걸 멈추지 마.<br /><span style={{opacity: interpolate(t - S.msg[0], [.9, 1.4], [0, 1], clamp)}}>스스로 <span style={{background: C.yellow, padding: '0 8px'}}>답을 찾는</span> 걸<br />멈추지 마.</span></div>
-            <div style={{marginTop: 22, textAlign: 'center', fontFamily: DODUM, fontSize: 32, lineHeight: 1.4, color: '#8A6A48'}}>Don't stop exploring.<br /><span style={{opacity: interpolate(t - S.msg[0], [.9, 1.4], [0, 1], clamp)}}>Don't stop looking for the answer.</span></div>
-            <div style={{position: 'absolute', bottom: 40, left: 0, right: 0, textAlign: 'center', fontFamily: DODUM, fontSize: 34, color: C.navy, opacity: interpolate(t - S.msg[0], [2.2, 2.8], [0, 1], clamp)}}>AI는 쓰는 것, 생각은 내가 하는 것</div></Sheet>
+            <div style={{padding: '60px 50px 0', textAlign: 'center', ...CUTTYPE, fontSize: 58, lineHeight: 1.35, color: C.navy}}>
+              AI가 답을 주는 시대,<br />우리 아이에게 필요한 건<br /><span style={{display: 'inline-block', marginTop: 10, fontSize: 84, color: C.red, transform: `scale(${sp(t, S.msg[0] + 1.0, fps, 9)})`}}>'생각하는 힘'</span></div>
+            <div style={{marginTop: 18, textAlign: 'center', fontFamily: DODUM, fontSize: 30, lineHeight: 1.4, color: '#8A6A48', opacity: interpolate(t - S.msg[0], [1.6, 2.1], [0, 1], clamp)}}>Don't stop exploring.<br />Don't stop looking for the answer.</div>
+            <div style={{position: 'absolute', bottom: 40, left: 0, right: 0, textAlign: 'center', fontFamily: DODUM, fontSize: 34, color: C.navy, opacity: interpolate(t - S.msg[0], [2.6, 3.1], [0, 1], clamp)}}>AI는 쓰는 것, 생각은 내가 하는 것</div></Sheet>
           <Vignette k={.5} />
         </AbsoluteFill>; })())}
 
