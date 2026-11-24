@@ -191,3 +191,13 @@ No logo in the top-left of this film (owner, 5 Nov 2026): the version cut from t
 - Use our books' own illustrations that Joy supplies (`projects/2026-11-cinematic-film/bookart/`) together with real footage, moved with camera moves and punchy zoom transitions. (The earlier "no AI pictures" rule is about art that is not from our books.)
 - **How the bear looks (Joy):** sketchy pen line, soft navy-black watercolour, a lightly fuzzy, plush body, straw hat with a pink ribbon. Keep this look whenever the bear appears.
 - The 24 stories / 12 places beat goes by fast (one beat per city, small place labels).
+
+## Paper pop-up explainer "Once upon a time" (owner, 24 Nov 2026) — `projects/2026-11-paper-explainer/`
+- Made with the owner's **animation skill** (`.claude/skills/animation/`, three.js kit → self-contained HTML + MP4). Vertical 1080×1920 for Instagram.
+- Look: a paper pop-up book on a desk; each page turn reveals the next part; pieces fold up off the page, "on twos" like stop-motion.
+- Story first, then the system: "Once upon a time, you and your child…" → the worry about pronunciation → the bear arrives → what Bear & Joy is
+  → ① Storybook (READ) → ② Walkbook with the Korean-sound pronunciation guide and STOP · LOOK · LISTEN (SPEAK) → ③ Little Steps 7-day web play
+  with Mark and Joy's team (TALK) → mums, dads, grandparents and friends talking in English with children → CTA.
+- **Never show complete book pages.** Cut the bear, Joy the butterfly and small scenes out of the books (`anim/cutouts.py`), give them a solid
+  white paper edge, and animate them on the page. Covers may appear as product cards. The proofs are unpublished: keep them out of git.
+- CTA for this film: **comment "Bear" to be the first to own Book 1** ("댓글에 ‘Bear’ 남기고 Book 1을 가장 먼저 만나보세요!").

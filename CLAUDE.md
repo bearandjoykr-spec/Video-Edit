@@ -38,6 +38,11 @@ The owner wants Instagram videos made with this Mac's own processor (Apple M1 â€
 ### Keeping sessions in sync
 Claude sessions cannot read each other's chats. This repo is the shared memory. Start every session with `git pull` and end it with a commit and push (videos stay out of git). Record new owner feedback in `brand/BRAND.md`.
 
+## Animated explainers (owner's animation skill, 24 Nov 2026)
+Use `.claude/skills/animation/` (SKILL.md) for animated stories and explainers: three.js kit, deterministic frames, HTML + MP4.
+Example: `projects/2026-11-paper-explainer/anim/` (paper pop-up book, vertical). Book art: run `../extract.py`, `prep_art.py`, `cutouts.py` first
+(the owner's PDF proofs go in `projects/2026-11-paper-explainer/source/`, git-ignored).
+
 ## Landscape class videos (YouTube, like Day 6)
 Follow `docs/class-video-style.md`. Template: `remotion/src/BearJoyClass.tsx` (1920Ã—1080, render 4K with `--scale=2`); plan builder: `projects/2026-11-firststeps-day5/build_class.py` (reading-speed check + automatic SFX cues). Start a new class from that folder. Same brand, approval and storyboard rules; different layout (phrase cards with Korean pronunciation, "Your turn" pauses, stress/flow marks, recap card).
 

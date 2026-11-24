@@ -1,0 +1,42 @@
+{
+  "title": "Bear and Joy Once Upon a Time",
+  "duration": 60, "fps": 24, "width": 1080, "height": 1920,
+  "turns": [[1.4, 2.9], [11.5, 12.4], [19.0, 19.9], [26.5, 27.4], [34.4, 35.3], [42.3, 43.2], [51.8, 52.7]],
+  "spreads": ["home", "what", "read", "speak", "talk", "families", "cta"],
+  "lines": [
+    [3.2, 6.1, "옛날 옛적에, 당신과 아이가 있었어요.", "Once upon a time, there was you… and your child."],
+    [6.1, 9.1, "영어로 말 걸고 싶은데, 발음이 걱정됐죠.", "You wanted to talk in English, but worried about your accent."],
+    [9.1, 11.6, "그때, 작은 곰이 찾아왔어요!", "Then, a little bear came along!"],
+    [12.5, 15.8, "이름 없는 작은 곰과 나비 Joy의 이야기", "Bear & Joy: a little bear with no name, and Joy the butterfly."],
+    [15.8, 19.1, "옥스퍼드에서 시작해, 우리 집까지.", "Picture books from Oxford to your home."],
+    [20.0, 23.2, "① 스토리북을 아이와 함께 읽어요", "1 · READ the storybook together"],
+    [23.2, 26.6, "그림을 보며 천천히, 한 장씩.", "Slowly, one picture at a time."],
+    [27.5, 30.8, "② Walkbook 속 모든 단어에 한글 발음", "2 · SPEAK: every word in the Walkbook, in Korean sound"],
+    [30.8, 34.5, "멈추고, 함께 보고, 들어주세요.", "Stop. Look. Listen."],
+    [35.4, 38.8, "③ Little Steps 7일 웹 놀이로 대화해요", "3 · TALK with 7 days of Little Steps web play"],
+    [38.8, 42.4, "막힐 땐, Bear & Joy 팀이 함께해요.", "Stuck? Our team is right here with you."],
+    [43.3, 47.4, "엄마와, 아빠와, 할머니와, 친구와…", "With mum, dad, grandma and friends…"],
+    [47.4, 51.9, "아이는 자신 있게 영어로 대화하게 되었답니다.", "…and they talked in English, happily ever after."],
+    [52.8, 55.5, "당신의 이야기는 오늘 시작돼요.", "Your story starts today."]
+  ],
+  "cues": {
+    "worry": 6.3, "bear-in": 9.2, "door": 12.6, "friend": 13.0, "flowers": 13.4,
+    "read-book": 20.1, "read-pair": 20.5, "read-bear": 21.1, "read-bubble": 23.6,
+    "speak-book": 27.6, "speak-card": 28.0, "speak-circle": 28.7, "stop": 30.9, "look": 31.7, "listen": 32.5,
+    "talk-tablet": 35.5, "talk-pair": 35.9, "talk-joy-screen": 37.0, "talk-sheet": 38.5, "mark": 39.0, "joy": 39.5,
+    "fam1": 43.4, "fam2": 43.8, "fam3": 44.2, "fam4": 44.6,
+    "cta-book": 52.9, "cta-bear": 53.4, "cta-comment": 55.6
+  },
+  "talks": [
+    ["fam1", "adult", 44.7, 46.1, "What can you see?", "뭐가 보여?"],
+    ["fam1", "child", 45.5, 46.9, "A butterfly!", "나비요!"],
+    ["fam2", "adult", 46.5, 47.9, "Where does the road go?", "길은 어디로 갈까?"],
+    ["fam2", "child", 47.3, 48.7, "To Oxford!", "옥스퍼드요!"],
+    ["fam3", "adult", 48.3, 49.7, "Look! A little house.", "봐! 작은 집이야."],
+    ["fam3", "child", 49.1, 50.5, "Hello, house!", "안녕, 집아!"],
+    ["fam4", "adult", 49.9, 51.3, "Will you be my friend?", "내 친구 할래?"],
+    ["fam4", "child", 50.6, 51.7, "I already am!", "벌써 친구야!"],
+    ["read", "child", 23.6, 26.2, "A bear!", "곰이다!"],
+    ["talk", "adult", 36.2, 38.4, "Hello, little bear!", "안녕, 작은 곰아!"]
+  ]
+}

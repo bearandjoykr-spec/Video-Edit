@@ -38,3 +38,10 @@ remotion/public/day32books/
 remotion/public/day33/
 remotion/public/day34/
 projects/*/sfx/*.mp3
+projects/2026-11-paper-explainer/source/
+remotion/public/paper/
+projects/*/anim/node_modules/
+projects/*/anim/build/
+projects/2026-11-paper-explainer/anim/src/assets/art/
+projects/2026-11-paper-explainer/work/
+projects/*/anim/src/assets/*.ttf
