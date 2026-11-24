@@ -74,7 +74,13 @@ export function paperTex(w, h, base = C.paper, seed = 3, o = {}) {
     const x = r() * w, y = r() * h, a = r() * Math.PI, l = 6 + r() * 22;
     g.strokeStyle = `rgba(120,100,70,${0.05 + r() * 0.07})`; g.lineWidth = 0.8; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
   }
+  if (o.age !== false) { // vintage: foxing spots and a faint tea-stain ring
+    for (let i = 0; i < (o.spots ?? 14); i++) { const x = r() * w, y = r() * h, rr = 2 + r() * 9; g.fillStyle = `rgba(150,105,55,${0.05 + r() * 0.10})`; g.beginPath(); g.arc(x, y, rr, 0, 7); g.fill(); }
+    if (o.ring !== false && w > 600) { const x = w * (0.15 + r() * 0.7), y = h * (0.15 + r() * 0.7), rr = Math.min(w, h) * (0.08 + r() * 0.06);
+      g.strokeStyle = 'rgba(150,100,50,0.10)'; g.lineWidth = 5; g.beginPath(); g.arc(x, y, rr, 0.3, 5.9); g.stroke(); }
+  }
   if (o.vignette !== false) { const v = g.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.3, w / 2, h / 2, Math.max(w, h) * 0.75); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(110,80,40,0.10)'); g.fillStyle = v; g.fillRect(0, 0, w, h); }
+  g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
   return c;
 }
 // white scissor-cut edge around anything with alpha, plus a hairline grey edge so it reads on white too
@@ -190,4 +196,71 @@ export function bubble(en, ko = '', o = {}) {
   hand(g, en, (W + 32) / 2, ko ? 92 : H / 2 + 6, { font: 'PatrickHand', weight: 400, size: o.size || 82, color: o.color || C.deep });
   if (ko) hand(g, ko, (W + 32) / 2, 182, { size: 54, color: '#5b6070' });
   return c;
+}
+
+// ---------------------------------------------------------------- props for the real-world scenes
+export function drawTree(seed = 1) {
+  const c = canvas(520, 760), g = c.getContext('2d');
+  const trunk = [[230, 760], [236, 500], [214, 420], [250, 430], [270, 380], [292, 432], [318, 420], [292, 500], [298, 760]];
+  wash(g, trunk, '#9a7454', seed); ink(g, trunk, seed);
+  for (const [x, y, r, col] of [[160, 330, 130, '#8cbf6e'], [360, 320, 140, '#7fb463'], [260, 200, 170, '#96c877'], [190, 160, 110, '#a3cf82'], [340, 170, 120, '#8cbf6e']]) {
+    const blob = ell(x, y, r, r * 0.85, 14); wash(g, blob, col, seed + x); ink(g, blob, seed + x, { w: 2.6, color: '#4f7a3e' });
+  }
+  for (let i = 0; i < 9; i++) { const x = 120 + (i * 53) % 300, y = 120 + (i * 97) % 260; g.fillStyle = '#e9776b'; g.beginPath(); g.arc(x, y, 9, 0, 7); g.fill(); ink(g, ell(x, y, 9, 9, 8), seed + i, { w: 1.6 }); }
+  return c;
+}
+export function drawTable(seed = 1) { // a low Korean dinner table (밥상), front view, with bowls
+  const c = canvas(900, 380), g = c.getContext('2d');
+  for (const x of [120, 760]) { const leg = [[x, 230], [x + 30, 230], [x + 26, 370], [x + 4, 370]]; wash(g, leg, '#a77b52', seed + x); ink(g, leg, seed + x); }
+  const top = [[40, 170], [860, 170], [880, 200], [870, 250], [30, 250], [20, 200]]; wash(g, top, '#c99a6a', seed); ink(g, top, seed);
+  ink(g, [[60, 222], [840, 222]], seed + 3, { closed: false, w: 2, color: '#8a643f', passes: 1 });
+  const bowl = (x, w, col, fill, s) => { const b = [[x - w, 120], [x + w, 120], [x + w * 0.7, 175], [x - w * 0.7, 175]]; wash(g, b, col, s); ink(g, b, s);
+    const tp = ell(x, 120, w, 16, 12); wash(g, tp, fill, s + 1, { light: false }); ink(g, tp, s + 1, { w: 2.2 }); };
+  bowl(230, 70, '#fffdf7', '#ffffff', seed + 10);               // rice
+  bowl(450, 80, '#AECCE6', '#e9b46b', seed + 20);               // soup
+  const plate = ell(680, 158, 110, 22, 14); wash(g, plate, '#fffdf7', seed + 30); ink(g, plate, seed + 30, { w: 2.4 });
+  for (const [x, y] of [[640, 140], [690, 132], [728, 146]]) { const tm = ell(x, y, 26, 24, 10); wash(g, tm, '#e2554a', seed + x); ink(g, tm, seed + x, { w: 2.2 }); }
+  ink(g, [[300, 95], [380, 160]], seed + 40, { closed: false, w: 3, color: '#8a643f', passes: 1 }); ink(g, [[312, 90], [392, 156]], seed + 41, { closed: false, w: 3, color: '#8a643f', passes: 1 });
+  return c;
+}
+export function drawBlanket(seed = 1) { // the front of a bed: a patchwork quilt pulled up to the waist
+  const c = canvas(1000, 360), g = c.getContext('2d');
+  const q = [[20, 70], [300, 40], [700, 40], [980, 70], [990, 340], [10, 340]]; wash(g, q, '#F6F0BA', seed); ink(g, q, seed);
+  g.save(); P_clip(g, q);
+  for (let i = 0; i < 9; i++) for (let j = 0; j < 4; j++) if ((i + j) % 2) { g.fillStyle = 'rgba(174,204,230,0.75)'; g.fillRect(i * 112, 40 + j * 80, 112, 80); }
+  g.restore(); ink(g, q, seed + 1, { w: 2.4 });
+  for (let i = 1; i < 9; i++) ink(g, [[i * 112, 46], [i * 112, 336]], seed + i, { closed: false, w: 1.4, color: '#8b98ad', passes: 1 });
+  return c;
+}
+function P_clip(g, pts) { smooth(g, pts); g.clip(); }
+export function drawHeadboard(seed = 1) {
+  const c = canvas(1000, 560), g = c.getContext('2d');
+  const h = [[40, 560], [40, 170], [200, 60], [500, 20], [800, 60], [960, 170], [960, 560]]; wash(g, h, '#c99a6a', seed); ink(g, h, seed);
+  const p = [[180, 560], [180, 250], [500, 200], [820, 250], [820, 560]]; wash(g, p, '#fffdf7', seed + 2, { light: false }); ink(g, p, seed + 2, { w: 2.4 }); // pillow
+  return c;
+}
+export function drawAha(seed = 1) {
+  const c = canvas(360, 420), g = c.getContext('2d');
+  for (let i = 0; i < 8; i++) { const a = -Math.PI / 2 + (i - 3.5) * 0.36; ink(g, [[180 + Math.cos(a) * 130, 150 + Math.sin(a) * 130], [180 + Math.cos(a) * 168, 150 + Math.sin(a) * 168]], seed + i, { closed: false, w: 5, color: '#e0a92e', passes: 1 }); }
+  const bulb = ell(180, 160, 92, 100, 16); wash(g, bulb, '#F6E07E', seed); ink(g, bulb, seed);
+  const base = [[140, 250], [220, 250], [214, 300], [146, 300]]; wash(g, base, '#9aa0ad', seed + 3); ink(g, base, seed + 3);
+  hand(g, 'Aha!', 180, 368, { font: 'PatrickHand', weight: 400, size: 86, color: '#c0605e' });
+  return c;
+}
+export function starterCard(q, seed = 1, col = '#AECCE6') {
+  const c = canvas(700, 400), g = c.getContext('2d');
+  const box = [[20, 24], [680, 14], [686, 384], [14, 390]]; wash(g, box, '#fffdf7', seed, { light: false }); ink(g, box, seed);
+  const band = [[20, 24], [680, 14], [682, 96], [18, 104]]; wash(g, band, col, seed + 1, { light: false });
+  hand(g, 'Conversation Starter', 350, 62, { font: 'PatrickHand', weight: 400, size: 46, color: '#173B5C' });
+  const words = q.split(' '); let l1 = '', l2 = '';
+  for (const w of words) ((l1 + ' ' + w).length < 18 && !l2 ? (l1 = (l1 + ' ' + w).trim()) : (l2 = (l2 + ' ' + w).trim()));
+  hand(g, l1, 350, l2 ? 196 : 240, { font: 'PatrickHand', weight: 400, size: 76, color: INK });
+  if (l2) hand(g, l2, 350, 296, { font: 'PatrickHand', weight: 400, size: 76, color: INK });
+  return c;
+}
+export function picnic(g, x, y, rx, ry, seed = 1) { // a checked picnic blanket printed on the page
+  const pts = ell(x, y, rx, ry, 18); wash(g, pts, '#f3e3c3', seed, { alpha: 0.9 });
+  g.save(); smooth(g, pts); g.clip(); g.globalAlpha = 0.55; g.fillStyle = '#e88f86';
+  for (let i = -12; i < 12; i++) { g.fillRect(x + i * 40, y - ry, 20, ry * 2); g.fillRect(x - rx, y + i * 30, rx * 2, 14); }
+  g.restore(); ink(g, pts, seed, { w: 2.4, color: '#b26a5f' });
 }

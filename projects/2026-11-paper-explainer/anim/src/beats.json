@@ -1,42 +1,244 @@
 {
-  "title": "Bear and Joy Once Upon a Time",
-  "duration": 60, "fps": 24, "width": 1080, "height": 1920,
-  "turns": [[1.4, 2.9], [11.5, 12.4], [19.0, 19.9], [26.5, 27.4], [34.4, 35.3], [42.3, 43.2], [51.8, 52.7]],
-  "spreads": ["home", "what", "read", "speak", "talk", "families", "cta"],
-  "lines": [
-    [3.2, 6.1, "옛날 옛적에, 당신과 아이가 있었어요.", "Once upon a time, there was you… and your child."],
-    [6.1, 9.1, "영어로 말 걸고 싶은데, 발음이 걱정됐죠.", "You wanted to talk in English, but worried about your accent."],
-    [9.1, 11.6, "그때, 작은 곰이 찾아왔어요!", "Then, a little bear came along!"],
-    [12.5, 15.8, "이름 없는 작은 곰과 나비 Joy의 이야기", "Bear & Joy: a little bear with no name, and Joy the butterfly."],
-    [15.8, 19.1, "옥스퍼드에서 시작해, 우리 집까지.", "Picture books from Oxford to your home."],
-    [20.0, 23.2, "① 스토리북을 아이와 함께 읽어요", "1 · READ the storybook together"],
-    [23.2, 26.6, "그림을 보며 천천히, 한 장씩.", "Slowly, one picture at a time."],
-    [27.5, 30.8, "② Walkbook 속 모든 단어에 한글 발음", "2 · SPEAK: every word in the Walkbook, in Korean sound"],
-    [30.8, 34.5, "멈추고, 함께 보고, 들어주세요.", "Stop. Look. Listen."],
-    [35.4, 38.8, "③ Little Steps 7일 웹 놀이로 대화해요", "3 · TALK with 7 days of Little Steps web play"],
-    [38.8, 42.4, "막힐 땐, Bear & Joy 팀이 함께해요.", "Stuck? Our team is right here with you."],
-    [43.3, 47.4, "엄마와, 아빠와, 할머니와, 친구와…", "With mum, dad, grandma and friends…"],
-    [47.4, 51.9, "아이는 자신 있게 영어로 대화하게 되었답니다.", "…and they talked in English, happily ever after."],
-    [52.8, 55.5, "당신의 이야기는 오늘 시작돼요.", "Your story starts today."]
+ "title": "Bear and Joy Once Upon a Time",
+ "duration": 60,
+ "fps": 24,
+ "width": 1080,
+ "height": 1920,
+ "note": "Owner, 24 Nov 2026: a quick understanding of the Bear & Joy method. Don't teach English, use English (all words on screen in English). Owner: vintage style, paper effects, fun and engaging.",
+ "turns": [
+  [
+   1.3,
+   2.8
   ],
-  "cues": {
-    "worry": 6.3, "bear-in": 9.2, "door": 12.6, "friend": 13.0, "flowers": 13.4,
-    "read-book": 20.1, "read-pair": 20.5, "read-bear": 21.1, "read-bubble": 23.6,
-    "speak-book": 27.6, "speak-card": 28.0, "speak-circle": 28.7, "stop": 30.9, "look": 31.7, "listen": 32.5,
-    "talk-tablet": 35.5, "talk-pair": 35.9, "talk-joy-screen": 37.0, "talk-sheet": 38.5, "mark": 39.0, "joy": 39.5,
-    "fam1": 43.4, "fam2": 43.8, "fam3": 44.2, "fam4": 44.6,
-    "cta-book": 52.9, "cta-bear": 53.4, "cta-comment": 55.6
-  },
-  "talks": [
-    ["fam1", "adult", 44.7, 46.1, "What can you see?", "뭐가 보여?"],
-    ["fam1", "child", 45.5, 46.9, "A butterfly!", "나비요!"],
-    ["fam2", "adult", 46.5, 47.9, "Where does the road go?", "길은 어디로 갈까?"],
-    ["fam2", "child", 47.3, 48.7, "To Oxford!", "옥스퍼드요!"],
-    ["fam3", "adult", 48.3, 49.7, "Look! A little house.", "봐! 작은 집이야."],
-    ["fam3", "child", 49.1, 50.5, "Hello, house!", "안녕, 집아!"],
-    ["fam4", "adult", 49.9, 51.3, "Will you be my friend?", "내 친구 할래?"],
-    ["fam4", "child", 50.6, 51.7, "I already am!", "벌써 친구야!"],
-    ["read", "child", 23.6, 26.2, "A bear!", "곰이다!"],
-    ["talk", "adult", 36.2, 38.4, "Hello, little bear!", "안녕, 작은 곰아!"]
+  [
+   10.0,
+   10.8
+  ],
+  [
+   16.0,
+   16.8
+  ],
+  [
+   21.0,
+   21.8
+  ],
+  [
+   28.4,
+   29.2
+  ],
+  [
+   33.0,
+   33.8
+  ],
+  [
+   37.5,
+   38.1
+  ],
+  [
+   41.8,
+   42.4
+  ],
+  [
+   46.2,
+   47.0
+  ],
+  [
+   53.0,
+   53.7
   ]
+ ],
+ "spreads": [
+  "home",
+  "what",
+  "read",
+  "practise",
+  "starters",
+  "park",
+  "dinner",
+  "bedtime",
+  "fun",
+  "cta"
+ ],
+ "lines": [
+  [
+   3.0,
+   5.6,
+   "Once upon a time, there was you… and your child."
+  ],
+  [
+   5.6,
+   8.1,
+   "But you worried about your English accent."
+  ],
+  [
+   8.1,
+   10.1,
+   "Then a little bear came along."
+  ],
+  [
+   10.9,
+   13.5,
+   "Bear & Joy: a little bear, and Joy the butterfly."
+  ],
+  [
+   13.5,
+   16.1,
+   "Picture books from Oxford… to your home."
+  ],
+  [
+   16.9,
+   21.1,
+   "1 · Read the storybook together."
+  ],
+  [
+   21.9,
+   25.1,
+   "2 · Practise with the pronunciation guide."
+  ],
+  [
+   25.1,
+   28.5,
+   "Aha! Now you can read it with confidence."
+  ],
+  [
+   29.3,
+   33.1,
+   "3 · Conversation starters take the story outside."
+  ],
+  [
+   33.9,
+   37.6,
+   "On a walk in the park…"
+  ],
+  [
+   38.2,
+   41.9,
+   "At dinner…"
+  ],
+  [
+   42.5,
+   46.3,
+   "At bedtime…"
+  ],
+  [
+   47.1,
+   50.3,
+   "It doesn't have to be perfect. It just has to be fun."
+  ],
+  [
+   50.3,
+   53.1,
+   "Little Steps web play and our team are with you."
+  ],
+  [
+   53.8,
+   56.4,
+   "Learning together, confidence grows."
+  ]
+ ],
+ "cues": {
+  "worry": 5.7,
+  "bear-in": 8.1,
+  "door": 11.0,
+  "friend": 11.4,
+  "flowers": 11.8,
+  "read-book": 17.0,
+  "read-pair": 17.3,
+  "read-bear": 17.8,
+  "practise-pair": 22.0,
+  "practise-card": 22.4,
+  "practise-circle": 23.2,
+  "aha": 25.2,
+  "starters": 29.4,
+  "park": 33.95,
+  "park-friends": 34.25,
+  "park-tree": 34.0,
+  "dinner": 38.2,
+  "bed": 42.5,
+  "fun-pair": 47.2,
+  "fun-tablet": 50.3,
+  "fun-joy-screen": 51.4,
+  "mark": 50.6,
+  "joy": 50.9,
+  "cta-book": 53.9,
+  "cta-bear": 54.3,
+  "cta-comment": 56.4
+ },
+ "starters": [
+  "Where does the road go?",
+  "Can you find the birds in the sky?",
+  "Who might live in the little house?"
+ ],
+ "talks": [
+  [
+   "read",
+   "child",
+   18.6,
+   20.7,
+   "A bear!"
+  ],
+  [
+   "practise",
+   "adult",
+   23.0,
+   24.9,
+   "One morning…"
+  ],
+  [
+   "park",
+   "adult",
+   34.4,
+   36.0,
+   "What can you see?"
+  ],
+  [
+   "park",
+   "child",
+   35.3,
+   37.3,
+   "A butterfly!"
+  ],
+  [
+   "dinner",
+   "adult",
+   38.6,
+   40.3,
+   "Yummy! What colour is it?"
+  ],
+  [
+   "dinner",
+   "child",
+   39.7,
+   41.6,
+   "Red! A tomato!"
+  ],
+  [
+   "bedtime",
+   "adult",
+   42.9,
+   44.6,
+   "Goodnight, little bear."
+  ],
+  [
+   "bedtime",
+   "child",
+   44.0,
+   46.0,
+   "Goodnight, Joy!"
+  ],
+  [
+   "fun",
+   "child",
+   47.8,
+   50.0,
+   "Again! Again!"
+  ],
+  [
+   "fun",
+   "adult",
+   48.6,
+   50.0,
+   "Ha ha!"
+  ]
+ ]
 }
