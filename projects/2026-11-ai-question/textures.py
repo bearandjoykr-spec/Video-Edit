@@ -33,3 +33,12 @@ while y < W:
     y += 13 if R.random() > .08 else 30
 im = im.filter(ImageFilter.GaussianBlur(.6)); im.save(f"{OUT}/tex-news.png")
 print("ok")
+# mulberry (hanji-like) paper: soft clouds + many thin light fibres, like Joy's torn-paper portrait (24 Nov)
+M2 = 900; base = gaussian_filter(R.standard_normal((M2, M2)), 30, mode="wrap") * 10 + gaussian_filter(R.standard_normal((M2, M2)), 2, mode="wrap") * 4
+img2 = Image.fromarray(np.clip(128 + base, 0, 255).astype(np.uint8)).convert("L"); d2 = ImageDraw.Draw(img2)
+for _ in range(2600):
+    x, y = R.random(2) * M2; ang = R.random() * 6.28; ln = 8 + R.random() * 40; pts = []
+    for k in range(6):
+        ang += R.normal(0, .35); x += np.cos(ang) * ln / 6; y += np.sin(ang) * ln / 6; pts.append((x, y))
+    d2.line(pts, fill=int(150 + R.random() * 40), width=1)
+img2.filter(ImageFilter.GaussianBlur(.5)).save(f"{OUT}/tex-mulberry.png")

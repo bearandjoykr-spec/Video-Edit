@@ -23,10 +23,10 @@ const useFonts = () => {
 const sp = (t: number, s: number, fps: number, damping = 13) => spring({frame: Math.round((t - s) * fps), fps, config: {damping, stiffness: 160, mass: .7}});
 const rng = (seed0: number) => { let seed = (seed0 * 7919 + 12345) % 2147483647; const f = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }; f(); f(); return f; };
 const SHADOW = 'drop-shadow(0 12px 16px rgba(35,20,8,.38)) drop-shadow(0 2px 3px rgba(35,20,8,.35))';
-const TEX = {crumple: staticFile('paper/tex-crumple.png'), news: staticFile('paper/tex-news.png'), fibre: staticFile('paper/tex-fibre.png')};
+const TEX = {crumple: staticFile('paper/tex-crumple.png'), news: staticFile('paper/tex-news.png'), fibre: staticFile('paper/tex-fibre.png'), mulberry: staticFile('paper/tex-mulberry.png')};
 
 // torn outline in px, as a CSS polygon()
-const tornPoly = (w: number, h: number, seed: number, j = 8, step = 22) => {
+const tornPoly = (w: number, h: number, seed: number, j = 12, step = 9) => {
   const r = rng(seed); const pts: string[] = [];
   for (let x = 0; x <= w; x += step) pts.push(`${x}px ${r() * j}px`);
   for (let y = 0; y <= h; y += step) pts.push(`${w - r() * j}px ${y}px`);
@@ -35,12 +35,12 @@ const tornPoly = (w: number, h: number, seed: number, j = 8, step = 22) => {
   return `polygon(${pts.join(',')})`;
 };
 // a sheet of crumpled paper with a white fibre edge where it was torn
-const Sheet: React.FC<{x: number; y: number; w: number; h: number; color?: string; seed?: number; rot?: number; tex?: 'crumple' | 'news' | 'fibre'; edge?: boolean;
-  style?: React.CSSProperties; children?: React.ReactNode}> = ({x, y, w, h, color = C.paper, seed = 3, rot = 0, tex = 'crumple', edge = true, style, children}) => (
+const Sheet: React.FC<{x: number; y: number; w: number; h: number; color?: string; seed?: number; rot?: number; tex?: 'crumple' | 'news' | 'fibre' | 'mulberry'; edge?: boolean;
+  style?: React.CSSProperties; children?: React.ReactNode}> = ({x, y, w, h, color = C.paper, seed = 3, rot = 0, tex = 'mulberry', edge = true, style, children}) => (
   <div style={{position: 'absolute', left: x, top: y, width: w, height: h, transform: `rotate(${rot}deg)`, filter: SHADOW, ...style}}>
-    {edge && <div style={{position: 'absolute', left: -5, top: -5, width: w + 10, height: h + 10, background: '#F6F1E6', clipPath: tornPoly(w + 10, h + 10, seed + 500, 11)}} />}
+    {edge && <div style={{position: 'absolute', left: -5, top: -5, width: w + 10, height: h + 10, background: '#F6F1E6', clipPath: tornPoly(w + 10, h + 10, seed + 500, 14, 7)}} />}
     <div style={{position: 'absolute', inset: 0, clipPath: tornPoly(w, h, seed), background: color}}>
-      <div style={{position: 'absolute', inset: 0, backgroundImage: `url(${TEX[tex]})`, backgroundSize: tex === 'news' ? '420px' : '520px', mixBlendMode: tex === 'news' ? 'multiply' : 'overlay',
+      <div style={{position: 'absolute', inset: 0, backgroundImage: `url(${TEX[tex]})`, backgroundSize: tex === 'news' ? '420px' : tex === 'mulberry' ? '640px' : '520px', mixBlendMode: tex === 'news' ? 'multiply' : 'overlay',
         opacity: tex === 'news' ? .35 : .9}} />
     </div>
     <div style={{position: 'absolute', inset: 0}}>{children}</div>
@@ -52,12 +52,17 @@ const Defs: React.FC<{id: string}> = ({id}) => (
   <defs>
     <pattern id={`cr${id}`} patternUnits="userSpaceOnUse" width="260" height="260"><image href={TEX.crumple} width="260" height="260" /></pattern>
     <pattern id={`nw${id}`} patternUnits="userSpaceOnUse" width="220" height="220"><image href={TEX.news} width="220" height="220" /></pattern>
+    <pattern id={`mb${id}`} patternUnits="userSpaceOnUse" width="300" height="300"><image href={TEX.mulberry} width="300" height="300" /></pattern>
+    <filter id={`rg${id}`} x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="3" seed="3" /><feDisplacementMap in="SourceGraphic" scale="7" /></filter>
+    <filter id={`rw${id}`} x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".12" numOctaves="3" seed="9" /><feDisplacementMap in="SourceGraphic" scale="9" /></filter>
   </defs>
 );
 // a filled paper shape: colour + crumple light + optional newsprint
 const P: React.FC<{d: string; fill: string; id: string; news?: boolean; stroke?: boolean}> = ({d, fill, id, news, stroke}) => (
-  <g style={{filter: 'drop-shadow(2px 4px 2px rgba(30,15,5,.38))'}}><path d={d} fill={fill} stroke={stroke ? 'rgba(0,0,0,.18)' : undefined} strokeWidth={stroke ? 2 : undefined} />
-    <path d={d} fill={`url(#cr${id})`} style={{mixBlendMode: 'overlay'}} opacity={.85} />
+  <g style={{filter: 'drop-shadow(2px 4px 2px rgba(30,15,5,.38))'}}>
+    <path d={d} fill="#F3EDE0" stroke="#F3EDE0" strokeWidth={5} filter={`url(#rw${id})`} />
+    <g filter={`url(#rg${id})`}><path d={d} fill={fill} />
+    <path d={d} fill={`url(#mb${id})`} style={{mixBlendMode: 'overlay'}} opacity={.9} /></g>
     {news && <path d={d} fill={`url(#nw${id})`} style={{mixBlendMode: 'multiply'}} opacity={.28} />}</g>
 );
 
@@ -164,55 +169,18 @@ const Kid: React.FC<{x: number; y: number; s?: number; shirt: string; hair?: str
 };
 
 // ---------- Joy and Mark: paper bodies with their real (printed) faces ----------
-const Teacher: React.FC<{who: 'joy' | 'mark'; x: number; y: number; s?: number; book?: boolean; rot?: number; glasses?: number}> = ({who, x, y, s = 1, book, rot = 0, glasses = 0}) => {
-  const joy = who === 'joy'; const id = `t${who}`;
-  const jacket = joy ? '#34343C' : '#CFC3AE'; const shirt = joy ? '#26262B' : '#EEF1F4';
-  // face image: joy-head 822x840 (eyes ~ .37,.555, tilted -24°), mark-head 807x857 (eyes ~ .52,.43)
-  const hw = joy ? 215 : 185; const hh = joy ? hw * 832 / 813 : hw * 849 / 671;
-  return <div style={{position: 'absolute', left: x, top: y, width: 420 * s, height: 1400 * s, transform: `rotate(${rot}deg)`, filter: SHADOW}}>
-    <div style={{position: 'absolute', left: 0, top: 0, width: 420, height: 1400, transform: `scale(${s})`, transformOrigin: '0 0'}}>
-      {joy && <svg width={420} height={1400} style={{position: 'absolute', left: 0, top: 0}}><Defs id={id + 'h'} />
-        <P id={id + 'h'} d="M108 90 Q100 6 212 2 Q326 6 318 100 Q342 250 318 340 L104 340 Q80 250 108 90 Z" fill={C.hair} /></svg>}
-      <svg width={420} height={1400} style={{position: 'absolute', left: 0, top: 0}}><Defs id={id} /><g transform="translate(0 -108)">
-        {/* neck */}
-        <P id={id} d="M180 270 L240 270 L240 330 L180 330 Z" fill={C.skin} />
-        {/* body */}
-        <P id={id} d="M40 870 L52 420 Q62 350 140 330 L280 330 Q358 350 368 420 L380 870 Z" fill={jacket} news stroke />
-        {joy ? <><P id={id} d="M150 330 L270 330 L238 470 L182 470 Z" fill="#E4DED2" />
-          <P id={id} d="M140 332 L184 336 L206 640 L176 640 Z" fill="#45454E" news /><P id={id} d="M280 332 L236 336 L214 640 L244 640 Z" fill="#45454E" news />
-          <P id={id} d="M78 600 L150 600 L150 640 L78 640 Z" fill="#2A2A30" /><P id={id} d="M270 600 L342 600 L342 640 L270 640 Z" fill="#2A2A30" /></> : <>
-          <P id={id} d="M168 330 L252 330 L246 560 L174 560 Z" fill={shirt} />
-          <P id={id} d="M200 340 L220 340 L226 470 L210 500 L194 470 Z" fill="#22314F" news />
-          <P id={id} d="M140 332 L196 340 L186 460 Z" fill="#BDB09A" /><P id={id} d="M280 332 L224 340 L234 460 Z" fill="#BDB09A" /></>}
-        {joy && [0, 1, 2].map((b) => <circle key={b} cx={228} cy={500 + b * 60} r={7} fill="#15151A" />)}
-        {!joy && <><P id={id} d="M80 610 L150 610 L150 646 L80 646 Z" fill="#BDB09A" /><P id={id} d="M270 610 L340 610 L340 646 L270 646 Z" fill="#BDB09A" />
-          <P id={id} d="M290 420 L330 420 L330 436 L290 436 Z" fill="#BDB09A" /></>}
-        {/* arms holding a book, or resting */}
-        {book ? <>
-          <P id={id} d="M58 430 Q40 560 120 600 L200 590 L196 548 L130 540 Q110 500 116 440 Z" fill={jacket} news />
-          <P id={id} d="M362 430 Q380 560 300 600 L220 590 L224 548 L290 540 Q310 500 304 440 Z" fill={jacket} news />
-          <g transform="translate(110 470) rotate(-4)">
-            <rect x={0} y={0} width={100} height={130} fill="#FBF7EC" /><rect x={100} y={0} width={100} height={130} fill="#F4EEDF" />
-            <rect x={-6} y={-6} width={212} height={142} fill="none" stroke="#7B5A3A" strokeWidth={6} />
-            <image href={staticFile('brand/bear-butterfly.png')} x={112} y={16} width={78} height={100} />
-            {[0, 1, 2, 3].map((l) => <rect key={l} x={12} y={22 + l * 22} width={70 - l * 8} height={6} fill="#B8AE9C" />)}</g>
-          <ellipse cx={118} cy={598} rx={22} ry={18} fill={C.skin} /><ellipse cx={302} cy={598} rx={22} ry={18} fill={C.skin} /></> : <>
-          <P id={id} d="M56 426 Q30 560 70 660 Q120 700 196 690 L196 650 Q128 650 110 620 Q100 540 118 440 Z" fill={jacket} news />
-          <P id={id} d="M364 426 Q390 560 350 660 Q300 700 224 690 L224 650 Q292 650 310 620 Q320 540 302 440 Z" fill={jacket} news />
-          <P id={id} d="M184 646 L204 646 L204 696 L184 696 Z" fill={shirt === '#EEF1F4' ? shirt : '#E4DED2'} />
-          <ellipse cx={206} cy={676} rx={30} ry={24} fill={C.skin} /><ellipse cx={226} cy={668} rx={26} ry={22} fill="#E3B08A" /></>}
-        <P id={id} d="M84 860 L204 860 L196 1290 L102 1290 Z" fill={joy ? '#1C1C20' : '#2C3A55'} news />
-        <P id={id} d="M216 860 L336 860 L318 1290 L224 1290 Z" fill={joy ? '#1C1C20' : '#2C3A55'} news />
-        <ellipse cx={142} cy={1296} rx={62} ry={22} fill="#141414" /><ellipse cx={278} cy={1296} rx={62} ry={22} fill="#141414" /></g>
-      </svg>
-      <Img src={staticFile(`paper/${who}-head.png`)} style={{position: 'absolute', left: 210 - hw / 2 + (joy ? 6 : 0), top: joy ? 14 : 4, width: hw, height: hh, filter: 'drop-shadow(2px 5px 3px rgba(30,15,5,.4))'}} />
-      {glasses > 0 && (() => { const gx = joy ? 210 - hw / 2 + 6 + hw * .37 : 210 - hw / 2 + hw * .52; const gy = (joy ? 14 : 4) + hh * (joy ? .555 : .40);
-        const off = glasses >= 1 ? 0 : 1 - glasses;   // glasses: 1 = worn, 0..1 = flying off
-        return <div style={{position: 'absolute', left: gx - 120 + off * 260, top: gy - 40 - off * 460, transform: `rotate(${(joy ? -24 : 0) + off * 40}deg) scale(.72)`, filter: SHADOW}}>
-          <svg width={240} height={84}><rect x={6} y={14} width={98} height={56} rx={22} fill="#9FD3F2" fillOpacity=".8" stroke={C.ink} strokeWidth={8} />
-            <rect x={136} y={14} width={98} height={56} rx={22} fill="#9FD3F2" fillOpacity=".8" stroke={C.ink} strokeWidth={8} /><path d="M104 38 Q120 24 136 38" stroke={C.ink} strokeWidth={8} fill="none" /></svg>
-          <div style={{position: 'absolute', left: 92, top: -30, fontFamily: PRE, fontWeight: 900, fontSize: 28, color: '#fff', background: C.blue, padding: '0 10px'}}>AI</div></div>; })()}
-    </div>
+const Teacher: React.FC<{who: 'joy' | 'mark'; x: number; y: number; w: number; glasses?: number}> = ({who, x, y, w, glasses = 0}) => {
+  // Joy's own torn-paper portrait of the two of us (raw-footage/ai-question/joy-paper-portrait.webp), cut into two busts.
+  // joy-bust 695x802: eyes at (148,233) and (258,193); mark-bust 831x876.
+  const joy = who === 'joy'; const W0 = joy ? 695 : 831; const k = w / W0;
+  const off = glasses >= 1 ? 0 : 1 - glasses;
+  return <div style={{position: 'absolute', left: x, top: y, width: w, filter: SHADOW}}>
+    <Img src={staticFile(`paper/${who}-bust.png`)} style={{width: w, display: 'block'}} />
+    {joy && glasses > 0 && <div style={{position: 'absolute', left: 203 * k - 130 * k + off * 260, top: 213 * k - 34 * k - off * 460, width: 260 * k,
+      transform: `rotate(${-20 + off * 40}deg)`, transformOrigin: '50% 50%', filter: SHADOW}}>
+      <svg viewBox="0 0 260 92" width={260 * k} height={92 * k}><rect x={6} y={16} width={104} height={62} rx={24} fill="#9FD3F2" fillOpacity=".8" stroke={C.ink} strokeWidth={8} />
+        <rect x={150} y={16} width={104} height={62} rx={24} fill="#9FD3F2" fillOpacity=".8" stroke={C.ink} strokeWidth={8} /><path d="M110 42 Q130 26 150 42" stroke={C.ink} strokeWidth={8} fill="none" /></svg>
+      <div style={{position: 'absolute', left: '40%', top: -32 * k, fontFamily: PRE, fontWeight: 900, fontSize: 34 * k, color: '#fff', background: C.blue, padding: '0 10px'}}>AI</div></div>}
   </div>;
 };
 
@@ -322,13 +290,17 @@ export const PaperThink: React.FC = () => {
 
       {/* CLASS: Joy and Mark read a picture book, the children raise their hands and their heads fill with ideas */}
       {inS('cls') && (() => { const l = lt('cls');
-        const kids: {x: number; shirt: string; style: Hair; hair?: string}[] = [{x: -10, shirt: C.yellow, style: 'pigtails'}, {x: 255, shirt: C.green, style: 'short', hair: '#4A3020'},
-          {x: 520, shirt: C.pink, style: 'long'}, {x: 785, shirt: C.blue, style: 'bob', hair: '#3A2A20'}];
+        const kids: {x: number; shirt: string; style: Hair; hair?: string}[] = [{x: -10, shirt: '#8E3B3B', style: 'pigtails', hair: '#4A3426'}, {x: 255, shirt: '#2F3B5C', style: 'short', hair: '#7A5232'},
+          {x: 520, shirt: '#D7A63A', style: 'long', hair: '#3D2A20'}, {x: 785, shirt: '#3F6B55', style: 'bob', hair: '#241A15'}];
         const ideas = ['🐻', '🚀', '🌊', '🦋'];
         return <AbsoluteFill>
           <Classroom t={t} board={<div style={{fontFamily: HAND, fontWeight: 700, fontSize: 62, color: '#F2EEDC', textAlign: 'center', paddingTop: 70, lineHeight: 1.15}}>What happens<br />next? 🤔</div>} />
-          <Teacher who="joy" x={-30} y={500 + drift * .4} s={1.22} book />
-          <Teacher who="mark" x={560} y={470 - drift * .4} s={1.25} />
+          <Teacher who="mark" x={-40} y={560 + drift * .4} w={560} />
+          <Teacher who="joy" x={560} y={620 - drift * .4} w={500} />
+          <Sheet x={360} y={820} w={360} h={250} color="#FBF5E6" seed={77} tex="mulberry" rot={-3}>
+            <Img src={staticFile('brand/bear-butterfly.png')} style={{position: 'absolute', left: 200, top: 30, width: 130}} />
+            {[0, 1, 2, 3, 4].map((q) => <div key={q} style={{position: 'absolute', left: 30, top: 50 + q * 34, width: 130 - q * 12, height: 8, background: '#C4B9A4'}} />)}
+            <div style={{position: 'absolute', left: 178, top: 10, bottom: 10, width: 3, background: 'rgba(0,0,0,.12)'}} /></Sheet>
           {l > .5 && l < 5 && <Bubble x={560} y={400} w={480} k={sp(t, S.cls[0] + .6, fps)} tail="right">What do you think<br />happens next?</Bubble>}
           {kids.map((kd, i) => { const hs = S.cls[0] + 2.2 + i * .7; const hand = sp(t, hs, fps, 10); const think = sp(t, hs + 3.2, fps, 12);
             return <React.Fragment key={i}>
@@ -356,7 +328,8 @@ export const PaperThink: React.FC = () => {
             <div key={i} style={{position: 'absolute', left: 40 + i * 128, top: 320 + Math.sin(i * 1.3) * 14, fontSize: 70, transform: `rotate(${Math.sin(t * 2 + i) * 6}deg)`, filter: SHADOW}}>{f}</div>))}
           <svg width={1080} height={200} style={{position: 'absolute', top: 300}}><path d="M0 30 Q540 120 1080 30" stroke="#5a4636" strokeWidth={3} fill="none" /></svg>
           {people.map((p, i) => <Person key={i} id={`p${i}`} {...p} s={1.05} t={t} />)}
-          <Teacher who="joy" x={-70} y={470} s={1.45} glasses={g} />
+          <Teacher who="joy" x={-60} y={640} w={640} glasses={g} />
+          <Sheet x={-40} y={1290} w={1160} h={700} color="#B48A60" seed={131} />
           {g < .1 && <Bubble x={300} y={430} w={420} k={sp(t, S.world[0] + 3.3, fps)}>I think…<div style={{fontSize: 32, color: C.red}}>내 생각은요!</div></Bubble>}
           <Vignette k={.4} />
         </AbsoluteFill>; })()}
