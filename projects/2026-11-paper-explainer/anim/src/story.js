@@ -6,6 +6,7 @@
 // (park, dinner, bedtime); it doesn't have to be perfect, just fun. Use English, don't teach it. Vintage, paper, fun.
 import { THREE, keys, seg, ease, lerp, clamp, wobble, rng } from './kit.js';
 import * as P from './paper.js';
+import { buildWorld } from './world.js';
 import cover1 from './assets/art/b1-cover.jpg';
 import wbCover from './assets/art/wb-cover.jpg';
 import siteMark from './assets/art/site-mark.jpg';
@@ -137,7 +138,7 @@ export function buildStory(stage, B, IMG) {
     paste(g, IMG.logoArt, 680, 560, 360, -0.03, 10); P.seal(g, 860, 820, 96, '베어앤조이', 3);
   });
   const BD = {
-    home: backdrop(4, [[0, '#efe6cf'], [1, '#f4ead4']], g => {
+    seoul: backdrop(4, [[0, '#efe6cf'], [1, '#f4ead4']], g => {
       P.mountains(g, S, [[430, 150, MOUNT, 0.55], [560, 120, '#7f8a7c', 0.45]], 4);
       g.fillStyle = 'rgba(215,95,70,0.75)'; g.beginPath(); g.arc(800, 220, 60, 0, 7); g.fill();               // a red sun
       // a hanok roofline with curved eaves, and a plum branch
@@ -174,7 +175,7 @@ export function buildStory(stage, B, IMG) {
     cta: backdrop(22, [[0, '#26344f'], [1, '#33476b']], g => { stars(g, 60, 23); g.fillStyle = '#f2e6b8'; g.beginPath(); g.arc(820, 220, 70, 0, 7); g.fill(); }),
   };
   const FL = {
-    home: floorTex(31, g => rug(g, 480, 600, 380, 170, '#e9cfa4', 1)),
+    seoul: floorTex(31, g => rug(g, 480, 600, 380, 170, '#e9cfa4', 1)),
     what: floorTex(33, g => rug(g, 512, 860, 470, 120, '#d7e6c6', 2)),
     read: floorTex(35, g => rug(g, 640, 640, 300, 150, '#cfe0ee', 3)),
     practise: floorTex(37, g => rug(g, 360, 640, 300, 150, '#f0d6d6', 4)),
@@ -246,24 +247,20 @@ export function buildStory(stage, B, IMG) {
     bursts.push({ ms, at, x, y });
   }
 
-  // ------------------------------------------------ home — you and your child, a worry, the bear arrives
+  // ------------------------------------------------ Seoul: you and your child; the bear arrives; your child will name him
   const home = pair('mum', 'girl', 1.0, 1);
-  pop(stg('home'), -0.3, 3.6, home.kids, spreadStart(0) + 0.15);
-  const worryC = P.canvas(700, 420), wg = worryC.getContext('2d');
-  { const pts = [[80, 210], [70, 120], [170, 60], [300, 40], [430, 50], [560, 70], [640, 150], [630, 260], [540, 330], [380, 350], [220, 340], [110, 300]];
-    wg.fillStyle = '#fffdf7'; P.smooth(wg, pts); wg.fill(); P.ink(wg, pts, 4, { w: 3 });
-    for (const [x, y, r] of [[140, 390, 22], [90, 410, 12]]) { wg.fillStyle = '#fffdf7'; wg.beginPath(); wg.arc(x, y - 30, r, 0, 7); wg.fill(); P.ink(wg, P.ell(x, y - 30, r, r, 8), 5, { w: 2.4 }); }
-    P.hand(wg, '내 발음…', 360, 140, { font: 'Batang', weight: 700, size: 84, color: P.C.deep }); P.hand(wg, '괜찮을까?', 360, 250, { font: 'Batang', weight: 700, size: 70, color: '#a8473a' });
-    for (let i = 0; i < 0; i++) P.ink(wg, [[230 + i * 40, 250], [260 + i * 40, 225], [290 + i * 40, 262], [320 + i * 40, 230]], 20 + i, { closed: false, w: 3, color: '#c0605e', passes: 1 }); }
-  const worry = new THREE.Mesh((() => { const gg = new THREE.PlaneGeometry(2.2, 1.32); gg.translate(0.4, 0.66, 0); return gg; })(), cutMat(P.sticker(worryC, 8)));
-  worry.position.set(-0.9, 2.3, 0.1); home.a.g.add(worry); bubbles.push({ m: worry, s: cue['worry'], e: cue['bear-in'] + 0.3 });
-  const leap = stick(IMG.cutLeap, 1.55, 10, 21);
-  pop(stg('home'), 2.1, 4.4, [leap], cue['bear-in'] - 0.05, { layer: 2 });
+  const homeGp = pop(stg('seoul'), -0.7, 3.6, home.kids, cue['seoul-pair']);
+  talkPair(home, 'seoul', homeGp);
+  const seoulBear = stick(IMG.cutFriend, 1.7, 12, 32);
+  pop(stg('seoul'), 1.75, 3.8, [seoulBear], cue['seoul-bear'], { layer: 2 });
+  const tagC = P.canvas(520, 300), tg = tagC.getContext('2d');       // a paper name tag: the name is your child's to give
+  { tg.fillStyle = '#f4ead2'; tg.beginPath(); tg.moveTo(60, 20); tg.lineTo(500, 20); tg.lineTo(500, 280); tg.lineTo(60, 280); tg.lineTo(12, 150); tg.closePath(); tg.fill();
+    P.ink(tg, [[60, 20], [500, 20], [500, 280], [60, 280], [12, 150]], 7, { w: 3, passes: 1 }); tg.fillStyle = '#b8352b'; tg.beginPath(); tg.arc(66, 150, 13, 0, 7); tg.fill();
+    P.hand(tg, '이름:', 200, 150, { font: 'Batang', weight: 700, size: 66, color: '#6b4a32' }); P.hand(tg, '?', 380, 150, { font: 'Brush', weight: 400, size: 170, color: '#b8352b' }); }
+  const nameTag = stick(tagC, 0.62, 6, 33); nameTag.position.set(1.5, 2.1, 0.12); homeGp.add(nameTag);
+  bubbles.push({ m: nameTag, s: cue['name-tag'], e: spreadEnd(0) - 0.3 });
+  confetti(homeGp, cue['name-tag'] + 0.15, 1.5, 2.3, 30, 5);
   const bfly = stick(IMG.butterfly, 0.55, 8, 22); scene.add(bfly);
-
-  // ------------------------------------------------ what Bear & Joy is — cut-outs from our books
-  pop(stg('what'), 0.15, 3.5, [stick(IMG.cutFriend, 2.1, 12, 32)], cue['friend']);
-  pop(stg('what'), 0, 5.3, [stick(P.drawPaperFlowers(33, 1000, 400, 7), 1.45, 8, 33)], cue['flowers'], { layer: 2 });
 
   // ------------------------------------------------ 1 · read the storybook together
   pop(stg('read'), -1.5, 2.1, [card(IMG.cover1, 2.3, { margin: 0.03, seed: 41 })], cue['read-book']);
@@ -294,7 +291,7 @@ export function buildStory(stage, B, IMG) {
   pop(stg('practise'), 1.4, 2.2, [pronCard], cue['practise-card']);
   pop(stg('practise'), 2.0, 4.6, [card(IMG.wbCover, 1.3, { margin: 0.03, seed: 51 })], cue['practise-card'] + 0.3, { layer: 2 });
   const aha = stick(P.drawAha(5), 1.45, 8, 53); aha.position.set(-0.15, prPair.a.topY + 0.15, 0.1); prGp.add(aha);
-  bubbles.push({ m: aha, s: cue['aha'], e: spreadEnd(3) - 0.3 });
+  bubbles.push({ m: aha, s: cue['aha'], e: spreadEnd(2) - 0.3 });
   confetti(prGp, cue['aha'] + 0.1, -0.6, prPair.a.topY + 0.4, 26, 3);
 
   // ------------------------------------------------ 3 · conversation starters take the story outside
@@ -329,8 +326,8 @@ export function buildStory(stage, B, IMG) {
   const funPair = pair('mum', 'girl', 0.95, 1);
   const funGp = pop(stg('fun'), -1.2, 3.9, funPair.kids, cue['fun-pair'], { layer: 1 });
   talkPair(funPair, 'fun', funGp);
-  funPair.a.laugh.push([47.6, 50.1]); funPair.c.laugh.push([47.4, 50.1]);
-  confetti(funGp, 47.9, 0.2, 2.2, 34, 7);
+  funPair.a.laugh.push([56.5, 58.9]); funPair.c.laugh.push([56.3, 58.9]);
+  confetti(funGp, 56.7, 0.2, 2.2, 34, 7);
   const tabC = P.canvas(1000, 760), tabTex = tex(tabC); let tabState = -1;
   function drawTab(i) {
     const g = tabC.getContext('2d'); g.clearRect(0, 0, 1000, 760);
@@ -351,7 +348,7 @@ export function buildStory(stage, B, IMG) {
     P.hand(g, name, 210, 450, { font: HANDF, weight: 400, size: 70, color: P.C.deep }); return stick(c, 1.5, 10, seed); };
   pop(stg('fun'), 0.6, 4.6, [avatar(IMG.markAv, 'Mark T', 73)], cue['mark'], { layer: 2 });
   const joyGp = pop(stg('fun'), 1.8, 4.5, [avatar(IMG.joyAv, 'Joy T', 74)], cue['joy'], { layer: 2 });
-  bub(joyGp, '언제든 물어보세요!', cue['joy'] + 0.4, spreadEnd(8) - 0.3, 0.2, 1.5, { tail: 'right', h: 0.7, font: 'Batang' });
+  bub(joyGp, '언제든 물어보세요!', cue['joy'] + 0.4, spreadEnd(7) - 0.3, 0.2, 1.5, { tail: 'right', h: 0.7, font: 'Batang' });
 
   // ------------------------------------------------ Book 1 and the comment call
   pop(stg('cta'), -0.55, 1.9, [card(IMG.cover1, 3.0, { margin: 0.03, seed: 81 })], cue['cta-book']);
@@ -376,12 +373,12 @@ export function buildStory(stage, B, IMG) {
       b.m.scale.setScalar(Math.max(0.001, k)); b.m.visible = k > 0.01; b.m.rotation.z = Math.sin(tq * 3 + b.s) * 0.025; }
     for (const bu of bursts) { const d = q12(t) - bu.at; bu.ms.forEach(m => { const on = d > 0 && d < 1.6; m.visible = on; if (!on) return; const u = m.userData;
       m.position.set(bu.x + u.vx * d, bu.y + u.vy * d - 4.2 * d * d, 0.15); m.rotation.set(u.spin * d, u.spin * 0.6 * d, u.spin * 0.3 * d); }); }
-    { const tq = q12(t), a = cue['bear-in'], p = seg(tq, a, a + 1.1);
-      leap.position.set(lerp(2.2, 0, ease.out(p)), Math.abs(Math.sin(p * Math.PI * 3)) * 0.7 * (1 - p), 0); leap.rotation.z = (1 - p) * Math.sin(p * 19) * 0.2; }
+    { const tq = q12(t), a = cue['seoul-bear'], p = seg(tq, a, a + 1.0);   // the bear hops in to meet your child
+      seoulBear.position.set(lerp(1.4, 0, ease.out(p)), Math.abs(Math.sin(p * Math.PI * 3)) * 0.5 * (1 - p), 0); seoulBear.rotation.z = (1 - p) * Math.sin(p * 19) * 0.15; }
     { const tq = q12(t), a = cue['starters'] + 1.6, p = seg(tq, a, a + 0.9); stBear.position.set(lerp(1.2, 0, ease.out(p)), Math.abs(Math.sin(p * Math.PI * 2)) * 0.5 * (1 - p), 0); }
     { const tq = q12(t), flap = 0.55 + 0.45 * Math.abs(Math.sin(tq * 14)); let pos = null;
-      if (t > cue['bear-in'] + 0.4 && t < spreadEnd(1) - 0.3) pos = [1.6 + Math.sin(t * 1.3) * 1.6, 3.0 + Math.sin(t * 2.1) * 0.5, 3.2 + Math.cos(t * 1.1) * 0.8];
-      if (t > cue['park'] + 0.3 && t < spreadEnd(5) - 0.2) pos = [0.6 + Math.sin(t * 1.6) * 1.2, 2.6 + Math.sin(t * 2.4) * 0.4, 3.0 + Math.cos(t * 1.3) * 0.5];
+      if (t > cue['seoul-bear'] + 0.4 && t < spreadEnd(0) - 0.3) pos = [1.2 + Math.sin(t * 1.3) * 1.2, 3.2 + Math.sin(t * 2.1) * 0.4, 3.4 + Math.cos(t * 1.1) * 0.6];
+      if (t > cue['park'] + 0.3 && t < spreadEnd(4) - 0.2) pos = [0.6 + Math.sin(t * 1.6) * 1.2, 2.6 + Math.sin(t * 2.4) * 0.4, 3.0 + Math.cos(t * 1.3) * 0.5];
       if (t > cue['cta-bear'] + 0.3) { const p = ease.io(seg(t, cue['cta-bear'] + 0.3, cue['cta-bear'] + 2.2)); pos = [lerp(-2.2, 0.2, p), lerp(2.6, 3.4, p) + Math.sin(p * Math.PI) * 0.6, lerp(4.0, 2.05, p)]; }
       bfly.visible = !!pos; if (pos) { bfly.position.set(...pos); bfly.scale.set(flap, 1, 1); bfly.rotation.z = Math.sin(tq * 5) * 0.15; } }
     { const k = Math.round(seg(t, cue['practise-circle'], cue['practise-circle'] + 0.9) * 12) / 12; if (k !== pronState) { pronState = k; drawPron(k); } }
@@ -393,9 +390,10 @@ export function buildStory(stage, B, IMG) {
   const CLOSE = { pos: [0, 5.6, 15.8], look: [0, 2.2, 2.6] };   // the real-world scenes come a little closer
   function cam(t) {
     const top = { pos: [0, 18.5, 4.5], look: [0, 0, 3.4] };
-    let pos = keys(t, [[0, top.pos], [1.1, top.pos], [3.3, BASE.pos, 'io']]);
-    let look = keys(t, [[0, top.look], [1.1, top.look], [3.3, BASE.look, 'io']]);
-    const near = clamp(seg(t, 33.2, 34.2) - seg(t, 46.2, 47.2));
+    const T0 = TURN[0][0];
+    let pos = keys(t, [[T0, top.pos], [T0 + 0.3, top.pos], [T0 + 2.2, BASE.pos, 'io']]);
+    let look = keys(t, [[T0, top.look], [T0 + 0.3, top.look], [T0 + 2.2, BASE.look, 'io']]);
+    const near = clamp(seg(t, TURN[4][0], TURN[4][1] + 0.2) - seg(t, TURN[7][0], TURN[7][1] + 0.2));
     pos = pos.map((v, j) => lerp(v, CLOSE.pos[j], ease.io(near))); look = look.map((v, j) => lerp(v, CLOSE.look[j], ease.io(near)));
     let bump = 0; for (const [, b] of TURN.slice(1)) bump += Math.sin(Math.PI * clamp((t - b) / 0.3)) * (t > b ? 1 : 0) * 0.12;
     const tq = q12(t), h = 0.035;
@@ -453,7 +451,10 @@ export function buildStory(stage, B, IMG) {
     ctaCard(g, t);
   }
 
-  const sets = { book: { scene, update: t => world(t), grade: 'sepia(0.12) saturate(0.92) contrast(1.03)' } };
-  const shots = [{ set: 'book', dur: B.duration, cam: (l) => cam(l) }];
+  const W_ = buildWorld(B, IMG, { stick, cutMat, tex });
+  const grade = 'sepia(0.12) saturate(0.92) contrast(1.03)';
+  const sets = { world: { scene: W_.scene, update: t => W_.update(t), grade }, book: { scene, update: t => world(t), grade } };
+  const shots = [{ set: 'world', dur: B.worldEnd, cam: (l) => W_.cam(l) },
+    { set: 'book', dur: B.duration - B.worldEnd, in: { type: 'dip', color: '#efe3c8', dur: 0.9 }, cam: (l) => cam(l + B.worldEnd) }];
   return { sets, shots, overlay, design: [], designTitle: B.title, finish: { grain: 0.08, vignette: 0, fadeIn: 0.4, fadeOut: 0.6 } };
 }
