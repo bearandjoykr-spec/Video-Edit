@@ -9,3 +9,7 @@ Licence: **Creative Commons Attribution 4.0** — free for commercial use, but t
 | two-together.mp3 | Two Together | Calming, Bright; sparkly open voicings | https://incompetech.com/music/royalty-free/mp3-royaltyfree/Two%20Together.mp3 |
 | water-droplets-on-the-river.mp3 | Water Droplets on the River | Bright, Calming, Uplifting; "nice memories from long ago" | https://incompetech.com/music/royalty-free/mp3-royaltyfree/Water%20Droplets%20on%20the%20River.mp3 |
 Swap track: `bash anim/mix_music.sh ../music/<file>.mp3 -4`, then `node build.mjs` and render. The owner chooses by ear.
+
+## korean-music-614543.mp3 (in use, 24 Nov 2026)
+Supplied by the owner (Pixabay, artist "lnplusmusic", "Korean Korea Korean Music", track 614543), 67.8 s, about 103 BPM.
+Pixabay Content Licence. The owner chose it by ear for the paper explainer ("use this music").

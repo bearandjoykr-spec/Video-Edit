@@ -86,13 +86,14 @@ export function buildWorld(B, IMG, h) { // h: helpers from story.js (stick, cutM
   STOPS.forEach(([name, lon, lat, lm, fr, at, en, ko], i) => {
     const site = new THREE.Group(); site.applyMatrix4(cityBasis(lon, lat)); site.position.copy(vec(lon, lat).multiplyScalar(R - 0.01)); globe.add(site);
     const hinge = new THREE.Group(); site.add(hinge);
-    const card = h.stick(stop(lm, null, 7 + i * 13), name === 'oxford' ? 1.55 : 1.45, 10, 90 + i);   // landmarks only for now (owner) card.position.set(0.62, 0, -0.15); hinge.add(card);   // friends stand to the right of the path, the bear on the left
+    const card = h.stick(stop(lm, null, 7 + i * 13), name === 'oxford' ? 1.55 : 1.45, 10, 90 + i);   // landmarks only for now (owner)
+    card.position.set(0.62, 0, -0.15); hinge.add(card);   // the landmark stands to the right of the path, the bear on the left
     const tagC = P.canvas(420, 170), tg = tagC.getContext('2d');
     tg.fillStyle = '#f4ead2'; tg.beginPath(); tg.moveTo(40, 10); tg.lineTo(410, 10); tg.lineTo(410, 160); tg.lineTo(40, 160); tg.lineTo(8, 85); tg.closePath(); tg.fill();
     P.ink(tg, [[40, 10], [410, 10], [410, 160], [40, 160], [8, 85]], 5 + i, { w: 2.4, passes: 1 }); tg.fillStyle = '#b8352b'; tg.beginPath(); tg.arc(44, 85, 9, 0, 7); tg.fill();
     P.hand(tg, en, 232, 64, { font: 'Title, serif', weight: 700, size: 52, color: '#2a2420' }); P.hand(tg, ko, 232, 124, { font: 'Batang', weight: 700, size: 42, color: '#8a4b3a' });
     const tag = h.stick(tagC, 0.36, 4, 120 + i); tag.position.set(0.7, 0.02, 0.6); tag.rotation.z = -0.05; hinge.add(tag);
-    pops.push({ hinge, at: i === 0 ? -1 : at - 0.55, i });
+    pops.push({ hinge, at: i === 0 ? -1 : at - 0.55, i, leave: i < STOPS.length - 1 ? STOPS[i + 1][5] - 0.95 : 99 });
   });
 
   // the traveller: the leaping bear from Book One, always on top of the world, hopping while the globe turns under him
@@ -117,7 +118,9 @@ export function buildWorld(B, IMG, h) { // h: helpers from story.js (stick, cutM
     // the big pull-back after Seoul: swing the globe to face Europe-Africa-Asia so the whole route of friends stands round the rim,
     // then swing back to Seoul on top for the dive
     if (t > 19.6) { const k = ease.io(seg(t, 19.7, 21.0)) * (1 - ease.io(seg(t, 21.9, 22.9))); globe.quaternion.copy(Q[Q.length - 1].clone().slerp(QFRONT, k)); }
-    for (const p of pops) { const tq = q12(t), u = p.at < 0 ? 1 : clamp(ease.spring(seg(tq, p.at, p.at + 0.5))); p.hinge.rotation.x = -Math.PI / 2 * (1 - u); p.hinge.visible = true; }
+    for (const p of pops) { const tq = q12(t), u = p.at < 0 ? 1 : clamp(ease.spring(seg(tq, p.at, p.at + 0.5))); const back = p.i === STOPS.length - 1 ? 0 : clamp(seg(tq, 21.8, 22.3));   // only Seoul stays up for the dive
+      const down = Math.max(clamp(seg(tq, p.leave + 0.3, p.leave + 0.75)) * (1 - clamp(ease.spring(seg(tq, 19.9 + p.i * 0.06, 20.5 + p.i * 0.06)))), back);   // fold flat once the bear leaves; all pop back up for the big pull-back
+      const v = u * (1 - down); p.hinge.rotation.x = -Math.PI / 2 * (1 - v); p.hinge.visible = v > 0.02; }
     // the bear: stands at Oxford, hops along every leg (three hops per leg), lands on each top
     const tq = q12(t), hopP = o.moving ? (o.leg === 0 ? seg(tq, DEPART, STOPS[1][5]) : seg(tq, STOPS[o.leg + 1][5] - 0.95, STOPS[o.leg + 1][5])) : 0;
     const hop = Math.abs(Math.sin(hopP * Math.PI * (o.leg === 0 ? 4 : 2))) * 0.55;
@@ -131,10 +134,10 @@ export function buildWorld(B, IMG, h) { // h: helpers from story.js (stick, cutM
 
   // camera: close on Oxford, pull back to reveal the planet, ride the top of the world, pull right back after Seoul, then dive in
   function cam(t) {
-    const CLOSE = { pos: [0.2, R + 1.4, 4.2], look: [0, R + 0.7, 0] };
+    const CLOSE = { pos: [0.45, R + 1.5, 5.6], look: [0.4, R + 0.75, 0] };
     const RIDE = { pos: [0, R + 2.6, 7.4], look: [0, R + 0.2, 0] };
     const FAR = { pos: [0, 3.0, 22], look: [0, 0.6, 0] };
-    const DIVE = { pos: [0, R + 0.9, 2.2], look: [0, R + 0.6, 0] };
+    const DIVE = { pos: [0.4, R + 1.0, 3.4], look: [0.45, R + 0.6, 0] };
     const k = [[0, CLOSE], [2.6, CLOSE], [4.6, FAR], [5.6, FAR], [7.0, RIDE], [19.4, RIDE], [21.4, FAR], [22.0, FAR], [23.0, DIVE]];
     const pos = keys(t, k.map(([a, v]) => [a, v.pos])), look = keys(t, k.map(([a, v]) => [a, v.look]));
     const tq = q12(t); return { pos: [pos[0] + wobble(tq * 2, 1) * 0.04, pos[1] + wobble(tq * 2.2, 2) * 0.04, pos[2]], look, fov: 40 };

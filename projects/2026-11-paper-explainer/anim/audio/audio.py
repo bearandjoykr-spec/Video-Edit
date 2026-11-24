@@ -15,19 +15,24 @@ def fold_up(t, g=1.0, pan=0.0):                                  # a pop-up piec
     mx.sfx(t, rustle(0.18, 0.35 * g), 1, pan, 0.1); mx.sfx(t + 0.12, pop(0.45 * g), 1, pan, 0.15)
 
 for a, b in TURN: page_turn(a)
-fold_up(TURN[0][1] + 0.15, 1.1)                                  # you and your child
-for k in ['friend', 'flowers', 'read-book', 'read-pair', 'read-bear', 'practise-pair', 'practise-card', 'park-tree', 'park', 'park-friends',
+# the world journey: whoosh on each camera pull-back, bear hops on every leg, a paper pop at each landmark
+for t, g in [(2.7, 0.45), (19.5, 0.5), (22.2, 0.4)]: mx.sfx(t, whoosh(1.4, False, g), 1, 0, 0.3)
+arr = B['stops']; DEPART = 4.9
+for k in range(1, 5): mx.sfx(DEPART + (arr[0] - DEPART) * k / 4, boing(200 + 15 * k, 0.25, 0.3), 1, -0.3, 0.1)
+for i in range(1, len(arr)):
+    for k in (1, 2): mx.sfx(arr[i] - 0.95 + 0.475 * k, boing(210 + 20 * k, 0.25, 0.28), 1, -0.3, 0.1)
+for a in arr: fold_up(a - 0.4, 0.9, 0.35)
+mx.sfx(arr[-1] + 0.1, shimmer(1.2, 0.3), 1, 0.2, 0.3)               # Seoul!
+for i in range(3): mx.sfx(cue['seoul-bear'] + i * 0.37, boing(210 + 30 * i, 0.4, 0.35), 1, 0.4, 0.1)   # the bear hops in to the child
+mx.sfx(cue['name-tag'], shimmer(1.2, 0.32), 1, 0, 0.3)               # the name tag + confetti
+for k in ['seoul-pair', 'read-book', 'read-pair', 'read-bear', 'practise-pair', 'practise-card', 'park-tree', 'park', 'park-friends',
           'dinner', 'bed', 'fun-pair', 'fun-tablet', 'mark', 'joy', 'cta-book', 'cta-bear']:
     fold_up(cue[k], 1.0, rng.uniform(-0.4, 0.4))
 for i in range(3): fold_up(cue['starters'] + i * 0.4, 1.0, (i - 1) * 0.4)   # conversation-starter cards
-mx.sfx(cue['worry'], boing(150, 0.25, 0.4), 1, -0.2, 0.2)        # the worry cloud
-for i in range(3): mx.sfx(cue['bear-in'] + i * 0.37, boing(210 + 30 * i, 0.4, 0.35), 1, 0.4, 0.1)   # the bear hops in
 for i in range(2): mx.sfx(cue['starters'] + 1.6 + i * 0.45, boing(230 + 30 * i, 0.3, 0.3), 1, 0.4, 0.1)
-mx.sfx(cue['bear-in'] + 1.2, shimmer(1.2, 0.3), 1, 0.2, 0.3)
-mx.sfx(cue['flowers'] + 0.4, shimmer(1.0, 0.22), 1, 0, 0.3)
 for i in range(6): mx.sfx(cue['practise-circle'] + i * 0.15, bp(noise(0.12), 2000, 6000) * np.exp(-tt(0.12) * 20) * 0.25, 1, 0.2)  # pencil circle
 mx.sfx(cue['aha'], bell(mf(88), 1.8), 0.35); mx.sfx(cue['aha'] + 0.1, shimmer(1.0, 0.35), 1, 0, 0.3)   # aha!
-mx.sfx(47.9, shimmer(1.2, 0.3), 1, 0, 0.3); mx.sfx(cue['cta-comment'] + 0.15, shimmer(1.2, 0.3), 1, 0, 0.3)  # confetti
+mx.sfx(56.7, shimmer(1.2, 0.3), 1, 0, 0.3); mx.sfx(cue['cta-comment'] + 0.15, shimmer(1.2, 0.3), 1, 0, 0.3)  # confetti
 mx.sfx(cue['fun-joy-screen'], click(0.4), 1, 0)
 for r in B['talks']: mx.sfx(r[2], pop(0.35), 1, -0.3 if r[1] == 'adult' else 0.3, 0.2)   # speech bubbles
 mx.sfx(cue['cta-comment'], bell(mf(84), 2.5), 0.35); mx.sfx(cue['cta-comment'] + 0.1, bell(mf(91), 2.5), 0.25)
