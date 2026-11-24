@@ -7,12 +7,15 @@ import React, {useEffect, useState} from 'react';
 import {AbsoluteFill, Img, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 
 const C = {kraft: '#C9A47A', kraftD: '#A47B52', cream: '#F4EDDC', paper: '#FBF7EC', navy: '#1E2D4D', yellow: '#FFD24A', red: '#D44A30', ink: '#262320',
-  skin: '#EDBE98', hair: '#2B211B', blue: '#4F7FAF', green: '#5E9460', pink: '#E58FA0', wall: '#DDE2C6', board: '#2E4A3B', wood: '#8A5A35'};
+  skin: '#EDBE98', hair: '#2B211B', blue: '#4F7FAF', green: '#5E9460', pink: '#E58FA0', wall: '#F2DEC6', board: '#2E4A3B', wood: '#8A5A35'};
 const PRE = "'Pretendard', 'Noto Color Emoji', sans-serif";
 const HAND = "'Gaegu', 'Pretendard', 'Noto Color Emoji', cursive";
+const SERIF = "'Gowun Batang', 'Pretendard', 'Noto Color Emoji', serif";
+// letters that look cut from paper: a little paper-white rim and a soft shadow under them
+const CUTTYPE: React.CSSProperties = {fontFamily: SERIF, fontWeight: 700, textShadow: '0 0 1px #FBF6EA, 1px 1px 0 #FBF6EA, -1px 1px 0 #FBF6EA, 2px 3px 3px rgba(40,25,10,.35)'};
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
 const FONTS: [string, string, string][] = [['Pretendard', '700', 'Pretendard-Bold.woff2'], ['Pretendard', '800', 'Pretendard-ExtraBold.woff2'],
-  ['Pretendard', '900', 'Pretendard-Black.woff2'], ['Noto Color Emoji', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'], ['Gaegu', '700', 'Gaegu-Bold.ttf']];
+  ['Pretendard', '900', 'Pretendard-Black.woff2'], ['Noto Color Emoji', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'], ['Gaegu', '700', 'Gaegu-Bold.ttf'], ['Gowun Batang', '700', 'GowunBatang-Bold.ttf']];
 const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
   useEffect(() => {
@@ -169,13 +172,16 @@ const Kid: React.FC<{x: number; y: number; s?: number; shirt: string; hair?: str
 };
 
 // ---------- Joy and Mark: paper bodies with their real (printed) faces ----------
-const Teacher: React.FC<{who: 'joy' | 'mark'; x: number; y: number; w: number; glasses?: number}> = ({who, x, y, w, glasses = 0}) => {
-  // Joy's own torn-paper portrait of the two of us (raw-footage/ai-question/joy-paper-portrait.webp), cut into two busts.
-  // joy-bust 695x802: eyes at (148,233) and (258,193); mark-bust 831x876.
+const Teacher: React.FC<{who: 'joy' | 'mark'; x: number; y: number; w: number; t: number; glasses?: number; wave?: number}> = ({who, x, y, w, t, glasses = 0, wave = 0}) => {
+  // Joy's own torn-paper portrait of the two of us (raw-footage/ai-question/joy-paper-portrait.webp), cut into busts.
+  // joy-bust 695x802: eyes at (148,233) and (258,193), waving hand as its own piece (joy-hand.png, wrist ~ (112,640)); mark-bust 831x876.
   const joy = who === 'joy'; const W0 = joy ? 695 : 831; const k = w / W0;
   const off = glasses >= 1 ? 0 : 1 - glasses;
-  return <div style={{position: 'absolute', left: x, top: y, width: w, filter: SHADOW}}>
+  const sway = Math.sin(t * 1.1 + (joy ? 1 : 0)) * 1.2, breathe = 1 + Math.sin(t * 2.1 + (joy ? .5 : 0)) * .006;
+  const handA = wave * (Math.sin(t * 9) * 13 + 4);
+  return <div style={{position: 'absolute', left: x, top: y, width: w, filter: SHADOW, transformOrigin: '50% 100%', transform: `rotate(${sway}deg) scaleY(${breathe})`}}>
     <Img src={staticFile(`paper/${who}-bust.png`)} style={{width: w, display: 'block'}} />
+    {joy && <Img src={staticFile('paper/joy-hand.png')} style={{position: 'absolute', left: 0, top: 0, width: w, transformOrigin: `${112 * k}px ${640 * k}px`, transform: `rotate(${handA}deg)`}} />}
     {joy && glasses > 0 && <div style={{position: 'absolute', left: 203 * k - 130 * k + off * 260, top: 213 * k - 34 * k - off * 460, width: 260 * k,
       transform: `rotate(${-20 + off * 40}deg)`, transformOrigin: '50% 50%', filter: SHADOW}}>
       <svg viewBox="0 0 260 92" width={260 * k} height={92 * k}><rect x={6} y={16} width={104} height={62} rx={24} fill="#9FD3F2" fillOpacity=".8" stroke={C.ink} strokeWidth={8} />
@@ -183,6 +189,22 @@ const Teacher: React.FC<{who: 'joy' | 'mark'; x: number; y: number; w: number; g
       <div style={{position: 'absolute', left: '40%', top: -32 * k, fontFamily: PRE, fontWeight: 900, fontSize: 34 * k, color: '#fff', background: C.blue, padding: '0 10px'}}>AI</div></div>}
   </div>;
 };
+
+// Joy's torn-paper children (kids-base.png from y 250 of the 1254 px picture; the two raised arms rise on their own)
+const KK = 1080 / 1254;
+const ARMS = [{src: 'paper/kid-arm-a.png', x: 494, y: 196, w: 126, h: 365, px: 552, py: 555}, {src: 'paper/kid-arm-b.png', x: 1132, y: 225, w: 100, h: 341, px: 1200, py: 560}];
+export const KID_HEADS = [138, 336, 672, 930];
+const Kids: React.FC<{t: number; fps: number; top: number; raise: (number | null)[]}> = ({t, fps, top, raise}) => (
+  <div style={{position: 'absolute', left: 0, top, width: 1080, height: 1920 - top}}>
+    <Img src={staticFile('paper/kids-base.png')} style={{position: 'absolute', left: 0, top: 0, width: 1080, transformOrigin: '50% 100%', transform: `scaleY(${1 + Math.sin(t * 2) * .004})`}} />
+    {ARMS.map((a, i) => { const r = raise[i]; if (r == null) return null;
+      const p = spring({frame: Math.round((t - r) * fps), fps, config: {damping: 9, stiffness: 110, mass: .8}});
+      if (p <= .01) return null;
+      const wob = p > .9 ? Math.sin((t - r) * 5 + i) * 2.5 : 0;
+      return <Img key={i} src={staticFile(a.src)} style={{position: 'absolute', left: a.x * KK, top: (a.y - 250) * KK, width: a.w * KK, height: a.h * KK,
+        transformOrigin: `${(a.px - a.x) * KK}px ${(a.py - a.y) * KK}px`, transform: `rotate(${(1 - p) * (i ? 18 : -18) + wob}deg) scaleY(${.12 + .88 * Math.min(p, 1.05)})`, filter: SHADOW}} />; })}
+  </div>
+);
 
 // a paper person from another country (illustrated, not a real person)
 const Person: React.FC<{x: number; y: number; s?: number; shirt: string; skin: string; hair: string; flag: string; t: number; id: string}> = ({x, y, s = 1, shirt, skin, hair, flag, t, id}) => (
@@ -200,7 +222,7 @@ const Person: React.FC<{x: number; y: number; s?: number; shirt: string; skin: s
 
 const Bubble: React.FC<{x: number; y: number; w: number; k: number; children: React.ReactNode; tail?: 'left' | 'right'}> = ({x, y, w, k, children, tail = 'left'}) => (
   <div style={{position: 'absolute', left: x, top: y, width: w, transform: `scale(${k})`, transformOrigin: tail === 'left' ? '10% 100%' : '90% 100%', filter: SHADOW}}>
-    <div style={{background: C.paper, borderRadius: 40, padding: '22px 30px', fontFamily: PRE, fontWeight: 800, fontSize: 42, color: C.navy, textAlign: 'center', lineHeight: 1.25}}>{children}</div>
+    <div style={{background: C.paper, borderRadius: 40, padding: '22px 30px', ...CUTTYPE, fontSize: 42, color: C.navy, textAlign: 'center', lineHeight: 1.25}}>{children}</div>
     <div style={{position: 'absolute', bottom: -26, [tail]: 60, width: 0, height: 0, borderLeft: '22px solid transparent', borderRight: '22px solid transparent', borderTop: `30px solid ${C.paper}`}} />
   </div>
 );
@@ -229,15 +251,15 @@ export const PaperThink: React.FC = () => {
   return (
     <AbsoluteFill style={{background: C.kraft, overflow: 'hidden'}}>
       {/* HOOK: in the classroom, a child's head opens and question marks burst out */}
-      {inS('hook') && (() => { const l = lt('hook'); const lid = interpolate(l, [.5, 1.1], [0, 1], clamp);
-        return <AbsoluteFill style={{transform: `scale(${1.06 - l * .02})`}}>
+      {inS('hook') && (() => { const l = lt('hook');
+        return <AbsoluteFill style={{transform: `scale(${1.05 - l * .015})`, transformOrigin: '50% 70%'}}>
           <Classroom t={t} />
-          <Kid id="hk" x={210} y={700 + drift} s={2.2} shirt={C.blue} style="short" lid={lid} />
-          {['?', '?', '!', '?', '?', '?', '?'].map((q, i) => { const k = sp(t, .9 + i * .1, fps, 11); const ang = (200 + i * 23) * Math.PI / 180;
-            return <CutText key={i} text={q} size={120 + (i % 3) * 34} color={i % 2 ? C.yellow : C.red}
-              style={{position: 'absolute', left: 540 + Math.cos(ang) * 400 * k - 50, top: 840 + Math.sin(ang) * 280 * k - 90, transform: `rotate(${(i - 3) * 9}deg) scale(${k})`}} />; })}
+          <Kids t={t} fps={fps} top={1000} raise={[null, null]} />
+          {KID_HEADS.flatMap((hx, i) => [0, 1].map((j) => { const st = .5 + i * .22 + j * .35; const k = sp(t, st, fps, 9); const up = interpolate(t - st, [0, 1.6], [0, 1], clamp);
+            return k > .02 && <CutText key={`${i}${j}`} text={j ? '!' : '?'} size={j ? 96 : 130} color={(i + j) % 2 ? C.yellow : C.red}
+              style={{position: 'absolute', left: hx - 40 + (j ? 60 : -10) + Math.sin(t * 3 + i) * 6, top: 1010 - 230 * k - up * 60, transform: `rotate(${(i - 1.5) * 8 + Math.sin(t * 4 + i * 2) * 5}deg) scale(${k})`}} />; }))}
           <Sheet x={70} y={330} w={940} h={250} color={C.paper} seed={5} rot={-1.5}>
-            <div style={{padding: '34px 40px', fontFamily: PRE, fontWeight: 900, fontSize: 64, lineHeight: 1.18, color: C.navy, textAlign: 'center'}}>
+            <div style={{padding: '36px 40px', ...CUTTYPE, fontSize: 64, lineHeight: 1.2, color: C.navy, textAlign: 'center'}}>
               AI가 다 알려주는 시대,<br /><span style={{color: C.red}}>우리 아이에게 필요한 힘은?</span></div></Sheet>
         </AbsoluteFill>; })()}
 
@@ -269,7 +291,7 @@ export const PaperThink: React.FC = () => {
             return <div key={i} style={{position: 'absolute', left: 120, top: y0, width: 840, height: 260, transform: `scale(${k}) rotate(${i % 2 ? 1.5 : -1.5}deg)`}}>
               <Sheet x={0} y={0} w={840} h={250} color={i === 1 ? '#E3EEF6' : C.paper} seed={40 + i}>
                 <div style={{display: 'flex', alignItems: 'center', height: 250, padding: '0 50px', gap: 40}}>
-                  <span style={{fontSize: 120}}>{e}</span><span style={{fontFamily: PRE, fontWeight: 900, fontSize: 70, color: C.navy}}>{w}</span></div></Sheet>
+                  <span style={{fontSize: 120}}>{e}</span><span style={{...CUTTYPE, fontSize: 72, color: C.navy}}>{w}</span></div></Sheet>
               <svg width={840} height={260} style={{position: 'absolute', inset: 0, overflow: 'visible'}}>
                 <Draw d="M60 40 L780 220" p={xp} color={C.red} w={16} /><Draw d="M780 40 L60 220" p={interpolate(xp, [.4, 1], [0, 1], clamp)} color={C.red} w={16} /></svg>
             </div>; })}
@@ -284,32 +306,28 @@ export const PaperThink: React.FC = () => {
             return <Sheet key={i} x={100 + r() * 800 - p * 700} y={300 + r() * 1000 - p * 600} w={170} h={100} color={C.paper} tex="news" seed={60 + i} rot={r() * 60 - 30 + p * 90} style={{opacity: 1 - p}} />; })}
           <CutText text="?" size={760} color={C.yellow} style={{position: 'absolute', left: 300, top: 420, transform: `scale(${k}) rotate(${-6 + Math.sin(t * 1.5) * 3}deg)`}} />
           <Sheet x={140} y={330} w={800} h={130} color={C.paper} seed={70} rot={-2} style={{opacity: interpolate(l, [1.2, 1.6], [0, 1], clamp)}}>
-            <div style={{textAlign: 'center', lineHeight: '130px', fontFamily: PRE, fontWeight: 900, fontSize: 58, color: C.navy}}>정답보다 <span style={{color: C.red}}>질문</span></div></Sheet>
+            <div style={{textAlign: 'center', lineHeight: '130px', ...CUTTYPE, fontSize: 60, color: C.navy}}>정답보다 <span style={{color: C.red}}>질문</span></div></Sheet>
           <Vignette k={.5} />
         </AbsoluteFill>; })()}
 
       {/* CLASS: Joy and Mark read a picture book, the children raise their hands and their heads fill with ideas */}
       {inS('cls') && (() => { const l = lt('cls');
-        const kids: {x: number; shirt: string; style: Hair; hair?: string}[] = [{x: -10, shirt: '#8E3B3B', style: 'pigtails', hair: '#4A3426'}, {x: 255, shirt: '#2F3B5C', style: 'short', hair: '#7A5232'},
-          {x: 520, shirt: '#D7A63A', style: 'long', hair: '#3D2A20'}, {x: 785, shirt: '#3F6B55', style: 'bob', hair: '#241A15'}];
         const ideas = ['🐻', '🚀', '🌊', '🦋'];
         return <AbsoluteFill>
           <Classroom t={t} board={<div style={{fontFamily: HAND, fontWeight: 700, fontSize: 62, color: '#F2EEDC', textAlign: 'center', paddingTop: 70, lineHeight: 1.15}}>What happens<br />next? 🤔</div>} />
-          <Teacher who="mark" x={-40} y={560 + drift * .4} w={560} />
-          <Teacher who="joy" x={560} y={620 - drift * .4} w={500} />
-          <Sheet x={360} y={820} w={360} h={250} color="#FBF5E6" seed={77} tex="mulberry" rot={-3}>
-            <Img src={staticFile('brand/bear-butterfly.png')} style={{position: 'absolute', left: 200, top: 30, width: 130}} />
-            {[0, 1, 2, 3, 4].map((q) => <div key={q} style={{position: 'absolute', left: 30, top: 50 + q * 34, width: 130 - q * 12, height: 8, background: '#C4B9A4'}} />)}
-            <div style={{position: 'absolute', left: 178, top: 10, bottom: 10, width: 3, background: 'rgba(0,0,0,.12)'}} /></Sheet>
-          {l > .5 && l < 5 && <Bubble x={560} y={400} w={480} k={sp(t, S.cls[0] + .6, fps)} tail="right">What do you think<br />happens next?</Bubble>}
-          {kids.map((kd, i) => { const hs = S.cls[0] + 2.2 + i * .7; const hand = sp(t, hs, fps, 10); const think = sp(t, hs + 3.2, fps, 12);
-            return <React.Fragment key={i}>
-              <Kid id={`k${i}`} x={kd.x} y={1060} s={1} shirt={kd.shirt} style={kd.style} hair={kd.hair} hand={hand} />
-              {think > .02 && <div style={{position: 'absolute', left: kd.x + 40, top: 860, width: 230, height: 200, transform: `scale(${think})`, transformOrigin: '50% 100%', filter: SHADOW}}>
-                <svg width={230} height={200}><ellipse cx={115} cy={84} rx={104} ry={76} fill={C.paper} /><circle cx={76} cy={180} r={12} fill={C.paper} /><circle cx={96} cy={158} r={18} fill={C.paper} />
-                  <Gear x={52} y={62} r={20} a={t * 120} /><Gear x={86} y={96} r={14} a={-t * 160} color={C.red} /></svg>
-                <div style={{position: 'absolute', left: 116, top: 30, fontSize: 82}}>{ideas[i]}</div></div>}
-            </React.Fragment>; })}
+          <Teacher who="mark" x={-50} y={590} w={600} t={t} />
+          <Teacher who="joy" x={560} y={650} w={520} t={t} wave={interpolate(l, [6.2, 6.5, 8.4, 8.8], [0, 1, 1, 0], clamp)} />
+          <Sheet x={110} y={950} w={380} h={260} color="#FBF5E6" seed={77} tex="mulberry" rot={-5 + Math.sin(t * 1.3) * .8}>
+            <Img src={staticFile('brand/bear-butterfly.png')} style={{position: 'absolute', left: 210, top: 34, width: 135}} />
+            {[0, 1, 2, 3, 4].map((q) => <div key={q} style={{position: 'absolute', left: 30, top: 54 + q * 34, width: 140 - q * 12, height: 8, background: '#C4B9A4'}} />)}
+            <div style={{position: 'absolute', left: 188, top: 10, bottom: 10, width: 3, background: 'rgba(0,0,0,.12)'}} /></Sheet>
+          {l > .5 && l < 5 && <Bubble x={470} y={420} w={520} k={sp(t, S.cls[0] + .6, fps)} tail="left">What do you think<br />happens next?</Bubble>}
+          <Kids t={t} fps={fps} top={1055} raise={[S.cls[0] + 2.3, S.cls[0] + 3.1]} />
+          {KID_HEADS.map((hx, i) => { const think = sp(t, S.cls[0] + 4.6 + i * .45, fps, 11);
+            return think > .02 && <div key={i} style={{position: 'absolute', left: hx - 115, top: 860 - (i % 2) * 40 + Math.sin(t * 1.6 + i) * 6, width: 230, height: 200, transform: `scale(${think})`, transformOrigin: '50% 100%', filter: SHADOW}}>
+              <svg width={230} height={200}><ellipse cx={115} cy={84} rx={104} ry={76} fill={C.paper} /><circle cx={100} cy={180} r={12} fill={C.paper} /><circle cx={110} cy={158} r={18} fill={C.paper} />
+                <Gear x={52} y={62} r={20} a={t * 120} /><Gear x={86} y={96} r={14} a={-t * 160} color={C.red} /></svg>
+              <div style={{position: 'absolute', left: 116, top: 30, fontSize: 82, transform: `rotate(${Math.sin(t * 2.4 + i) * 8}deg)`}}>{ideas[i]}</div></div>; })}
           <Vignette k={.45} />
         </AbsoluteFill>; })()}
 
@@ -328,7 +346,7 @@ export const PaperThink: React.FC = () => {
             <div key={i} style={{position: 'absolute', left: 40 + i * 128, top: 320 + Math.sin(i * 1.3) * 14, fontSize: 70, transform: `rotate(${Math.sin(t * 2 + i) * 6}deg)`, filter: SHADOW}}>{f}</div>))}
           <svg width={1080} height={200} style={{position: 'absolute', top: 300}}><path d="M0 30 Q540 120 1080 30" stroke="#5a4636" strokeWidth={3} fill="none" /></svg>
           {people.map((p, i) => <Person key={i} id={`p${i}`} {...p} s={1.05} t={t} />)}
-          <Teacher who="joy" x={-60} y={640} w={640} glasses={g} />
+          <Teacher who="joy" x={-60} y={640} w={640} t={t} glasses={g} wave={interpolate(l, [3.4, 3.7, 6.2, 6.6], [0, 1, 1, 0], clamp)} />
           <Sheet x={-40} y={1290} w={1160} h={700} color="#B48A60" seed={131} />
           {g < .1 && <Bubble x={300} y={430} w={420} k={sp(t, S.world[0] + 3.3, fps)}>I think…<div style={{fontSize: 32, color: C.red}}>내 생각은요!</div></Bubble>}
           <Vignette k={.4} />
@@ -339,7 +357,7 @@ export const PaperThink: React.FC = () => {
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.navy} seed={15} edge={false} />
           <Sheet x={90} y={560} w={900} h={560} color={C.cream} seed={100} rot={-1.5} style={{transform: `rotate(-1.5deg) scale(${.9 + .1 * k})`, opacity: k}}>
-            <div style={{padding: '80px 60px', textAlign: 'center', fontFamily: PRE, fontWeight: 900, fontSize: 76, lineHeight: 1.3, color: C.navy}}>
+            <div style={{padding: '80px 60px', textAlign: 'center', ...CUTTYPE, fontSize: 78, lineHeight: 1.3, color: C.navy}}>
               AI는 <span style={{background: C.yellow, padding: '0 10px'}}>쓰는 것</span>,<br />생각은 <span style={{color: C.red}}>내가</span> 하는 것</div>
             <div style={{position: 'absolute', bottom: 60, left: 0, right: 0, textAlign: 'center', fontFamily: HAND, fontWeight: 700, fontSize: 44, color: C.kraftD}}>질문하는 아이, 생각을 말하는 아이</div></Sheet>
           <Vignette k={.5} />
@@ -351,16 +369,18 @@ export const PaperThink: React.FC = () => {
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.cream} seed={16} edge={false} />
           <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', left: 290, top: 420, width: 500, opacity: k, filter: SHADOW}} />
           <Sheet x={140} y={980} w={800} h={150} color={C.yellow} seed={110} rot={-1.5} style={{opacity: k}}>
-            <div style={{textAlign: 'center', lineHeight: '150px', fontFamily: PRE, fontWeight: 900, fontSize: 54, color: C.navy}}>💬 우리 아이 요즘 질문은?</div></Sheet>
+            <div style={{textAlign: 'center', lineHeight: '150px', ...CUTTYPE, fontSize: 56, color: C.navy}}>💬 우리 아이 요즘 질문은?</div></Sheet>
           <div style={{position: 'absolute', top: 1180, left: 0, right: 0, textAlign: 'center', fontFamily: PRE, fontWeight: 800, fontSize: 40, color: C.navy, opacity: k}}>@thebearandjoy 팔로우</div>
         </AbsoluteFill>; })()}
 
       <Grain />
-      {/* captions: a plain square box (Joy, 24 Nov) */}
-      {cap && !inS('msg') && !inS('end') && (
-        <div style={{position: 'absolute', left: 70, right: 70, top: 1300, display: 'flex', justifyContent: 'center'}}>
-          <div style={{background: 'rgba(22,20,18,.85)', borderRadius: 0, padding: '14px 26px', fontFamily: PRE, fontWeight: 800, fontSize: 42, lineHeight: 1.3, color: '#fff', textAlign: 'center', whiteSpace: 'pre-line'}}>{cap.text}</div>
-        </div>)}
+      {/* captions: a torn strip of mulberry paper with paper-cut letters (Joy, 24 Nov: square, and made of paper) */}
+      {cap && !inS('msg') && !inS('end') && (() => { const lines = cap.text.split('\n'); const wpx = Math.min(940, 120 + Math.max(...lines.map((x) => x.length)) * 40); const hpx = 44 + lines.length * 58;
+        const k = sp(t, cap.s, fps, 16);
+        return <Sheet key={cap.s} x={540 - wpx / 2} y={1330} w={wpx} h={hpx} color="#F7EFDF" seed={Math.round(cap.s * 10) + 200} rot={(Math.round(cap.s) % 2 ? .8 : -.8)}
+          style={{opacity: k, transform: `rotate(${Math.round(cap.s) % 2 ? .8 : -.8}deg) translateY(${(1 - k) * 14}px)`}}>
+          <div style={{height: hpx, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', ...CUTTYPE, fontSize: 44, lineHeight: '58px', color: C.navy, textAlign: 'center'}}>
+            {lines.map((x, i) => <div key={i}>{x}</div>)}</div></Sheet>; })()}
     </AbsoluteFill>
   );
 };
