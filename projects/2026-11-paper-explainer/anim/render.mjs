@@ -28,7 +28,7 @@ async function openPage() {
   const p = await b.newPage({ viewport: { width: 1280, height: 720 } });
   p.on('pageerror', e => console.log('PAGE ERROR', e.message));
   p.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') console.log('console:', m.text()); });
-  await p.goto(url); await p.waitForFunction(() => window.__ready === true, null, { timeout: 120000 });
+  await p.goto(url); await p.waitForFunction(() => window.__ready === true, null, { timeout: 900000 });
   return { b, p };
 }
 const grab = (p, t, type = 'image/jpeg') => p.evaluate(([t, type]) => { renderAt(t); return document.getElementById('c').toDataURL(type, 0.94); }, [t, type])
@@ -69,6 +69,7 @@ console.log(`rendering ${f1 - f0} frames (${((f1 - f0) / fps).toFixed(1)} s) at 
 const T0 = Date.now(); let done = 0;
 
 async function worker(w, a, z) {
+  await new Promise(r => setTimeout(r, w * 20000)); // stagger start-up: each page builds heavy paper textures
   const segFile = join(tmp, `seg${w}.mp4`);
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p', '-r', String(fps), segFile]);
