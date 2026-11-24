@@ -3,7 +3,7 @@
 
 Rebuild (repo root, then `anim/`):
 1. Put the owner's proofs in `source/` (`walkbook-one-proof.pdf`, `book1-review.pdf`; git-ignored).
-2. `python3 projects/2026-11-paper-explainer/extract.py` (pages + site images → `remotion/public/paper/`)
+2. `python3 projects/2026-11-paper-explainer/extract.py` (pages + site images → `remotion/public/paper-explainer/`)
 3. `python3 projects/2026-11-paper-explainer/anim/prep_art.py` and `anim/cutouts.py` (covers, site images and cut-outs → `anim/src/assets/art/`)
 4. In `anim/`: `cp ../../../remotion/public/fonts/{Gaegu-Bold,PatrickHand,NanumBrushScript,GowunBatang-Bold}.ttf src/assets/` (after `sh remotion/fetch-fonts.sh`), `npm install`, `./py audio/audio.py build/audio.wav`, `node build.mjs`, `node render.mjs` (stills: `--stills 4.5,24,45`).
 

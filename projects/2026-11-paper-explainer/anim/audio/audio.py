@@ -16,7 +16,7 @@ def fold_up(t, g=1.0, pan=0.0):                                  # a pop-up piec
 
 for a, b in TURN: page_turn(a)
 fold_up(TURN[0][1] + 0.15, 1.1)                                  # you and your child
-for k in ['door', 'friend', 'flowers', 'read-book', 'read-pair', 'read-bear', 'practise-pair', 'practise-card', 'park-tree', 'park', 'park-friends',
+for k in ['friend', 'flowers', 'read-book', 'read-pair', 'read-bear', 'practise-pair', 'practise-card', 'park-tree', 'park', 'park-friends',
           'dinner', 'bed', 'fun-pair', 'fun-tablet', 'mark', 'joy', 'cta-book', 'cta-bear']:
     fold_up(cue[k], 1.0, rng.uniform(-0.4, 0.4))
 for i in range(3): fold_up(cue['starters'] + i * 0.4, 1.0, (i - 1) * 0.4)   # conversation-starter cards

@@ -5,7 +5,7 @@ Run extract.py (one folder up) first. Usage (repo root): python3 projects/2026-1
 import os
 from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(f"{HERE}/../../..")
-SRC = f"{ROOT}/remotion/public/paper"; OUT = f"{HERE}/src/assets/art"; os.makedirs(OUT, exist_ok=True)
+SRC = f"{ROOT}/remotion/public/paper-explainer"; OUT = f"{HERE}/src/assets/art"; os.makedirs(OUT, exist_ok=True)
 def save(name, im, size, alpha=False):
     im.thumbnail((size, size), Image.LANCZOS)
     if alpha: im.save(f"{OUT}/{name}.png", optimize=True)

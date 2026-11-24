@@ -1,12 +1,12 @@
 """Pull the art for the paper explainer out of the owner's book proofs and the website (owner, 24 Nov 2026: "you can pull the illustrations").
-Usage (repo root): python3 projects/2026-11-paper-explainer/extract.py  -> remotion/public/paper/*.png|webp (git-ignored: unpublished proofs)
+Usage (repo root): python3 projects/2026-11-paper-explainer/extract.py  -> remotion/public/paper-explainer/*.png|webp (git-ignored: unpublished proofs)
 Pages are spreads (1190 x 595 pt); 'L'/'R' = left/right page, 'S' = whole spread.
 """
 import os, subprocess
 import pymupdf as fitz
 from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(f"{HERE}/../..")
-OUT = f"{ROOT}/remotion/public/paper"; os.makedirs(OUT, exist_ok=True)
+OUT = f"{ROOT}/remotion/public/paper-explainer"; os.makedirs(OUT, exist_ok=True)
 PAGES = {  # name: (pdf, page, side)
     "b1-cover": ("book1-review", 1, "R"), "b1-door": ("book1-review", 9, "R"), "b1-joy": ("book1-review", 13, "S"),
     "b1-friend": ("book1-review", 27, "L"), "b1-hill": ("book1-review", 27, "R"), "b1-house": ("book1-review", 6, "S"),

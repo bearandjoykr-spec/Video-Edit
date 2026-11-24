@@ -148,7 +148,7 @@ export function buildStory(stage, B, IMG) {
     }),
     what: backdrop(6, [[0, '#f3e9cf'], [1, '#efe2c6']], g => {
       g.drawImage(IMG.wordmark, S / 2 - 300, 290, 600, 600 * IMG.wordmark.height / IMG.wordmark.width);
-      paste(g, IMG.cutOxford, 520, 640, 420, 0.02); paste(g, IMG.cutWindow, 170, 650, 380, -0.05); paste(g, IMG.cutCat, 850, 680, 330, 0.05); P.seal(g, 870, 290, 70, '곰', 9); }),
+      paste(g, IMG.cutOxford, 430, 640, 470, 0.02); paste(g, IMG.cutCat, 820, 700, 300, 0.05); P.seal(g, 870, 290, 70, '곰', 9); }),
     read: backdrop(8, [[0, '#efe6cf'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 8); bigWord(g, 1, 'Read', '#3d5a80'); }),
     practise: backdrop(10, [[0, '#f2e4d6'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 10); bigWord(g, 2, 'Practise', '#a8473a'); }),
     starters: backdrop(12, [[0, '#e9ecd6'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 12); bigWord(g, 3, 'Talk', '#4f7a52'); }),
@@ -165,7 +165,7 @@ export function buildStory(stage, B, IMG) {
     bedtime: backdrop(18, [[0, '#26344f'], [1, '#33476b']], g => {
       stars(g, 70, 19); g.fillStyle = '#f2e6b8'; g.beginPath(); g.arc(700, 330, 110, 0, 7); g.fill();          // a full moon (보름달)
       P.mountains(g, S, [[640, 160, '#1c2740', 0.9], [760, 110, '#16203a', 0.95]], 18);
-      paste(g, IMG.cutWindow, 230, 500, 330, -0.04); }),
+      paste(g, IMG.cutSit, 250, 560, 230, -0.03); }),
     fun: backdrop(20, [[0, '#f3e9cf'], [1, '#efe2c6']], g => {
       const r = rng(21), cols = ['#c8553d', '#e2c271', '#7fa36a', '#5b7a99', '#e6b5ae', '#8e4a5a'];
       for (let i = 0; i < 70; i++) { g.fillStyle = cols[i % 6]; g.save(); g.translate(r() * S, 250 + r() * 760); g.rotate(r() * 3); g.globalAlpha = 0.7; g.fillRect(-10, -5, 20, 10); g.restore(); }
@@ -262,8 +262,7 @@ export function buildStory(stage, B, IMG) {
   const bfly = stick(IMG.butterfly, 0.55, 8, 22); scene.add(bfly);
 
   // ------------------------------------------------ what Bear & Joy is — cut-outs from our books
-  pop(stg('what'), -1.55, 2.3, [stick(IMG.cutDoor, 2.5, 14, 31)], cue['door']);
-  pop(stg('what'), 1.5, 3.1, [stick(IMG.cutFriend, 2.0, 12, 32)], cue['friend']);
+  pop(stg('what'), 0.15, 3.5, [stick(IMG.cutFriend, 2.1, 12, 32)], cue['friend']);
   pop(stg('what'), 0, 5.4, [stick(IMG.cutFlowers, 1.15, 10, 33)], cue['flowers'], { layer: 2 });
 
   // ------------------------------------------------ 1 · read the storybook together
@@ -420,8 +419,9 @@ export function buildStory(stage, B, IMG) {
     let sz = 58; g.font = `700 ${sz}px Batang`; let l1 = en, l2 = '';
     if (g.measureText(en).width > 880) { sz = 54; g.font = `700 ${sz}px Batang`;
       if (g.measureText(en).width > 880) { // the space nearest the middle wins; a comma nearby is preferred
-        const sp = [...en].map((ch, i) => ch === ' ' ? i : -1).filter(i => i > 0), half = en.length / 2;
-        const best = sp.reduce((b, i) => { const score = Math.abs(i - half) - (en[i - 1] === ',' ? en.length * 0.12 : 0); return score < b[0] ? [score, i] : b; }, [1e9, -1])[1];
+        const sp = [...en].map((ch, i) => ch === ' ' ? i : -1).filter(i => i > 0);
+        const best = sp.reduce((b, i) => { const w1 = g.measureText(en.slice(0, i)).width, w2 = g.measureText(en.slice(i + 1)).width;
+          const score = Math.max(w1, w2) - (en[i - 1] === ',' ? 60 : 0); return score < b[0] ? [score, i] : b; }, [1e9, -1])[1];
         l1 = en.slice(0, best); l2 = en.slice(best + 1); } }
     P.hand(g, l1, 0, l2 ? -32 : 2, { font: 'Batang', weight: 700, size: sz, color: '#2a2420' });
     if (l2) P.hand(g, l2, 0, 40, { font: 'Batang', weight: 700, size: sz, color: '#2a2420' });

@@ -31,22 +31,36 @@ def key(im, paint=(), lo=14, hi=46, size=900):
     out.thumbnail((size, size), Image.LANCZOS); return out
 def box(im, x0, y0, x1, y1):  # fractions of the spread
     return im.crop((int(x0 * im.width), int(y0 * im.height), int(x1 * im.width), int(y1 * im.height)))
-pieces = {
-    "cut-window": (8, (0.04, 0.32, 0.215, 0.84), ()),
-    "cut-garden": (23, (0.205, 0.20, 0.53, 0.92), ()),
-    "cut-sit": (20, (0.835, 0.73, 0.962, 0.95), ()),
-    "cut-door": (9, (0.235, 0.13, 0.495, 0.97), ((0, 0.25, 0.11, 0.37),)),
-    "cut-cat": (9, (0.71, 0.20, 0.99, 0.86), ()),
-    "cut-oxford": (6, (0.60, 0.16, 0.995, 0.99), ()),
-    "cut-flowers": (23, (0.51, 0.62, 0.985, 0.93), ()),
-}
-for name, (n, b, paint) in pieces.items():
-    im = key(box(page(n), *b), paint); im.save(f"{OUT}/{name}.png", optimize=True); print(name, im.size)
-# painted backgrounds: AI matte (CPU, a few seconds per image)
-ai = {"cut-leap": (18, (0.62, 0.17, 0.80, 0.70)), "cut-friend": (13, (0.06, 0.52, 0.33, 0.96))}
-for name, (n, b) in ai.items():
-    src = f"{WORK}/{name}-src.png"; box(page(n), *b).save(src)
+# Owner, 24 Nov 2026: "cut around the characters better". Every piece now goes through the AI subject matte, then a hard edge:
+# alpha thresholded at 50 %, trimmed 2 px (no painted fringe), specks dropped. The white paper border is added in the film (sticker()).
+from scipy import ndimage
+def harden(im, trim=2, size=900):
+    a = np.asarray(im.getchannel("A")).astype(np.float32) / 255
+    hard = a > 0.5
+    hard = ndimage.binary_erosion(hard, iterations=trim)
+    lab, n = ndimage.label(hard)
+    if n > 1:
+        sizes = ndimage.sum(np.ones_like(lab), lab, range(1, n + 1)); hard = np.isin(lab, 1 + np.flatnonzero(sizes >= 0.04 * sizes.max()))
+    hard = ndimage.binary_fill_holes(hard)
+    al = Image.fromarray((hard * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8))
+    out = im.copy(); out.putalpha(al); out = out.crop(al.point(lambda v: 255 if v > 30 else 0).getbbox())
+    out.thumbnail((size, size), Image.LANCZOS); return out
+def cut_ai(name, im):
+    src = f"{WORK}/{name}-src.png"; im.save(src)
     subprocess.run(["npx", "hyperframes", "remove-background", src, "-o", f"{WORK}/{name}.png"], cwd=f"{ROOT}/remotion", check=True,
                    stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    im = Image.open(f"{WORK}/{name}.png").convert("RGBA"); im = im.crop(im.getchannel("A").point(lambda v: 255 if v > 30 else 0).getbbox())
-    im.thumbnail((900, 900), Image.LANCZOS); im.save(f"{OUT}/{name}.png", optimize=True); print(name, im.size)
+    return Image.open(f"{WORK}/{name}.png").convert("RGBA")
+pieces = {  # name: (page, box as fractions of the spread)
+    "cut-window": (8, (0.04, 0.32, 0.215, 0.84)),
+    "cut-garden": (23, (0.205, 0.20, 0.53, 0.92)),
+    "cut-sit": (20, (0.835, 0.73, 0.962, 0.95)),
+    "cut-door": (9, (0.235, 0.13, 0.495, 0.97)),
+    "cut-cat": (9, (0.71, 0.20, 0.99, 0.86)),
+    "cut-leap": (18, (0.62, 0.17, 0.80, 0.70)),
+    "cut-friend": (13, (0.06, 0.52, 0.33, 0.96)),
+}
+for name, (n, b) in pieces.items():
+    im = harden(cut_ai(name, box(page(n), *b)), trim=4 if name == 'cut-friend' else 2); im.save(f"{OUT}/{name}.png", optimize=True); print(name, im.size)
+# the Oxford street and the flower border are landscapes, not characters: keyed off the cream paper, then the same hard edge
+for name, (n, b) in {"cut-oxford": (6, (0.60, 0.16, 0.995, 0.99)), "cut-flowers": (23, (0.51, 0.62, 0.985, 0.93))}.items():
+    im = harden(key(box(page(n), *b), (), lo=26, hi=60), trim=3); im.save(f"{OUT}/{name}.png", optimize=True); print(name, im.size)
