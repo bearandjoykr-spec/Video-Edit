@@ -259,7 +259,7 @@ export const PT_CAPS: Cap[] = [
   {s: 22, e: 27, text: '아이들 머릿속은\n질문과 상상으로 가득 차요', en: "children's minds fill up\nwith questions and imagination."},
   {s: 27, e: 34, text: '다른 나라 사람을 만났을 때도\n내 생각을 내 말로 표현하는 힘', en: 'Meeting people from other countries,\nwe say what we think, in our own words.'},
   {s: 34, e: 38, text: 'AI는 우리가 쓰는 도구예요.\n생각은 우리 아이가 하는 거고요', en: "AI is a tool we use.\nThe thinking is our children's."},
-  {s: 38, e: 42, text: 'AI 시대, 우리 아이에게\n어떤 AI 교육이 필요할까요?', en: 'What kind of AI education do our children need?\nLet\'s talk in the comments.'},
+  {s: 38, e: 42, text: 'AI 시대, 우리 아이에게\n어떤 교육이 필요할까요?', en: 'In the age of AI, what kind of education do our children need?\nLet\'s talk in the comments.'},
 ];
 export const PT_SCENES = {hook: [0, 3], ai: [3, 8], cross: [8, 13], turn: [13, 17], cls: [17, 27], world: [27, 34], msg: [34, 38], end: [38, 42]};
 
@@ -424,10 +424,8 @@ export const PaperThink: React.FC = () => {
       {t >= S.end[0] && W('end', (() => { const k = sp(t, S.end[0] + .2, fps);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.cream} seed={16} edge={false} />
-          <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', left: 300, top: 330, width: 480, opacity: k, filter: SHADOW}} />
-          <Sheet x={120} y={840} w={840} h={150} color={C.yellow} seed={110} rot={-1.5} style={{opacity: k}}>
-            <div style={{textAlign: 'center', lineHeight: '150px', ...CUTTYPE, fontSize: 56, color: C.navy}}>💬 어떤 AI 교육이 좋을까요?</div></Sheet>
-          <div style={{position: 'absolute', top: 1030, left: 0, right: 0, textAlign: 'center', ...CUTTYPE, fontSize: 40, color: C.navy, opacity: k}}>@thebearandjoy 팔로우</div>
+          <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', left: 290, top: 380, width: 500, opacity: k, filter: SHADOW}} />
+          <div style={{position: 'absolute', top: 900, left: 0, right: 0, textAlign: 'center', ...CUTTYPE, fontSize: 42, color: C.navy, opacity: k}}>@thebearandjoy 팔로우</div>
         </AbsoluteFill>; })())}
 
       <Grain />
