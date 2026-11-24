@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Composition, interpolate, useCurrentFrame} from 'remotion';
 import {BearJoyReel, Plan} from './BearJoyReel';
+import {PaperThink} from './PaperThink';
 import shortPlan from '../../projects/2026-11-confidence/versions/short/timeline.json';
 import fullPlan from '../../projects/2026-11-confidence/versions/full/timeline.json';
 import {BearJoyReelV2, PlanV2} from './BearJoyReelV2';
@@ -130,5 +131,6 @@ export const Root: React.FC = () => (
       defaultProps={{plan: day29 as unknown as Day29Plan}} />
     <Composition id="Day29JA" component={Day29Magic} durationInFrames={(day29ja as unknown as Day29Plan).frames} fps={30} width={1080} height={1920}
       defaultProps={{plan: day29ja as unknown as Day29Plan}} />
-  </>
+      <Composition id="PaperThink" component={PaperThink} durationInFrames={42 * 30} fps={30} width={1080} height={1920} />
+    </>
 );
