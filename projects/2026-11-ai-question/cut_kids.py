@@ -7,8 +7,8 @@ im = cv2.imread("projects/2026-11-ai-question/faces/kids.png"); h, w = im.shape[
 lab = cv2.cvtColor(cv2.GaussianBlur(im, (0, 0), 1.5), cv2.COLOR_BGR2LAB).astype(np.float32)
 wall = np.median(lab[300:380, 700:900].reshape(-1, 3), axis=0); print("wall BGR", np.median(im[300:380, 700:900].reshape(-1, 3), axis=0))
 notwall = np.sqrt(((lab - wall) ** 2 * np.array([.4, 1.5, 1.5])).sum(-1)) > 10
-ARMS = {"a": ([(505, 188), (632, 188), (626, 330), (606, 420), (612, 470), (604, 560), (500, 560), (494, 470), (514, 410), (508, 300)], 430, (552, 555)),
-        "b": ([(1118, 215), (1240, 215), (1236, 330), (1248, 450), (1250, 565), (1160, 565), (1150, 470), (1158, 380), (1140, 320)], 395, (1200, 560))}
+ARMS = {"a": ([(505, 188), (632, 188), (626, 330), (606, 420), (612, 470), (604, 560), (500, 560), (494, 470), (514, 410), (508, 300)], 545, (552, 555)),
+        "b": ([(1118, 215), (1240, 215), (1236, 330), (1248, 450), (1250, 565), (1160, 565), (1150, 470), (1158, 380), (1140, 320)], 505, (1200, 560))}
 inp = np.zeros((h, w), np.uint8); out = {}
 for k, (poly, ywall, piv) in ARMS.items():
     m = np.zeros((h, w), np.uint8); cv2.fillPoly(m, [np.array(poly, np.int32)], 255)
@@ -19,7 +19,15 @@ for k, (poly, ywall, piv) in ARMS.items():
     ys, xs = np.nonzero(m); x0, y0, x1, y1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
     layer = np.dstack([im, cv2.GaussianBlur(m, (3, 3), 0)])[y0:y1, x0:x1]
     cv2.imwrite(f"remotion/public/paper/kid-arm-{k}.png", layer); out[k] = (int(x0), int(y0), int(x1 - x0), int(y1 - y0), piv)
-base = cv2.inpaint(im, inp, 11, cv2.INPAINT_TELEA)
+# fill where the raised arms were with real wall paper, copied from the wall higher up in the same columns (no smears),
+# keeping the dark vest and hair; TELEA only blends the seams
+base = im.copy(); fillm = (inp > 0)
+dark = lab[..., 0] < 95; fillm &= ~(dark & (yy > 430))
+patch = im[262:398, 690:890]                       # clean wall paper between the children, above their heads
+tile = np.tile(patch, (h // patch.shape[0] + 1, w // patch.shape[1] + 1, 1))[:h, :w]
+m = cv2.GaussianBlur(fillm.astype(np.float32), (0, 0), 3)[..., None]; m = np.maximum(m, fillm[..., None].astype(np.float32))
+tile = cv2.GaussianBlur(tile, (0, 0), .6); base = (tile * m + im * (1 - m)).astype(np.uint8)
+
 TOP = 250; base = base[TOP:]; a = np.full(base.shape[:2], 255, np.uint8)
 fade = np.clip((np.arange(base.shape[0]) - 0) / 160, 0, 1); a = (a * fade[:, None]).astype(np.uint8)
 cv2.imwrite("remotion/public/paper/kids-base.png", np.dstack([base, a]))

@@ -220,10 +220,11 @@ const Kids: React.FC<{t: number; fps: number; top: number; raise: (number | null
   <div style={{position: 'absolute', left: 0, top, width: 1080, height: 1920 - top}}>
     <Img src={staticFile('paper/kids-base.png')} style={{position: 'absolute', left: 0, top: 0, width: 1080, transformOrigin: '50% 100%', transform: `scaleY(${1 + Math.sin(t * 2) * .004})`}} />
     {ARMS.map((a, i) => { const r = raise[i]; if (r == null) return null;
-      const p = Math.max(0, spring({frame: Math.round((t - r) * fps), fps, config: {damping: 9, stiffness: 110, mass: .8}}));
-      const wob = Math.sin(t * (p > .9 ? 5 : 2.2) + i * 2) * (p > .9 ? 3 : 1.5);
+      // Joy (24 Nov): hands down first, then raised; the arm swings up from hanging by the side
+      const p = Math.max(0, spring({frame: Math.round((t - r) * fps), fps, config: {damping: 11, stiffness: 95, mass: .9}}));
+      const wob = p > .9 ? Math.sin((t - r) * 5 + i) * 2.5 : 0;
       return <Img key={i} src={staticFile(a.src)} style={{position: 'absolute', left: a.x * KK, top: (a.y - 250) * KK, width: a.w * KK, height: a.h * KK,
-        transformOrigin: `${(a.px - a.x) * KK}px ${(a.py - a.y) * KK}px`, transform: `rotate(${(1 - p) * (i ? 30 : -30) + wob}deg) scaleY(${.42 + .58 * Math.min(p, 1.06)})`, filter: SHADOW}} />; })}
+        transformOrigin: `${(a.px - a.x) * KK}px ${(a.py - a.y) * KK}px`, transform: `rotate(${(1 - p) * (i ? 105 : -105) + wob}deg)`, opacity: Math.min(1, p * 3.5), filter: SHADOW}} />; })}
   </div>
 );
 
@@ -281,7 +282,7 @@ export const PaperThink: React.FC = () => {
       {vis('hook') && W('hook', (() => { const l = lt('hook');
         return <AbsoluteFill style={{transform: `scale(${1.05 - l * .015})`, transformOrigin: '50% 70%'}}>
           <Classroom t={t} />
-          <Kids t={t} fps={fps} top={1000} raise={[.35, .75]} />
+          <Kids t={t} fps={fps} top={1000} raise={[.6, 1.1]} />
           {KID_HEADS.flatMap((hx, i) => [0, 1].map((j) => { const st = .5 + i * .22 + j * .35; const k = sp(t, st, fps, 9); const up = interpolate(t - st, [0, 1.6], [0, 1], clamp);
             return k > .02 && <CutText key={`${i}${j}`} text={j ? '!' : '?'} size={j ? 96 : 130} color={(i + j) % 2 ? C.yellow : C.red}
               style={{position: 'absolute', left: hx - 40 + (j ? 60 : -10) + Math.sin(t * 3 + i) * 6, top: 1010 - 230 * k - up * 60, transform: `rotate(${(i - 1.5) * 8 + Math.sin(t * 4 + i * 2) * 5}deg) scale(${k})`}} />; }))}
