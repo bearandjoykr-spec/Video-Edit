@@ -11,11 +11,12 @@ const C = {kraft: '#C9A47A', kraftD: '#A47B52', cream: '#F4EDDC', paper: '#FBF7E
 const PRE = "'Pretendard', 'Noto Color Emoji', sans-serif";
 const HAND = "'Gaegu', 'Pretendard', 'Noto Color Emoji', cursive";
 const SERIF = "'Gowun Batang', 'Pretendard', 'Noto Color Emoji', serif";
+const DODUM = "'Gowun Dodum', 'Pretendard', 'Noto Color Emoji', sans-serif";
 // letters that look cut from paper: a little paper-white rim and a soft shadow under them
 const CUTTYPE: React.CSSProperties = {fontFamily: SERIF, fontWeight: 700, textShadow: '0 0 1px #FBF6EA, 1px 1px 0 #FBF6EA, -1px 1px 0 #FBF6EA, 2px 3px 3px rgba(40,25,10,.35)'};
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
 const FONTS: [string, string, string][] = [['Pretendard', '700', 'Pretendard-Bold.woff2'], ['Pretendard', '800', 'Pretendard-ExtraBold.woff2'],
-  ['Pretendard', '900', 'Pretendard-Black.woff2'], ['Noto Color Emoji', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'], ['Gaegu', '700', 'Gaegu-Bold.ttf'], ['Gowun Batang', '700', 'GowunBatang-Bold.ttf']];
+  ['Pretendard', '900', 'Pretendard-Black.woff2'], ['Noto Color Emoji', '400', 'Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab4.ttf'], ['Gaegu', '700', 'Gaegu-Bold.ttf'], ['Gowun Batang', '700', 'GowunBatang-Bold.ttf'], ['Gowun Dodum', '400', 'GowunDodum-Regular.ttf']];
 const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
   useEffect(() => {
@@ -204,7 +205,7 @@ const Teacher: React.FC<{who: 'joy' | 'mark'; x: number; y: number; w: number; t
   return <div style={{position: 'absolute', left: x, top: y, width: w, filter: SHADOW, transformOrigin: '50% 100%', transform: `rotate(${sway}deg) scaleY(${breathe})`}}>
     <Img src={staticFile(`paper/${who}-bust.png`)} style={{width: w, display: 'block'}} />
     {joy && <Img src={staticFile('paper/joy-hand.png')} style={{position: 'absolute', left: 0, top: 0, width: w, transformOrigin: `${112 * k}px ${640 * k}px`, transform: `rotate(${handA}deg)`}} />}
-    {joy && glasses > 0 && <div style={{position: 'absolute', left: 203 * k - 130 * k + off * 260, top: 213 * k - 34 * k - off * 460, width: 260 * k,
+    {joy && glasses > 0 && <div style={{position: 'absolute', left: 203 * k - 130 * k + off * 260, top: 213 * k - 12 * k - off * 460, width: 260 * k,
       transform: `rotate(${-20 + off * 40}deg)`, transformOrigin: '50% 50%', filter: SHADOW}}>
       <svg viewBox="0 0 260 92" width={260 * k} height={92 * k}><rect x={6} y={16} width={104} height={62} rx={24} fill="#9FD3F2" fillOpacity=".8" stroke={C.ink} strokeWidth={8} />
         <rect x={150} y={16} width={104} height={62} rx={24} fill="#9FD3F2" fillOpacity=".8" stroke={C.ink} strokeWidth={8} /><path d="M110 42 Q130 26 150 42" stroke={C.ink} strokeWidth={8} fill="none" /></svg>
@@ -214,17 +215,16 @@ const Teacher: React.FC<{who: 'joy' | 'mark'; x: number; y: number; w: number; t
 
 // Joy's torn-paper children (kids-base.png from y 250 of the 1254 px picture; the two raised arms rise on their own)
 const KK = 1080 / 1254;
-const ARMS = [{src: 'paper/kid-arm-a.png', x: 494, y: 196, w: 126, h: 365, px: 552, py: 555}, {src: 'paper/kid-arm-b.png', x: 1132, y: 225, w: 100, h: 341, px: 1200, py: 560}];
+const HANDS = [{src: 'paper/kid-hand-a.png', x: 505, y: 185, w: 127, h: 127, px: 566, py: 300}, {src: 'paper/kid-hand-b.png', x: 1118, y: 212, w: 124, h: 106, px: 1186, py: 312}];
 export const KID_HEADS = [138, 336, 672, 930];
+// Joy (24 Nov): the picture stays whole, arms up as she drew it; the hands wave a little at the wrist, eagerly, when the question comes
 const Kids: React.FC<{t: number; fps: number; top: number; raise: (number | null)[]}> = ({t, fps, top, raise}) => (
   <div style={{position: 'absolute', left: 0, top, width: 1080, height: 1920 - top}}>
     <Img src={staticFile('paper/kids-base.png')} style={{position: 'absolute', left: 0, top: 0, width: 1080, transformOrigin: '50% 100%', transform: `scaleY(${1 + Math.sin(t * 2) * .004})`}} />
-    {ARMS.map((a, i) => { const r = raise[i]; if (r == null) return null;
-      // Joy (24 Nov): hands down first, then raised; the arm swings up from hanging by the side
-      const p = Math.max(0, spring({frame: Math.round((t - r) * fps), fps, config: {damping: 11, stiffness: 95, mass: .9}}));
-      const wob = p > .9 ? Math.sin((t - r) * 5 + i) * 2.5 : 0;
-      return <Img key={i} src={staticFile(a.src)} style={{position: 'absolute', left: a.x * KK, top: (a.y - 250) * KK, width: a.w * KK, height: a.h * KK,
-        transformOrigin: `${(a.px - a.x) * KK}px ${(a.py - a.y) * KK}px`, transform: `rotate(${(1 - p) * (i ? 105 : -105) + wob}deg)`, opacity: Math.min(1, p * 3.5), filter: SHADOW}} />; })}
+    {HANDS.map((a, i) => { const r = raise[i] ?? 0; const on = Math.max(0, Math.min(1, (t - r) * 2));
+      const ang = on * (Math.sin((t - r) * 7 + i * 1.7) * 9) * Math.exp(-Math.max(0, t - r - 1.4) * .9) + Math.sin(t * 1.8 + i) * 1.5;
+      return <Img key={i} src={staticFile(a.src)} style={{position: 'absolute', left: a.x * KK, top: (a.y - 150) * KK, width: a.w * KK, height: a.h * KK,
+        transformOrigin: `${(a.px - a.x) * KK}px ${(a.py - a.y) * KK}px`, transform: `rotate(${ang}deg)`}} />; })}
   </div>
 );
 
@@ -244,7 +244,7 @@ const Person: React.FC<{x: number; y: number; s?: number; shirt: string; skin: s
 
 const Bubble: React.FC<{x: number; y: number; w: number; k: number; children: React.ReactNode; tail?: 'left' | 'right'}> = ({x, y, w, k, children, tail = 'left'}) => (
   <div style={{position: 'absolute', left: x, top: y, width: w, transform: `scale(${k})`, transformOrigin: tail === 'left' ? '10% 100%' : '90% 100%', filter: SHADOW}}>
-    <div style={{background: C.paper, borderRadius: 40, padding: '22px 30px', ...CUTTYPE, fontSize: 42, color: C.navy, textAlign: 'center', lineHeight: 1.25}}>{children}</div>
+    <div style={{background: C.paper, borderRadius: 40, padding: '22px 30px', fontFamily: DODUM, fontSize: 42, color: C.navy, textAlign: 'center', lineHeight: 1.3}}>{children}</div>
     <div style={{position: 'absolute', bottom: -26, [tail]: 60, width: 0, height: 0, borderLeft: '22px solid transparent', borderRight: '22px solid transparent', borderTop: `30px solid ${C.paper}`}} />
   </div>
 );
@@ -282,7 +282,7 @@ export const PaperThink: React.FC = () => {
       {vis('hook') && W('hook', (() => { const l = lt('hook');
         return <AbsoluteFill style={{transform: `scale(${1.05 - l * .015})`, transformOrigin: '50% 70%'}}>
           <Classroom t={t} />
-          <Kids t={t} fps={fps} top={1000} raise={[.6, 1.1]} />
+          <Kids t={t} fps={fps} top={920} raise={[.6, 1.0]} />
           {KID_HEADS.flatMap((hx, i) => [0, 1].map((j) => { const st = .5 + i * .22 + j * .35; const k = sp(t, st, fps, 9); const up = interpolate(t - st, [0, 1.6], [0, 1], clamp);
             return k > .02 && <CutText key={`${i}${j}`} text={j ? '!' : '?'} size={j ? 96 : 130} color={(i + j) % 2 ? C.yellow : C.red}
               style={{position: 'absolute', left: hx - 40 + (j ? 60 : -10) + Math.sin(t * 3 + i) * 6, top: 1010 - 230 * k - up * 60, transform: `rotate(${(i - 1.5) * 8 + Math.sin(t * 4 + i * 2) * 5}deg) scale(${k})`}} />; }))}
@@ -377,7 +377,7 @@ export const PaperThink: React.FC = () => {
             {[0, 1, 2, 3, 4].map((q) => <div key={q} style={{position: 'absolute', left: 30, top: 54 + q * 34, width: 140 - q * 12, height: 8, background: '#C4B9A4'}} />)}
             <div style={{position: 'absolute', left: 188, top: 10, bottom: 10, width: 3, background: 'rgba(0,0,0,.12)'}} /></Sheet>
           {l > .5 && l < 5 && <Bubble x={470} y={420} w={520} k={sp(t, S.cls[0] + .6, fps)} tail="left">What do you think<br />happens next?</Bubble>}
-          <Kids t={t} fps={fps} top={1055} raise={[S.cls[0] + 1.6, S.cls[0] + 2.3]} />
+          <Kids t={t} fps={fps} top={985} raise={[S.cls[0] + 1.6, S.cls[0] + 2.2]} />
           {KID_HEADS.map((hx, i) => { const think = sp(t, S.cls[0] + 4.6 + i * .45, fps, 11);
             return think > .02 && <div key={i} style={{position: 'absolute', left: hx - 115, top: 860 - (i % 2) * 40 + Math.sin(t * 1.6 + i) * 6, width: 230, height: 200, transform: `scale(${think})`, transformOrigin: '50% 100%', filter: SHADOW}}>
               <svg width={230} height={200}><ellipse cx={115} cy={84} rx={104} ry={76} fill={C.paper} /><circle cx={100} cy={180} r={12} fill={C.paper} /><circle cx={110} cy={158} r={18} fill={C.paper} />
@@ -388,8 +388,6 @@ export const PaperThink: React.FC = () => {
 
       {/* WORLD: Joy takes off the AI glasses and speaks for herself */}
       {vis('world') && W('world', (() => { const l = lt('world'); const g = l < 2.2 ? 1 : interpolate(l, [2.2, 3.2], [.999, 0], clamp);
-        const people = [{x: 560, y: 640, shirt: C.green, skin: '#8D5A3B', hair: '#1D1612', flag: '🇰🇪'}, {x: 810, y: 610, shirt: C.red, skin: '#F1CDB0', hair: '#C99A4A', flag: '🇫🇷'},
-          {x: 690, y: 860, shirt: C.yellow, skin: '#D9A77F', hair: '#2A1E16', flag: '🇧🇷'}];
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1300} color="#D7E4EA" seed={12} edge={false} />
           <Sheet x={-30} y={1170} w={1140} h={800} color={C.kraftD} seed={13} />
@@ -400,10 +398,13 @@ export const PaperThink: React.FC = () => {
           {['🇬🇧', '🇺🇸', '🇯🇵', '🇰🇷', '🇫🇷', '🇧🇷', '🇰🇪', '🇮🇳'].map((f, i) => (
             <div key={i} style={{position: 'absolute', left: 40 + i * 128, top: 320 + Math.sin(i * 1.3) * 14, fontSize: 70, transform: `rotate(${Math.sin(t * 2 + i) * 6}deg)`, filter: SHADOW}}>{f}</div>))}
           <svg width={1080} height={200} style={{position: 'absolute', top: 300}}><path d="M0 30 Q540 120 1080 30" stroke="#5a4636" strokeWidth={3} fill="none" /></svg>
-          {people.map((p, i) => <Person key={i} id={`p${i}`} {...p} s={1.05} t={t} />)}
-          <Teacher who="joy" x={-60} y={640} w={640} t={t} glasses={g} wave={interpolate(l, [3.4, 3.7, 6.2, 6.6], [0, 1, 1, 0], clamp)} />
+          <Teacher who="mark" x={520} y={660} w={600} t={t} />
+          <Teacher who="joy" x={-60} y={680} w={600} t={t} glasses={g} wave={interpolate(l, [3.4, 3.7, 6.2, 6.6], [0, 1, 1, 0], clamp)} />
           <Sheet x={-40} y={1290} w={1160} h={700} color="#B48A60" seed={131} />
-          {g < .1 && <Bubble x={300} y={430} w={420} k={sp(t, S.world[0] + 3.3, fps)}>I think…<div style={{fontSize: 32, color: C.red}}>내 생각은요!</div></Bubble>}
+          {l > .3 && l < 2.6 && <Bubble x={560} y={440} w={440} k={sp(t, S.world[0] + .3, fps)} tail="right">What do you think?<div style={{fontSize: 28, color: C.kraftD}}>🇬🇧 넌 어떻게 생각해?</div></Bubble>}
+          {l > 1.0 && l < 2.3 && <div style={{position: 'absolute', left: 130, top: 610, fontFamily: PRE, fontWeight: 800, fontSize: 28, color: '#fff', background: C.blue, padding: '6px 14px', opacity: .5 + .5 * Math.sin(t * 8)}}>🤖 번역 중…</div>}
+          {g < .1 && <Bubble x={150} y={430} w={460} k={sp(t, S.world[0] + 3.3, fps)}>I think…<div style={{fontSize: 30, color: C.red}}>🇰🇷 내 생각은요!</div></Bubble>}
+          {l > 5 && <Bubble x={600} y={470} w={380} k={sp(t, S.world[0] + 5, fps)} tail="right">Love that! 😊</Bubble>}
           <Vignette k={.4} />
         </AbsoluteFill>; })())}
 
@@ -411,10 +412,11 @@ export const PaperThink: React.FC = () => {
       {vis('msg') && W('msg', (() => { const k = sp(t, S.msg[0] + .2, fps);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.navy} seed={15} edge={false} />
-          <Sheet x={90} y={560} w={900} h={560} color={C.cream} seed={100} rot={-1.5} style={{transform: `rotate(-1.5deg) scale(${.9 + .1 * k})`, opacity: k}}>
-            <div style={{padding: '80px 60px', textAlign: 'center', ...CUTTYPE, fontSize: 78, lineHeight: 1.3, color: C.navy}}>
-              AI는 <span style={{background: C.yellow, padding: '0 10px'}}>쓰는 것</span>,<br />생각은 <span style={{color: C.red}}>내가</span> 하는 것</div>
-            <div style={{position: 'absolute', bottom: 60, left: 0, right: 0, textAlign: 'center', fontFamily: HAND, fontWeight: 700, fontSize: 44, color: C.kraftD}}>질문하는 아이, 생각을 말하는 아이</div></Sheet>
+          <Sheet x={80} y={520} w={920} h={640} color={C.cream} seed={100} rot={-1.5} style={{transform: `rotate(-1.5deg) scale(${.9 + .1 * k})`, opacity: k}}>
+            <div style={{padding: '70px 50px 0', textAlign: 'center', ...CUTTYPE, fontSize: 64, lineHeight: 1.35, color: C.navy}}>
+              답은 <span style={{background: C.yellow, padding: '0 8px'}}>AI</span>가 찾아 줘도,<br /><span style={{color: C.red}}>질문</span>은 아이만<br />할 수 있어요</div>
+            <div style={{marginTop: 22, textAlign: 'center', fontFamily: DODUM, fontSize: 30, color: '#8A6A48'}}>AI can find answers. Only a child can ask the questions.</div>
+            <div style={{position: 'absolute', bottom: 40, left: 0, right: 0, textAlign: 'center', fontFamily: DODUM, fontSize: 34, color: C.navy, opacity: interpolate(t - S.msg[0], [1.4, 2], [0, 1], clamp)}}>AI는 쓰는 것, 생각은 내가 하는 것</div></Sheet>
           <Vignette k={.5} />
         </AbsoluteFill>; })())}
 
@@ -429,16 +431,15 @@ export const PaperThink: React.FC = () => {
         </AbsoluteFill>; })())}
 
       <Grain />
-      {/* captions: a torn strip of mulberry paper with paper-cut letters (Joy, 24 Nov: square, and made of paper) */}
+      {/* captions (Joy, 24 Nov): a clean square card; Gowun Dodum, Korean above English */}
       {cap && !inS('msg') && (() => { const lines = cap.text.split('\n'); const en = (cap.en ?? '').split('\n').filter(Boolean);
-        const wpx = Math.min(980, 110 + Math.max(...lines.map((x) => x.length * 40), ...en.map((x) => x.length * 16.5))); const hpx = 52 + lines.length * 56 + en.length * 38 + (en.length ? 8 : 0);
-        const k = sp(t, cap.s, fps, 16); const tilt = Math.round(cap.s) % 2 ? .8 : -.8;
-        return <Sheet key={cap.s} x={540 - wpx / 2} y={1450 - hpx} w={wpx} h={hpx} color="#F7EFDF" seed={Math.round(cap.s * 10) + 200} rot={tilt}
-          style={{opacity: k, transform: `rotate(${tilt}deg) translateY(${(1 - k) * 14}px)`}}>
-          <div style={{height: hpx, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
-            {lines.map((x, i) => <div key={i} style={{...CUTTYPE, fontSize: 44, lineHeight: '56px', color: C.navy}}>{x}</div>)}
-            {en.length > 0 && <div style={{marginTop: 8}}>{en.map((x, i) => <div key={i} style={{...CUTTYPE, fontSize: 29, lineHeight: '38px', color: '#7A5B3A', letterSpacing: .3}}>{x}</div>)}</div>}
-          </div></Sheet>; })()}
+        const wpx = Math.min(960, 90 + Math.max(...lines.map((x) => x.length * 41), ...en.map((x) => x.length * 15.5))); const hpx = 44 + lines.length * 58 + en.length * 38 + (en.length ? 10 : 0);
+        const k = sp(t, cap.s, fps, 18);
+        return <div key={cap.s} style={{position: 'absolute', left: 540 - wpx / 2, top: 1450 - hpx, width: wpx, height: hpx, background: 'rgba(251,247,238,.96)', boxShadow: '0 8px 22px rgba(30,20,10,.28)',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', opacity: k, transform: `translateY(${(1 - k) * 12}px)`}}>
+          {lines.map((x, i) => <div key={i} style={{fontFamily: DODUM, fontSize: 44, lineHeight: '58px', color: C.navy}}>{x}</div>)}
+          {en.length > 0 && <div style={{marginTop: 10}}>{en.map((x, i) => <div key={i} style={{fontFamily: DODUM, fontSize: 28, lineHeight: '38px', color: '#8A6A48'}}>{x}</div>)}</div>}
+        </div>; })()}
     </AbsoluteFill>
   );
 };
