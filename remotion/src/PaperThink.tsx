@@ -227,17 +227,17 @@ const Bubble: React.FC<{x: number; y: number; w: number; k: number; children: Re
   </div>
 );
 
-type Cap = {s: number; e: number; text: string};
+type Cap = {s: number; e: number; text: string; en?: string};
 export const PT_CAPS: Cap[] = [
-  {s: 0.3, e: 3, text: 'AI가 다 알려주는 시대,\n우리 아이에게 필요한 건 뭘까요?'},
-  {s: 3, e: 8, text: '이제 궁금한 건 AI에게 물으면\n몇 초 만에 답이 나와요'},
-  {s: 8, e: 13, text: '책을 찾지 않아도, 검색하지 않아도,\n누군가에게 묻지 않아도요'},
-  {s: 13, e: 17, text: '그런데 정말 중요한 건 정답이 아니라,\n어떤 질문을 하느냐예요'},
-  {s: 17, e: 22, text: '그림책을 읽으며\n\'너는 어떻게 생각해?\'라고 물으면'},
-  {s: 22, e: 27, text: '아이들 머릿속은\n질문과 상상으로 가득 차요'},
-  {s: 27, e: 34, text: '다른 나라 사람을 만났을 때도\n내 생각을 내 말로 표현하는 힘'},
-  {s: 34, e: 38, text: 'AI는 우리가 쓰는 도구예요.\n생각은 우리 아이가 하는 거고요'},
-  {s: 38, e: 42, text: '여러분 아이는 요즘 어떤 질문을 하나요?'},
+  {s: 0.3, e: 3, text: 'AI가 다 알려주는 시대,\n우리 아이에게 필요한 건 뭘까요?', en: 'In an age when AI tells us everything,\nwhat do our children really need?'},
+  {s: 3, e: 8, text: '이제 궁금한 건 AI에게 물으면\n몇 초 만에 답이 나와요', en: 'Ask AI anything,\nand the answer comes in seconds.'},
+  {s: 8, e: 13, text: '책을 찾지 않아도, 검색하지 않아도,\n누군가에게 묻지 않아도요', en: 'No need to find a book, search,\nor ask anyone.'},
+  {s: 13, e: 17, text: '그런데 정말 중요한 건 정답이 아니라,\n어떤 질문을 하느냐예요', en: "But what matters most isn't the answer.\nIt's the question we ask."},
+  {s: 17, e: 22, text: '그림책을 읽으며\n\'너는 어떻게 생각해?\'라고 물으면', en: 'When we read a picture book together\nand ask, "What do you think?"'},
+  {s: 22, e: 27, text: '아이들 머릿속은\n질문과 상상으로 가득 차요', en: "children's minds fill up\nwith questions and imagination."},
+  {s: 27, e: 34, text: '다른 나라 사람을 만났을 때도\n내 생각을 내 말로 표현하는 힘', en: 'Meeting people from other countries,\nwe say what we think, in our own words.'},
+  {s: 34, e: 38, text: 'AI는 우리가 쓰는 도구예요.\n생각은 우리 아이가 하는 거고요', en: "AI is a tool we use.\nThe thinking is our children's."},
+  {s: 38, e: 42, text: '여러분 아이는 요즘 어떤 질문을 하나요?', en: 'What questions is your child asking these days?'},
 ];
 export const PT_SCENES = {hook: [0, 3], ai: [3, 8], cross: [8, 13], turn: [13, 17], cls: [17, 27], world: [27, 34], msg: [34, 38], end: [38, 42]};
 
@@ -375,12 +375,15 @@ export const PaperThink: React.FC = () => {
 
       <Grain />
       {/* captions: a torn strip of mulberry paper with paper-cut letters (Joy, 24 Nov: square, and made of paper) */}
-      {cap && !inS('msg') && !inS('end') && (() => { const lines = cap.text.split('\n'); const wpx = Math.min(940, 120 + Math.max(...lines.map((x) => x.length)) * 40); const hpx = 44 + lines.length * 58;
-        const k = sp(t, cap.s, fps, 16);
-        return <Sheet key={cap.s} x={540 - wpx / 2} y={1330} w={wpx} h={hpx} color="#F7EFDF" seed={Math.round(cap.s * 10) + 200} rot={(Math.round(cap.s) % 2 ? .8 : -.8)}
-          style={{opacity: k, transform: `rotate(${Math.round(cap.s) % 2 ? .8 : -.8}deg) translateY(${(1 - k) * 14}px)`}}>
-          <div style={{height: hpx, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', ...CUTTYPE, fontSize: 44, lineHeight: '58px', color: C.navy, textAlign: 'center'}}>
-            {lines.map((x, i) => <div key={i}>{x}</div>)}</div></Sheet>; })()}
+      {cap && !inS('msg') && !inS('end') && (() => { const lines = cap.text.split('\n'); const en = (cap.en ?? '').split('\n').filter(Boolean);
+        const wpx = Math.min(980, 110 + Math.max(...lines.map((x) => x.length * 40), ...en.map((x) => x.length * 16.5))); const hpx = 52 + lines.length * 56 + en.length * 38 + (en.length ? 8 : 0);
+        const k = sp(t, cap.s, fps, 16); const tilt = Math.round(cap.s) % 2 ? .8 : -.8;
+        return <Sheet key={cap.s} x={540 - wpx / 2} y={1450 - hpx} w={wpx} h={hpx} color="#F7EFDF" seed={Math.round(cap.s * 10) + 200} rot={tilt}
+          style={{opacity: k, transform: `rotate(${tilt}deg) translateY(${(1 - k) * 14}px)`}}>
+          <div style={{height: hpx, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
+            {lines.map((x, i) => <div key={i} style={{...CUTTYPE, fontSize: 44, lineHeight: '56px', color: C.navy}}>{x}</div>)}
+            {en.length > 0 && <div style={{marginTop: 8}}>{en.map((x, i) => <div key={i} style={{...CUTTYPE, fontSize: 29, lineHeight: '38px', color: '#7A5B3A', letterSpacing: .3}}>{x}</div>)}</div>}
+          </div></Sheet>; })()}
     </AbsoluteFill>
   );
 };
