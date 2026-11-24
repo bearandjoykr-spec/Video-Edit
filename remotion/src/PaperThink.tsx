@@ -4,6 +4,7 @@
 // (brand avatars, printed-paper look: projects/2026-11-ai-question/face_doll.py; no microphones). Children are seen from behind.
 // Textures: projects/2026-11-ai-question/textures.py. Captions: plain square box. All text inside y 300–1450.
 import React, {useEffect, useState} from 'react';
+import PT from './paperthink.json';
 import {AbsoluteFill, Img, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 
 const C = {kraft: '#C9A47A', kraftD: '#A47B52', cream: '#F4EDDC', paper: '#FBF7EC', navy: '#1E2D4D', yellow: '#FFD24A', red: '#D44A30', ink: '#262320',
@@ -250,18 +251,9 @@ const Bubble: React.FC<{x: number; y: number; w: number; k: number; children: Re
 );
 
 type Cap = {s: number; e: number; text: string; en?: string};
-export const PT_CAPS: Cap[] = [
-  {s: 0.3, e: 3, text: 'AI가 다 알려주는 시대,\n우리 아이에게 필요한 건 뭘까요?', en: 'In an age when AI tells us everything,\nwhat do our children really need?'},
-  {s: 3, e: 8, text: '이제 궁금한 건 AI에게 물으면\n몇 초 만에 답이 나와요', en: 'Ask AI anything,\nand the answer comes in seconds.'},
-  {s: 8, e: 13, text: '책을 찾지 않아도, 검색하지 않아도,\n누군가에게 묻지 않아도요', en: 'No need to find a book, search,\nor ask anyone.'},
-  {s: 13, e: 17, text: '그런데 정말 중요한 건 정답이 아니라,\n어떤 질문을 하느냐예요', en: "But what matters most isn't the answer.\nIt's the question we ask."},
-  {s: 17, e: 22, text: '그림책을 읽으며\n\'너는 어떻게 생각해?\'라고 물으면', en: 'When we read a picture book together\nand ask, "What do you think?"'},
-  {s: 22, e: 27, text: '아이들 머릿속은\n질문과 상상으로 가득 차요', en: "children's minds fill up\nwith questions and imagination."},
-  {s: 27, e: 34, text: '다른 나라 사람을 만났을 때도\n내 생각을 내 말로 표현하는 힘', en: 'Meeting people from other countries,\nwe say what we think, in our own words.'},
-  {s: 34, e: 38, text: 'AI는 우리가 쓰는 도구예요.\n생각은 우리 아이가 하는 거고요', en: "AI is a tool we use.\nThe thinking is our children's."},
-  {s: 38, e: 42, text: 'AI 시대, 우리 아이에게\n어떤 교육이 필요할까요?', en: 'In the age of AI, what kind of education do our children need?\nLet\'s talk in the comments.'},
-];
-export const PT_SCENES = {hook: [0, 3], ai: [3, 8], cross: [8, 13], turn: [13, 17], cls: [17, 27], world: [27, 34], msg: [34, 38], end: [38, 42]};
+export const PT_CAPS: Cap[] = PT.caps as Cap[];
+export const PT_SCENES = PT.scenes as Record<'hook' | 'ai' | 'cross' | 'turn' | 'cls' | 'world' | 'msg' | 'end', number[]>;
+const CUE = PT.cues;
 
 export const PaperThink: React.FC = () => {
   useFonts();
@@ -282,7 +274,7 @@ export const PaperThink: React.FC = () => {
       {vis('hook') && W('hook', (() => { const l = lt('hook');
         return <AbsoluteFill style={{transform: `scale(${1.05 - l * .015})`, transformOrigin: '50% 70%'}}>
           <Classroom t={t} />
-          <Kids t={t} fps={fps} top={920} raise={[.6, 1.0]} />
+          <Kids t={t} fps={fps} top={920} raise={CUE.kidsHook} />
           {KID_HEADS.flatMap((hx, i) => [0, 1].map((j) => { const st = .5 + i * .22 + j * .35; const k = sp(t, st, fps, 9); const up = interpolate(t - st, [0, 1.6], [0, 1], clamp);
             return k > .02 && <CutText key={`${i}${j}`} text={j ? '!' : '?'} size={j ? 96 : 130} color={(i + j) % 2 ? C.yellow : C.red}
               style={{position: 'absolute', left: hx - 40 + (j ? 60 : -10) + Math.sin(t * 3 + i) * 6, top: 1010 - 230 * k - up * 60, transform: `rotate(${(i - 1.5) * 8 + Math.sin(t * 4 + i * 2) * 5}deg) scale(${k})`}} />; }))}
@@ -294,10 +286,10 @@ export const PaperThink: React.FC = () => {
       {/* AI: a paper laptop pours out answer slips */}
       {vis('ai') && W('ai', (() => { const l = lt('ai');
         const msgs: {at: number; me?: boolean; text?: string; dino?: boolean}[] = [{at: .4, me: true, text: '공룡은 왜 사라졌어? 🦖'},
-          {at: 1.5, dino: true, text: '약 6,600만 년 전, 커다란 소행성이 지구에 떨어졌어요 ☄️'}, {at: 2.3, text: '화산 폭발로 하늘이 어두워지고 ☁️'},
-          {at: 2.9, text: '날씨가 추워져 먹이가 사라졌대요 🍂'}, {at: 3.5, text: '더 궁금한 거 있어요? 😊'}];
-        const shown = msgs.filter((m) => l >= m.at); const typing = (l > .9 && l < 1.5) || (l > 2.0 && l < 2.3);
-        const scroll = interpolate(l, [2.3, 3.9], [0, -250], clamp);
+          {at: CUE.aiAnswers - PT_SCENES.ai[0], dino: true, text: '약 6,600만 년 전, 커다란 소행성이 지구에 떨어졌어요 ☄️'}, {at: CUE.aiAnswers - PT_SCENES.ai[0] + .8, text: '화산 폭발로 하늘이 어두워지고 ☁️'},
+          {at: CUE.aiAnswers - PT_SCENES.ai[0] + 1.4, text: '날씨가 추워져 먹이가 사라졌대요 🍂'}, {at: CUE.aiAnswers - PT_SCENES.ai[0] + 2.0, text: '더 궁금한 거 있어요? 😊'}];
+        const shown = msgs.filter((m) => l >= m.at); const a0 = CUE.aiAnswers - PT_SCENES.ai[0]; const typing = (l > .9 && l < a0);
+        const scroll = interpolate(l, [a0 + .8, a0 + 2.4], [0, -250], clamp);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.cream} seed={7} edge={false} />
           <Sheet x={-30} y={1080} w={1140} h={900} color={C.kraftD} seed={8} />
@@ -327,7 +319,7 @@ export const PaperThink: React.FC = () => {
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1980} color="#E6DCC5" seed={9} edge={false} />
           {items.map(([e, w], i) => { const k = sp(t, S.cross[0] + i * .5, fps); const y0 = 380 + i * 300;
-            const xp = interpolate(l, [1.6 + i * 1.1, 2.2 + i * 1.1], [0, 1], clamp);
+            const xs = CUE.crossX[i] - PT_SCENES.cross[0]; const xp = interpolate(l, [xs - .1, xs + .45], [0, 1], clamp);
             return <div key={i} style={{position: 'absolute', left: 120, top: y0, width: 840, height: 260, transform: `scale(${k}) rotate(${i % 2 ? 1.5 : -1.5}deg)`}}>
               <Sheet x={0} y={0} w={840} h={250} color={i === 1 ? '#E3EEF6' : C.paper} seed={40 + i}>
                 <div style={{display: 'flex', alignItems: 'center', height: 250, padding: '0 50px', gap: 40}}>
@@ -377,8 +369,8 @@ export const PaperThink: React.FC = () => {
             {[0, 1, 2, 3, 4].map((q) => <div key={q} style={{position: 'absolute', left: 30, top: 54 + q * 34, width: 140 - q * 12, height: 8, background: '#C4B9A4'}} />)}
             <div style={{position: 'absolute', left: 188, top: 10, bottom: 10, width: 3, background: 'rgba(0,0,0,.12)'}} /></Sheet>
           {l > .5 && l < 5 && <Bubble x={470} y={420} w={520} k={sp(t, S.cls[0] + .6, fps)} tail="left">What do you think<br />happens next?</Bubble>}
-          <Kids t={t} fps={fps} top={985} raise={[S.cls[0] + 1.6, S.cls[0] + 2.2]} />
-          {KID_HEADS.map((hx, i) => { const think = sp(t, S.cls[0] + 4.6 + i * .45, fps, 11);
+          <Kids t={t} fps={fps} top={985} raise={CUE.kidsCls} />
+          {KID_HEADS.map((hx, i) => { const think = sp(t, CUE.think + .2 + i * .45, fps, 11);
             return think > .02 && <div key={i} style={{position: 'absolute', left: hx - 115, top: 860 - (i % 2) * 40 + Math.sin(t * 1.6 + i) * 6, width: 230, height: 200, transform: `scale(${think})`, transformOrigin: '50% 100%', filter: SHADOW}}>
               <svg width={230} height={200}><ellipse cx={115} cy={84} rx={104} ry={76} fill={C.paper} /><circle cx={100} cy={180} r={12} fill={C.paper} /><circle cx={110} cy={158} r={18} fill={C.paper} />
                 <Gear x={52} y={62} r={20} a={t * 120} /><Gear x={86} y={96} r={14} a={-t * 160} color={C.red} /></svg>
@@ -387,7 +379,7 @@ export const PaperThink: React.FC = () => {
         </AbsoluteFill>; })())}
 
       {/* WORLD: Joy takes off the AI glasses and speaks for herself */}
-      {vis('world') && W('world', (() => { const l = lt('world'); const g = l < 2.2 ? 1 : interpolate(l, [2.2, 3.2], [.999, 0], clamp);
+      {vis('world') && W('world', (() => { const l = lt('world'); const go = CUE.glassesOff - S.world[0] - .6; const g = l < go ? 1 : interpolate(l, [go, go + 1], [.999, 0], clamp);
         return <AbsoluteFill>
           <Sheet x={-30} y={-30} w={1140} h={1300} color="#D7E4EA" seed={12} edge={false} />
           <Sheet x={-30} y={1170} w={1140} h={800} color={C.kraftD} seed={13} />
@@ -399,12 +391,12 @@ export const PaperThink: React.FC = () => {
             <div key={i} style={{position: 'absolute', left: 40 + i * 128, top: 320 + Math.sin(i * 1.3) * 14, fontSize: 70, transform: `rotate(${Math.sin(t * 2 + i) * 6}deg)`, filter: SHADOW}}>{f}</div>))}
           <svg width={1080} height={200} style={{position: 'absolute', top: 300}}><path d="M0 30 Q540 120 1080 30" stroke="#5a4636" strokeWidth={3} fill="none" /></svg>
           <Teacher who="mark" x={520} y={660} w={600} t={t} />
-          <Teacher who="joy" x={-60} y={680} w={600} t={t} glasses={g} wave={interpolate(l, [3.4, 3.7, 6.2, 6.6], [0, 1, 1, 0], clamp)} />
+          <Teacher who="joy" x={-60} y={680} w={600} t={t} glasses={g} wave={interpolate(l, [go + 1.2, go + 1.5, go + 4, go + 4.4], [0, 1, 1, 0], clamp)} />
           <Sheet x={-40} y={1290} w={1160} h={700} color="#B48A60" seed={131} />
-          {l > .3 && l < 2.6 && <Bubble x={560} y={440} w={440} k={sp(t, S.world[0] + .3, fps)} tail="right">What do you think?<div style={{fontSize: 28, color: C.kraftD}}>🇬🇧 넌 어떻게 생각해?</div></Bubble>}
-          {l > 1.0 && l < 2.3 && <div style={{position: 'absolute', left: 130, top: 610, fontFamily: PRE, fontWeight: 800, fontSize: 28, color: '#fff', background: C.blue, padding: '6px 14px', opacity: .5 + .5 * Math.sin(t * 8)}}>🤖 번역 중…</div>}
-          {g < .1 && <Bubble x={150} y={430} w={460} k={sp(t, S.world[0] + 3.3, fps)}>I think…<div style={{fontSize: 30, color: C.red}}>🇰🇷 내 생각은요!</div></Bubble>}
-          {l > 5 && <Bubble x={600} y={470} w={380} k={sp(t, S.world[0] + 5, fps)} tail="right">Love that! 😊</Bubble>}
+          {l > .3 && l < go + .3 && <Bubble x={560} y={440} w={440} k={sp(t, S.world[0] + .3, fps)} tail="right">What do you think?<div style={{fontSize: 28, color: C.kraftD}}>🇬🇧 넌 어떻게 생각해?</div></Bubble>}
+          {l > 1.0 && l < go && <div style={{position: 'absolute', left: 130, top: 610, fontFamily: PRE, fontWeight: 800, fontSize: 28, color: '#fff', background: C.blue, padding: '6px 14px', opacity: .5 + .5 * Math.sin(t * 8)}}>🤖 번역 중…</div>}
+          {g < .1 && <Bubble x={150} y={430} w={460} k={sp(t, S.world[0] + go + 1.1, fps)}>I think…<div style={{fontSize: 30, color: C.red}}>🇰🇷 내 생각은요!</div></Bubble>}
+          {l > go + 3 && <Bubble x={600} y={470} w={380} k={sp(t, S.world[0] + go + 3, fps)} tail="right">Love that! 😊</Bubble>}
           <Vignette k={.4} />
         </AbsoluteFill>; })())}
 
@@ -414,9 +406,9 @@ export const PaperThink: React.FC = () => {
           <Sheet x={-30} y={-30} w={1140} h={1980} color={C.navy} seed={15} edge={false} />
           <Sheet x={80} y={520} w={920} h={640} color={C.cream} seed={100} rot={-1.5} style={{transform: `rotate(-1.5deg) scale(${.9 + .1 * k})`, opacity: k}}>
             <div style={{padding: '60px 50px 0', textAlign: 'center', ...CUTTYPE, fontSize: 58, lineHeight: 1.35, color: C.navy}}>
-              AI가 답을 주는 시대,<br />우리 아이에게 필요한 건<br /><span style={{display: 'inline-block', marginTop: 10, fontSize: 84, color: C.red, transform: `scale(${sp(t, S.msg[0] + 1.0, fps, 9)})`}}>'생각하는 힘'</span></div>
-            <div style={{marginTop: 18, textAlign: 'center', fontFamily: DODUM, fontSize: 30, lineHeight: 1.4, color: '#8A6A48', opacity: interpolate(t - S.msg[0], [1.6, 2.1], [0, 1], clamp)}}>Don't stop exploring.<br />Don't stop looking for the answer.</div>
-            <div style={{position: 'absolute', bottom: 40, left: 0, right: 0, textAlign: 'center', fontFamily: DODUM, fontSize: 34, color: C.navy, opacity: interpolate(t - S.msg[0], [2.6, 3.1], [0, 1], clamp)}}>AI는 쓰는 것, 생각은 내가 하는 것</div></Sheet>
+              AI가 답을 주는 시대,<br />우리 아이에게 필요한 건<br /><span style={{display: 'inline-block', marginTop: 10, fontSize: 84, color: C.red, transform: `scale(${sp(t, CUE.power, fps, 9)})`}}>'생각하는 힘'</span></div>
+            <div style={{marginTop: 18, textAlign: 'center', fontFamily: DODUM, fontSize: 30, lineHeight: 1.4, color: '#8A6A48', opacity: interpolate(t, [CUE.explore - .2, CUE.explore + .3], [0, 1], clamp)}}>Don't stop exploring.<br />Don't stop looking for the answer.</div>
+            <div style={{position: 'absolute', bottom: 40, left: 0, right: 0, textAlign: 'center', fontFamily: DODUM, fontSize: 34, color: C.navy, opacity: interpolate(t, [CUE.explore + 2.6, CUE.explore + 3.1], [0, 1], clamp)}}>AI는 쓰는 것, 생각은 내가 하는 것</div></Sheet>
           <Vignette k={.5} />
         </AbsoluteFill>; })())}
 
