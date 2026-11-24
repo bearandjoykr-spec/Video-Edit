@@ -252,7 +252,7 @@ const Bubble: React.FC<{x: number; y: number; w: number; k: number; children: Re
 
 type Cap = {s: number; e: number; text: string; en?: string};
 export const PT_CAPS: Cap[] = PT.caps as Cap[];
-export const PT_SCENES = PT.scenes as Record<'hook' | 'ai' | 'cross' | 'turn' | 'cls' | 'world' | 'msg' | 'end', number[]>;
+export const PT_SCENES = PT.scenes as Record<'hook' | 'ai' | 'cross' | 'turn' | 'cls' | 'world' | 'msg' | 'end' | 'book', number[]>;
 const CUE = PT.cues;
 
 export const PaperThink: React.FC = () => {
@@ -412,12 +412,59 @@ export const PaperThink: React.FC = () => {
           <Vignette k={.5} />
         </AbsoluteFill>; })())}
 
-      {/* END */}
-      {t >= S.end[0] && W('end', (() => { const k = sp(t, S.end[0] + .2, fps);
+      {/* END (Mark's question): back to the children, hands up (Joy, 24 Nov: no logo card, no follow line) */}
+      {vis('end') && W('end', (() => <AbsoluteFill>
+          <Classroom t={t} board={<div style={{fontFamily: HAND, fontWeight: 700, fontSize: 60, color: '#F2EEDC', textAlign: 'center', paddingTop: 70, lineHeight: 1.15}}>What do<br />you think? 🤔</div>} />
+          <Kids t={t} fps={fps} top={920} raise={[S.end[0] + .3, S.end[0] + .7]} />
+          <Vignette k={.4} />
+        </AbsoluteFill>)())}
+
+      {/* BOOK (Joy's voice): our storybook and its Walkbook, from her page images (raw-footage/ai-question/book/) */}
+      {t >= S.book[0] && W('book', (() => { const B = CUE.book;
+        const Page: React.FC<{src: string; at: number; x: number; y: number; w: number; rot: number; out?: number; children?: React.ReactNode}> = ({src, at, x, y, w, rot, out = 1e9, children}) => {
+          const k = sp(t, at, fps, 14); const o = interpolate(t, [out, out + .3], [1, 0], clamp); if (k < .01 || o <= 0) return null;
+          return <div style={{position: 'absolute', left: x, top: y + (1 - k) * 80, width: w, transform: `rotate(${rot * k}deg) scale(${.9 + .1 * k})`, opacity: Math.min(k * 1.5, 1) * o, filter: 'drop-shadow(0 22px 30px rgba(40,25,10,.35))'}}>
+            <Img src={staticFile(src)} style={{width: w, display: 'block', borderRadius: 6}} />{children}</div>; };
+        const HL: React.FC<{at: number; x: number; y: number; w: number; h: number}> = ({at, x, y, w, h}) => {
+          const p = interpolate(t, [at, at + .35], [0, 1], clamp); return <div style={{position: 'absolute', left: x, top: y, width: w * p, height: h, background: 'rgba(255,210,74,.42)', borderRadius: 6, mixBlendMode: 'multiply'}} />; };
+        const pw = 800, sc = pw / 1432;
         return <AbsoluteFill>
-          <Sheet x={-30} y={-30} w={1140} h={1980} color={C.cream} seed={16} edge={false} />
-          <Img src={staticFile('brand/logo-full.png')} style={{position: 'absolute', left: 290, top: 380, width: 500, opacity: k, filter: SHADOW}} />
-          <div style={{position: 'absolute', top: 900, left: 0, right: 0, textAlign: 'center', ...CUTTYPE, fontSize: 42, color: C.navy, opacity: k}}>@thebearandjoy 팔로우</div>
+          <Sheet x={-30} y={-30} w={1140} h={1980} color="#F6EEDF" seed={17} edge={false} />
+          <AbsoluteFill style={{background: 'radial-gradient(ellipse 700px 800px at 540px 760px, rgba(255,226,160,.45), rgba(255,226,160,0) 70%)'}} />
+          {/* storybook cover, then its pages fan in, then the Walkbook */}
+          <Page src="book/p01.jpg" at={B.made} x={140} y={360} w={pw} rot={-2} out={B.page} />
+          {['book/p02.jpg', 'book/p03.jpg', 'book/p04.jpg'].map((src, i) => <Page key={src} src={src} at={B.qbook + i * .35} x={100 + i * 40} y={330 + i * 30} w={760} rot={[-6, 3, -2][i]} out={B.page} />)}
+          <Page src="book/p05.jpg" at={B.qbook + 1.05} x={190} y={420} w={700} rot={4} out={B.page} />
+          {/* every page: questions… */}
+          <Page src="book/p08.jpg" at={B.page} x={140} y={340} w={pw} rot={-1.5} out={B.pron}>
+            {[[515, 165], [760, 165], [990, 160]].map(([y, h], i) => <HL key={i} at={B.page + .3 + i * .3} x={140 * sc} y={y * sc} w={720 * sc} h={h * sc} />)}
+          </Page>
+          {/* …and Korean pronunciation */}
+          <Page src="book/p07.jpg" at={B.pron - .1} x={180} y={400} w={760} rot={5} out={B.dec} />
+          <Page src="book/p06.jpg" at={B.pron} x={120} y={330} w={pw} rot={-2} out={B.dec}>
+            {[[182, 50], [322, 50], [558, 52], [652, 52], [745, 52]].map(([y, h], i) => <HL key={i} at={B.pron + .15 + i * .1} x={135 * sc} y={y * sc} w={420 * sc} h={h * sc} />)}
+          </Page>
+          {/* the two books side by side: out in December */}
+          {(() => { const k = sp(t, B.dec, fps, 13); if (k < .01) return null; const up = sp(t, B.comment, fps, 16);
+            return <>
+              {[['book/p01.jpg', 95, -5], ['book/p05.jpg', 555, 5]].map(([src, x, r], i) => (
+                <Img key={i} src={staticFile(src as string)} style={{position: 'absolute', left: x as number, top: 470 - up * 120 + (1 - k) * 120, width: 430, transform: `rotate(${(r as number) * k}deg) scale(${.85 + .15 * k})`,
+                  opacity: Math.min(k * 1.4, 1), borderRadius: 6, filter: 'drop-shadow(0 22px 30px rgba(40,25,10,.38))'}} />))}
+              <div style={{position: 'absolute', left: 0, right: 0, top: 930 - up * 120, textAlign: 'center', opacity: sp(t, B.dec + .25, fps)}}>
+                <span style={{display: 'inline-block', ...CUTTYPE, fontSize: 52, color: C.navy, background: C.yellow, padding: '6px 28px', transform: 'rotate(-2deg)'}}>12월 출간 · Coming December</span></div>
+            </>; })()}
+          {/* comment 'BEAR' -> launch alert */}
+          {(() => { const k = sp(t, B.comment + .2, fps, 12); if (k < .01) return null; const typed = '베어'.slice(0, Math.floor(interpolate(t, [B.comment + .4, B.comment + .8], [0, 2], clamp)));
+            const bell = sp(t, B.alert, fps, 8);
+            return <div style={{position: 'absolute', left: 150, top: 930, width: 780, transform: `scale(${k})`, transformOrigin: '50% 0'}}>
+              <div style={{display: 'flex', alignItems: 'center', gap: 18, background: '#fff', borderRadius: 18, padding: '18px 24px', boxShadow: '0 12px 30px rgba(0,0,0,.18)'}}>
+                <div style={{width: 64, height: 64, borderRadius: 32, background: 'linear-gradient(135deg,#F7C66B,#E58FA0)'}} />
+                <div style={{fontFamily: DODUM, fontSize: 40, color: '#222'}}><span style={{fontWeight: 700, fontFamily: PRE, fontSize: 30, color: '#555', marginRight: 14}}>you</span>{typed}<span style={{opacity: typed.length < 2 ? 1 : 0}}>|</span></div>
+                <div style={{marginLeft: 'auto', fontSize: 40, color: C.red}}>♥</div></div>
+              <div style={{marginTop: 20, display: 'flex', justifyContent: 'center'}}>
+                <div style={{display: 'flex', alignItems: 'center', gap: 12, background: C.navy, color: '#fff', borderRadius: 40, padding: '12px 28px', fontFamily: DODUM, fontSize: 34,
+                  transform: `scale(${bell}) rotate(${Math.sin((t - B.alert) * 14) * 6 * Math.exp(-Math.max(0, t - B.alert) * 2)}deg)`}}>🔔 출간 알림 보내 드릴게요</div></div>
+            </div>; })()}
         </AbsoluteFill>; })())}
 
       <Grain />

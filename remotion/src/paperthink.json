@@ -1,173 +1,255 @@
 {
  "fps": 30,
- "duration": 59.35,
- "frames": 1781,
+ "duration": 65.73,
+ "frames": 1972,
  "scenes": {
   "hook": [
    0.0,
-   7.28
+   6.54
   ],
   "ai": [
-   7.28,
-   11.95
+   6.54,
+   11.01
   ],
   "cross": [
-   11.95,
-   16.35
+   11.01,
+   15.21
   ],
   "turn": [
-   16.35,
-   21.06
+   15.21,
+   19.64
   ],
   "cls": [
-   21.06,
-   30.55
+   19.64,
+   28.71
   ],
   "world": [
-   30.55,
-   37.92
+   28.71,
+   35.75
   ],
   "msg": [
-   37.92,
-   49.74
+   35.75,
+   47.05
   ],
   "end": [
-   49.74,
-   59.35
+   47.05,
+   52.07
+  ],
+  "book": [
+   52.07,
+   65.73
   ]
  },
  "caps": [
   {
    "s": 0.0,
-   "e": 7.28,
+   "e": 6.54,
    "text": "AI가 다 알려주는 세상,\n우리 아이에게 정말 필요한 건 뭘까요?",
    "en": "In a world where AI can tell us everything,\nwhat do our children really need?"
   },
   {
-   "s": 7.28,
-   "e": 11.95,
+   "s": 6.54,
+   "e": 11.01,
    "text": "AI에게 무엇이든 물으면\n몇 초 만에 답이 돌아와요",
    "en": "Ask AI anything,\nand the answer comes back in seconds."
   },
   {
-   "s": 11.95,
-   "e": 16.35,
+   "s": 11.01,
+   "e": 15.21,
    "text": "책을 찾지 않아도, 검색하지 않아도,\n누군가에게 묻지 않아도요",
    "en": "No need to find a book. No need to search.\nNo need to ask anyone."
   },
   {
-   "s": 16.35,
-   "e": 21.06,
+   "s": 15.21,
+   "e": 19.64,
    "text": "하지만 가장 중요한 건 답이 아니에요.\n바로 질문이에요",
    "en": "But what matters most isn't the answer.\nIt's the question."
   },
   {
-   "s": 21.06,
-   "e": 25.95,
+   "s": 19.64,
+   "e": 24.32,
    "text": "함께 그림책을 읽으며\n'너는 어떻게 생각해?'라고 물으면",
    "en": "When we read a picture book together\nand ask, \"What do you think?\""
   },
   {
-   "s": 25.95,
-   "e": 30.55,
+   "s": 24.32,
+   "e": 28.71,
    "text": "아이들의 작은 머릿속은\n질문과 상상으로 가득 차요",
    "en": "their little minds fill up\nwith questions and imagination."
   },
   {
-   "s": 30.55,
-   "e": 37.92,
+   "s": 28.71,
+   "e": 35.75,
    "text": "세계 곳곳의 사람들을 만났을 때도\n자기 생각을 자기 말로 말할 수 있어요",
    "en": "And when they meet people from all over the world,\nthey can say what they think, in their own words."
   },
   {
-   "s": 37.92,
-   "e": 49.74,
+   "s": 35.75,
+   "e": 47.05,
    "text": "AI가 답을 주는 시대,\n우리 아이에게 필요한 건 '생각하는 힘'",
    "en": "So in a world where AI gives the answers,\nwhat our children need is the power to think."
   },
   {
-   "s": 49.74,
-   "e": 59.35,
+   "s": 47.05,
+   "e": 51.97,
    "text": "AI 시대, 우리 아이에게\n어떤 교육이 필요할까요?",
-   "en": "In the age of AI, what kind of education do our children need?\nLet us know in the comments."
+   "en": "So in the age of AI,\nwhat kind of education do our children need?"
+  },
+  {
+   "s": 52.07,
+   "e": 55.57,
+   "text": "그래서 만들었어요,\n질문하는 그림책",
+   "en": "So we made it:\na picture book that asks questions."
+  },
+  {
+   "s": 55.57,
+   "e": 57.87,
+   "text": "매 페이지 질문과\n한글 발음까지",
+   "en": "Questions on every page,\nwith Korean pronunciation."
+  },
+  {
+   "s": 57.87,
+   "e": 60.0,
+   "text": "12월 출간됩니다",
+   "en": "Coming this December."
+  },
+  {
+   "s": 60.0,
+   "e": 65.73,
+   "text": "댓글에 '베어'를 남겨 주시면\n출간 알림 보내 드릴게요",
+   "en": "Comment 'BEAR'\nand we'll let you know when it's out."
   }
  ],
  "cues": {
   "crossX": [
-   13.19,
-   14.15,
-   15.94
+   12.19,
+   13.11,
+   14.82
   ],
   "kidsHook": [
    0.6,
    1.0
   ],
   "kidsCls": [
-   25.66,
-   26.16
+   24.05,
+   24.55
   ],
-  "think": 25.95,
-  "glassesOff": 34.3,
-  "power": 44.02,
-  "explore": 45.0,
-  "aiAnswers": 9.33
+  "think": 24.32,
+  "glassesOff": 32.29,
+  "power": 41.58,
+  "explore": 42.52,
+  "aiAnswers": 8.5,
+  "book": {
+   "made": 52.07,
+   "qbook": 54.16,
+   "page": 55.57,
+   "pron": 56.92,
+   "dec": 57.87,
+   "comment": 60.0,
+   "alert": 60.82
+  }
  },
  "sfx": [
   {
-   "t": 7.13,
+   "t": 6.39,
    "sound": "whoosh",
    "gain": -16
   },
   {
-   "t": 11.799999999999999,
+   "t": 10.86,
    "sound": "whoosh",
    "gain": -16
   },
   {
-   "t": 16.200000000000003,
+   "t": 15.06,
    "sound": "whoosh",
    "gain": -16
   },
   {
-   "t": 20.91,
+   "t": 19.490000000000002,
    "sound": "whoosh",
    "gain": -16
   },
   {
-   "t": 30.400000000000002,
+   "t": 28.560000000000002,
    "sound": "whoosh",
    "gain": -16
   },
   {
-   "t": 37.77,
+   "t": 35.6,
    "sound": "whoosh",
    "gain": -16
   },
   {
-   "t": 49.59,
+   "t": 46.9,
    "sound": "whoosh",
    "gain": -16
   },
   {
-   "t": 13.19,
+   "t": 51.92,
+   "sound": "whoosh",
+   "gain": -16
+  },
+  {
+   "t": 12.19,
    "sound": "pop",
    "gain": -14
   },
   {
-   "t": 14.15,
+   "t": 13.11,
    "sound": "pop",
    "gain": -14
   },
   {
-   "t": 15.94,
+   "t": 14.82,
    "sound": "pop",
    "gain": -14
   },
   {
-   "t": 44.02,
+   "t": 41.58,
    "sound": "chime",
    "gain": -12
+  },
+  {
+   "t": 54.16,
+   "sound": "whoosh",
+   "gain": -20
+  },
+  {
+   "t": 54.86,
+   "sound": "whoosh",
+   "gain": -20
+  },
+  {
+   "t": 55.559999999999995,
+   "sound": "whoosh",
+   "gain": -20
+  },
+  {
+   "t": 55.57,
+   "sound": "whoosh",
+   "gain": -20
+  },
+  {
+   "t": 57.120000000000005,
+   "sound": "whoosh",
+   "gain": -20
+  },
+  {
+   "t": 57.87,
+   "sound": "sparkle",
+   "gain": -14
+  },
+  {
+   "t": 60.3,
+   "sound": "pop",
+   "gain": -12
+  },
+  {
+   "t": 60.82,
+   "sound": "chime",
+   "gain": -14
   }
  ],
- "voice": 57.35185185185186
+ "voice": 63.927603812117084
 }
