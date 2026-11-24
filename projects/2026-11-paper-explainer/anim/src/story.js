@@ -276,7 +276,7 @@ export function buildStory(stage, B, IMG) {
   const pronCard = new THREE.Mesh(pronGeo, pronMat); pronCard.castShadow = true; pronCard.position.y = 0.25;
   pop(stg('practise'), 1.4, 2.2, [pronCard], cue['practise-card']);
   pop(stg('practise'), 2.0, 4.6, [card(IMG.wbCover, 1.3, { margin: 0.03, seed: 51 })], cue['practise-card'] + 0.3, { layer: 2 });
-  const aha = stick(P.drawAha(5), 1.45, 8, 53); aha.position.set(-1.0, prPair.a.topY + 0.05, 0.1); prGp.add(aha);
+  const aha = stick(P.drawAha(5), 1.45, 8, 53); aha.position.set(-0.15, prPair.a.topY + 0.15, 0.1); prGp.add(aha);
   bubbles.push({ m: aha, s: cue['aha'], e: spreadEnd(3) - 0.3 });
   confetti(prGp, cue['aha'] + 0.1, -0.6, prPair.a.topY + 0.4, 26, 3);
 
@@ -345,8 +345,8 @@ export function buildStory(stage, B, IMG) {
     P.hand(cg, 'Bear', 300, 150, { font: HANDF, weight: 400, size: 130, color: P.C.deep, align: 'left' });
     P.hand(cg, '♥', 800, 150, { font: HANDF, weight: 400, size: 90, color: '#d65a4a' }); }
   const comment = new THREE.Mesh((() => { const gg = new THREE.PlaneGeometry(2.7, 0.9); gg.translate(0, 0.45, 0); return gg; })(), cutMat(P.sticker(comC, 8)));
-  comment.position.y = 0.15;
-  const ctaGp = pop(stg('cta'), 0.95, 4.6, [comment], cue['cta-comment'], { layer: 2 });
+  comment.position.y = 1.15;  // lifted clear of Instagram's buttons at the bottom of the frame
+  const ctaGp = pop(stg('cta'), 1.05, 4.3, [comment], cue['cta-comment'], { layer: 2 });
   confetti(ctaGp, cue['cta-comment'] + 0.15, 0, 1.2, 34, 9);
 
   // ------------------------------------------------ the world over time

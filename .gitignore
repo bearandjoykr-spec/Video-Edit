@@ -45,3 +45,5 @@ projects/*/anim/build/
 projects/2026-11-paper-explainer/anim/src/assets/art/
 projects/2026-11-paper-explainer/work/
 projects/*/anim/src/assets/*.ttf
+projects/2026-11-paper-explainer/storyboard/*.mp4
+projects/2026-11-paper-explainer/storyboard/*.html
