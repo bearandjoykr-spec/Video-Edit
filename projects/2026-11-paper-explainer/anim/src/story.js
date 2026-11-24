@@ -148,7 +148,7 @@ export function buildStory(stage, B, IMG) {
     }),
     what: backdrop(6, [[0, '#f3e9cf'], [1, '#efe2c6']], g => {
       g.drawImage(IMG.wordmark, S / 2 - 300, 290, 600, 600 * IMG.wordmark.height / IMG.wordmark.width);
-      paste(g, IMG.cutOxford, 430, 640, 470, 0.02); paste(g, IMG.cutCat, 820, 700, 300, 0.05); P.seal(g, 870, 290, 70, '곰', 9); }),
+      paste(g, IMG.cover1, 400, 650, 470, -0.03, 18); paste(g, IMG.cutCat, 820, 700, 300, 0.05); /* Book One cover, not the Oxford street (owner) */ P.seal(g, 870, 290, 70, '곰', 9); }),
     read: backdrop(8, [[0, '#efe6cf'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 8); bigWord(g, 1, 'Read', '#3d5a80'); }),
     practise: backdrop(10, [[0, '#f2e4d6'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 10); bigWord(g, 2, 'Practise', '#a8473a'); }),
     starters: backdrop(12, [[0, '#e9ecd6'], [1, '#f2e8d2']], g => { P.mountains(g, S, [[860, 90, MOUNT, 0.35]], 12); bigWord(g, 3, 'Talk', '#4f7a52'); }),
@@ -263,7 +263,7 @@ export function buildStory(stage, B, IMG) {
 
   // ------------------------------------------------ what Bear & Joy is — cut-outs from our books
   pop(stg('what'), 0.15, 3.5, [stick(IMG.cutFriend, 2.1, 12, 32)], cue['friend']);
-  pop(stg('what'), 0, 5.4, [stick(IMG.cutFlowers, 1.15, 10, 33)], cue['flowers'], { layer: 2 });
+  pop(stg('what'), 0, 5.3, [stick(P.drawPaperFlowers(33, 1000, 400, 7), 1.45, 8, 33)], cue['flowers'], { layer: 2 });
 
   // ------------------------------------------------ 1 · read the storybook together
   pop(stg('read'), -1.5, 2.1, [card(IMG.cover1, 2.3, { margin: 0.03, seed: 41 })], cue['read-book']);
@@ -312,7 +312,7 @@ export function buildStory(stage, B, IMG) {
   pop(stg('park'), -2.1, 1.7, [stick(P.drawPine(7), 2.9, 8, 71)], cue['park-tree']);
   const friends = pair('boy2', 'girl2', 0.62, 14, 0.9); friends.c.g.scale.setScalar(1.35);
   pop(stg('park'), 1.9, 2.3, friends.kids, cue['park-friends']);
-  pop(stg('park'), 2.3, 4.9, [stick(IMG.cutFlowers, 0.7, 8, 72)], cue['park-friends'] + 0.2, { layer: 2 });
+  pop(stg('park'), 2.0, 5.0, [stick(P.drawPaperFlowers(72, 620, 360, 4), 1.0, 8, 72)], cue['park-friends'] + 0.2, { layer: 2 });
 
   const dinPair = pair('grandma', 'girl2', 0.9, 13);
   const dinGp = pop(stg('dinner'), 0, 3.4, dinPair.kids, cue['dinner'], { layer: 1 });

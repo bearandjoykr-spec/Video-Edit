@@ -57,7 +57,7 @@ pieces = {  # name: (page, box as fractions of the spread)
     "cut-door": (9, (0.235, 0.13, 0.495, 0.97)),
     "cut-cat": (9, (0.71, 0.20, 0.99, 0.86)),
     "cut-leap": (18, (0.62, 0.17, 0.80, 0.70)),
-    "cut-friend": (13, (0.06, 0.52, 0.33, 0.96)),
+    "cut-friend": (13, (0.03, 0.38, 0.34, 0.98)),   # tall enough to keep the whole hat (owner, 24 Nov 2026)
 }
 for name, (n, b) in pieces.items():
     im = harden(cut_ai(name, box(page(n), *b)), trim=4 if name == 'cut-friend' else 2); im.save(f"{OUT}/{name}.png", optimize=True); print(name, im.size)

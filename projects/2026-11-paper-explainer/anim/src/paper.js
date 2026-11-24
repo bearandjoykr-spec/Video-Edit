@@ -343,3 +343,26 @@ export function seal(g, x, y, size, text, seed = 1) { // 낙관: a red seal stam
   const ch = [...text]; if (ch.length <= 2) g.fillText(text, 0, 2); else { g.fillText(ch.slice(0, 2).join(''), 0, -size * 0.2); g.fillText(ch.slice(2).join(''), 0, size * 0.24); }
   g.restore();
 }
+// cut-paper flowers in the ink-and-colour style (owner, 24 Nov 2026: "create your own paper flowers"): brushed stems and leaves,
+// plum-blossom and peony-like heads in traditional colours, each blossom its own little paper shape
+export function drawPaperFlowers(seed = 1, w = 1000, h = 360, n = 9) {
+  const c = canvas(w, h), g = c.getContext('2d'), r = rng(seed);
+  const cols = ['#c8553d', '#e6a3a8', '#e2c271', '#f4ede0', '#d27a8a', '#8e4a5a'];
+  const heads = [];
+  for (let i = 0; i < n; i++) {
+    const x = 50 + (i + r() * 0.6) * (w - 100) / n, top = 70 + r() * 120, lean = (r() - 0.5) * 60;
+    ink(g, [[x, h - 6], [x + lean * 0.4, (h + top) / 2], [x + lean, top]], seed + i, { closed: false, w: 5, color: '#4f6a45', passes: 1 });
+    for (const s of [-1, 1]) { const ly = h - 60 - r() * 90, lx = x + lean * 0.25;           // a pair of brushed leaves
+      const leaf = [[lx, ly], [lx + s * 44, ly - 38], [lx + s * 90, ly - 20], [lx + s * 44, ly + 4]]; wash(g, leaf, '#7f9a64', seed + i * 3 + s, { light: false }); ink(g, leaf, seed + i * 3 + s, { w: 1.8, color: '#3f5a38', passes: 1 }); }
+    heads.push([x + lean, top, cols[i % cols.length], i]);
+  }
+  for (const [x, y, col, i] of heads) {                                                        // the blossoms on top
+    const big = i % 3 === 1, pr = big ? 44 : 34, k = big ? 7 : 5;
+    for (let p = 0; p < k; p++) { const a = p / k * Math.PI * 2 + i; const px = x + Math.cos(a) * pr, py = y + Math.sin(a) * pr * 0.9;
+      const pet = ell(px, py, pr * 0.72, pr * 0.62, 10); g.save(); g.shadowColor = 'rgba(60,40,20,0.25)'; g.shadowBlur = 4; g.shadowOffsetY = 2;
+      wash(g, pet, col, seed + i * 11 + p, { light: false, alpha: 0.95 }); g.restore(); ink(g, pet, seed + i * 11 + p, { w: 1.6, passes: 1 }); }
+    const ctr = ell(x, y, pr * 0.38, pr * 0.38, 8); wash(g, ctr, '#e2a92e', seed + i, { light: false }); ink(g, ctr, seed + i, { w: 1.4, passes: 1 });
+    for (let d = 0; d < 6; d++) { const a = d * 1.05; g.fillStyle = '#6b4a32'; g.beginPath(); g.arc(x + Math.cos(a) * pr * 0.22, y + Math.sin(a) * pr * 0.22, 2.2, 0, 7); g.fill(); }
+  }
+  return c;
+}
