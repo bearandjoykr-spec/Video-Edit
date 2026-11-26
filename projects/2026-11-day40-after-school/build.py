@@ -21,7 +21,7 @@ P = [{"n": "01", "who": "PARENT", "en": "How was your day?", "ko": "오늘 하�
 for p in P:
     first = words_of(p["en"], p["s"]); second = words_of(p["en"], p["again"][1] - .1)
     p["words"] = first; p["words2"] = second
-ends = [at("number", 10)[0] - .1, at("and", 18)[0] - .1, at("and", 32)[0] - .05]
+ends = [at("number", 10)[0] - .1, at("okay", 21)[0] - .3, at("and", 32)[0] - .05]   # Joy: card 2 stays until card 3
 for p, e in zip(P, ends): p["e"] = round(e, 2)
 comments = at("comments")[0]
 plan = {"fps": 30, "duration": 38.3, "frames": int(38.3 * 30), "hook": [0, P[0]["s"]], "phrases": P, "outro": at("and", 32)[0] - .05, "comments": comments,

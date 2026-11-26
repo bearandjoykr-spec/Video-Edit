@@ -44,7 +44,9 @@ export const AfterSchool: React.FC = () => {
         return <div style={{position: 'absolute', top: 400, left: 70, right: 70, textAlign: 'center', opacity: o}}>
           <div style={{display: 'inline-block', background: CREAM, borderRadius: 22, padding: '26px 36px', boxShadow: '0 12px 30px rgba(0,0,0,.3)', transform: `scale(${.85 + .15 * k})`}}>
             <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 76, color: NAVY, lineHeight: 1.15}}>하원 후, 이렇게 말해요!</div>
-            <div style={{marginTop: 10, fontFamily: PRE, fontWeight: 700, fontSize: 36, color: CHIP2}}>아이와 바로 쓰는 영어 3문장 🏠</div></div></div>; })()}
+            <div style={{marginTop: 10, fontFamily: PRE, fontWeight: 700, fontSize: 36, color: CHIP2}}>아이와 바로 쓰는 영어 3문장 🏠</div></div>
+          {/* Joy (26 Nov): the question in English too */}
+          <div style={{marginTop: 520, fontFamily: PRE, fontWeight: 900, fontSize: 64, lineHeight: 1.18, color: '#fff', textShadow: '0 4px 16px rgba(0,0,0,.75), 0 0 3px rgba(0,0,0,.8)', opacity: sp(.5, 14)}}>What can I say in English<br />to my child after school?</div></div>; })()}
 
       {/* the three phrases */}
       {cur && (() => { const k = sp(cur.s); const out = interpolate(t, [cur.e - .2, cur.e], [1, 0], clamp);
