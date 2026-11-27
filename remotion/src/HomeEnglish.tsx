@@ -51,22 +51,10 @@ export const HomeEnglish: React.FC = () => {
       {/* the free resource: her screen recording in a card below her face (her reference: hailey_ourhabit) */}
       {inRes && <div style={{position: 'absolute', left: 120, top: 800 + (1 - resK) * 300, width: 840, height: 650, borderRadius: 24, overflow: 'hidden', opacity: resOut,
           boxShadow: '0 24px 50px rgba(0,0,0,.5)', border: '5px solid #fff', background: CREAM, transform: `rotate(${(1 - resK) * 4}deg)`}}>
-          <div style={{height: 70, background: NAVY, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: PRE, fontWeight: 900, fontSize: 36, color: '#fff'}}>
-            🎁 무료 자료 · <span style={{color: YEL, marginLeft: 10}}>우리 집 영어 7일 로드맵</span></div>
           <Sequence from={Math.round((plan.res[0] - .1) * fps)} layout="none">
             <OffthreadVideo src={staticFile('day41/screen.mp4')} muted style={{width: 840, display: 'block'}} /></Sequence></div>}
 
-      {/* comment CTA: any emoji -> free */}
-      {t >= plan.emoji && t < plan.bye + .2 && (() => { const k = sp(plan.emoji, 11); const free = sp(plan.free, 9);
-        const em = ['😍', '🙌', '❤️', '👍', '🐻'];
-        return <div style={{position: 'absolute', top: 960, left: 0, right: 0, textAlign: 'center'}}>
-          <div style={{display: 'inline-block', background: '#fff', borderRadius: 24, padding: '20px 30px', boxShadow: '0 16px 36px rgba(0,0,0,.35)', transform: `scale(${k})`}}>
-            <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 34, color: '#555', textAlign: 'left'}}>댓글 달기…</div>
-            <div style={{marginTop: 6, fontSize: 64, letterSpacing: 6}}>{em.map((e, i) => <span key={i} style={{display: 'inline-block', transform: `scale(${sp(plan.emoji + .2 + i * .12, 9)})`}}>{e}</span>)}</div></div>
-          <div style={{marginTop: 26, transform: `scale(${free}) rotate(-3deg)`}}>
-            <span style={{fontFamily: PRE, fontWeight: 900, fontSize: 60, color: NAVY, background: YEL, borderRadius: 16, padding: '8px 30px'}}>무료로 보내 드려요! 🎁</span></div>
-        </div>; })()}
-
+      {/* Joy (27 Nov): no badges or emoji card — just her words and the resource itself */}
       {/* captions: her words, at chest height */}
       {cap && !hook && (
         <div style={{position: 'absolute', left: 60, right: 60, top: inRes ? 650 : 1305, height: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
