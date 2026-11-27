@@ -2,7 +2,7 @@
 // height (not on her face), a question hook, and her screen recording of the free resource in a rounded card while she talks about it
 // (her reference: the hailey_ourhabit reel), then an emoji-comment CTA. All text in y 300–1450; DAY chip + yellow progress bar.
 import React, {useEffect, useState} from 'react';
-import {AbsoluteFill, OffthreadVideo, Sequence, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Img, OffthreadVideo, Sequence, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import plan from './day41.json';
 
 const NAVY = '#14305C', YEL = '#FFD84D', CREAM = '#FBF5EC';
@@ -42,11 +42,26 @@ export const HomeEnglish: React.FC = () => {
       <div style={{position: 'absolute', top: 352, left: 90, right: 90, height: 12, borderRadius: 6, background: 'rgba(255,255,255,.3)', overflow: 'hidden'}}>
         <div style={{height: '100%', width: `${Math.min(100, t / plan.duration * 100)}%`, background: 'linear-gradient(90deg, #FFC93C, #FFE27A)'}} /></div>
 
+      {/* Joy (27 Nov): small related photos beside her while she talks, so a sit-down talk isn't dull */}
+      {(() => { const PH: [number, string][] = [[1, '8922399'], [2, '4513218'], [3, '8535598'], [4, '6437813'], [5, '6482236'], [6, '3662630'], [7, '3662630']];
+        const k = plan.caps.findIndex((c) => t >= c.s && t < c.e); const ph = PH.find(([i]) => i === k); if (!ph || inRes) return null;
+        const c = plan.caps[k]; const prev = PH.find(([i]) => i === k - 1); const same = prev && prev[1] === ph[1];
+        const a = same ? 1 : spring({frame: Math.round((t - c.s) * fps), fps, config: {damping: 13, stiffness: 150, mass: .6}});
+        const side = k % 2 ? 1 : -1; const x = side > 0 ? 735 : 45;
+        return <div style={{position: 'absolute', left: x, top: 470 + Math.sin(t * 1.2) * 6, width: 300, padding: '12px 12px 40px', background: '#fff', borderRadius: 6,
+          boxShadow: '0 16px 32px rgba(0,0,0,.35)', transform: `rotate(${side * 5}deg) scale(${.7 + .3 * a})`, opacity: Math.min(1, a * 1.4)}}>
+          <Img src={staticFile(`day41/stock/${ph[1]}.jpg`)} style={{width: 276, height: 345, objectFit: 'cover', display: 'block'}} /></div>; })()}
+
       {/* hook: the thumbnail question, big */}
       {hook && (() => { const k = sp(0, 11); const o = interpolate(t, [plan.hookEnd - .2, plan.hookEnd], [1, 0], clamp);
         return <div style={{position: 'absolute', top: 1120, left: 50, right: 50, textAlign: 'center', opacity: o, transform: `scale(${.85 + .15 * k})`}}>
           <div style={{fontFamily: PRE, fontWeight: 900, fontSize: 92, lineHeight: 1.15, color: '#fff', textShadow: '0 5px 20px rgba(0,0,0,.75), 0 0 4px rgba(0,0,0,.8)'}}>
-            엄마가 영어를 못하는데,<br /><span style={{color: YEL}}>엄마표 영어요?</span></div></div>; })()}
+            엄마가 영어를 못하는데,<br /><span style={{color: YEL}}>엄마표 영어요?</span></div>
+          <div style={{marginTop: 18, display: 'inline-block', fontFamily: PRE, fontWeight: 800, fontSize: 38, color: NAVY, background: CREAM, borderRadius: 999, padding: '8px 28px'}}>엄마표 영어 자료 제공</div></div>; })()}
+      {hook && (() => { const k = sp(.25, 13); const o = interpolate(t, [plan.hookEnd - .2, plan.hookEnd], [1, 0], clamp);
+        return <div style={{position: 'absolute', left: 660, top: 450, width: 390, opacity: o * Math.min(1, k * 1.4), transform: `rotate(${6 * k}deg) scale(${.75 + .25 * k})`,
+          borderRadius: 10, overflow: 'hidden', border: '6px solid #fff', boxShadow: '0 18px 36px rgba(0,0,0,.4)'}}>
+          <Img src={staticFile('day41/cover.jpg')} style={{width: '100%', display: 'block'}} /></div>; })()}
 
       {/* the free resource: her screen recording in a card below her face (her reference: hailey_ourhabit) */}
       {inRes && <div style={{position: 'absolute', left: 120, top: 800 + (1 - resK) * 300, width: 840, height: 650, borderRadius: 24, overflow: 'hidden', opacity: resOut,
