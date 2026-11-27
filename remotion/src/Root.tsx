@@ -3,6 +3,8 @@ import {AbsoluteFill, Composition, interpolate, useCurrentFrame} from 'remotion'
 import {BearJoyReel, Plan} from './BearJoyReel';
 import {PaperThink} from './PaperThink';
 import {AfterSchool} from './AfterSchool';
+import {HomeEnglish} from './HomeEnglish';
+import day41plan from './day41.json';
 import day40plan from './day40.json';
 import ptPlan from './paperthink.json';
 import shortPlan from '../../projects/2026-11-confidence/versions/short/timeline.json';
@@ -134,6 +136,7 @@ export const Root: React.FC = () => (
       defaultProps={{plan: day29 as unknown as Day29Plan}} />
     <Composition id="Day29JA" component={Day29Magic} durationInFrames={(day29ja as unknown as Day29Plan).frames} fps={30} width={1080} height={1920}
       defaultProps={{plan: day29ja as unknown as Day29Plan}} />
+      <Composition id="Day41" component={HomeEnglish} durationInFrames={day41plan.frames} fps={30} width={1080} height={1920} />
       <Composition id="Day40Phrases" component={AfterSchool} durationInFrames={day40plan.frames} fps={30} width={1080} height={1920} />
       <Composition id="PaperThink" component={PaperThink} durationInFrames={ptPlan.frames} fps={30} width={1080} height={1920} />
     </>
