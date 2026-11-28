@@ -48,10 +48,9 @@ export const Bookshelf: React.FC = () => {
           borderRadius: 5, transform: `rotate(${tilt * (1 - k * .6)}deg)`, transformOrigin: '50% 100%', opacity: Math.min(1, k * 2),
           boxShadow: '4px 6px 10px rgba(60,35,10,.35)'}} />; })}
       {/* Mark: clean cut-out (Joy, 28 Nov: no room or desk), smaller, bottom-left under the bookcase — the books are the main thing */}
-      {(() => { const MW2 = 520, sc = MW2 / 1080; const v = <OffthreadVideo src={staticFile('day42/mark-clean.webm')} transparent muted style={{width: MW2, height: 1700 * sc}} />;
-        return <div style={{position: 'absolute', left: -30, top: 1480 - 720 * sc, width: MW2, height: 1700 * sc,
-          filter: 'drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 14px 20px rgba(60,40,10,.3))',
-          WebkitMaskImage: 'linear-gradient(180deg, #000 82%, transparent 100%)'}}>
+      {(() => { const MW2 = 660, sc = MW2 / 1080; const v = <OffthreadVideo src={staticFile('day42/mark-clean.webm')} transparent muted style={{width: MW2, height: 1700 * sc}} />;
+        return <div style={{position: 'absolute', left: 1080 - MW2, top: 1475 - 720 * sc, width: MW2, height: 1700 * sc,   // his frame edge sits on the screen edge
+          filter: 'drop-shadow(-5px 0 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 14px 20px rgba(60,40,10,.3))'}}>
           {t < D42.talk - .05 ? v : <Freeze frame={Math.round((D42.talk - .1) * fps)}>{v}</Freeze>}</div>; })()}
       {/* DAY chip + title */}
       <div style={{position: 'absolute', top: 300, left: 0, right: 0, textAlign: 'center'}}>
@@ -60,7 +59,7 @@ export const Bookshelf: React.FC = () => {
       {/* captions: Mark's English over Korean */}
       {cap && (() => { const k = spring({frame: frame - Math.round(cap.s * fps), fps, config: {damping: 16}});
         // Joy (28 Nov): Korean only, under the bookcase beside Mark (the English under the title looked crowded)
-        return <div key={cap.s} style={{position: 'absolute', top: 1490, left: 430, right: 50, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+        return <div key={cap.s} style={{position: 'absolute', top: 1490, left: 50, right: 640, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
           opacity: k, transform: `translateY(${(1 - k) * 10}px)`}}>
           <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, lineHeight: 1.3, color: NAVY, wordBreak: 'keep-all'}}>{cap.ko}</div></div>; })()}
       {/* Joy (28 Nov): end — comment for the book list */}
