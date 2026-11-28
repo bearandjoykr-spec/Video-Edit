@@ -18,19 +18,23 @@ src = frames(["ffmpeg", "-v", "error", "-i", f"{P}/src.mp4", "-f", "rawvideo", "
 mat = frames(["ffmpeg", "-v", "error", "-c:v", "libvpx-vp9", "-i", f"{P}/matte.webm", "-f", "rawvideo", "-pix_fmt", "rgba", "-"], 4)
 enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{CH}", "-r", "30", "-i", "-",
                         "-c:v", "libvpx-vp9", "-pix_fmt", "yuva420p", "-b:v", "5M", "-auto-alt-ref", "0", OUT], stdin=subprocess.PIPE)
-ema = None; k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
+ema = None; k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31))
 for rgb, m in zip(src, mat):
     r = seg.segment(mp.Image(image_format=mp.ImageFormat.SRGB, data=np.ascontiguousarray(rgb)))
-    bg = r.confidence_masks[0].numpy_view()                      # class 0 = background
-    person = cv2.dilate(((1 - bg) > .5).astype(np.uint8) * 255, k)
-    a = np.minimum(m[..., 3], person)
-    hard = (a > 120).astype(np.uint8)
+    bg = np.squeeze(r.confidence_masks[0].numpy_view())          # class 0 = background
+    pc = 1 - bg                                                  # person confidence
+    near = cv2.dilate((pc > .35).astype(np.uint8), k)            # where a person can be (kills chairs and room)
+    hf = m[..., 3].astype(np.float32)
+    # Joy (28 Nov): arms must be solid — a moving (blurred) arm is solid where either model sees it, no ghost trails
+    solid = ((hf > 70) | ((pc > .5) & (hf > 20))) & (near > 0)
+    solid[1330:, 880:] = False; solid[1380:, :130] = False      # chair backs at his sides, low down
+    hard = solid.astype(np.uint8)
+    hard = cv2.morphologyEx(hard, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9)))
     n, lb, st, _ = cv2.connectedComponentsWithStats(hard)
     if n > 1: hard = (lb == 1 + np.argmax(st[1:, cv2.CC_STAT_AREA])).astype(np.uint8)
     cs, _ = cv2.findContours(hard, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE); fill = np.zeros_like(hard); cv2.drawContours(fill, cs, -1, 1, -1)
-    a = np.where(fill > 0, np.maximum(a, 0), 0).astype(np.float32)
-    a = np.where(fill > 0, np.maximum(a, cv2.erode(fill, np.ones((9, 9), np.uint8)) * 255), 0)
-    ema = a if ema is None else ema * .45 + a * .55
+    a = cv2.GaussianBlur(fill.astype(np.float32) * 255, (5, 5), 1.2)
+    ema = a if ema is None else np.where(np.abs(a - ema) > 60, a, ema * .3 + a * .7)   # steady edges, but no trails when he moves
     out = np.dstack([rgb, cv2.GaussianBlur(ema, (3, 3), 0).clip(0, 255).astype(np.uint8)])[:CH]
     enc.stdin.write(out.tobytes())
 enc.stdin.close(); enc.wait(); print("ok")
