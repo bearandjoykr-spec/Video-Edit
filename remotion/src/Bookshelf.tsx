@@ -59,7 +59,7 @@ export const Bookshelf: React.FC = () => {
       {/* captions: Mark's English over Korean */}
       {cap && (() => { const k = spring({frame: frame - Math.round(cap.s * fps), fps, config: {damping: 16}});
         // Joy (28 Nov): Korean only, under the bookcase beside Mark (the English under the title looked crowded)
-        return <div key={cap.s} style={{position: 'absolute', top: 1490, left: 50, right: 640, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+        return <div key={cap.s} style={{position: 'absolute', top: 1545, left: 120, right: 540, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
           opacity: k, transform: `translateY(${(1 - k) * 10}px)`}}>
           <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, lineHeight: 1.3, color: NAVY, wordBreak: 'keep-all'}}>{cap.ko}</div></div>; })()}
       {/* Joy (28 Nov): end — comment for the book list */}
