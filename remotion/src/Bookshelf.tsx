@@ -42,9 +42,9 @@ export const Bookshelf: React.FC = () => {
       {/* the 12 books, 3 per shelf, dropping in one after another */}
       {Array.from({length: 12}, (_, i) => { const row = Math.floor(i / 3), col = i % 3; const at = D42.books.start + i * D42.books.step;
         const k = spring({frame: frame - Math.round(at * fps), fps, config: {damping: 11, stiffness: 140, mass: .7}}); if (frame < at * fps) return null;
-        const x = SX + 22 + col * (BW + GAP); const h = BH; const y = PLANKS[row] - h;
+        const h = BH + 6; const w = Math.round(h * (i < 6 ? 172 / 218 : 159 / 245)); const x = SX + 22 + col * (BW + GAP) + (BW - w) / 2; const y = PLANKS[row] - h;   // whole cover, titles fully visible
         const tilt = [-3, 2, -1.5, 2.5, -2, 1.5, -2.5, 3, -1, 2, -3, 1.5][i];
-        return <Img key={i} src={staticFile(`day42/b${String(i).padStart(2, '0')}.jpg`)} style={{position: 'absolute', left: x, top: y - (1 - k) * 260, width: BW, height: h, objectFit: 'cover', objectPosition: '50% 20%',
+        return <Img key={i} src={staticFile(`day42/b${String(i).padStart(2, '0')}.jpg`)} style={{position: 'absolute', left: x, top: y - (1 - k) * 260, width: w, height: h, objectFit: 'fill',
           borderRadius: 5, transform: `rotate(${tilt * (1 - k * .6)}deg)`, transformOrigin: '50% 100%', opacity: Math.min(1, k * 2),
           boxShadow: '4px 6px 10px rgba(60,35,10,.35)'}} />; })}
       {/* Mark: clean cut-out (Joy, 28 Nov: no room or desk), smaller, bottom-left under the bookcase — the books are the main thing */}
