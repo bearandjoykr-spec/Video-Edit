@@ -59,9 +59,10 @@ export const Bookshelf: React.FC = () => {
         <div style={{marginTop: 12, fontFamily: PRE, fontWeight: 900, fontSize: 56, lineHeight: 1.15, color: NAVY}}>영국 선생님이<br />추천하는 그림책 12권 🇬🇧</div></div>
       {/* captions: Mark's English over Korean */}
       {cap && (() => { const k = spring({frame: frame - Math.round(cap.s * fps), fps, config: {damping: 16}});
-        return <div key={cap.s} style={{position: 'absolute', top: 482, left: 60, right: 60, textAlign: 'center', opacity: k, transform: `translateY(${(1 - k) * 10}px)`}}>
-          <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 28, lineHeight: 1.22, color: '#2A3B55', whiteSpace: 'pre-line'}}>{cap.en}</div>
-          <div style={{marginTop: 4, fontFamily: PRE, fontWeight: 700, fontSize: 26, color: '#7A6A55'}}>{cap.ko}</div></div>; })()}
+        // Joy (28 Nov): Korean only, under the bookcase beside Mark (the English under the title looked crowded)
+        return <div key={cap.s} style={{position: 'absolute', top: 1490, left: 430, right: 50, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+          opacity: k, transform: `translateY(${(1 - k) * 10}px)`}}>
+          <div style={{fontFamily: PRE, fontWeight: 800, fontSize: 40, lineHeight: 1.3, color: NAVY, wordBreak: 'keep-all'}}>{cap.ko}</div></div>; })()}
       {/* Joy (28 Nov): end — comment for the book list */}
       {t >= D42.cta && (() => { const k = spring({frame: frame - Math.round(D42.cta * fps), fps, config: {damping: 12}});
         return <div style={{position: 'absolute', left: 120, right: 120, top: 960, textAlign: 'center', transform: `scale(${k})`}}>
